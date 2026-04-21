@@ -616,7 +616,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
           <button class="btn secondary" onclick="exportAllData()" style="font-size:11px;padding:8px 12px;">📦 Export</button>
           <label class="btn secondary" style="font-size:11px;padding:8px 12px;cursor:pointer;">📥 Import<input type="file" accept=".json" style="display:none" onchange="importAllData(event)"></label>
           <button class="btn secondary" onclick="sendProgressEmail()" style="font-size:11px;padding:8px 12px;">📧 Email Me</button>
-          <button class="btn secondary" onclick="showMotivation()" style="font-size:11px;padding:8px 12px;">🔥 Motivate</button>
+          <button class="btn secondary" onclick="showMotivation(true)" style="font-size:11px;padding:8px 12px;">🔥 Motivate</button>
         </div>
       </div>
       <div class="dash-grid">
@@ -3864,21 +3864,27 @@ function closeMotivation() {
   if (el) { el.style.opacity = '0'; setTimeout(() => el.style.display = 'none', 300); }
 }
 
-function showMotivation() {
+function showMotivation(forceNew) {
   const today = new Date().toDateString();
   const lastShown = localStorage.getItem('motiv_last_shown');
-  if (lastShown === today) return; // Show only once per day
-  
-  const idx = Math.floor(Math.random() * MOTIVATIONS.length);
+  // Auto page-load: once per day. Manual button click (forceNew): always show a new one
+  if (!forceNew && lastShown === today) return;
+
+  // Always pick a different quote from last time
+  const lastIdx = parseInt(localStorage.getItem('motiv_last_idx') || '-1');
+  let idx;
+  do { idx = Math.floor(Math.random() * MOTIVATIONS.length); } while (idx === lastIdx && MOTIVATIONS.length > 1);
+
   const m = MOTIVATIONS[idx];
   document.getElementById('motivEmoji').textContent = m.emoji;
   document.getElementById('motivQuote').textContent = m.quote;
   document.getElementById('motivSub').textContent = m.sub;
   document.getElementById('motivMission').textContent = m.mission;
-  
+
   const el = document.getElementById('motivationOverlay');
   if (el) { el.style.display = 'flex'; el.style.opacity = '0'; setTimeout(() => el.style.opacity = '1', 50); }
   localStorage.setItem('motiv_last_shown', today);
+  localStorage.setItem('motiv_last_idx', String(idx));
 }
 
 // ===== CLOUD SYNC VIA localStorage with export/import =====
@@ -4091,12 +4097,13 @@ function doSendEmail(type, onDone) {
   fetch('/.netlify/functions/send-email?type=' + type, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ streak, done, total, pct, lcTotal, aiProj }),
+    body: JSON.stringify({ streak, done, total, pct, lcTotal, aiProj, lastMotivIdx: parseInt(localStorage.getItem('motiv_last_idx') || '-1') }),
   })
   .then(r => r.json())
   .then(data => {
     if (data.success) {
       showToast('✅ Email sent to your inbox!', 'green');
+      if (data.motivIdx !== undefined) localStorage.setItem('motiv_last_idx', String(data.motivIdx));
       if (onDone) onDone(true);
     } else {
       showToast('❌ Email failed: ' + (data.error || 'unknown error'), '');
