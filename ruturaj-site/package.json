@@ -1,0 +1,9 @@
+{
+  "name": "ruturaj-blueprint",
+  "version": "1.0.0",
+  "description": "Ruturaj 7-Month MAANG Blueprint with automated daily emails",
+  "type": "module",
+  "dependencies": {
+    "nodemailer": "^6.9.9"
+  }
+}
