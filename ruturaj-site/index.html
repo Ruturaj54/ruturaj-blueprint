@@ -4068,44 +4068,44 @@ Ruturaj Blueprint · 7 Month Plan · 2026
   }
 }
 
-// ---- core send function using SMTP.js ----
+// ---- core send function — calls Netlify Function backend ----
 function doSendEmail(type, onDone) {
-  const { subject, body } = buildEmailContent(type);
-
-  if (typeof Email === 'undefined') {
-    // SMTP.js not loaded yet — fallback to mailto
-    window.open('mailto:' + MY_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body));
-    showToast('📧 Email draft opened (offline fallback)', 'yellow');
-    if (onDone) onDone(false);
-    return;
-  }
-
   showToast('📤 Sending email…', 'yellow');
 
-  Email.send({
-    SecureToken: '',           // leave blank — using Username/Password below
-    Host       : 'smtp.gmail.com',
-    Username   : SENDER_EMAIL,
-    Password   : SENDER_PASS,
-    To         : MY_EMAIL,
-    From       : SENDER_EMAIL,
-    Subject    : subject,
-    Body       : body.replace(/\n/g, '<br>'),
-  }).then(msg => {
-    if (msg === 'OK') {
+  // Gather live stats to include in the email
+  const today    = new Date().toISOString().slice(0, 10);
+  let dayTasks   = {};
+  try { dayTasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')?.days?.[today]?.tasks || {}; } catch(e) {}
+  const done     = Object.keys(dayTasks).length;
+  const total    = DAILY_TASKS.length;
+  const pct      = Math.round(done / total * 100);
+  const streak   = calcStreak();
+  let lcTotal = 0, aiProj = 0;
+  try {
+    const m = JSON.parse(localStorage.getItem('ruturaj_maang_v1') || '{}');
+    lcTotal = (m.easy || 0) + (m.medium || 0) + (m.hard || 0);
+    const air = JSON.parse(localStorage.getItem('ruturaj_air_tracker_v1') || '{}');
+    aiProj = air.proj || 0;
+  } catch(e) {}
+
+  fetch('/.netlify/functions/send-email?type=' + type, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ streak, done, total, pct, lcTotal, aiProj }),
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
       showToast('✅ Email sent to your inbox!', 'green');
       if (onDone) onDone(true);
     } else {
-      console.error('SMTP.js error:', msg);
-      // Fallback mailto
-      window.open('mailto:' + MY_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body));
-      showToast('📧 Draft opened — check SMTP config', 'yellow');
+      showToast('❌ Email failed: ' + (data.error || 'unknown error'), '');
       if (onDone) onDone(false);
     }
-  }).catch(err => {
+  })
+  .catch(err => {
     console.error('Email send failed:', err);
-    window.open('mailto:' + MY_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body));
-    showToast('📧 Draft opened (send error)', '');
+    showToast('❌ Could not reach email function', '');
     if (onDone) onDone(false);
   });
 }
