@@ -1,6 +1,5 @@
 // Scheduled — 5:00 PM IST = 11:30 UTC daily
 import nodemailer from "nodemailer";
-import { createCanvas } from "canvas";
 
 const SENDER_EMAIL = "shivjiforyou@gmail.com";
 const SENDER_PASS  = "tyrm usfv bvgd wgob";
@@ -26,45 +25,66 @@ function getDateStr() {
   return new Date().toLocaleDateString("en-IN", { weekday:"long", day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata" });
 }
 
-async function generateCard(theme, dayNum) {
-  const W = 600, H = 320;
-  const canvas = createCanvas(W, H);
-  const ctx    = canvas.getContext("2d");
-  const grad = ctx.createLinearGradient(0, 0, W, H);
-  grad.addColorStop(0, theme.g1); grad.addColorStop(1, theme.g2);
-  ctx.fillStyle = grad; ctx.beginPath(); ctx.roundRect(0, 0, W, H, 18); ctx.fill();
-  const bg2 = ctx.createLinearGradient(0, 0, W, 0);
-  bg2.addColorStop(0, theme.accent); bg2.addColorStop(0.6, theme.accent+"88"); bg2.addColorStop(1,"transparent");
-  ctx.fillStyle = bg2; ctx.fillRect(0, 0, W, 4);
-  const glow = ctx.createRadialGradient(W-80,60,0,W-80,60,140);
-  glow.addColorStop(0, theme.accent+"18"); glow.addColorStop(1,"transparent");
-  ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = theme.accent+"22"; ctx.strokeStyle = theme.accent+"55"; ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.roundRect(24,24,90,26,6); ctx.fill(); ctx.stroke();
-  ctx.fillStyle = theme.accent; ctx.font = "bold 11px monospace";
-  ctx.fillText("DAY " + dayNum + " / 210", 32, 41);
-  ctx.font = "44px serif"; ctx.fillText(theme.emoji, 24, 112);
-  ctx.fillStyle = theme.accent; ctx.globalAlpha = 0.75; ctx.font = "bold 10px monospace";
-  ctx.fillText("TONIGHT'S IGNITION", 24, 140); ctx.globalAlpha = 1;
-  ctx.fillStyle = theme.accent; ctx.font = "bold 26px sans-serif";
-  const words = theme.quote.split(" "); let line = "", y = 175;
-  for (const w of words) {
-    const test = line + (line ? " " : "") + w;
-    if (ctx.measureText(test).width > W-48) { ctx.fillText(line,24,y); line=w; y+=34; } else { line=test; }
+function generateCardSvg(theme, dayNum) {
+  const W = 600;
+  function wrapText(text, maxChars) {
+    const words = text.split(" ");
+    const lines = [];
+    let line = "";
+    for (const w of words) {
+      if ((line + " " + w).trim().length > maxChars) {
+        if (line) lines.push(line.trim());
+        line = w;
+      } else {
+        line = (line + " " + w).trim();
+      }
+    }
+    if (line) lines.push(line.trim());
+    return lines;
   }
-  if (line) ctx.fillText(line,24,y); y+=20;
-  ctx.fillStyle = "#aaaaaa"; ctx.font = "14px sans-serif";
-  const subWords = theme.sub.split(" "); let subLine = "";
-  for (const w of subWords) {
-    const test = subLine + (subLine?" ":"") + w;
-    if (ctx.measureText(test).width > W-48) { ctx.fillText(subLine,24,y); subLine=w; y+=20; } else { subLine=test; }
-  }
-  if (subLine) ctx.fillText(subLine,24,y); y+=28;
-  ctx.fillStyle = theme.accent+"15"; ctx.strokeStyle = theme.accent+"40"; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.roundRect(24,y-16,W-48,34,8); ctx.fill(); ctx.stroke();
-  ctx.fillStyle = theme.accent; ctx.font = "bold 12px sans-serif";
-  ctx.fillText("⚡ " + theme.mission, 34, y+9);
-  return canvas.toBuffer("image/png");
+  const quoteLines = wrapText(theme.quote, 28);
+  const subLines   = wrapText(theme.sub, 68);
+  let quoteY = 168;
+  const quoteSvg = quoteLines.map(l => {
+    const y = quoteY; quoteY += 36;
+    return `<text x="24" y="${y}" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="24" fill="${theme.accent}">${l}</text>`;
+  }).join("\n  ");
+  let subY = quoteY + 8;
+  const subSvg = subLines.map(l => {
+    const y = subY; subY += 18;
+    return `<text x="24" y="${y}" font-family="Arial,sans-serif" font-size="12" fill="#aaaaaa">${l}</text>`;
+  }).join("\n  ");
+  const missionY = subY + 14;
+  const missionLines = wrapText(theme.mission, 70);
+  const missionSvg = missionLines.map((l, i) =>
+    `<text x="38" y="${missionY + 16 + i * 16}" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="${theme.accent}">⚡ ${l}</text>`
+  ).join("\n  ");
+  const pillH = Math.max(32, missionLines.length * 16 + 20);
+  const svgH = Math.max(320, missionY + pillH + 16);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${svgH}" viewBox="0 0 ${W} ${svgH}">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="${theme.g1}"/>
+      <stop offset="100%" stop-color="${theme.g2}"/>
+    </linearGradient>
+    <linearGradient id="border" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="${theme.accent}"/>
+      <stop offset="60%" stop-color="${theme.accent}88"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <clipPath id="rr"><rect width="${W}" height="${svgH}" rx="18" ry="18"/></clipPath>
+  </defs>
+  <rect width="${W}" height="${svgH}" rx="18" ry="18" fill="url(#bg)"/>
+  <rect y="0" width="${W}" height="4" fill="url(#border)" clip-path="url(#rr)"/>
+  <rect x="24" y="24" width="96" height="26" rx="6" fill="${theme.accent}22" stroke="${theme.accent}55" stroke-width="1"/>
+  <text x="32" y="41" font-family="Courier New,monospace" font-weight="700" font-size="11" fill="${theme.accent}">DAY ${dayNum} / 210</text>
+  <text x="24" y="112" font-family="Segoe UI Emoji,sans-serif" font-size="42">${theme.emoji}</text>
+  <text x="24" y="138" font-family="Courier New,monospace" font-weight="700" font-size="10" fill="${theme.accent}" opacity="0.75">TODAY\'S IGNITION</text>
+  ${quoteSvg}
+  ${subSvg}
+  <rect x="24" y="${missionY}" width="${W - 48}" height="${pillH}" rx="8" fill="${theme.accent}15" stroke="${theme.accent}40" stroke-width="1"/>
+  ${missionSvg}
+</svg>`;
 }
 
 function planRow(ico,time,task,color) {
@@ -80,7 +100,8 @@ export default async function handler() {
   const theme   = THEMES[dayNum % THEMES.length];
   const { accent } = theme;
   const subject = "⚡ Day " + dayNum + " Evening — " + shortDate + " — Study Block starts NOW, Ruturaj!";
-  const cardBuf = await generateCard(theme, dayNum);
+  const svgCard = generateCardSvg(theme, dayNum);
+  const svgDataUri = "data:image/svg+xml;base64," + Buffer.from(svgCard).toString("base64");
 
   const planRows = planRow("💡","5:30 PM","STUDY BLOCK 1 — 2 LeetCode, phone away",accent)
     + planRow("🍽️","7:30 PM","Dinner — protein-rich, no sugar",accent)
@@ -96,7 +117,7 @@ export default async function handler() {
     +"<h1 style='margin:0 0 4px;font-size:26px;font-weight:800;color:#f0f0f0;'>⚡ Evening Report</h1>"
     +"<p style='margin:0 0 24px;font-size:12px;color:#555;'>"+dateStr+"</p>"
     +"<div style='margin-bottom:20px;border-radius:14px;overflow:hidden;'>"
-    +"<img src='cid:motivcard' width='560' style='display:block;width:100%;border-radius:14px;border:0;' alt='"+theme.quote+"'>"
+    +"<img src='" + svgDataUri + "'" width='560' style='display:block;width:100%;border-radius:14px;border:0;' alt='"+theme.quote+"'>"
     +"</div>"
     +"<div style='background:#111;border:1px solid #222;border-radius:10px;padding:16px 18px;margin-bottom:20px;'>"
     +"<p style='margin:0 0 12px;font-size:10px;letter-spacing:3px;color:#444;text-transform:uppercase;'>EVENING PLAN</p>"
@@ -114,7 +135,6 @@ export default async function handler() {
   const transporter = nodemailer.createTransport({host:"smtp.gmail.com",port:587,secure:false,auth:{user:SENDER_EMAIL,pass:SENDER_PASS}});
   await transporter.sendMail({
     from:'"Ruturaj Blueprint" <'+SENDER_EMAIL+'>',to:MY_EMAIL,subject,text,html,
-    attachments:[{filename:"motivation-day-"+dayNum+".png",content:cardBuf,cid:"motivcard",contentType:"image/png"}],
   });
   console.log("Evening email sent — Day "+dayNum);
   return new Response(JSON.stringify({success:true}),{status:200});
