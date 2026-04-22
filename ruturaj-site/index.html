@@ -945,6 +945,95 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
       </div>
     </div>
 
+
+    <!-- ===== BASE MONTH TRACKER ===== -->
+    <div style="margin-bottom:32px;">
+      <div class="section-title" style="font-size:30px;margin-bottom:6px;"><div class="dot orange"></div> MONTH 0 — PROGRESS TRACKER</div>
+      <div class="section-sub">Tick each task as you complete it. Auto-saved. Start date: 22 April 2026.</div>
+
+      <!-- Overall progress bar -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+          <div style="font-weight:700;font-size:14px;">Overall Base Month Progress</div>
+          <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--accent);" id="basePctLabel">0 / 0 tasks</div>
+        </div>
+        <div style="height:8px;background:var(--border2);border-radius:4px;overflow:hidden;">
+          <div id="baseProgressBar" style="height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:4px;width:0%;transition:width .4s ease;"></div>
+        </div>
+      </div>
+
+      <!-- Week 1 -->
+      <div class="checklist-block" style="margin-bottom:12px;">
+        <div class="cl-header">
+          <div class="cl-header-left"><span style="font-size:18px;">🔷</span><span class="cl-title">WEEK 1 — C Language + C++ + OOP</span></div>
+          <span class="cl-progress" id="bw1-prog">0/8</span>
+        </div>
+        <div class="cl-bar"><div class="cl-bar-fill" id="bw1-bar" style="width:0%"></div></div>
+        <div class="cl-items" id="bw1-items"></div>
+      </div>
+
+      <!-- Week 2 -->
+      <div class="checklist-block" style="margin-bottom:12px;">
+        <div class="cl-header">
+          <div class="cl-header-left"><span style="font-size:18px;">☕</span><span class="cl-title">WEEK 2 — Java Internals + Spring Boot</span></div>
+          <span class="cl-progress" id="bw2-prog">0/6</span>
+        </div>
+        <div class="cl-bar"><div class="cl-bar-fill" id="bw2-bar" style="width:0%"></div></div>
+        <div class="cl-items" id="bw2-items"></div>
+      </div>
+
+      <!-- Week 3 -->
+      <div class="checklist-block" style="margin-bottom:12px;">
+        <div class="cl-header">
+          <div class="cl-header-left"><span style="font-size:18px;">🧮</span><span class="cl-title">WEEK 3 — Logic Building + DSA Basics</span></div>
+          <span class="cl-progress" id="bw3-prog">0/7</span>
+        </div>
+        <div class="cl-bar"><div class="cl-bar-fill" id="bw3-bar" style="width:0%"></div></div>
+        <div class="cl-items" id="bw3-items"></div>
+      </div>
+
+      <!-- Week 4 -->
+      <div class="checklist-block" style="margin-bottom:20px;">
+        <div class="cl-header">
+          <div class="cl-header-left"><span style="font-size:18px;">🐍</span><span class="cl-title">WEEK 4 — Python + ML Pipeline + Mini Project</span></div>
+          <span class="cl-progress" id="bw4-prog">0/6</span>
+        </div>
+        <div class="cl-bar"><div class="cl-bar-fill" id="bw4-bar" style="width:0%"></div></div>
+        <div class="cl-items" id="bw4-items"></div>
+      </div>
+
+      <!-- Numbers tracker -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px;">
+        <div style="font-weight:700;font-size:14px;margin-bottom:14px;">📊 Numbers This Month</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;">
+          <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px;">
+            <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Logic Problems Solved</div>
+            <input type="number" id="base-lb-count" min="0" placeholder="0" oninput="saveBaseNumbers()"
+              style="background:var(--bg);border:1px solid var(--border2);border-radius:5px;padding:6px 10px;color:var(--text);font-family:'DM Mono',monospace;font-size:16px;font-weight:700;width:100%;outline:none;">
+            <div style="font-size:10px;color:var(--muted);margin-top:4px;">Target: 80+</div>
+          </div>
+          <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px;">
+            <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">GitHub Commits</div>
+            <input type="number" id="base-gh-count" min="0" placeholder="0" oninput="saveBaseNumbers()"
+              style="background:var(--bg);border:1px solid var(--border2);border-radius:5px;padding:6px 10px;color:var(--text);font-family:'DM Mono',monospace;font-size:16px;font-weight:700;width:100%;outline:none;">
+            <div style="font-size:10px;color:var(--muted);margin-top:4px;">Target: 30+</div>
+          </div>
+          <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px;">
+            <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Projects Built</div>
+            <input type="number" id="base-proj-count" min="0" placeholder="0" oninput="saveBaseNumbers()"
+              style="background:var(--bg);border:1px solid var(--border2);border-radius:5px;padding:6px 10px;color:var(--text);font-family:'DM Mono',monospace;font-size:16px;font-weight:700;width:100%;outline:none;">
+            <div style="font-size:10px;color:var(--muted);margin-top:4px;">Target: 1 ML project</div>
+          </div>
+          <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px;">
+            <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Days on Schedule</div>
+            <input type="number" id="base-days-count" min="0" max="30" placeholder="0" oninput="saveBaseNumbers()"
+              style="background:var(--bg);border:1px solid var(--border2);border-radius:5px;padding:6px 10px;color:var(--text);font-family:'DM Mono',monospace;font-size:16px;font-weight:700;width:100%;outline:none;">
+            <div style="font-size:10px;color:var(--muted);margin-top:4px;">Target: 25 / 30</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- READY CHECK -->
     <div style="background:linear-gradient(135deg,rgba(76,255,145,0.08),rgba(76,255,145,0.03));border:1px solid rgba(76,255,145,0.2);border-radius:14px;padding:22px 24px;margin-bottom:40px;text-align:center;">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--green);margin-bottom:8px;">END OF MONTH 0 — READINESS CHECK</div>
@@ -2189,6 +2278,7 @@ function showPage(name) {
   if (event && event.target) event.target.classList.add('active');
   if (name === 'history') renderHistory();
   if (name === 'maangai') initMAAngAI();
+  if (name === 'base') renderBaseTracker();
   window.scrollTo(0,0);
 }
 
@@ -4157,8 +4247,125 @@ function scheduleAutoEmails() {
 setInterval(scheduleAutoEmails, 60 * 1000);
 scheduleAutoEmails(); // check immediately on page load
 
+
+// ===================== BASE MONTH TRACKER =====================
+const BASE_KEY = 'ruturaj_base_v1';
+
+const BASE_TASKS = {
+  w1: [
+    { id:'c-pointers',    label:'Pointers, memory (stack/heap), malloc/free' },
+    { id:'c-arrays',      label:'Arrays, strings, structs, file I/O' },
+    { id:'c-programs',    label:'Wrote 5 C programs from scratch (linked list, sort, reverse)' },
+    { id:'cpp-oop',       label:'C++ — Classes, inheritance, polymorphism, virtual functions' },
+    { id:'cpp-stl',       label:'C++ STL — vector, map, set, queue, priority_queue' },
+    { id:'cpp-smart',     label:'Smart pointers + move semantics (unique_ptr basics)' },
+    { id:'cpp-solved',    label:'Solved 5 LeetCode problems using C++ STL' },
+    { id:'w1-github',     label:'Pushed Week 1 code to GitHub' },
+  ],
+  w2: [
+    { id:'java-jvm',      label:'JVM internals — heap, stack, GC, classloader' },
+    { id:'java-coll',     label:'Java Collections — ArrayList, HashMap, TreeMap internals' },
+    { id:'java-threads',  label:'Multithreading — Thread, synchronized, volatile, CompletableFuture' },
+    { id:'java-spring',   label:'Spring Boot — REST APIs, DI, IoC, JPA/Hibernate basics' },
+    { id:'java-crud',     label:'Built 1 CRUD REST API with Spring Boot (deployed locally)' },
+    { id:'w2-github',     label:'Pushed Week 2 code to GitHub' },
+  ],
+  w3: [
+    { id:'lb-patterns',   label:'Level 1 — Patterns, factorial, Fibonacci, prime (15 problems)' },
+    { id:'lb-arrays',     label:'Level 2 — Array manipulation, sorting, two-pointer (20 problems)' },
+    { id:'lb-strings',    label:'Level 3 — String manipulation, anagram, palindrome (15 problems)' },
+    { id:'lb-recursion',  label:'Level 4 — Recursion, backtracking basics (10 problems)' },
+    { id:'lb-both-langs', label:'Solved same set in both C++ AND Java' },
+    { id:'lb-ds-intro',   label:'Started DSA — linked list + stack + queue implementation' },
+    { id:'w3-github',     label:'Pushed Week 3 logic solutions to GitHub' },
+  ],
+  w4: [
+    { id:'py-basics',     label:'Python revision — pandas, numpy, matplotlib done' },
+    { id:'py-ml',         label:'ML algorithms — logistic regression + random forest implemented' },
+    { id:'py-fastai',     label:'Completed 2 fast.ai / Andrew Ng lessons' },
+    { id:'py-project',    label:'Built 1 end-to-end ML mini project (data → model → prediction)' },
+    { id:'py-deployed',   label:'Project pushed to GitHub with README' },
+    { id:'w4-schedule',   label:'Maintained gym + study schedule all of Week 4' },
+  ],
+};
+
+let baseData = {};
+try { baseData = JSON.parse(localStorage.getItem(BASE_KEY) || '{}'); } catch(e) {}
+if (!baseData.tasks) baseData.tasks = {};
+if (!baseData.numbers) baseData.numbers = {};
+
+function saveBaseData() {
+  localStorage.setItem(BASE_KEY, JSON.stringify(baseData));
+}
+
+function toggleBaseTask(id) {
+  baseData.tasks[id] = !baseData.tasks[id];
+  if (!baseData.tasks[id]) delete baseData.tasks[id];
+  saveBaseData();
+  renderBaseTracker();
+}
+
+function saveBaseNumbers() {
+  baseData.numbers.lb    = parseInt(document.getElementById('base-lb-count')?.value || 0);
+  baseData.numbers.gh    = parseInt(document.getElementById('base-gh-count')?.value || 0);
+  baseData.numbers.proj  = parseInt(document.getElementById('base-proj-count')?.value || 0);
+  baseData.numbers.days  = parseInt(document.getElementById('base-days-count')?.value || 0);
+  saveBaseData();
+}
+
+function renderBaseWeek(weekId, tasks) {
+  const itemsEl = document.getElementById(weekId + '-items');
+  const progEl  = document.getElementById(weekId + '-prog');
+  const barEl   = document.getElementById(weekId + '-bar');
+  if (!itemsEl) return;
+
+  const done = tasks.filter(t => baseData.tasks[t.id]).length;
+  const pct  = Math.round(done / tasks.length * 100);
+
+  if (progEl) progEl.textContent = done + '/' + tasks.length;
+  if (barEl)  barEl.style.width  = pct + '%';
+
+  itemsEl.innerHTML = tasks.map(t => {
+    const checked = !!baseData.tasks[t.id];
+    return '<div class="cl-item ' + (checked ? 'checked' : '') + '" onclick="toggleBaseTask(\'' + t.id + '\')" style="cursor:pointer;">'
+      + '<div class="cl-checkbox"></div>'
+      + '<div class="cl-text">' + t.label + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function renderBaseTracker() {
+  const allTasks = Object.values(BASE_TASKS).flat();
+  const totalDone = allTasks.filter(t => baseData.tasks[t.id]).length;
+  const totalAll  = allTasks.length;
+  const pct       = Math.round(totalDone / totalAll * 100);
+
+  const pctEl = document.getElementById('basePctLabel');
+  const barEl = document.getElementById('baseProgressBar');
+  if (pctEl) pctEl.textContent = totalDone + ' / ' + totalAll + ' tasks (' + pct + '%)';
+  if (barEl) barEl.style.width = pct + '%';
+
+  Object.entries(BASE_TASKS).forEach(([weekId, tasks]) => renderBaseWeek('b' + weekId, tasks));
+
+  // Restore number inputs
+  const n = baseData.numbers || {};
+  const lb   = document.getElementById('base-lb-count');
+  const gh   = document.getElementById('base-gh-count');
+  const proj = document.getElementById('base-proj-count');
+  const days = document.getElementById('base-days-count');
+  if (lb   && n.lb   !== undefined) lb.value   = n.lb;
+  if (gh   && n.gh   !== undefined) gh.value   = n.gh;
+  if (proj && n.proj !== undefined) proj.value = n.proj;
+  if (days && n.days !== undefined) days.value = n.days;
+}
+
+// Render on page load + when switching to base page
+document.addEventListener('DOMContentLoaded', renderBaseTracker);
+setTimeout(renderBaseTracker, 300);
+
 // Show motivation on page load
 setTimeout(showMotivation, 800);
+
 
 </script>
 
