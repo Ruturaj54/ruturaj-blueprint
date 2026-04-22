@@ -1,117 +1,211 @@
 // Netlify Function — send-email
 // Called by "Email Me" button: /.netlify/functions/send-email?type=morning|evening
+// Generates a unique motivation image card daily using SVG→base64 (no extra packages)
 
 import nodemailer from "nodemailer";
+import { createCanvas } from "canvas";
 
 const SENDER_EMAIL = "shivjiforyou@gmail.com";
 const SENDER_PASS  = "tyrm usfv bvgd wgob";
 const MY_EMAIL     = "ruturajdharne54945@gmail.com";
 
-// 10 unique colour themes — rotates so every email looks different
+// 10 unique themes — accent colour, bg gradient, emoji, quote, sub, mission
 const THEMES = [
-  { emoji:"🔥", accent:"#e8ff47", bgCard:"#1a2200", bgPage:"#0a0f00", quote:"YOU ARE 23. THE TIME IS NOW.", sub:"Every hour you sleep past 7:30 AM is an hour someone else used to get ahead. Your 23-year-old body is a machine built for this grind.", mission:"Wake at 7:30 · Gym by 7:50 · 2 LeetCode today" },
-  { emoji:"⚡", accent:"#47c8ff", bgCard:"#001828", bgPage:"#000d18", quote:"MAANG IS NOT LUCK. IT IS DAILY REPS.", sub:"The engineers at Google did not get lucky. They solved 300+ problems. They showed up every single day. You can too — starting today.", mission:"Solve 2 LeetCode + read 1 chapter DDIA" },
-  { emoji:"💎", accent:"#c084fc", bgCard:"#1a0030", bgPage:"#0d0018", quote:"YOUR TELECOM BACKGROUND IS A MOAT.", sub:"You know 4G/5G internals, DevOps, and production systems. AI on top of this = a profile that 99% of freshers cannot replicate. Build that edge.", mission:"Push 1 GitHub commit + 1 AI project task" },
-  { emoji:"🏆", accent:"#fbbf24", bgCard:"#1c1400", bgPage:"#0f0b00", quote:"SIX MONTHS FROM NOW, EVERYTHING CHANGES.", sub:"You will look back at this exact moment as the day you decided. Not someday. Not next week. Today. The plan is built. Now execute.", mission:"Complete all checklist tasks today — 100% score" },
-  { emoji:"🚀", accent:"#fb923c", bgCard:"#1c0800", bgPage:"#0f0400", quote:"REVISE FIRST. THEN CONQUER.", sub:"Month 0 is not wasted time — it is compound interest on what you already know. PPA + Logic + Python = the foundation everything else is built on.", mission:"Revise 1 PPA chapter + 3 logic building problems" },
-  { emoji:"💪", accent:"#4ade80", bgCard:"#001c0d", bgPage:"#000f06", quote:"GYM + BRAIN. BOTH. EVERY DAY.", sub:"You want to look sharp in the interview room AND think sharp. The gym is not optional — it keeps cortisol low and focus high for studying.", mission:"Hit gym by 7:50 AM — do not skip for any reason" },
-  { emoji:"🌅", accent:"#ffa94d", bgCard:"#1c1000", bgPage:"#0f0800", quote:"THE MORNING BELONGS TO YOU.", sub:"7:30 AM is your competitive advantage. While the city sleeps, you are squatting, lifting, and building the body that walks into Google with confidence.", mission:"Gym 7:50 AM · Skincare done · Office by 10:00" },
-  { emoji:"🎯", accent:"#f87171", bgCard:"#1c0008", bgPage:"#0f0004", quote:"FOCUS IS A SKILL. TRAIN IT DAILY.", sub:"Every time you resist the phone during study block, you are training focus. Every distracted session weakens it. Make each block count.", mission:"Phone in other room during both study blocks" },
-  { emoji:"🧠", accent:"#86efac", bgCard:"#001c0a", bgPage:"#000f05", quote:"CONSISTENCY BEATS INTENSITY. EVERY TIME.", sub:"One bad day does not define your journey. One skipped workout, one missed study block — it is fine. Just never miss two in a row. That is the rule.", mission:"Study Block 1 (5:30 PM): full 2 hours, no phone" },
-  { emoji:"📈", accent:"#22d3ee", bgCard:"#001820", bgPage:"#000d14", quote:"1 CRORE+ IS THE OUTPUT OF DAILY INPUT.", sub:"MAANG + AI Engineer salaries are real. They go to people who consistently put in the work. You have 7 months and the right plan. Honour it.", mission:"Log 2 study blocks + push to GitHub" },
+  { emoji:"🔥", accent:"#e8ff47", g1:"#1a2200", g2:"#0a0f00", quote:"YOU ARE 23. THE TIME IS NOW.",           sub:"Every hour past 7:30 AM is an hour someone else used to get ahead.",                          mission:"Wake 7:30 · Gym 7:50 · 2 LeetCode today"              },
+  { emoji:"⚡", accent:"#47c8ff", g1:"#001828", g2:"#000d18", quote:"MAANG IS NOT LUCK. IT IS DAILY REPS.",   sub:"Google engineers showed up every single day. 300+ problems. You can too.",                    mission:"Solve 2 LeetCode + read 1 chapter DDIA"               },
+  { emoji:"💎", accent:"#c084fc", g1:"#1a0030", g2:"#0d0018", quote:"YOUR TELECOM BACKGROUND IS A MOAT.",     sub:"4G/5G + AI = a profile 99% of freshers cannot replicate. Build that edge.",                  mission:"Push 1 GitHub commit + 1 AI project task"             },
+  { emoji:"🏆", accent:"#fbbf24", g1:"#1c1400", g2:"#0f0b00", quote:"SIX MONTHS. EVERYTHING CHANGES.",       sub:"You will look back at this as the day you decided. The plan is built. Execute.",              mission:"Complete all checklist tasks — 100% score"            },
+  { emoji:"🚀", accent:"#fb923c", g1:"#1c0800", g2:"#0f0400", quote:"REVISE FIRST. THEN CONQUER.",            sub:"PPA + Logic + Python = the foundation everything else is built on.",                         mission:"1 PPA chapter + 3 logic building problems"            },
+  { emoji:"💪", accent:"#4ade80", g1:"#001c0d", g2:"#000f06", quote:"GYM + BRAIN. BOTH. EVERY DAY.",          sub:"Look sharp in the room AND think sharp. Gym keeps cortisol low and focus high.",              mission:"Hit gym by 7:50 AM — no exceptions"                   },
+  { emoji:"🌅", accent:"#ffa94d", g1:"#1c1000", g2:"#0f0800", quote:"THE MORNING BELONGS TO YOU.",            sub:"7:30 AM is your edge. While the city sleeps you are building the body that walks into Google.",mission:"Gym 7:50 · Skincare done · Office 10:00"              },
+  { emoji:"🎯", accent:"#f87171", g1:"#1c0008", g2:"#0f0004", quote:"FOCUS IS A SKILL. TRAIN IT.",            sub:"Every phone resist during study = focus training. Every distraction weakens it.",             mission:"Phone away during both study blocks"                  },
+  { emoji:"🧠", accent:"#86efac", g1:"#001c0a", g2:"#000f05", quote:"CONSISTENCY BEATS INTENSITY.",           sub:"Never miss two in a row. One bad day is fine. Two is a pattern. That is the rule.",           mission:"Study Block 1 (5:30 PM): 2 hours, no phone"           },
+  { emoji:"📈", accent:"#22d3ee", g1:"#001820", g2:"#000d14", quote:"₹1 CRORE = DAILY INPUT.",                sub:"MAANG salaries go to people who put in the work every single day. You have the plan.",        mission:"Log 2 study blocks + push to GitHub"                  },
 ];
 
 function getDayNumber() {
   const start = new Date("2026-04-22T00:00:00+05:30");
   return Math.max(1, Math.round((new Date() - start) / 86400000) + 1);
 }
-
 function getDateStr() {
   return new Date().toLocaleDateString("en-IN", {
     weekday:"long", day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata"
   });
 }
-
 function pickTheme(lastIdx) {
   let idx;
   do { idx = Math.floor(Math.random() * THEMES.length); } while (idx === lastIdx && THEMES.length > 1);
   return { theme: THEMES[idx], idx };
 }
 
-// Build one plan row — plain string concat, no nested template literals
-function planRow(ico, time, task, color) {
-  return '<tr>'
-    + '<td style="padding:5px 10px 5px 0;font-size:18px;vertical-align:middle;">' + ico + '</td>'
-    + '<td style="padding:5px 10px 5px 0;color:' + color + ';font-family:monospace;font-size:12px;white-space:nowrap;vertical-align:middle;">' + time + '</td>'
-    + '<td style="padding:5px 0;color:#cccccc;font-size:13px;line-height:1.4;vertical-align:middle;">' + task + '</td>'
-    + '</tr>';
+// ─── Generate motivation card as PNG Buffer using node-canvas ───────────────
+async function generateMotivationCard(theme, dayNum) {
+  const W = 600, H = 320;
+  const canvas = createCanvas(W, H);
+  const ctx    = canvas.getContext("2d");
+
+  // Background gradient
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, theme.g1);
+  grad.addColorStop(1, theme.g2);
+  ctx.fillStyle = grad;
+  ctx.roundRect(0, 0, W, H, 18);
+  ctx.fill();
+
+  // Accent border top
+  const borderGrad = ctx.createLinearGradient(0, 0, W, 0);
+  borderGrad.addColorStop(0, theme.accent);
+  borderGrad.addColorStop(0.6, theme.accent + "88");
+  borderGrad.addColorStop(1, "transparent");
+  ctx.fillStyle = borderGrad;
+  ctx.fillRect(0, 0, W, 4);
+
+  // Glow circle top-right
+  const glow = ctx.createRadialGradient(W - 80, 60, 0, W - 80, 60, 140);
+  glow.addColorStop(0, theme.accent + "18");
+  glow.addColorStop(1, "transparent");
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, W, H);
+
+  // Day badge
+  ctx.fillStyle = theme.accent + "22";
+  ctx.strokeStyle = theme.accent + "55";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(24, 24, 90, 26, 6);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = theme.accent;
+  ctx.font = "bold 11px monospace";
+  ctx.fillText("DAY " + dayNum + " / 210", 32, 41);
+
+  // Emoji
+  ctx.font = "44px serif";
+  ctx.fillText(theme.emoji, 24, 112);
+
+  // Label
+  ctx.fillStyle = theme.accent;
+  ctx.globalAlpha = 0.75;
+  ctx.font = "bold 10px monospace";
+  ctx.fillText("TODAY'S IGNITION", 24, 140);
+  ctx.globalAlpha = 1;
+
+  // Quote — word wrap
+  ctx.fillStyle = theme.accent;
+  ctx.font = "bold 26px sans-serif";
+  const words = theme.quote.split(" ");
+  let line = "", y = 175;
+  for (const w of words) {
+    const test = line + (line ? " " : "") + w;
+    if (ctx.measureText(test).width > W - 48) {
+      ctx.fillText(line, 24, y);
+      line = w;
+      y += 34;
+    } else {
+      line = test;
+    }
+  }
+  if (line) ctx.fillText(line, 24, y);
+  y += 20;
+
+  // Sub text — word wrap
+  ctx.fillStyle = "#aaaaaa";
+  ctx.font = "14px sans-serif";
+  const subWords = theme.sub.split(" ");
+  let subLine = "";
+  for (const w of subWords) {
+    const test = subLine + (subLine ? " " : "") + w;
+    if (ctx.measureText(test).width > W - 48) {
+      ctx.fillText(subLine, 24, y);
+      subLine = w;
+      y += 20;
+    } else {
+      subLine = test;
+    }
+  }
+  if (subLine) ctx.fillText(subLine, 24, y);
+  y += 28;
+
+  // Mission pill
+  ctx.fillStyle = theme.accent + "15";
+  ctx.strokeStyle = theme.accent + "40";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(24, y - 16, W - 48, 34, 8);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = theme.accent;
+  ctx.font = "bold 12px sans-serif";
+  ctx.fillText("⚡ " + theme.mission, 34, y + 9);
+
+  return canvas.toBuffer("image/png");
 }
 
-function statCell(value, label, color) {
-  return '<td style="padding:12px 8px;text-align:center;background:#1a1a1a;border-radius:8px;border:1px solid #2a2a2a;">'
-    + '<div style="font-size:22px;font-weight:800;color:' + color + ';font-family:monospace;">' + value + '</div>'
-    + '<div style="font-size:9px;color:#666666;letter-spacing:2px;text-transform:uppercase;margin-top:3px;">' + label + '</div>'
-    + '</td>';
-}
-
-function buildEmail(type, body, theme) {
-  const dayNum    = getDayNumber();
-  const dateStr   = getDateStr();
+// ─── plain-text fallback ─────────────────────────────────────────────────────
+function buildPlainText(type, body, theme, dayNum, dateStr) {
   const isMorning = type === "morning";
-  const shortDate = new Date().toLocaleDateString("en-IN", { day:"numeric", month:"short", timeZone:"Asia/Kolkata" });
+  const pct = body.pct || 0;
+  const scoreWord = pct >= 90 ? "PERFECT DAY 🏆" : pct >= 70 ? "GREAT DAY ✅" : pct >= 50 ? "DECENT DAY ⚡" : "NEEDS PUSH ⚠️";
+  return [
+    isMorning ? "GOOD MORNING RUTURAJ 🌅" : "EVENING CHECK-IN ⚡",
+    "Day " + dayNum + " of 210 · " + dateStr,
+    "",
+    theme.emoji + " " + theme.quote,
+    theme.sub,
+    "",
+    "MISSION: " + theme.mission,
+    "",
+    isMorning
+      ? "STREAK: " + (body.streak||0) + " | LC SOLVED: " + (body.lcTotal||0) + " | AI PROJECTS: " + (body.aiProj||0)
+      : "SCORE: " + pct + "% — " + scoreWord + " | TASKS: " + (body.done||0) + "/" + (body.total||20),
+    "",
+    "RUTURAJ BLUEPRINT · 7 MONTH PLAN · 2026",
+  ].join("\n");
+}
 
+// ─── helpers ─────────────────────────────────────────────────────────────────
+function planRow(ico, time, task, color) {
+  return "<tr>"
+    + "<td style='padding:5px 10px 5px 0;font-size:17px;'>" + ico + "</td>"
+    + "<td style='padding:5px 10px 5px 0;color:" + color + ";font-family:monospace;font-size:12px;white-space:nowrap;'>" + time + "</td>"
+    + "<td style='padding:5px 0;color:#cccccc;font-size:13px;'>" + task + "</td>"
+    + "</tr>";
+}
+function chipRow(ico, task, color) {
+  return "<tr>"
+    + "<td style='padding:4px 10px 4px 0;font-size:17px;'>" + ico + "</td>"
+    + "<td style='padding:4px 0;color:#cccccc;font-size:13px;'>" + task + "</td>"
+    + "</tr>";
+}
+function statCell(val, lbl, color) {
+  return "<td style='padding:10px 8px;text-align:center;background:#1a1a1a;border-radius:8px;border:1px solid #2a2a2a;'>"
+    + "<div style='font-size:20px;font-weight:800;color:" + color + ";font-family:monospace;'>" + val + "</div>"
+    + "<div style='font-size:9px;color:#666;letter-spacing:2px;text-transform:uppercase;margin-top:3px;'>" + lbl + "</div>"
+    + "</td>";
+}
+
+// ─── HTML email ───────────────────────────────────────────────────────────────
+function buildHtml(type, body, theme, dayNum, dateStr) {
+  const isMorning = type === "morning";
+  const { accent, g1 } = theme;
   const streak  = body.streak  || 0;
   const done    = body.done    || 0;
   const total   = body.total   || 20;
   const pct     = body.pct     || 0;
   const lcTotal = body.lcTotal || 0;
   const aiProj  = body.aiProj  || 0;
-
-  const filled    = Math.min(10, Math.round(pct / 10));
+  const filled  = Math.min(10, Math.round(pct / 10));
   const scoreBar  = "█".repeat(filled) + "░".repeat(10 - filled);
   const scoreWord = pct >= 90 ? "PERFECT DAY 🏆" : pct >= 70 ? "GREAT DAY ✅" : pct >= 50 ? "DECENT DAY ⚡" : "NEEDS PUSH ⚠️";
+  const shortDate = new Date().toLocaleDateString("en-IN", { day:"numeric", month:"short", timeZone:"Asia/Kolkata" });
 
-  const { accent, bgCard, bgPage, emoji, quote, sub, mission } = theme;
-
-  // --- unique subject with day number so each email is a separate thread ---
-  const subject = isMorning
-    ? "🌅 Day " + dayNum + " Morning — " + shortDate + " — Rise & Conquer, Ruturaj!"
-    : "📊 Day " + dayNum + " Evening — " + shortDate + " — " + pct + "% — " + scoreWord;
-
-  // --- plain text fallback ---
-  const text = [
-    (isMorning ? "GOOD MORNING RUTURAJ 🌅" : "EVENING CHECK-IN ⚡"),
-    "Day " + dayNum + " of 210 · " + dateStr,
-    "",
-    isMorning
-      ? "STREAK: " + streak + " days | LC SOLVED: " + lcTotal + " | AI PROJECTS: " + aiProj
-      : "SCORE: " + pct + "% [" + scoreBar + "] " + scoreWord + "\nTASKS: " + done + "/" + total + " | STREAK: " + streak + " days",
-    "",
-    "TODAY'S IGNITION",
-    emoji + " " + quote,
-    sub,
-    "",
-    "MISSION: " + mission,
-    "",
-    isMorning ? "BATTLE PLAN\n7:30 AM  Wake + hydrate + AM skincare\n7:50 AM  GYM\n10:00 AM Office\n5:30 PM  Study Block 1 (2 hrs)\n8:30 PM  Study Block 2 (2.5 hrs)\n11:00 PM PM skincare + Minoxidil\n1:00 AM  SLEEP"
-              : "EVENING PLAN\n5:30 PM  Study Block 1 — 2 LeetCode\n7:30 PM  Dinner (protein-rich)\n8:30 PM  Study Block 2 — AI + GitHub\n11:00 PM PM skincare + Minoxidil\n1:00 AM  SCREENS OFF. SLEEP.",
-    "",
-    "You are 23. This is YOUR time. ₹1 CR+ CTC = daily input.",
-    "Ruturaj Blueprint · 7 Month Plan · 2026",
-  ].join("\n");
-
-  // --- HTML email built with string concat (no nested template literals) ---
   const statsRow = isMorning
-    ? statCell(streak + " 🔥", "STREAK", accent)
-      + '<td width="8"></td>'
-      + statCell(lcTotal, "LC SOLVED", "#47c8ff")
-      + '<td width="8"></td>'
+    ? statCell(streak + "🔥", "STREAK", accent) + "<td width='8'></td>"
+      + statCell(lcTotal, "LC SOLVED", "#47c8ff") + "<td width='8'></td>"
       + statCell(aiProj, "AI PROJECTS", "#4ade80")
-    : statCell(pct + "%", "TODAY SCORE", accent)
-      + '<td width="8"></td>'
-      + statCell(done + "/" + total, "TASKS DONE", "#4ade80")
-      + '<td width="8"></td>'
-      + statCell(streak + " 🔥", "STREAK", "#fb923c");
+    : statCell(pct + "%", "TODAY SCORE", accent) + "<td width='8'></td>"
+      + statCell(done + "/" + total, "TASKS DONE", "#4ade80") + "<td width='8'></td>"
+      + statCell(streak + "🔥", "STREAK", "#fb923c");
 
   const planRows = isMorning
     ? planRow("⏰","7:30 AM","Wake up + hydrate + AM skincare",accent)
@@ -130,77 +224,60 @@ function buildEmail(type, body, theme) {
   const nonNeg = isMorning
     ? [["🏋️","Gym 7:50 AM — no excuses"],["📚","Solve 2 LeetCode problems"],["💻","Push 1 commit to GitHub"],["☀️","AM skincare: Cleanser → Niacinamide → SPF 50+"],["🥗","150g+ protein · 3–4L water"]]
     : [["📚","2 LeetCode problems solved"],["💻","GitHub commit pushed tonight"],["🤖","AI project progress made"],["🌿","PM skincare + Minoxidil done"],["😴","In bed by 1:00 AM"]];
-
-  const nonNegRows = nonNeg.map(function(item) {
-    return '<tr>'
-      + '<td style="padding:5px 12px 5px 0;font-size:18px;vertical-align:middle;">' + item[0] + '</td>'
-      + '<td style="padding:5px 0;color:#cccccc;font-size:13px;vertical-align:middle;">' + item[1] + '</td>'
-      + '</tr>';
-  }).join("");
+  const nonNegRows = nonNeg.map(([ico,task]) => chipRow(ico, task, accent)).join("");
 
   const scoreLine = !isMorning
-    ? '<div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-family:monospace;font-size:13px;color:#888888;">'
-      + '[<span style="color:' + accent + ';">' + scoreBar + '</span>]&nbsp;&nbsp;'
-      + '<span style="color:' + accent + ';font-weight:700;">' + scoreWord + '</span>'
-      + '</div>'
+    ? "<div style='background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-family:monospace;font-size:13px;color:#888;'>"
+      + "[<span style='color:" + accent + ";'>" + scoreBar + "</span>]&nbsp;&nbsp;"
+      + "<span style='color:" + accent + ";font-weight:700;'>" + scoreWord + "</span></div>"
     : "";
 
-  const html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Ruturaj Blueprint</title></head>'
-    + '<body style="margin:0;padding:0;background-color:#080808;">'
-    + '<div style="max-width:560px;margin:0 auto;padding:24px 16px;font-family:Arial,Helvetica,sans-serif;background-color:#080808;">'
+  return "<!DOCTYPE html><html><head><meta charset='UTF-8'></head>"
+    + "<body style='margin:0;padding:0;background:#080808;'>"
+    + "<div style='max-width:560px;margin:0 auto;padding:24px 16px;font-family:Arial,sans-serif;background:#080808;'>"
 
-    // gradient top bar
-    + '<div style="height:4px;background:linear-gradient(to right,' + accent + ',' + accent + '44,transparent);border-radius:4px;margin-bottom:28px;"></div>'
+    // top bar
+    + "<div style='height:4px;background:linear-gradient(to right," + accent + "," + accent + "44,transparent);border-radius:4px;margin-bottom:28px;'></div>"
 
     // header
-    + '<div style="margin-bottom:24px;">'
-    + '<p style="margin:0 0 6px 0;font-size:10px;letter-spacing:4px;color:' + accent + ';text-transform:uppercase;opacity:0.8;">'
-    + (isMorning ? "GOOD MORNING" : "EVENING CHECK-IN") + ' &nbsp;·&nbsp; DAY ' + dayNum + ' OF 210</p>'
-    + '<h1 style="margin:0 0 4px 0;font-size:26px;font-weight:800;color:#f0f0f0;letter-spacing:-0.5px;">'
-    + (isMorning ? "🌅 Rise &amp; Conquer" : "⚡ Evening Report") + '</h1>'
-    + '<p style="margin:0;font-size:12px;color:#555555;">' + dateStr + '</p>'
-    + '</div>'
+    + "<p style='margin:0 0 6px;font-size:10px;letter-spacing:4px;color:" + accent + ";text-transform:uppercase;opacity:.8;'>"
+    + (isMorning ? "GOOD MORNING" : "EVENING CHECK-IN") + " &nbsp;·&nbsp; DAY " + dayNum + " OF 210</p>"
+    + "<h1 style='margin:0 0 4px;font-size:26px;font-weight:800;color:#f0f0f0;'>"
+    + (isMorning ? "🌅 Rise &amp; Conquer" : "⚡ Evening Report") + "</h1>"
+    + "<p style='margin:0 0 24px;font-size:12px;color:#555;'>" + dateStr + "</p>"
 
     // stats
-    + '<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;border-collapse:separate;border-spacing:0;">'
-    + '<tr>' + statsRow + '</tr></table>'
+    + "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:20px;border-collapse:separate;'>"
+    + "<tr>" + statsRow + "</tr></table>"
     + scoreLine
 
-    // plan
-    + '<div style="background-color:#111111;border:1px solid #222222;border-radius:10px;padding:16px 18px;margin-bottom:20px;">'
-    + '<p style="margin:0 0 12px 0;font-size:10px;letter-spacing:3px;color:#444444;text-transform:uppercase;">'
-    + (isMorning ? "TODAY\'S BATTLE PLAN" : "EVENING PLAN") + '</p>'
-    + '<table cellpadding="0" cellspacing="0" width="100%">' + planRows + '</table>'
-    + '</div>'
+    // ★ motivation image (CID inline — shows without "display images" click)
+    + "<div style='margin-bottom:20px;border-radius:14px;overflow:hidden;'>"
+    + "<img src='cid:motivcard' width='560' style='display:block;width:100%;max-width:560px;border-radius:14px;border:0;' alt='" + theme.quote + "'>"
+    + "</div>"
 
-    // motivation card
-    + '<div style="background-color:' + bgCard + ';border:1px solid ' + accent + '33;border-radius:14px;padding:22px;margin-bottom:20px;">'
-    + '<p style="margin:0 0 10px 0;font-size:32px;">' + emoji + '</p>'
-    + '<p style="margin:0 0 8px 0;font-size:10px;letter-spacing:3px;color:' + accent + ';opacity:0.8;text-transform:uppercase;">TODAY\'S IGNITION</p>'
-    + '<h2 style="margin:0 0 12px 0;font-size:20px;font-weight:800;color:' + accent + ';line-height:1.25;">' + quote + '</h2>'
-    + '<p style="margin:0 0 16px 0;font-size:13px;color:#aaaaaa;line-height:1.7;">' + sub + '</p>'
-    + '<div style="background-color:#ffffff0a;border:1px solid ' + accent + '33;border-radius:8px;padding:12px 14px;">'
-    + '<p style="margin:0 0 4px 0;font-size:9px;color:' + accent + ';letter-spacing:2px;text-transform:uppercase;">TODAY\'S MISSION</p>'
-    + '<p style="margin:0;font-size:13px;color:#e0e0e0;font-weight:700;">' + mission + '</p>'
-    + '</div></div>'
+    // plan
+    + "<div style='background:#111;border:1px solid #222;border-radius:10px;padding:16px 18px;margin-bottom:20px;'>"
+    + "<p style='margin:0 0 12px;font-size:10px;letter-spacing:3px;color:#444;text-transform:uppercase;'>"
+    + (isMorning ? "TODAY'S BATTLE PLAN" : "EVENING PLAN") + "</p>"
+    + "<table cellpadding='0' cellspacing='0' width='100%'>" + planRows + "</table>"
+    + "</div>"
 
     // non-negotiables
-    + '<div style="background-color:#111111;border:1px solid #222222;border-radius:10px;padding:16px 18px;margin-bottom:20px;">'
-    + '<p style="margin:0 0 12px 0;font-size:10px;letter-spacing:3px;color:#444444;text-transform:uppercase;">NON-NEGOTIABLES</p>'
-    + '<table cellpadding="0" cellspacing="0" width="100%">' + nonNegRows + '</table>'
-    + '</div>'
+    + "<div style='background:#111;border:1px solid #222;border-radius:10px;padding:16px 18px;margin-bottom:20px;'>"
+    + "<p style='margin:0 0 12px;font-size:10px;letter-spacing:3px;color:#444;text-transform:uppercase;'>NON-NEGOTIABLES</p>"
+    + "<table cellpadding='0' cellspacing='0' width='100%'>" + nonNegRows + "</table>"
+    + "</div>"
 
     // footer
-    + '<div style="text-align:center;padding-top:16px;border-top:1px solid #1a1a1a;">'
-    + '<p style="margin:0 0 4px 0;font-size:12px;color:#444444;">You are 23. This is YOUR time.</p>'
-    + '<p style="margin:0;font-size:10px;color:#2a2a2a;letter-spacing:2px;">RUTURAJ BLUEPRINT &nbsp;·&nbsp; 7 MONTH PLAN &nbsp;·&nbsp; 2026</p>'
-    + '</div>'
-
-    + '</div></body></html>';
-
-  return { subject, text, html };
+    + "<div style='text-align:center;padding-top:16px;border-top:1px solid #1a1a1a;'>"
+    + "<p style='margin:0 0 4px;font-size:12px;color:#444;'>You are 23. This is YOUR time.</p>"
+    + "<p style='margin:0;font-size:10px;color:#2a2a2a;letter-spacing:2px;'>RUTURAJ BLUEPRINT &nbsp;·&nbsp; 7 MONTH PLAN &nbsp;·&nbsp; 2026</p>"
+    + "</div>"
+    + "</div></body></html>";
 }
 
+// ─── main handler ─────────────────────────────────────────────────────────────
 export default async function handler(req) {
   const cors = {
     "Access-Control-Allow-Origin": "*",
@@ -208,7 +285,6 @@ export default async function handler(req) {
     "Access-Control-Allow-Headers": "Content-Type",
     "Content-Type": "application/json",
   };
-
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
 
   try {
@@ -218,12 +294,23 @@ export default async function handler(req) {
     const lastIdx = parseInt(body.lastMotivIdx ?? "-1");
 
     const { theme, idx } = pickTheme(lastIdx);
-    const { subject, text, html } = buildEmail(type, body, theme);
+    const dayNum  = getDayNumber();
+    const dateStr = getDateStr();
+    const shortDate = new Date().toLocaleDateString("en-IN", { day:"numeric", month:"short", timeZone:"Asia/Kolkata" });
+    const isMorning = type === "morning";
+
+    const subject = isMorning
+      ? "🌅 Day " + dayNum + " Morning — " + shortDate + " — Rise & Conquer, Ruturaj!"
+      : "📊 Day " + dayNum + " Evening — " + shortDate + " — " + (body.pct||0) + "% — " + (body.pct>=90?"PERFECT 🏆":body.pct>=70?"GREAT ✅":body.pct>=50?"DECENT ⚡":"PUSH ⚠️");
+
+    // Generate the motivation card PNG
+    const cardBuffer = await generateMotivationCard(theme, dayNum);
+
+    const html      = buildHtml(type, body, theme, dayNum, dateStr);
+    const text      = buildPlainText(type, body, theme, dayNum, dateStr);
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
+      host: "smtp.gmail.com", port: 587, secure: false,
       auth: { user: SENDER_EMAIL, pass: SENDER_PASS },
     });
 
@@ -231,11 +318,17 @@ export default async function handler(req) {
       from: '"Ruturaj Blueprint" <' + SENDER_EMAIL + '>',
       to: MY_EMAIL,
       subject,
-      text,   // plain text fallback
-      html,   // rich HTML
+      text,
+      html,
+      attachments: [{
+        filename: "motivation-day-" + dayNum + ".png",
+        content:  cardBuffer,
+        cid:      "motivcard",          // matches src='cid:motivcard' in HTML
+        contentType: "image/png",
+      }],
     });
 
-    console.log("Email sent — Day " + getDayNumber() + " | type:" + type + " | theme:" + theme.emoji);
+    console.log("Email sent — Day " + dayNum + " | " + type + " | theme:" + theme.emoji);
     return new Response(JSON.stringify({ success: true, motivIdx: idx }), { status: 200, headers: cors });
   } catch (err) {
     console.error("Email error:", err.message);

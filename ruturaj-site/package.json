@@ -4,6 +4,7 @@
   "description": "Ruturaj 7-Month MAANG Blueprint with automated daily emails",
   "type": "module",
   "dependencies": {
-    "nodemailer": "^6.9.9"
+    "nodemailer": "^6.9.9",
+    "canvas": "^2.11.2"
   }
 }
