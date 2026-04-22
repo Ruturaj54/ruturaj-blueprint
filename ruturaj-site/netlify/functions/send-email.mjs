@@ -1,5 +1,6 @@
-// Netlify Function — send-email (FIXED: no native canvas dependency)
+// Netlify Function — send-email
 // Called by "Email Me" button: /.netlify/functions/send-email?type=morning|evening
+// Generates a unique motivation image card daily using SVG→base64 (no extra packages)
 
 import nodemailer from "nodemailer";
 
@@ -7,7 +8,7 @@ const SENDER_EMAIL = "shivjiforyou@gmail.com";
 const SENDER_PASS  = "tyrm usfv bvgd wgob";
 const MY_EMAIL     = "ruturajdharne54945@gmail.com";
 
-// 10 unique themes
+// 10 unique themes — accent colour, bg gradient, emoji, quote, sub, mission
 const THEMES = [
   { emoji:"🔥", accent:"#e8ff47", g1:"#1a2200", g2:"#0a0f00", quote:"YOU ARE 23. THE TIME IS NOW.",           sub:"Every hour past 7:30 AM is an hour someone else used to get ahead.",                          mission:"Wake 7:30 · Gym 7:50 · 2 LeetCode today"              },
   { emoji:"⚡", accent:"#47c8ff", g1:"#001828", g2:"#000d18", quote:"MAANG IS NOT LUCK. IT IS DAILY REPS.",   sub:"Google engineers showed up every single day. 300+ problems. You can too.",                    mission:"Solve 2 LeetCode + read 1 chapter DDIA"               },
@@ -36,12 +37,8 @@ function pickTheme(lastIdx) {
   return { theme: THEMES[idx], idx };
 }
 
-// ─── Generate motivation card as an SVG (embedded inline in HTML email) ───────
-// No canvas / native deps needed — pure string generation
-function generateMotivationCardSvg(theme, dayNum) {
-  const W = 600, H = 320;
 
-  // Word-wrap helper (approx char-based for SVG)
+function generateCardSvg(theme, dayNum) {
   function wrapText(text, maxChars) {
     const words = text.split(" ");
     const lines = [];
@@ -57,79 +54,29 @@ function generateMotivationCardSvg(theme, dayNum) {
     if (line) lines.push(line.trim());
     return lines;
   }
-
-  const quoteLines = wrapText(theme.quote, 28);
-  const subLines   = wrapText(theme.sub,   68);
-
+  const W = 600;
+  const quoteLines = wrapText(theme.quote, 26);
+  const subLines   = wrapText(theme.sub, 70);
   let quoteY = 168;
   const quoteSvg = quoteLines.map(l => {
-    const y = quoteY;
-    quoteY += 36;
-    return `<text x="24" y="${y}" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="24" fill="${theme.accent}">${l}</text>`;
+    const y = quoteY; quoteY += 36;
+    return `<text x="24" y="${y}" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="24" fill="${theme.accent}">${l.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}</text>`;
   }).join("\n  ");
-
   let subY = quoteY + 8;
   const subSvg = subLines.map(l => {
-    const y = subY;
-    subY += 18;
-    return `<text x="24" y="${y}" font-family="Arial, sans-serif" font-size="12" fill="#aaaaaa">${l}</text>`;
+    const y = subY; subY += 18;
+    return `<text x="24" y="${y}" font-family="Arial,sans-serif" font-size="12" fill="#aaaaaa">${l.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}</text>`;
   }).join("\n  ");
-
   const missionY = subY + 14;
-  const missionLines = wrapText(theme.mission, 70);
-  const missionSvg = missionLines.map((l, i) => {
-    return `<text x="38" y="${missionY + 16 + i * 16}" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="${theme.accent}">⚡ ${l}</text>`;
-  }).join("\n  ");
-  const pillH = Math.max(32, missionLines.length * 16 + 20);
-
-  const svgHeight = Math.max(H, missionY + pillH + 16);
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${svgHeight}" viewBox="0 0 ${W} ${svgHeight}">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="${theme.g1}"/>
-      <stop offset="100%" stop-color="${theme.g2}"/>
-    </linearGradient>
-    <linearGradient id="border" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="${theme.accent}"/>
-      <stop offset="60%" stop-color="${theme.accent}88"/>
-      <stop offset="100%" stop-color="transparent"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="80%" cy="20%" r="30%">
-      <stop offset="0%" stop-color="${theme.accent}18"/>
-      <stop offset="100%" stop-color="transparent"/>
-    </radialGradient>
-    <clipPath id="rr"><rect width="${W}" height="${svgHeight}" rx="18" ry="18"/></clipPath>
-  </defs>
-
-  <!-- Background -->
-  <rect width="${W}" height="${svgHeight}" rx="18" ry="18" fill="url(#bg)"/>
-  <rect width="${W}" height="${svgHeight}" fill="url(#glow)" clip-path="url(#rr)"/>
-
-  <!-- Top accent bar -->
-  <rect y="0" width="${W}" height="4" fill="url(#border)" clip-path="url(#rr)"/>
-
-  <!-- Day badge -->
-  <rect x="24" y="24" width="96" height="26" rx="6" fill="${theme.accent}22" stroke="${theme.accent}55" stroke-width="1"/>
-  <text x="32" y="41" font-family="Courier New, monospace" font-weight="700" font-size="11" fill="${theme.accent}">DAY ${dayNum} / 210</text>
-
-  <!-- Emoji -->
-  <text x="24" y="112" font-family="Segoe UI Emoji, sans-serif" font-size="42">${theme.emoji}</text>
-
-  <!-- Label -->
-  <text x="24" y="138" font-family="Courier New, monospace" font-weight="700" font-size="10" fill="${theme.accent}" opacity="0.75">TODAY'S IGNITION</text>
-
-  <!-- Quote -->
-  ${quoteSvg}
-
-  <!-- Sub text -->
-  ${subSvg}
-
-  <!-- Mission pill -->
-  <rect x="24" y="${missionY}" width="${W - 48}" height="${pillH}" rx="8" fill="${theme.accent}15" stroke="${theme.accent}40" stroke-width="1"/>
-  ${missionSvg}
-</svg>`;
+  const mLines = wrapText(theme.mission, 70);
+  const missionSvg = mLines.map((l, i) =>
+    `<text x="38" y="${missionY + 16 + i * 16}" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="${theme.accent}">⚡ ${l.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}</text>`
+  ).join("\n  ");
+  const pillH = Math.max(32, mLines.length * 16 + 20);
+  const svgH = Math.max(320, missionY + pillH + 16);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${svgH}" viewBox="0 0 ${W} ${svgH}"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${theme.g1}"/><stop offset="100%" stop-color="${theme.g2}"/></linearGradient><linearGradient id="bd" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="${theme.accent}"/><stop offset="60%" stop-color="${theme.accent}88"/><stop offset="100%" stop-color="transparent"/></linearGradient><clipPath id="rr"><rect width="${W}" height="${svgH}" rx="18" ry="18"/></clipPath></defs><rect width="${W}" height="${svgH}" rx="18" ry="18" fill="url(#bg)"/><rect y="0" width="${W}" height="4" fill="url(#bd)" clip-path="url(#rr)"/><rect x="24" y="24" width="96" height="26" rx="6" fill="${theme.accent}22" stroke="${theme.accent}55" stroke-width="1"/><text x="32" y="41" font-family="Courier New,monospace" font-weight="700" font-size="11" fill="${theme.accent}">DAY ${dayNum} / 210</text><text x="24" y="112" font-size="42">${theme.emoji}</text><text x="24" y="138" font-family="Courier New,monospace" font-weight="700" font-size="10" fill="${theme.accent}" opacity="0.75">TODAY'S IGNITION</text>${quoteSvg}${subSvg}<rect x="24" y="${missionY}" width="${W-48}" height="${pillH}" rx="8" fill="${theme.accent}15" stroke="${theme.accent}40" stroke-width="1"/>${missionSvg}</svg>`;
 }
+
 
 // ─── plain-text fallback ─────────────────────────────────────────────────────
 function buildPlainText(type, body, theme, dayNum, dateStr) {
@@ -161,7 +108,7 @@ function planRow(ico, time, task, color) {
     + "<td style='padding:5px 0;color:#cccccc;font-size:13px;'>" + task + "</td>"
     + "</tr>";
 }
-function chipRow(ico, task) {
+function chipRow(ico, task, color) {
   return "<tr>"
     + "<td style='padding:4px 10px 4px 0;font-size:17px;'>" + ico + "</td>"
     + "<td style='padding:4px 0;color:#cccccc;font-size:13px;'>" + task + "</td>"
@@ -175,7 +122,7 @@ function statCell(val, lbl, color) {
 }
 
 // ─── HTML email ───────────────────────────────────────────────────────────────
-function buildHtml(type, body, theme, dayNum, dateStr, svgCard) {
+function buildHtml(type, body, theme, dayNum, dateStr) {
   const isMorning = type === "morning";
   const { accent, g1 } = theme;
   const streak  = body.streak  || 0;
@@ -214,17 +161,13 @@ function buildHtml(type, body, theme, dayNum, dateStr, svgCard) {
   const nonNeg = isMorning
     ? [["🏋️","Gym 7:50 AM — no excuses"],["📚","Solve 2 LeetCode problems"],["💻","Push 1 commit to GitHub"],["☀️","AM skincare: Cleanser → Niacinamide → SPF 50+"],["🥗","150g+ protein · 3–4L water"]]
     : [["📚","2 LeetCode problems solved"],["💻","GitHub commit pushed tonight"],["🤖","AI project progress made"],["🌿","PM skincare + Minoxidil done"],["😴","In bed by 1:00 AM"]];
-  const nonNegRows = nonNeg.map(([ico,task]) => chipRow(ico, task)).join("");
+  const nonNegRows = nonNeg.map(([ico,task]) => chipRow(ico, task, accent)).join("");
 
   const scoreLine = !isMorning
     ? "<div style='background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-family:monospace;font-size:13px;color:#888;'>"
       + "[<span style='color:" + accent + ";'>" + scoreBar + "</span>]&nbsp;&nbsp;"
       + "<span style='color:" + accent + ";font-weight:700;'>" + scoreWord + "</span></div>"
     : "";
-
-  // SVG card encoded as base64 data URI — works in all major email clients
-  const svgBase64 = Buffer.from(svgCard).toString("base64");
-  const svgDataUri = "data:image/svg+xml;base64," + svgBase64;
 
   return "<!DOCTYPE html><html><head><meta charset='UTF-8'></head>"
     + "<body style='margin:0;padding:0;background:#080808;'>"
@@ -245,7 +188,7 @@ function buildHtml(type, body, theme, dayNum, dateStr, svgCard) {
     + "<tr>" + statsRow + "</tr></table>"
     + scoreLine
 
-    // ★ motivation card — inline SVG as base64 data URI (no CID attachment needed)
+    // ★ motivation image (CID inline — shows without "display images" click)
     + "<div style='margin-bottom:20px;border-radius:14px;overflow:hidden;'>"
     + "<img src='" + svgDataUri + "' width='560' style='display:block;width:100%;max-width:560px;border-radius:14px;border:0;' alt='" + theme.quote + "'>"
     + "</div>"
@@ -297,11 +240,12 @@ export default async function handler(req) {
       ? "🌅 Day " + dayNum + " Morning — " + shortDate + " — Rise & Conquer, Ruturaj!"
       : "📊 Day " + dayNum + " Evening — " + shortDate + " — " + (body.pct||0) + "% — " + (body.pct>=90?"PERFECT 🏆":body.pct>=70?"GREAT ✅":body.pct>=50?"DECENT ⚡":"PUSH ⚠️");
 
-    // Generate SVG motivation card (no native deps!)
-    const svgCard = generateMotivationCardSvg(theme, dayNum);
+    // Generate the motivation card PNG
+    const svgCard = generateCardSvg(theme, dayNum);
+    const svgDataUri = "data:image/svg+xml;base64," + Buffer.from(svgCard).toString("base64");
 
-    const html = buildHtml(type, body, theme, dayNum, dateStr, svgCard);
-    const text = buildPlainText(type, body, theme, dayNum, dateStr);
+    const html      = buildHtml(type, body, theme, dayNum, dateStr);
+    const text      = buildPlainText(type, body, theme, dayNum, dateStr);
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com", port: 587, secure: false,
@@ -313,8 +257,7 @@ export default async function handler(req) {
       to: MY_EMAIL,
       subject,
       text,
-      html,
-      // No attachment needed — SVG is embedded as data URI in the HTML
+      html
     });
 
     console.log("Email sent — Day " + dayNum + " | " + type + " | theme:" + theme.emoji);
