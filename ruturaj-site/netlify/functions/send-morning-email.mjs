@@ -19,7 +19,7 @@ const THEMES = [
 ];
 
 function getDayNumber() {
-  return Math.max(1, Math.round((new Date() - new Date("2026-04-22T00:00:00+05:30")) / 86400000) + 1);
+  return Math.max(1, Math.floor((new Date() - new Date("2026-04-23T00:00:00+05:30")) / 86400000) + 1);
 }
 function getDateStr() {
   return new Date().toLocaleDateString("en-IN", { weekday:"long", day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata" });
@@ -71,6 +71,35 @@ function planRow(ico, time, task, color) {
     + "<td style='padding:5px 0;color:#ccc;font-size:13px;'>" + task + "</td></tr>";
 }
 
+
+function buildMonthProgress(dayNum, accent) {
+  const month1Days = 30;
+  const dayInMonth = Math.min(dayNum, month1Days);
+  const pct = Math.round(dayInMonth / month1Days * 100);
+  const filled = Math.min(20, Math.round(pct / 5));
+  const bar = '█'.repeat(filled) + '░'.repeat(20 - filled);
+  const daysLeft = Math.max(0, month1Days - dayNum);
+  return "<div style='background:#111;border:1px solid #222;border-radius:10px;padding:16px 18px;margin-bottom:20px;'>"
+    + "<p style='margin:0 0 10px;font-size:10px;letter-spacing:3px;color:#444;text-transform:uppercase;'>MONTH 1 BASE — DAY COUNTER</p>"
+    + "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:10px;'>"
+    + "<tr>"
+    + "<td style='padding:8px;text-align:center;background:#1a1a1a;border-radius:8px;border:1px solid #2a2a2a;'>"
+    + "<div style='font-size:22px;font-weight:800;color:" + accent + ";font-family:monospace;'>DAY " + dayNum + "</div>"
+    + "<div style='font-size:9px;color:#666;letter-spacing:2px;text-transform:uppercase;margin-top:3px;'>of 210</div>"
+    + "</td><td width='10'></td>"
+    + "<td style='padding:8px;text-align:center;background:#1a1a1a;border-radius:8px;border:1px solid #2a2a2a;'>"
+    + "<div style='font-size:22px;font-weight:800;color:#4ade80;font-family:monospace;'>" + pct + "%</div>"
+    + "<div style='font-size:9px;color:#666;letter-spacing:2px;text-transform:uppercase;margin-top:3px;'>MONTH 1 DONE</div>"
+    + "</td><td width='10'></td>"
+    + "<td style='padding:8px;text-align:center;background:#1a1a1a;border-radius:8px;border:1px solid #2a2a2a;'>"
+    + "<div style='font-size:22px;font-weight:800;color:#fb923c;font-family:monospace;'>" + daysLeft + "</div>"
+    + "<div style='font-size:9px;color:#666;letter-spacing:2px;text-transform:uppercase;margin-top:3px;'>DAYS LEFT M1</div>"
+    + "</td></tr></table>"
+    + "<div style='font-family:monospace;font-size:12px;color:#555;background:#0a0a0a;border-radius:6px;padding:8px 12px;'>"
+    + "[<span style='color:" + accent + ";'>" + bar + "</span>] " + pct + "%"
+    + "</div></div>";
+}
+
 export default async function handler() {
   const dayNum  = getDayNumber();
   const dateStr = getDateStr();
@@ -103,6 +132,7 @@ export default async function handler() {
     + "<p style='margin:0 0 12px;font-size:10px;letter-spacing:3px;color:#444;text-transform:uppercase;'>TODAY'S BATTLE PLAN</p>"
     + "<table cellpadding='0' cellspacing='0' width='100%'>" + planRows + "</table>"
     + "</div>"
+    + buildMonthProgress(dayNum, accent)
     + "<div style='text-align:center;padding-top:16px;border-top:1px solid #1a1a1a;'>"
     + "<p style='margin:0 0 4px;font-size:12px;color:#444;'>You are 23. Every hour = compound interest on ₹1 CR+ CTC.</p>"
     + "<p style='margin:0;font-size:10px;color:#2a2a2a;letter-spacing:2px;'>RUTURAJ BLUEPRINT · 7 MONTH PLAN · 2026</p>"

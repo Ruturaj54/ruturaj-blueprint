@@ -23,8 +23,8 @@ const THEMES = [
 ];
 
 function getDayNumber() {
-  const start = new Date("2026-04-22T00:00:00+05:30");
-  return Math.max(1, Math.round((new Date() - start) / 86400000) + 1);
+  const start = new Date("2026-04-23T00:00:00+05:30");
+  return Math.max(1, Math.floor((new Date() - start) / 86400000) + 1);
 }
 function getDateStr() {
   return new Date().toLocaleDateString("en-IN", {
