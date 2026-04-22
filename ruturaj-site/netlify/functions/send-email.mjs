@@ -122,7 +122,7 @@ function statCell(val, lbl, color) {
 }
 
 // ─── HTML email ───────────────────────────────────────────────────────────────
-function buildHtml(type, body, theme, dayNum, dateStr) {
+function buildHtml(type, body, theme, dayNum, dateStr, svgDataUri) {
   const isMorning = type === "morning";
   const { accent, g1 } = theme;
   const streak  = body.streak  || 0;
@@ -244,7 +244,7 @@ export default async function handler(req) {
     const svgCard = generateCardSvg(theme, dayNum);
     const svgDataUri = "data:image/svg+xml;base64," + Buffer.from(svgCard).toString("base64");
 
-    const html      = buildHtml(type, body, theme, dayNum, dateStr);
+    const html      = buildHtml(type, body, theme, dayNum, dateStr, svgDataUri);
     const text      = buildPlainText(type, body, theme, dayNum, dateStr);
 
     const transporter = nodemailer.createTransport({

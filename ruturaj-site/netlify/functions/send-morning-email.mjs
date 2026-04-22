@@ -79,7 +79,7 @@ export default async function handler() {
   const { accent } = theme;
   const subject = "🌅 Day " + dayNum + " Morning — " + shortDate + " — Rise & Conquer, Ruturaj!";
   const svgCard = generateCardSvg(theme, dayNum);
-    const svgDataUri = "data:image/svg+xml;base64," + Buffer.from(svgCard).toString("base64");
+  const svgDataUri = "data:image/svg+xml;base64," + Buffer.from(svgCard).toString("base64");
 
   const planRows = planRow("⏰","7:30 AM","Wake up + hydrate + AM skincare",accent)
     + planRow("🏋️","7:50 AM","GYM — cardio + PPL weights",accent)

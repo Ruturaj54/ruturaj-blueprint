@@ -79,7 +79,7 @@ export default async function handler() {
   const { accent } = theme;
   const subject = "⚡ Day " + dayNum + " Evening — " + shortDate + " — Study Block starts NOW, Ruturaj!";
   const svgCard = generateCardSvg(theme, dayNum);
-    const svgDataUri = "data:image/svg+xml;base64," + Buffer.from(svgCard).toString("base64");
+  const svgDataUri = "data:image/svg+xml;base64," + Buffer.from(svgCard).toString("base64");
 
   const planRows = planRow("💡","5:30 PM","STUDY BLOCK 1 — 2 LeetCode, phone away",accent)
     + planRow("🍽️","7:30 PM","Dinner — protein-rich, no sugar",accent)
