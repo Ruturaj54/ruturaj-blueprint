@@ -3,7 +3,10 @@
     "allow": [
       "Bash(node --check netlify/functions/send-morning-email.mjs)",
       "Bash(node --check netlify/functions/send-evening-email.mjs)",
-      "Bash(node --check netlify/functions/send-email.mjs)"
+      "Bash(node --check netlify/functions/send-email.mjs)",
+      "Bash(node --check c:/Users/rutur/ruturaj-blueprint/ruturaj-site/netlify/functions/send-base-progress.mjs)",
+      "Skill(schedule)",
+      "Skill(schedule:*)"
     ]
   }
 }
