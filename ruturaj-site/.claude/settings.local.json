@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check netlify/functions/send-morning-email.mjs)",
+      "Bash(node --check netlify/functions/send-evening-email.mjs)",
+      "Bash(node --check netlify/functions/send-email.mjs)"
+    ]
+  }
+}
