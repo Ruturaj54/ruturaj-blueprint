@@ -264,12 +264,26 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .hist-cats{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
 .hist-cat{font-size:10px;padding:2px 8px;border-radius:4px;font-family:'DM Mono',monospace;}
 .hist-note-preview{font-size:12px;color:var(--muted);margin-top:8px;font-style:italic;padding-top:8px;border-top:1px solid var(--border);}
+/* Verdict (right/wrong) buttons on each day */
+.verdict-row{display:flex;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);align-items:center;}
+.verdict-label{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;font-family:'DM Mono',monospace;margin-right:auto;}
+.verdict-btn{flex:0 0 auto;background:transparent;border:1px solid var(--border2);color:var(--muted);font-size:13px;font-weight:700;padding:6px 14px;border-radius:7px;cursor:pointer;font-family:Inter,sans-serif;transition:all .15s;display:inline-flex;align-items:center;gap:5px;}
+.verdict-btn:hover{border-color:var(--text);color:var(--text);}
+.verdict-btn.right.active{background:rgba(76,255,145,0.12);border-color:var(--green);color:var(--green);}
+.verdict-btn.wrong.active{background:rgba(255,90,90,0.12);border-color:var(--red);color:var(--red);}
+.hist-day.verdict-right{border-left:4px solid var(--green);}
+.hist-day.verdict-wrong{border-left:4px solid var(--red);}
+.verdict-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;margin-top:14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+.verdict-banner.right{background:rgba(76,255,145,0.08);border:1px solid rgba(76,255,145,0.25);color:var(--green);}
+.verdict-banner.wrong{background:rgba(255,90,90,0.08);border:1px solid rgba(255,90,90,0.25);color:var(--red);}
+.verdict-banner.none{background:var(--card2);border:1px dashed var(--border2);color:var(--muted);}
 
 /* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card2);border:1px solid var(--border2);border-radius:10px;padding:12px 20px;font-size:13px;font-weight:600;z-index:999;transition:transform .3s ease;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.4);}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast.green{border-color:rgba(76,255,145,0.3);color:var(--green);}
 .toast.yellow{border-color:rgba(232,255,71,0.3);color:var(--accent);}
+.toast.red{border-color:rgba(255,90,90,0.3);color:var(--red);}
 
 /* FOOTER */
 .footer{border-top:1px solid var(--border);padding:32px;text-align:center;color:var(--muted);font-size:12px;letter-spacing:1px;margin-top:40px;}
@@ -665,6 +679,14 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
         <div class="ds-stat"><div class="ds-stat-val" id="dsGym" style="color:var(--accent2)">0/4</div><div class="ds-stat-label">Fitness</div></div>
         <div class="ds-stat"><div class="ds-stat-val" id="dsStudy" style="color:var(--accent)">0/4</div><div class="ds-stat-label">Study</div></div>
       </div>
+      <div id="dsVerdictBanner" class="verdict-banner none">
+        <span id="dsVerdictText">Day not yet judged</span>
+      </div>
+      <div class="verdict-row" style="border-top:none;padding-top:8px;margin-top:8px;">
+        <span class="verdict-label">Mark this day</span>
+        <button id="dsVerdictRight" class="verdict-btn right" onclick="markVerdict(currentDay,'right')">✓ Right</button>
+        <button id="dsVerdictWrong" class="verdict-btn wrong" onclick="markVerdict(currentDay,'wrong')">✗ Wrong</button>
+      </div>
     </div>
 
     <!-- CHECKLISTS -->
@@ -949,7 +971,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     <!-- ===== BASE MONTH TRACKER ===== -->
     <div style="margin-bottom:32px;">
       <div class="section-title" style="font-size:30px;margin-bottom:6px;"><div class="dot orange"></div> MONTH 0 — PROGRESS TRACKER</div>
-      <div class="section-sub">Tick each task as you complete it. Auto-saved. Start date: 2 May 2026.</div>
+      <div class="section-sub">Tick each task as you complete it. Auto-saved. Start date: 4 May 2026.</div>
 
       <!-- Overall progress bar -->
       <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px;">
@@ -2418,7 +2440,7 @@ function saveStorage(data) {
 let appData = loadStorage();
 if (!appData.days) appData.days = {};
 if (!appData.weights) appData.weights = [];
-appData.startDate = '2026-05-02'; // Journey starts May 2, 2026 (TODAY)
+appData.startDate = '2026-05-04'; // Journey starts May 4, 2026
 
 function todayStr() {
   // Use LOCAL date (IST) so the calendar marks the correct day, not UTC
@@ -2565,6 +2587,30 @@ function renderDaySummary() {
   } else {
     banner.classList.remove('show');
   }
+
+  // Verdict banner + button state
+  const verdict = appData.days[currentDay]?.verdict || null;
+  const vBanner = document.getElementById('dsVerdictBanner');
+  const vText   = document.getElementById('dsVerdictText');
+  const bRight  = document.getElementById('dsVerdictRight');
+  const bWrong  = document.getElementById('dsVerdictWrong');
+  if (vBanner && vText && bRight && bWrong) {
+    vBanner.classList.remove('right','wrong','none');
+    bRight.classList.remove('active');
+    bWrong.classList.remove('active');
+    if (verdict === 'right') {
+      vBanner.classList.add('right');
+      vText.textContent = '✓ DAY MARKED RIGHT — KEEP STACKING';
+      bRight.classList.add('active');
+    } else if (verdict === 'wrong') {
+      vBanner.classList.add('wrong');
+      vText.textContent = '✗ DAY MARKED WRONG — FIX IT TOMORROW';
+      bWrong.classList.add('active');
+    } else {
+      vBanner.classList.add('none');
+      vText.textContent = 'Day not yet judged — tap ✓ or ✗ below';
+    }
+  }
 }
 
 // ===================== NOTES =====================
@@ -2692,11 +2738,11 @@ function renderHistory() {
   grid.innerHTML = days.map(d => {
     const data = appData.days[d];
     const tasks = data?.tasks || {};
+    const verdict = data?.verdict || null;
     const count = Object.keys(tasks).length;
     const pct = Math.round(count / DAILY_TASKS.length * 100);
     const scoreClass = pct >= 90 ? 'perfect' : pct >= 65 ? 'good' : pct >= 40 ? 'ok' : 'low';
     const barColor = pct >= 90 ? 'var(--green)' : pct >= 65 ? 'var(--accent)' : pct >= 40 ? 'var(--accent2)' : 'var(--red)';
-    // Category breakdown
     const cats = ['fit','food','study','skin','mind'];
     const catHtml = cats.map(cat => {
       const catTasks = DAILY_TASKS.filter(t => t.cat === cat);
@@ -2704,17 +2750,40 @@ function renderHistory() {
       return catDone > 0 ? `<span class="hist-cat ${CAT_TAG_CLASS[cat]}">${CAT_ICONS[cat]} ${catDone}/${catTasks.length}</span>` : '';
     }).join('');
     const note = data?.notes ? `<div class="hist-note-preview">📝 ${data.notes.slice(0,80)}${data.notes.length > 80 ? '...' : ''}</div>` : '';
+    const verdictClass = verdict === 'right' ? 'verdict-right' : verdict === 'wrong' ? 'verdict-wrong' : '';
+    const rightActive = verdict === 'right' ? 'active' : '';
+    const wrongActive = verdict === 'wrong' ? 'active' : '';
     return `
-    <div class="hist-day" onclick="jumpToDay('${d}')">
-      <div class="hist-day-header">
-        <div class="hist-day-date">${formatDate(d)}</div>
-        <div class="hist-day-score ${scoreClass}">${pct}%</div>
+    <div class="hist-day ${verdictClass}">
+      <div onclick="jumpToDay('${d}')" style="cursor:pointer;">
+        <div class="hist-day-header">
+          <div class="hist-day-date">${formatDate(d)}</div>
+          <div class="hist-day-score ${scoreClass}">${pct}%</div>
+        </div>
+        <div class="hist-bar"><div class="hist-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
+        <div class="hist-cats">${catHtml}</div>
+        ${note}
       </div>
-      <div class="hist-bar"><div class="hist-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
-      <div class="hist-cats">${catHtml}</div>
-      ${note}
+      <div class="verdict-row">
+        <span class="verdict-label">Day verdict</span>
+        <button class="verdict-btn right ${rightActive}" onclick="event.stopPropagation();markVerdict('${d}','right')">✓ Right</button>
+        <button class="verdict-btn wrong ${wrongActive}" onclick="event.stopPropagation();markVerdict('${d}','wrong')">✗ Wrong</button>
+      </div>
     </div>`;
   }).join('');
+}
+
+function markVerdict(dateStr, verdict) {
+  if (!appData.days[dateStr]) appData.days[dateStr] = { tasks:{}, notes:'' };
+  if (appData.days[dateStr].verdict === verdict) {
+    delete appData.days[dateStr].verdict;
+  } else {
+    appData.days[dateStr].verdict = verdict;
+  }
+  saveStorage(appData);
+  if (document.getElementById('page-history').classList.contains('active')) renderHistory();
+  if (dateStr === currentDay) renderDaySummary();
+  showToast(verdict === 'right' ? '✓ Marked RIGHT' : '✗ Marked WRONG', verdict === 'right' ? 'green' : 'red');
 }
 
 function jumpToDay(dateStr) {
@@ -2745,7 +2814,7 @@ function exportData() {
 function confirmReset() {
   if (confirm('Reset ALL progress data? This cannot be undone.')) {
     localStorage.removeItem(STORAGE_KEY);
-    appData = { days:{}, weights:[], startDate: '2026-05-02' };
+    appData = { days:{}, weights:[], startDate: '2026-05-04' };
     updateDashboard();
     renderChecklist();
     renderDaySummary();
