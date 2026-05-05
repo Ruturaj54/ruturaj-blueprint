@@ -971,7 +971,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     <!-- ===== BASE MONTH TRACKER ===== -->
     <div style="margin-bottom:32px;">
       <div class="section-title" style="font-size:30px;margin-bottom:6px;"><div class="dot orange"></div> MONTH 0 — PROGRESS TRACKER</div>
-      <div class="section-sub">Tick each task as you complete it. Auto-saved. Start date: 4 May 2026.</div>
+      <div class="section-sub">Tick each task as you complete it. Auto-saved. Start date: 7 May 2026.</div>
 
       <!-- Overall progress bar -->
       <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px;">
@@ -2440,7 +2440,7 @@ function saveStorage(data) {
 let appData = loadStorage();
 if (!appData.days) appData.days = {};
 if (!appData.weights) appData.weights = [];
-appData.startDate = '2026-05-04'; // Journey starts May 4, 2026
+appData.startDate = '2026-05-07'; // Journey starts May 7, 2026 (Day 1)
 
 function todayStr() {
   // Use LOCAL date (IST) so the calendar marks the correct day, not UTC
@@ -2814,7 +2814,7 @@ function exportData() {
 function confirmReset() {
   if (confirm('Reset ALL progress data? This cannot be undone.')) {
     localStorage.removeItem(STORAGE_KEY);
-    appData = { days:{}, weights:[], startDate: '2026-05-04' };
+    appData = { days:{}, weights:[], startDate: '2026-05-07' };
     updateDashboard();
     renderChecklist();
     renderDaySummary();
