@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Ruturaj — 7 Month Blueprint (MAANG + AI)</title>
+<title>Ruturaj — God-Mode Engineer Blueprint</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://smtpjs.com/v3/smtp.js"></script>
 <style>
@@ -584,6 +584,103 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .skin-task-check::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#000;font-weight:700;opacity:0;transition:opacity .15s;}
 .skin-task-text{font-size:14px;flex:1;line-height:1.4;}
 .skin-task-cat{font-size:9px;padding:2px 6px;border-radius:4px;font-family:'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;flex-shrink:0;background:rgba(255,159,243,0.08);color:#ff9ff3;}
+
+/* ====== UNIFIED MASTERY / BLUEPRINT PAGE ====== */
+.mst-hero{background:linear-gradient(135deg,rgba(232,255,71,0.07),rgba(71,200,255,0.06));border:1px solid rgba(232,255,71,0.18);border-radius:18px;padding:30px 26px;margin-bottom:24px;position:relative;overflow:hidden;}
+.mst-hero::before{content:'';position:absolute;top:-60px;right:-40px;width:260px;height:260px;background:radial-gradient(circle,rgba(232,255,71,0.10),transparent 70%);pointer-events:none;}
+.mst-hero::after{content:'';position:absolute;bottom:-80px;left:-40px;width:260px;height:260px;background:radial-gradient(circle,rgba(71,200,255,0.08),transparent 70%);pointer-events:none;}
+.mst-hero-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:8px;}
+.mst-hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,8.5vw,68px);letter-spacing:2px;line-height:1;margin-bottom:12px;}
+.mst-hero-title span{color:var(--accent);}
+.mst-hero-title em{color:var(--accent3);font-style:normal;}
+.mst-hero-sub{font-size:13px;color:var(--muted);max-width:620px;line-height:1.7;}
+.mst-domains{display:flex;gap:6px;flex-wrap:wrap;margin-top:18px;}
+.mst-chip{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;padding:5px 11px;border-radius:20px;text-transform:uppercase;font-weight:700;border:1px solid;}
+
+/* overall progress dashboard */
+.mst-dash{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:22px;position:relative;overflow:hidden;}
+.mst-dash::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent3),var(--green));}
+.mst-dash-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
+.mst-dash-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;}
+.mst-overall-num{font-family:'Bebas Neue',sans-serif;font-size:46px;color:var(--accent);line-height:1;}
+.mst-overall-track{height:12px;background:var(--border2);border-radius:6px;overflow:hidden;margin-bottom:18px;}
+.mst-overall-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--green));transition:width .6s ease;}
+.mst-dom-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.mst-dom{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:11px 13px;}
+.mst-dom-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+.mst-dom-name{font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;}
+.mst-dom-pct{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.mst-dom-track{height:6px;background:var(--border2);border-radius:3px;overflow:hidden;}
+.mst-dom-fill{height:100%;border-radius:3px;transition:width .5s ease;}
+
+/* phase accordion */
+.mst-phase{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px;transition:border-color .2s;}
+.mst-phase.open{border-color:var(--border2);}
+.mst-phase-head{display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;user-select:none;}
+.mst-phase-head:hover{background:rgba(255,255,255,0.02);}
+.mst-phase-badge{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;padding:5px 10px;border-radius:7px;color:#000;flex-shrink:0;min-width:64px;text-align:center;}
+.mst-phase-meta{flex:1;min-width:0;}
+.mst-phase-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;line-height:1.1;}
+.mst-phase-focus{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px;margin-top:2px;}
+.mst-phase-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.mst-phase-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);}
+.mst-phase-minibar{width:70px;height:5px;background:var(--border2);border-radius:3px;overflow:hidden;}
+.mst-phase-minifill{height:100%;background:var(--green);border-radius:3px;transition:width .4s;}
+.mst-phase-chev{font-size:13px;color:var(--muted);transition:transform .2s;}
+.mst-phase.open .mst-phase-chev{transform:rotate(90deg);}
+.mst-phase-body{display:none;padding:0 18px 18px;}
+.mst-phase.open .mst-phase-body{display:block;}
+.mst-phase-desc{font-size:13px;color:var(--muted);line-height:1.6;background:rgba(255,255,255,0.02);border-left:2px solid var(--border2);padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:16px;}
+
+/* track within phase */
+.mst-track{margin-bottom:14px;border:1px solid var(--border);border-radius:11px;overflow:hidden;}
+.mst-track-head{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--card2);border-bottom:1px solid var(--border);}
+.mst-track-ico{font-size:15px;}
+.mst-track-name{font-weight:700;font-size:12px;letter-spacing:.5px;}
+.mst-track-tag{margin-left:auto;font-family:'DM Mono',monospace;font-size:9px;padding:2px 7px;border-radius:4px;letter-spacing:1px;text-transform:uppercase;}
+.mst-item{display:flex;align-items:flex-start;gap:12px;padding:11px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.03);transition:background .1s;}
+.mst-item:last-child{border-bottom:none;}
+.mst-item:hover{background:rgba(255,255,255,0.02);}
+.mst-item.checked .mst-text{text-decoration:line-through;color:var(--muted);}
+.mst-item.checked .mst-box{background:var(--green);border-color:var(--green);}
+.mst-item.checked .mst-box::after{opacity:1;}
+.mst-box{width:21px;height:21px;border-radius:6px;border:1.5px solid var(--border2);background:var(--card2);flex-shrink:0;position:relative;transition:all .15s;margin-top:1px;}
+.mst-box::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#000;font-weight:700;opacity:0;transition:opacity .15s;}
+.mst-text{font-size:13px;flex:1;line-height:1.45;}
+.mst-text b{color:var(--text);font-weight:700;}
+
+/* project + milestone callouts */
+.mst-project{background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(255,107,53,0.02));border:1px solid rgba(255,107,53,0.2);border-radius:11px;padding:14px 16px;margin-bottom:10px;}
+.mst-project-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--accent2);text-transform:uppercase;margin-bottom:5px;}
+.mst-project-title{font-weight:700;font-size:14px;margin-bottom:5px;}
+.mst-project-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+.mst-milestone{display:flex;align-items:center;gap:9px;background:var(--green-dim);border:1px solid rgba(76,255,145,0.2);border-radius:10px;padding:12px 15px;font-size:12px;color:var(--muted);line-height:1.5;}
+.mst-milestone b{color:var(--green);}
+.mst-milestone .mi-ico{font-size:18px;flex-shrink:0;}
+
+/* note box */
+.mst-note{background:var(--accent-dim);border:1px solid rgba(232,255,71,0.15);border-radius:10px;padding:13px 16px;font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:18px;}
+.mst-note b{color:var(--accent);}
+.mst-bigbtn-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+
+/* resources + proof blocks inside a phase */
+.mst-block{margin-top:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:rgba(71,200,255,0.02);}
+.mst-block.proof{background:rgba(255,107,53,0.03);}
+.mst-block-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 13px;font-weight:700;font-size:12px;letter-spacing:.3px;border-bottom:1px solid var(--border);}
+.mst-block-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:400;}
+.mst-res{display:block;text-decoration:none;padding:9px 13px;border-bottom:1px solid rgba(255,255,255,0.03);transition:background .1s;}
+.mst-res:last-child{border-bottom:none;}
+.mst-res:hover{background:rgba(71,200,255,0.05);}
+.mst-res-name{display:block;color:var(--accent3);font-weight:700;font-size:12px;}
+.mst-res-name::after{content:' ↗';font-size:10px;opacity:.6;}
+.mst-res-why{display:block;color:var(--muted);font-size:11px;line-height:1.5;margin-top:2px;}
+.mst-proof-item{display:flex;align-items:flex-start;gap:9px;padding:9px 13px;font-size:12px;color:var(--muted);line-height:1.55;border-bottom:1px solid rgba(255,255,255,0.03);}
+.mst-proof-item:last-child{border-bottom:none;}
+.mst-proof-item b{color:var(--text);}
+.mst-proof-ico{flex-shrink:0;}
+.mst-callout{background:linear-gradient(135deg,rgba(255,71,87,0.07),rgba(232,255,71,0.04));border:1px solid rgba(255,71,87,0.2);border-radius:12px;padding:14px 16px;margin-bottom:14px;font-size:12.5px;line-height:1.65;color:var(--muted);}
+.mst-callout b{color:var(--text);}
+.mst-callout .ch{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);font-weight:700;display:block;margin-bottom:6px;}
 </style>
 </head>
 <body>
@@ -593,12 +690,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <div class="nav-logo">RUTURAJ</div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showPage('today')">Today</button>
+    <button class="nav-tab" onclick="showPage('mastery')" style="color:var(--accent);">🚀 Blueprint</button>
     <button class="nav-tab" onclick="showPage('base')" style="color:var(--accent2);">🏗️ Base</button>
     <button class="nav-tab" onclick="showPage('plan')">Plan</button>
     <button class="nav-tab" onclick="showPage('gym')">Gym</button>
     <button class="nav-tab" onclick="showPage('history')">Log</button>
-    <button class="nav-tab" onclick="showPage('maangai')" style="color:var(--accent2);">🎯 MAANG+AI</button>
-    <button class="nav-tab" onclick="showPage('skin')" style="color:#ff9ff3;">✨ SKIN</button>
+    <button class="nav-tab" onclick="showPage('maangai')" style="color:var(--accent3);">📊 Stats</button>
+    <button class="nav-tab" onclick="showPage('skin')" style="color:#ff9ff3;">✨ Skin</button>
   </div>
   <div class="nav-date" id="navDate"></div>
 </nav>
@@ -606,12 +704,71 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- ========== PAGE: MASTERY / BLUEPRINT (UNIFIED PLAN) ========== -->
+<div class="page" id="page-mastery">
+  <div class="container">
+
+    <!-- HERO -->
+    <div class="mst-hero" style="margin-top:24px;">
+      <div class="mst-hero-label">⚡ One Plan · Zero Scatter · ~44 Weeks</div>
+      <div class="mst-hero-title">THE <span>GOD-MODE</span><br>ENGINEER <em>BLUEPRINT</em></div>
+      <div class="mst-hero-sub">Backend · Frontend · DevOps/Cloud · AI/RAG · DSA · System Design — woven into <b style="color:var(--text)">one sequenced journey</b>. DSA runs every day. AI threads from week one and goes production-grade. Projects compound into a capstone that uses <b style="color:var(--text)">all of it</b>. Then you flip to interview mode and apply.</div>
+      <div class="mst-domains">
+        <span class="mst-chip" style="background:rgba(232,255,71,0.1);color:var(--accent);border-color:rgba(232,255,71,0.25);">DSA</span>
+        <span class="mst-chip" style="background:rgba(255,107,53,0.1);color:var(--accent2);border-color:rgba(255,107,53,0.25);">Java + Spring</span>
+        <span class="mst-chip" style="background:rgba(71,200,255,0.1);color:var(--accent3);border-color:rgba(71,200,255,0.25);">React + TS</span>
+        <span class="mst-chip" style="background:rgba(76,255,145,0.1);color:var(--green);border-color:rgba(76,255,145,0.25);">DevOps + Cloud</span>
+        <span class="mst-chip" style="background:rgba(180,127,255,0.1);color:#b47fff;border-color:rgba(180,127,255,0.25);">Django</span>
+        <span class="mst-chip" style="background:rgba(255,159,243,0.1);color:#ff9ff3;border-color:rgba(255,159,243,0.25);">AI / RAG</span>
+        <span class="mst-chip" style="background:rgba(255,71,87,0.1);color:var(--red);border-color:rgba(255,71,87,0.25);">System Design</span>
+      </div>
+    </div>
+
+    <!-- OVERALL PROGRESS DASHBOARD -->
+    <div class="mst-dash">
+      <div class="mst-dash-top">
+        <div class="mst-dash-title">🎯 MASTERY PROGRESS</div>
+        <div style="text-align:right;">
+          <div class="mst-overall-num" id="mst-overall-pct">0%</div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;" id="mst-overall-count">0 / 0 topics</div>
+        </div>
+      </div>
+      <div class="mst-overall-track"><div class="mst-overall-fill" id="mst-overall-fill" style="width:0%;"></div></div>
+      <div class="mst-dom-grid" id="mst-dom-grid"><!-- per-domain bars rendered by JS --></div>
+    </div>
+
+    <div class="mst-note">
+      <b>How to use this:</b> Tick a topic the moment you truly understand it (can explain + build with it). Phases are sequenced top-to-bottom but <b>DSA</b> and the light <b>AI thread</b> run in parallel every day — don't wait. Each phase ends in a <b>project</b> you ship to GitHub, plus <b>📚 proof-grade resources</b> (web-verified) and <b>🎖️ proof-of-work</b> deliverables. Log your daily reps on the <b>📊 Stats</b> tab — that's what your daily emails read.
+    </div>
+
+    <div class="mst-callout">
+      <span class="ch">⚠️ Read once — the honest method (verified by audit)</span>
+      <b>DSA is not a phase — it's a daily 30–45 min habit for all 44 weeks</b> (NeetCode 150 is the spine; track "re-solve cold under 20 min", not raw solve count). The realistic target across all six domains is <b>strong, production-capable & interview-ready — not "expert"</b> in 44 weeks. The skill-build is ~44 weeks <b>plus an 8–12 week interview grind</b> interleaved into the back half — true end-to-end ≈ <b>52–56 weeks</b>. Build on the <b>2026 stack</b> (Java 25 / Spring Boot 4.1, React 19 + Vite, Gateway API, OpenTofu, LangGraph 1.0) — interviewers date you on stale versions. Take a <b>deload week every ~6 weeks</b>: the 5 PM→2 AM grind will burn you out otherwise, and burnout costs more time than it saves.
+    </div>
+
+    <div class="mst-bigbtn-row">
+      <button class="btn secondary" onclick="showPage('maangai')" style="font-size:12px;">📊 Open Stats / Rep Trackers</button>
+      <button class="btn secondary" onclick="expandAllPhases(true)" style="font-size:12px;">⊕ Expand all</button>
+      <button class="btn secondary" onclick="expandAllPhases(false)" style="font-size:12px;">⊖ Collapse all</button>
+    </div>
+
+    <!-- PHASE TIMELINE (rendered by JS) -->
+    <div class="section" style="padding-top:12px;">
+      <div class="section-title"><span class="dot"></span>THE 6-PHASE PATH</div>
+      <div class="section-sub">Reset to Day 1 · Foundations → Backend → Frontend → DevOps/Cloud → AI/RAG → System Design + Interviews</div>
+    </div>
+    <div id="mst-timeline"><!-- phases rendered by JS --></div>
+
+    <div class="footer">Built for <strong>Ruturaj</strong> · One Unified Blueprint · Full-Stack + DevOps + AI + System Design · 2026</div>
+  </div>
+</div>
+
 <!-- ========== PAGE: TODAY ========== -->
 <div class="page active" id="page-today">
   <div class="hero">
-    <div class="hero-label">6-Month Transformation · 2026</div>
-    <h1>6 MONTHS TO<br><span>ELITE</span></h1>
-    <p class="hero-sub">Track every day. Every check matters.</p>
+    <div class="hero-label">44-Week Blueprint · Reset to Day 1 · 2026</div>
+    <h1>BECOME<br><span>UNSTOPPABLE</span></h1>
+    <p class="hero-sub">Full-stack · DevOps · AI · System Design. One plan. Track every day — every check compounds.</p>
     <div class="hero-stats">
       <div class="hstat"><div class="hstat-val" id="heroStreak">0</div><div class="hstat-label">Day Streak</div></div>
       <div class="hstat"><div class="hstat-val" id="heroTotal">0</div><div class="hstat-label">Days Logged</div></div>
@@ -1836,9 +1993,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     <div class="section" style="padding-top:36px;">
       <div style="background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(71,200,255,0.06));border:1px solid rgba(255,107,53,0.2);border-radius:16px;padding:28px 24px;margin-bottom:28px;position:relative;overflow:hidden;">
         <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,107,53,0.08),transparent 70%);pointer-events:none;"></div>
-        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--accent2);text-transform:uppercase;margin-bottom:8px;">🎯 7-Month Blueprint · MAANG + AI Engineer · 2026</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,8vw,60px);letter-spacing:2px;line-height:1.1;margin-bottom:10px;">CRACK <span style="color:var(--accent2);">MAANG</span> + BECOME AN <span style="color:var(--accent3);">AI ENGINEER</span></div>
-        <div style="font-size:13px;color:var(--muted);max-width:600px;line-height:1.7;margin-bottom:16px;">You're a rare triple-threat: SWE + AI/ML + DevOps + Telecom. This unified plan turns your unique combination into offers. Track LeetCode, mocks, AI projects, and MAANG readiness — all in one place.</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--accent2);text-transform:uppercase;margin-bottom:8px;">📊 Rep Trackers · Readiness · 2026</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,8vw,60px);letter-spacing:2px;line-height:1.1;margin-bottom:10px;">YOUR <span style="color:var(--accent2);">NUMBERS</span> &amp; <span style="color:var(--accent3);">READINESS</span></div>
+        <div style="font-size:13px;color:var(--muted);max-width:600px;line-height:1.7;margin-bottom:16px;">Log your daily reps here — LeetCode counts, mock interviews, AI projects — and watch your interview readiness climb. The full sequenced curriculum lives in the <b style="color:var(--accent);">🚀 Blueprint</b> tab. These numbers feed your daily emails.</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;padding:5px 12px;border-radius:20px;background:rgba(66,133,244,0.12);color:#4285f4;border:1px solid rgba(66,133,244,0.2);">Google L4/L5</span>
           <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;padding:5px 12px;border-radius:20px;background:rgba(29,161,242,0.12);color:#29b6f6;border:1px solid rgba(29,161,242,0.2);">Meta E4/E5</span>
@@ -1852,11 +2009,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     <!-- SUB-TABS -->
     <div id="maangai-tabs" style="display:flex;gap:4px;margin-bottom:24px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;">
       <button id="mait-readiness" class="nav-tab active" onclick="showMATab('readiness')" style="color:var(--accent2);background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.2);">📊 Readiness</button>
-      <button id="mait-roadmap" class="nav-tab" onclick="showMATab('roadmap')">🗺️ MAANG Roadmap</button>
-      <button id="mait-airoad" class="nav-tab" onclick="showMATab('airoad')" style="">🤖 AI Roadmap</button>
-      <button id="mait-landing" class="nav-tab" onclick="showMATab('landing')">🎯 Landing Chances</button>
-      <button id="mait-weekly" class="nav-tab" onclick="showMATab('weekly')">📅 Weekly Schedule</button>
+      <button id="mait-landing" class="nav-tab" onclick="showMATab('landing')">🎯 Target Roles</button>
       <button id="mait-resources" class="nav-tab" onclick="showMATab('resources')">📚 Resources</button>
+      <button class="nav-tab" onclick="showPage('mastery')" style="color:var(--accent);">🚀 Full Plan →</button>
     </div>
 
     <!-- ===== PANEL: READINESS (Combined tracker) ===== -->
@@ -2405,13 +2560,13 @@ const DAILY_TASKS = [
   { id:'protein', label:'Hit 150g+ protein today', cat:'food', tag:'Nutrition' },
   { id:'water', label:'Drank 3–4L water', cat:'food', tag:'Nutrition' },
   { id:'preworkout', label:'Pre-workout snack eaten', cat:'food', tag:'Nutrition' },
-  // STUDY
-  { id:'leetcode', label:'Solved 1 LeetCode problem', cat:'study', tag:'Study' },
-  { id:'study2hr', label:'Block 1 (8:00 PM, 2.5 hrs) — deep work done', cat:'study', tag:'Study' },
-  { id:'study2', label:'Block 2 (10:30 PM, 2 hrs) — AI/project work done', cat:'study', tag:'Study' },
-  { id:'office5to7', label:'Office Extended (5–7 PM) — lectures + work used', cat:'study', tag:'Office+' },
-  { id:'lightread', label:'Daily review (1 AM) — notes + journal', cat:'study', tag:'Study' },
-  { id:'github', label:'Pushed code to GitHub', cat:'study', tag:'Study' },
+  // STUDY (aligned to the Blueprint)
+  { id:'leetcode', label:'DSA: 2–3 problems (pattern-based)', cat:'study', tag:'DSA' },
+  { id:'study2hr', label:'Block 1 (6:30–9 PM) — core build (current phase skill)', cat:'study', tag:'Build' },
+  { id:'study2', label:'Block 2 (9:30 PM–1 AM) — project / deep work', cat:'study', tag:'Build' },
+  { id:'office5to7', label:'AI / System-Design thread (30–45 min)', cat:'study', tag:'AI/SD' },
+  { id:'lightread', label:'Daily review (1 AM) — notes + plan tomorrow', cat:'study', tag:'Study' },
+  { id:'github', label:'Pushed a commit to GitHub', cat:'study', tag:'GitHub' },
   // SKIN / CARE
   { id:'amskin', label:'AM: Cleanser → Niacinamide → SPF 50+', cat:'skin', tag:'Skin AM' },
   { id:'pmskin', label:'PM: Double cleanse → AHA/BHA or Retinol/Kojic', cat:'skin', tag:'Skin PM' },
@@ -2421,7 +2576,7 @@ const DAILY_TASKS = [
   { id:'sleep8', label:'Slept 8 hours', cat:'mind', tag:'Mind' },
   { id:'nosugar', label:'No sugar / junk food', cat:'food', tag:'Nutrition' },
   { id:'sunlight', label:'Morning sunlight (5 min)', cat:'mind', tag:'Mind' },
-  { id:'podcast', label:'Listened to learning podcast', cat:'study', tag:'Study' },
+  { id:'podcast', label:'Tech podcast / lecture (commute or chores)', cat:'study', tag:'Study' },
   { id:'noscreen', label:'Screens off by 1:30 AM (sleep on time)', cat:'mind', tag:'Mind' },
   { id:'supps', label:'Took supplements (creatine/D3/zinc)', cat:'food', tag:'Nutrition' },
 ];
@@ -2440,7 +2595,7 @@ function saveStorage(data) {
 let appData = loadStorage();
 if (!appData.days) appData.days = {};
 if (!appData.weights) appData.weights = [];
-appData.startDate = '2026-05-07'; // Journey starts May 7, 2026 (Day 1)
+appData.startDate = '2026-06-19'; // RESET — journey restarts June 19, 2026 (Day 1)
 
 function todayStr() {
   // Use LOCAL date (IST) so the calendar marks the correct day, not UTC
@@ -2465,6 +2620,7 @@ function showPage(name) {
   if (name === 'history') renderHistory();
   if (name === 'maangai') initMAAngAI();
   if (name === 'base') renderBaseTracker();
+  if (name === 'mastery' && !window.__mstReady) renderMastery();
   window.scrollTo(0,0);
 }
 
@@ -4616,5 +4772,481 @@ setTimeout(showMotivation, 800);
 </script>
 
 <!-- ===== SYNC BUTTONS IN HERO ===== -->
+
+<!-- ===================== UNIFIED MASTERY / BLUEPRINT ENGINE ===================== -->
+<script>
+const MASTERY_KEY = 'ruturaj_mastery_v1';
+const MST_DOMAINS = {
+  dsa:     {name:'DSA',            ico:'⚡',  color:'#e8ff47'},
+  backend: {name:'Backend',        ico:'☕',  color:'#ff6b35'},
+  frontend:{name:'Frontend',       ico:'⚛️', color:'#47c8ff'},
+  devops:  {name:'DevOps / Cloud', ico:'🐳', color:'#4cff91'},
+  ai:      {name:'AI / RAG',       ico:'🤖', color:'#ff9ff3'},
+  sysdes:  {name:'System Design',  ico:'🏛️', color:'#ff4757'},
+};
+const MST_DOM_ORDER = ['dsa','backend','frontend','devops','ai','sysdes'];
+
+const MASTERY_PHASES = [
+  {
+    id:'p0', badge:'P0', badgeColor:'#b47fff', title:'Foundation & Reload', weeks:'Weeks 1–4 · ~30 days',
+    focus:'LOCK LANGUAGE BASICS · IGNITE DSA', open:true,
+    desc:"You're not starting from zero — you're reloading. Lock Java + JS/TS syntax, sharpen Python & SQL, and start the DSA habit that never stops. Set up a clean dev environment and GitHub. Everything later stands on this month.",
+    tracks:[
+      {label:'Java Core', ico:'☕', dom:'backend', items:[
+        {id:'p0-java-1', t:"Install <b>JDK 21 + IntelliJ IDEA</b>; compile & run your first program"},
+        {id:'p0-java-2', t:"Syntax — variables, types, control flow, methods, arrays"},
+        {id:'p0-java-3', t:"OOP — classes, objects, constructors, encapsulation"},
+        {id:'p0-java-4', t:"OOP — inheritance, interfaces, abstract classes, <b>polymorphism</b>"},
+        {id:'p0-java-5', t:"<b>Generics</b> + Collections framework (List, Set, Map, Queue)"},
+        {id:'p0-java-6', t:"Exceptions, try-with-resources, custom exceptions"},
+        {id:'p0-java-7', t:"<b>Lambdas + Streams API</b> (map / filter / reduce / collect)"},
+        {id:'p0-java-8', t:"Records, enums, Optional, equals/hashCode, immutability"},
+        {id:'p0-java-9', t:"Basic JVM model — heap vs stack, garbage collection idea"},
+      ]},
+      {label:'JavaScript + TypeScript', ico:'⚛️', dom:'frontend', items:[
+        {id:'p0-js-1', t:"JS essentials — let/const, scope, <b>closures</b>, this"},
+        {id:'p0-js-2', t:"ES6+ — arrow fns, destructuring, spread, template literals, modules"},
+        {id:'p0-js-3', t:"<b>Async JS</b> — promises, async/await, fetch"},
+        {id:'p0-js-4', t:"Array/object methods — map, filter, reduce, find, sort"},
+        {id:'p0-js-5', t:"<b>TypeScript</b> — types, interfaces, unions, generics, tsconfig"},
+        {id:'p0-js-6', t:"DOM + events basics (just enough for React later)"},
+      ]},
+      {label:'Python + SQL', ico:'🐍', dom:'backend', items:[
+        {id:'p0-py-1', t:"Python clean-up — comprehensions, generators, decorators, typing"},
+        {id:'p0-py-2', t:"venv / pip / poetry, project structure, <b>pytest</b> basics"},
+        {id:'p0-sql-1', t:"SQL — SELECT, WHERE, <b>JOINs</b>, GROUP BY, aggregates"},
+        {id:'p0-sql-2', t:"SQL — subqueries, indexes intro, basic schema design"},
+      ]},
+      {label:'DSA Ignite — daily, never pauses', ico:'⚡', dom:'dsa', items:[
+        {id:'p0-dsa-1', t:"<b>Big-O</b> + amortized & space/recursion-stack analysis"},
+        {id:'p0-dsa-2', t:"Arrays & strings — two pointers, prefix sums"},
+        {id:'p0-dsa-3', t:"<b>Sliding window</b> pattern"},
+        {id:'p0-dsa-8', t:"<b>Binary search</b> — incl. binary-search-on-the-answer (top pattern, was missing)"},
+        {id:'p0-dsa-4', t:"Hashing — HashMap/HashSet patterns (freq, dedupe, lookup)"},
+        {id:'p0-dsa-5', t:"Stacks & queues (monotonic stack intro)"},
+        {id:'p0-dsa-6', t:"Recursion → <b>backtracking</b> (subsets/permutations) right after it"},
+        {id:'p0-dsa-9', t:"<b>Bit manipulation</b> — XOR tricks, n&(n-1), subset bitmask (was missing)"},
+        {id:'p0-dsa-7', t:"Follow the <b>NeetCode 150</b> order; track re-solve-cold-under-20-min, not raw count"},
+      ]},
+      {label:'Toolbox & Setup', ico:'🛠️', dom:'devops', items:[
+        {id:'p0-tool-1', t:"<b>Git & GitHub</b> — branches, commits, PRs, merge vs rebase, .gitignore"},
+        {id:'p0-tool-2', t:"Polish GitHub profile + write a clean README for every repo"},
+        {id:'p0-tool-3', t:"Linux/CLI refresh — pipes, grep/sed/awk, ssh, permissions (you're strong here)"},
+        {id:'p0-tool-4', t:"Conventional commits + a <b>daily commit habit</b>"},
+      ]},
+    ],
+    resources:[
+      {name:"NeetCode 150 + Roadmap", url:"https://neetcode.io/roadmap", why:"Your DSA daily spine for the WHOLE 44 weeks. Dependency-graph ordering + a free video per problem; already includes Binary Search & Bit Manipulation."},
+      {name:"Striver A2Z DSA Sheet (takeUforward)", url:"https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/", why:"474 free problems — use selectively for extra reps on weak topics (heavy overlap with NeetCode, don't do all). Strong on Indian-product-company style."},
+      {name:"TypeScript Handbook + Total TypeScript (Matt Pocock)", url:"https://www.typescriptlang.org/docs/handbook/intro.html", why:"Official TS reference + the best free TS tutorials. Learn TS early — it sharpens API-contract thinking the backend phase needs too."},
+    ],
+    proof:[
+      "Public GitHub repo of NeetCode-150 solutions — each file headed with the pattern, time/space complexity, and a one-line 'why this approach'. A green daily commit graph is recruiter-legible proof of consistency.",
+      "A from-scratch data-structures library in Java (union-find with path compression, a heap, a trie) with unit tests — proves you can BUILD the structures, not just import them.",
+      "A tracked retention metric, not a solve count: 'solve any Easy / early-Medium cold in under 20 minutes'.",
+    ],
+    project:{title:"Java CLI Toolkit", desc:"A small command-line app (expense tracker / text-stats / todo) in Java with clean OOP, unit tests, and a polished README on GitHub. Proves you can write real, structured code."},
+    milestone:"Write clean Java & TypeScript without googling syntax · 40 LeetCode solved · daily GitHub streak alive · dev environment fully dialled in."
+  },
+
+  {
+    id:'p1', badge:'P1', badgeColor:'#ff6b35', title:'Backend Core — Java + Spring Boot', weeks:'Weeks 5–12 · ~2 months',
+    focus:'PRODUCTION REST APIs · DSA → TREES & GRAPHS',
+    desc:"Turn Java into production backend power. Build real REST APIs with Spring Boot, persist to Postgres, secure with JWT, cache with Redis, and test it all. DSA climbs from arrays to trees & graphs in parallel.",
+    tracks:[
+      {label:'Spring Boot (2026 stack)', ico:'☕', dom:'backend', items:[
+        {id:'p1-sb-0', t:"Build on <b>Java 25 LTS + Spring Boot 4.1 / Framework 7</b> — jakarta.* NOT javax (interviewers date you on this)"},
+        {id:'p1-sb-1', t:"Spring core — <b>IoC, dependency injection</b>, beans, @Configuration"},
+        {id:'p1-sb-2', t:"Project structure, application.yml, profiles, logging"},
+        {id:'p1-sb-3', t:"<b>REST controllers</b> + validation; use <b>RestClient</b> for outbound (RestTemplate is deprecated)"},
+        {id:'p1-sb-4', t:"<b>Spring Data JPA + Hibernate</b> — entities, repositories"},
+        {id:'p1-sb-5', t:"Relationships (1:1, 1:N, N:M), fetch types, cascading"},
+        {id:'p1-sb-12', t:"<b>The N+1 problem</b> — detect via SQL logs, fix with JOIN FETCH / @EntityGraph / @BatchSize (top latency cause)"},
+        {id:'p1-sb-6', t:"Service/Repository layering, DTOs (MapStruct — justify vs records)"},
+        {id:'p1-sb-7', t:"@ControllerAdvice + <b>RFC 9457 ProblemDetail</b> errors, pagination, filtering"},
+        {id:'p1-sb-13', t:"<b>@Transactional propagation</b> (REQUIRES_NEW/NESTED) + the self-invocation proxy trap"},
+        {id:'p1-sb-8', t:"<b>Spring Security</b> — JWT auth, roles/authorities, BCrypt"},
+        {id:'p1-sb-9', t:"Testing — JUnit 5, Mockito, @SpringBootTest, <b>Testcontainers</b>"},
+        {id:'p1-sb-10', t:"Actuator, health checks, <b>OpenAPI/Swagger</b> docs"},
+        {id:'p1-sb-14', t:"<b>Virtual threads</b> (Project Loom) + spring.threads.virtual.enabled — the headline Java 21→25 feature"},
+        {id:'p1-sb-15', t:"<b>Observability</b> — Micrometer metrics + Micrometer Tracing → OpenTelemetry (Sleuth is dead)"},
+        {id:'p1-sb-16', t:"<b>Resilience4j</b> (circuit breaker/retry/bulkhead) + <b>Flyway</b> migrations (never ddl-auto in prod)"},
+        {id:'p1-sb-11', t:"Caching with @Cacheable on Redis + invalidation / stampede; Caffeine vs Redis"},
+      ]},
+      {label:'Databases', ico:'🗄️', dom:'backend', items:[
+        {id:'p1-db-1', t:"Relational design — normalization, keys, ER modelling"},
+        {id:'p1-db-2', t:"<b>PostgreSQL</b> hands-on — psql, joins, transactions, isolation levels"},
+        {id:'p1-db-3', t:"Indexes — B-tree, when/why, <b>EXPLAIN ANALYZE</b>"},
+        {id:'p1-db-5', t:"<b>HikariCP connection pooling</b> — sizing, leak detection, pool exhaustion (often the real bottleneck)"},
+        {id:'p1-db-4', t:"<b>Redis</b> — caching, TTL, sessions, core data structures"},
+      ]},
+      {label:'DSA Build', ico:'⚡', dom:'dsa', items:[
+        {id:'p1-dsa-1', t:"Linked lists — reversal, cycle detection (fast/slow pointers)"},
+        {id:'p1-dsa-2', t:"<b>Trees</b> — DFS/BFS traversals, binary tree problems"},
+        {id:'p1-dsa-3', t:"BST — insert/search/validate, ordered operations"},
+        {id:'p1-dsa-4', t:"<b>Heaps / priority queues</b> — top-K, merge-K patterns"},
+        {id:'p1-dsa-5', t:"Graphs intro — adjacency list, BFS/DFS, connected components"},
+        {id:'p1-dsa-6', t:"<b>Reach 150 LeetCode total</b> (mostly mediums) — learn patterns, not problems"},
+      ]},
+      {label:'AI Thread (light)', ico:'🤖', dom:'ai', items:[
+        {id:'p1-ai-1', t:"Math just-enough — vectors, matrices, probability intuition"},
+        {id:'p1-ai-2', t:"<b>NumPy + Pandas</b> — arrays, dataframes, cleaning, EDA"},
+        {id:'p1-ai-3', t:"scikit-learn — a regression + a classifier, metrics, train/test split"},
+      ]},
+    ],
+    resources:[
+      {name:"Official Spring Boot Reference Docs + Spring Guides", url:"https://docs.spring.io/spring-boot/index.html", why:"Canonical, version-pinned source of truth (shows Boot 4.1 stable) — never goes stale like tutorials. Non-negotiable at the senior bar."},
+      {name:"Spring Academy (official, Broadcom/Spring team)", url:"https://spring-academy.broadcom.com/", why:"Official interactive courses + in-browser labs from the framework engineers; Pro content free since 2024. Best structured hands-on path, tracks Boot 4 first."},
+      {name:"Baeldung — REST with Spring series", url:"https://www.baeldung.com/rest-with-spring-series", why:"The battle-tested reference engineers open mid-task. NOTE: many articles are still Spring 6/Boot 3 — check the date and mentally re-map javax→jakarta, RestTemplate→RestClient."},
+      {name:"Thorben Janssen — JPA/Hibernate performance", url:"https://thorben-janssen.com/blog/", why:"The authoritative free resource on the highest-leverage interview area: N+1, fetch strategies, @EntityGraph, projections — where most candidates are weakest."},
+      {name:"Testcontainers — Spring Boot REST integration testing guide", url:"https://testcontainers.com/guides/testing-spring-boot-rest-api-using-testcontainers/", why:"Canonical maintained walkthrough of JUnit 5 + Testcontainers + real Postgres — directly produces the real-DB integration-test proof below."},
+    ],
+    proof:[
+      "Ship one Spring Boot 4.1 / Java 25 REST service to public GitHub: layered, JPA+Postgres, Security+JWT, Bean Validation, RFC 9457 ProblemDetail errors, Swagger, Flyway, Redis cache, pagination. README states exact versions. One artifact ≈ 70% of this phase.",
+      "A green CI badge: JUnit 5 + Mockito unit tests AND Testcontainers integration tests on a real Postgres container, in GitHub Actions (or your Jenkins), with a JaCoCo coverage badge >80%.",
+      "A measured N+1 fix in the README: commit the problem, fix with @EntityGraph/JOIN FETCH, document 'before/after' SQL counts + latency, e.g. '47 queries → 2, p95 320ms → 45ms'. A quantified optimization is the strongest senior signal.",
+      "A virtual-threads benchmark: platform threads vs spring.threads.virtual.enabled under a k6 load test — report throughput/latency. Shows command of the headline Java 25 story with a number, not a buzzword.",
+    ],
+    project:{title:"DevTrackr API", desc:"A production-grade Spring Boot 4.1 / Java 25 REST backend: Postgres + JPA, JWT auth, Redis caching, validation, RFC 9457 errors, Swagger, Flyway, Testcontainers tests — and Dockerized."},
+    milestone:"Build & secure a real REST backend end-to-end · 150 LeetCode · first Dockerized service · can explain N+1, virtual threads & @Transactional propagation."
+  },
+
+  {
+    id:'p2', badge:'P2', badgeColor:'#47c8ff', title:'Frontend & Full-Stack — React + TypeScript', weeks:'Weeks 13–18 · ~1.5 months',
+    focus:'SHIP FULL-STACK · DSA → GRAPHS & DP',
+    desc:"Build the face of your products. Master React + TypeScript, wire it to your Spring Boot backend, and ship your first real full-stack app with CI. DSA hits graphs + dynamic programming.",
+    tracks:[
+      {label:'React + TypeScript (TS first!)', ico:'⚛️', dom:'frontend', items:[
+        {id:'p2-r-0', t:"<b>Scaffold with Vite</b> (react-ts) — never create-react-app (deprecated). Type every file from day one"},
+        {id:'p2-r-1', t:"JSX, components, props, conditional rendering, lists & keys"},
+        {id:'p2-r-2', t:"State + events; controlled inputs"},
+        {id:'p2-r-3', t:"<b>Hooks</b> — useState, useEffect, useRef"},
+        {id:'p2-r-12', t:"<b>useEffect is a last resort</b> — not for data-fetching or derived state ('You Might Not Need an Effect')"},
+        {id:'p2-r-4', t:"<b>React 19 Compiler auto-memoizes</b> — treat useMemo/useCallback as the exception, not the default"},
+        {id:'p2-r-5', t:"Server state = <b>TanStack Query</b>; client/UI state = Zustand (most 'global state' is really server state)"},
+        {id:'p2-r-6', t:"Routing — React Router (nested, params, guards)"},
+        {id:'p2-r-7', t:"Data fetching — TanStack Query (cache, invalidation, useSuspenseQuery, optimistic)"},
+        {id:'p2-r-8', t:"Forms — React Hook Form + <b>Zod</b> (share one source of truth via z.infer)"},
+        {id:'p2-r-9', t:"Performance — code-splitting, lazy/Suspense; verify with the Profiler"},
+        {id:'p2-r-10', t:"Styling — <b>Tailwind CSS</b> + shadcn/ui (Radix)"},
+        {id:'p2-r-11', t:"Advanced TS-in-React — generic/polymorphic components, discriminated-union props, typed hooks"},
+        {id:'p2-r-13', t:"<b>Accessibility</b> — semantic HTML, ARIA, keyboard nav, focus; run axe / Lighthouse a11y"},
+      ]},
+      {label:'Full-Stack Integration', ico:'🔗', dom:'frontend', items:[
+        {id:'p2-fs-1', t:"Connect React → Spring Boot API; <b>CORS</b> config (both sides)"},
+        {id:'p2-fs-2', t:"<b>Secure JWT</b> — access token in memory + refresh in httpOnly Secure cookie + 401→refresh→retry (NOT localStorage)"},
+        {id:'p2-fs-3', t:"Loading / error / empty states; optimistic updates"},
+        {id:'p2-fs-5', t:"<b>Rendering-strategy literacy</b> — CSR vs SSR/SSG/ISR vs RSC; when Next.js vs a Vite SPA"},
+        {id:'p2-fs-4', t:"Env config; deploy; hit <b>Core Web Vitals</b> (LCP &lt;2.5s, INP &lt;200ms, CLS &lt;0.1)"},
+      ]},
+      {label:'Testing (the senior gap)', ico:'🧪', dom:'frontend', items:[
+        {id:'p2-t-1', t:"<b>Vitest + React Testing Library</b> — query-by-role, user-event, MSW to mock the network"},
+        {id:'p2-t-2', t:"<b>Playwright</b> E2E — 3–5 critical flows (login, CRUD, an error case) wired into CI"},
+      ]},
+      {label:'DSA Build', ico:'⚡', dom:'dsa', items:[
+        {id:'p2-dsa-1', t:"<b>Graphs deep</b> — topological sort, union-find, Dijkstra / BFS-shortest-path"},
+        {id:'p2-dsa-2', t:"<b>Dynamic programming</b> — 1D, 2D, knapsack, LIS, grid paths"},
+        {id:'p2-dsa-3', t:"Greedy + intervals (merge, scheduling)"},
+        {id:'p2-dsa-4', t:"Backtracking — subsets, permutations, combination sum, N-queens"},
+        {id:'p2-dsa-5', t:"<b>Reach 250 LeetCode total</b>; start timed practice"},
+      ]},
+      {label:'AI Thread (light)', ico:'🤖', dom:'ai', items:[
+        {id:'p2-ai-1', t:"<b>PyTorch basics</b> — tensors, autograd, a simple neural net"},
+        {id:'p2-ai-2', t:"Train a small model end-to-end (MNIST-style) — learn the training loop"},
+      ]},
+    ],
+    resources:[
+      {name:"React official docs (react.dev) — Learn + Reference", url:"https://react.dev/learn", why:"Canonical React-team source for React 19. 'You Might Not Need an Effect' and 'Escape Hatches' teach the exact senior mental models the old curriculum got backwards."},
+      {name:"TanStack Query v5 docs", url:"https://tanstack.com/query/v5/docs/framework/react/overview", why:"Server-state is the core of modern React data fetching: query keys, invalidation, useSuspenseQuery, optimistic updates. (Pinned to /v5/.)"},
+      {name:"React Testing Library + Vitest", url:"https://testing-library.com/docs/react-testing-library/intro/", why:"The 2026 unit/component standard (Vitest + RTL). 'Test what the user does, not implementation details' — directly assessed in senior interviews. Closes the biggest gap."},
+      {name:"Playwright docs (E2E)", url:"https://playwright.dev/docs/intro", why:"Industry-standard, Microsoft-maintained E2E. A few critical-path tests in CI — ties straight into your Jenkins/CI strength."},
+      {name:"patterns.dev (Hallie & Osmani) — rendering & perf patterns", url:"https://www.patterns.dev/", why:"Free conceptual map of CSR/SSR/SSG/ISR/streaming + code-splitting — fills the 'Next.js vs Vite SPA' discussion gap. (Concepts; defer to react.dev for current React specifics.)"},
+    ],
+    proof:[
+      "The capstone full-stack app: a typed React 19 + Vite SPA on your Spring Boot API, deployed live with a public URL in the README — TanStack Query, RHF+Zod (shared z.infer types), secure JWT (in-memory access + httpOnly refresh + 401-retry), shadcn/ui. A recruiter can click the link and log in.",
+      "A real test suite with a published number: Vitest + RTL component tests + 3–5 Playwright E2E flows green in CI — e.g. '78% coverage, E2E green'. Proves the competency most candidates lack.",
+      "A measurable perf win with before/after: profile a heavy page, apply code-split + lazy + Suspense, document 'LCP 4.1s → 1.9s, INP 260ms → 140ms, bundle 480KB → 190KB' from Lighthouse + bundle-analyzer.",
+    ],
+    project:{title:"TaskFlow — full-stack product", desc:"A typed React 19 + Vite SPA on your Spring Boot backend + Postgres, deployed live, with Vitest/RTL + Playwright tests green in GitHub Actions CI. Your first real end-to-end product."},
+    milestone:"Ship a real full-stack app end-to-end · TS-first & test-covered · 250 LeetCode · secure auth + deploy + CWV hit."
+  },
+
+  {
+    id:'p3', badge:'P3', badgeColor:'#4cff91', title:'DevOps, Cloud & Django', weeks:'Weeks 19–26 · ~2 months',
+    focus:'CLOUD-NATIVE · YOUR HOME TURF · DSA → HARD DP',
+    desc:"This is your home turf — go from CI/CD pro to full cloud-native. Containers, Kubernetes, AWS, IaC, observability. Add Django (fast, you know Python) as a second backend stack. DSA hits hard DP + advanced graphs.",
+    tracks:[
+      {label:'Containers & Orchestration', ico:'🐳', dom:'devops', items:[
+        {id:'p3-k-1', t:"<b>Docker deep</b> — images, layers, multi-stage builds, networking, volumes"},
+        {id:'p3-k-2', t:"Docker Compose — multi-service local stacks"},
+        {id:'p3-k-3', t:"<b>Kubernetes</b> — pods, deployments, services; <b>Gateway API</b> (Ingress-NGINX retired Mar 2026)"},
+        {id:'p3-k-4', t:"K8s — ConfigMaps, Secrets, probes, resource limits, <b>HPA autoscaling</b>"},
+        {id:'p3-k-5', t:"<b>Helm v4</b> charts + kubectl fluency; local kind/minikube"},
+        {id:'p3-k-6', t:"<b>K8s & container security</b> — Trivy image scans, RBAC least-privilege, External/Sealed Secrets, cosign/SBOM"},
+      ]},
+      {label:'CI/CD & GitOps', ico:'🔁', dom:'devops', items:[
+        {id:'p3-ci-1', t:"<b>GitHub Actions</b> — build/test/lint/deploy pipelines, matrix, caching"},
+        {id:'p3-ci-2', t:"Advanced Jenkins — declarative pipelines, shared libraries (skim — you already own a CI stream)"},
+        {id:'p3-ci-3', t:"Container registry (ECR/GHCR) + image scanning (Trivy/Grype)"},
+        {id:'p3-ci-4', t:"<b>GitOps with ArgoCD</b> — deploy straight from git (know the ArgoCD-vs-Flux tradeoff)"},
+      ]},
+      {label:'AWS Cloud', ico:'☁️', dom:'devops', items:[
+        {id:'p3-aws-1', t:"Core — <b>IAM</b>, EC2, S3, VPC basics, security groups"},
+        {id:'p3-aws-2', t:"RDS (Postgres) + Secrets/Parameter Store"},
+        {id:'p3-aws-3', t:"Containers on AWS — ECR + <b>EKS (deep)</b>; ECS/Fargate = know the tradeoff only"},
+        {id:'p3-aws-4', t:"Serverless — Lambda + API Gateway basics"},
+      ]},
+      {label:'IaC & Observability', ico:'🏗️', dom:'devops', items:[
+        {id:'p3-iac-1', t:"<b>OpenTofu / Terraform</b> — providers, state, modules; know the BSL relicense + OpenTofu fork story"},
+        {id:'p3-iac-2', t:"<b>OpenTelemetry</b> + Prometheus + Grafana + Loki/Tempo — metrics, logs & <b>distributed traces</b>"},
+        {id:'p3-iac-3', t:"Centralized logging + alerting; SLO/SLI; trace_id correlation"},
+      ]},
+      {label:'Django + DRF (time-boxed ~1 wk)', ico:'🐍', dom:'backend', items:[
+        {id:'p3-dj-1', t:"Django 5.2 LTS — models, ORM, migrations, admin (fast: you already know Python/Flask)"},
+        {id:'p3-dj-2', t:"<b>Django REST Framework</b> — serializers, viewsets, auth, permissions"},
+        {id:'p3-dj-3', t:"Ship a CRUD API + reason about the ORM/N+1 — breadth, not Spring-level depth"},
+      ]},
+      {label:'DSA Build', ico:'⚡', dom:'dsa', items:[
+        {id:'p3-dsa-1', t:"<b>Advanced DP</b> — state compression, DP on trees/graphs, intervals"},
+        {id:'p3-dsa-2', t:"Tries + advanced graphs; intro segment tree / BIT"},
+        {id:'p3-dsa-3', t:"<b>Reach 350 LeetCode total</b>; do weekly contests"},
+      ]},
+    ],
+    resources:[
+      {name:"Kubernetes Official Docs (Concepts + Tasks)", url:"https://kubernetes.io/docs/concepts/", why:"Canonical, always-current (tracks v1.36, Gateway API, deprecations). Vendor tutorials go stale; this doesn't. Highest-signal reference."},
+      {name:"Kubernetes the Hard Way (Kelsey Hightower)", url:"https://github.com/kelseyhightower/kubernetes-the-hard-way", why:"Bootstrap a cluster manually (etcd, API server, kubelet, certs, networking) — builds the senior mental model. Updated 2025, ~44k stars."},
+      {name:"AWS Skill Builder + Well-Architected Framework", url:"https://skillbuilder.aws/", why:"AWS's own free training + the 6-pillar Well-Architected whitepapers — authoritative for IAM/VPC/EKS and the tradeoff vocabulary AWS interviewers expect."},
+      {name:"OpenTelemetry Official Docs", url:"https://opentelemetry.io/docs/", why:"The vendor-neutral 2026 instrumentation standard (Collector, SDKs, 3 signals). Closes the distributed-tracing gap; pairs with Prometheus/Grafana."},
+      {name:"Terraform: Up & Running, 3rd ed. + OpenTofu docs", url:"https://opentofu.org/docs/", why:"The definitive IaC book (3rd ed, Gruntwork) for modules/state/patterns; HCL transfers to OpenTofu. Use the free OpenTofu docs for the post-2023 license/state-encryption currency."},
+      {name:"Argo CD Official Docs", url:"https://argo-cd.readthedocs.io/", why:"Primary source for your GitOps tool (CNCF Graduated, majority-adopted). Applications, ApplicationSets, sync waves, app-of-apps — the patterns you'll demo."},
+      {name:"Django (5.2 LTS) + DRF docs", url:"https://docs.djangoproject.com/en/5.2/", why:"Source-of-truth for the time-boxed Django pillar; the official tutorial is best-in-class. (Be able to say why you pinned to LTS vs Django 6.0.)"},
+    ],
+    proof:[
+      "Public repo with a multi-stage Dockerfile (final image < ~50MB, non-root) + README showing image-size before/after + a Trivy scan result (0 HIGH/CRITICAL CVEs). Concrete, measurable, security-aware.",
+      "A kind/EKS cluster running a 2–3 service app exposed via the <b>Gateway API</b> (not legacy ingress-nginx), with probes, HPA, External/Sealed Secrets, and a Helm v4 chart. Record a short demo GIF — proves modern, current K8s, not 2022 patterns.",
+      "A GitOps repo where ArgoCD auto-syncs the cluster from git (a commit deploys, zero kubectl apply): include the App-of-Apps manifest + an ArgoCD UI 'synced/healthy' screenshot. The artifact that most proves 'I can run a platform'.",
+      "Cloud footprint (VPC + EKS + RDS + S3 + least-privilege IAM) provisioned entirely with OpenTofu/Terraform — encrypted remote state, a GitHub Actions plan/apply pipeline, and a Grafana + OTel-traces screenshot. The full senior stack in one verifiable repo.",
+    ],
+    project:{title:"Cloud Deploy — portfolio centerpiece", desc:"Take your full-stack app to Kubernetes on AWS (EKS) via Gateway API + Helm v4 + ArgoCD, OpenTofu-provisioned infra, with an OpenTelemetry → Prometheus/Grafana/Loki/Tempo dashboard. This is your edge — make it loud."},
+    milestone:"Deploy & operate a real app on K8s + cloud with CI/CD + tracing · OpenTofu infra · Django API shipped · 350 LeetCode."
+  },
+
+  {
+    id:'p4', badge:'P4', badgeColor:'#ff9ff3', title:'AI & RAG — to Production-Grade', weeks:'Weeks 27–36 · ~2.5 months',
+    focus:'ML → PRODUCTION RAG & AGENTS · YOUR MOAT',
+    desc:"The deep block. From ML/DL foundations to production RAG and agents — then deploy them with the backend + DevOps muscle you already built. This is where your telecom + AI moat becomes undeniable.",
+    tracks:[
+      {label:'ML & Deep Learning (lean — you know Python)', ico:'📐', dom:'ai', items:[
+        {id:'p4-ml-1', t:"ML solid — regression, classification, trees/ensembles, cross-validation, metrics"},
+        {id:'p4-ml-2', t:"Feature engineering + pipelines (sklearn)"},
+        {id:'p4-ml-3', t:"<b>Deep learning</b> — PyTorch, MLPs, training/eval loops, regularization"},
+        {id:'p4-ml-4', t:"CNNs (vision) + transfer learning; <b>RNN/LSTM = one lecture for intuition only</b> (don't grind)"},
+      ]},
+      {label:'NLP, Transformers & Modern Internals', ico:'🔤', dom:'ai', items:[
+        {id:'p4-nlp-1', t:"Tokenization, <b>embeddings</b>, semantic similarity"},
+        {id:'p4-nlp-2', t:"Attention + the <b>Transformer architecture</b> (read 'Attention Is All You Need')"},
+        {id:'p4-nlp-5', t:"<b>Modern LLM internals</b> — RoPE, KV-cache (inference is memory-bound), Mixture-of-Experts (2026 table-stakes)"},
+        {id:'p4-nlp-3', t:"Hugging Face — models, pipelines, datasets, PEFT"},
+        {id:'p4-nlp-4', t:"<b>Fine-tuning</b> — LoRA/QLoRA/DoRA tradeoffs; SFT → preference pipeline; run one <b>DPO</b> pass (RLHF read-only)"},
+      ]},
+      {label:'LLMs & Prompt Engineering', ico:'🧠', dom:'ai', items:[
+        {id:'p4-llm-1', t:"Prompting — zero/few-shot, system prompts, chain-of-thought"},
+        {id:'p4-llm-2', t:"<b>Structured output + function / tool calling</b>"},
+        {id:'p4-llm-3', t:"Context windows, token budgeting, prompt caching, cost/latency"},
+        {id:'p4-llm-4', t:"<b>LLM system design</b> — p50/p99 latency, throughput vs cost, vLLM continuous batching"},
+      ]},
+      {label:'RAG — End to End (production)', ico:'🔎', dom:'ai', items:[
+        {id:'p4-rag-1', t:"Chunking + <b>contextual / parent-document retrieval</b> (Anthropic contextual retrieval)"},
+        {id:'p4-rag-2', t:"Go deep on ONE vector DB — <b>pgvector</b> (in your Postgres) primary; Qdrant when you outgrow it (Chroma = local proto)"},
+        {id:'p4-rag-3', t:"Retrieval — <b>hybrid (BM25 + vector)</b> + reciprocal rank fusion, metadata filtering"},
+        {id:'p4-rag-4', t:"<b>Query transformation</b> — HyDE, multi-query, decomposition; cross-encoder <b>reranking</b>"},
+        {id:'p4-rag-6', t:"Production RAG — caching, streaming, citations; <b>agentic RAG vs GraphRAG</b> (multi-hop only, else waste)"},
+      ]},
+      {label:'Agents, Eval & LLMOps (your edge)', ico:'🤖', dom:'ai', items:[
+        {id:'p4-ag-1', t:"<b>Agents</b> — tool use, ReAct, planning; <b>LangGraph-first</b> (state machine, durable exec, human-in-the-loop)"},
+        {id:'p4-ag-2', t:"Frameworks — LangGraph 1.0 + LlamaIndex; expose tools via <b>MCP</b>"},
+        {id:'p4-ag-5', t:"<b>Eval as a discipline</b> — golden datasets, RAGAS + DeepEval, regression evals <b>wired into Jenkins</b> (your edge)"},
+        {id:'p4-ag-3', t:"Serving — Ollama (local proto) / <b>vLLM</b> (SLA/throughput); API design for AI"},
+        {id:'p4-ag-6', t:"<b>Safety/guardrails</b> — prompt injection, jailbreaks, PII, output validation; red-team with Promptfoo"},
+        {id:'p4-ag-4', t:"Monitoring + tracing (LangSmith / Phoenix) for LLM apps"},
+      ]},
+      {label:'DSA Maintain', ico:'⚡', dom:'dsa', items:[
+        {id:'p4-dsa-1', t:"Spaced review of all patterns; 2–3 problems/day to stay sharp"},
+        {id:'p4-dsa-2', t:"<b>Reach 420+ LeetCode total</b>"},
+      ]},
+    ],
+    resources:[
+      {name:"Neural Networks: Zero to Hero (Karpathy)", url:"https://karpathy.ai/zero-to-hero.html", why:"Build backprop → MLP → BPE tokenizer → GPT in code — perfect for a systems engineer. A stable classic (pair it with the modern-internals unit for RoPE/KV-cache/MoE)."},
+      {name:"Hugging Face LLM Course", url:"https://huggingface.co/learn/llm-course", why:"Free, official, current (added fine-tuning + reasoning-model chapters). Teaches the Transformers/PEFT stack you'll actually use — docs double as job skill."},
+      {name:"LangGraph docs (LangChain official) + LangChain Academy", url:"https://docs.langchain.com/oss/python/langgraph/overview", why:"Authoritative source for the LangGraph 1.0 state-machine model interviewers expect: durable execution, human-in-the-loop, checkpoints. (URL corrected — old github.io now redirects.)"},
+      {name:"Ragas docs", url:"https://docs.ragas.io/en/stable/", why:"Canonical reference for the 4 core RAG metrics + synthetic test-set generation. Use as the METRICS layer; pair with a CI-gating tool + a tracing platform — it's not the whole eval story."},
+      {name:"Anthropic — Building Effective Agents", url:"https://www.anthropic.com/engineering/building-effective-agents", why:"Vendor-neutral 'workflows vs agents / don't over-engineer' guidance + the 5 workflow patterns. Short, high-signal, heavily cited in 2026 interviews."},
+      {name:"Anthropic — Contextual Retrieval", url:"https://www.anthropic.com/engineering/contextual-retrieval", why:"The 2026 fix for chunk-context loss: contextual embeddings + contextual BM25 (~49% fewer failed retrievals, ~67% with reranking). Directly upgrades the RAG module."},
+      {name:"vLLM docs", url:"https://docs.vllm.ai/", why:"Production serving reference (PagedAttention, continuous batching, hot-swap LoRA, Prometheus metrics). Where your platform/CI background becomes a differentiator vs pure-modeling candidates."},
+    ],
+    proof:[
+      "Production RAG service on GitHub: hybrid retrieval (BM25 + dense + RRF) + cross-encoder reranking + query transformation, served via FastAPI, with a RAGAS/DeepEval suite run in CI (Jenkins). README table of before/after retrieval metrics (e.g. context recall 0.71 → 0.89) + p50/p99 latency. Numbers + a CI gate = the proof.",
+      "Fine-tune + serve: QLoRA-tune a 7–8B open model, run one DPO pass on preference pairs, ship the LoRA adapter (~30MB), serve on vLLM with hot-swap. Document training cost (~$12–15), eval delta vs base, and tokens/sec.",
+      "A LangGraph agentic-RAG app with a custom MCP tool server (stateful, checkpoints, human-in-the-loop), deployed (Docker), with a LangSmith/Phoenix trace showing the decision path — agents + MCP + observability together.",
+      "An eval/observability harness as its own repo: golden dataset, LLM-as-judge with documented failure-mode mitigations, regression evals that fail the build on a metric drop, + a Promptfoo prompt-injection red-team config. The artifact that uniquely leverages your CI ownership.",
+    ],
+    project:{title:"DocMind — capstone (uses EVERYTHING)", desc:"A production RAG + agent SaaS: React+TS frontend + FastAPI/Spring Boot backend + pgvector + LLM, with auth, streaming answers + citations, RAGAS/DeepEval gated in CI, deployed on K8s/cloud with monitoring. Mirror your TC Executor — auto-generate tests/answers from docs. Résumé gold."},
+    milestone:"Build, deploy & explain a production RAG + agent system end-to-end · evals gated in CI · capstone live · you can defend every layer in an interview."
+  },
+
+  {
+    id:'p5', badge:'P5', badgeColor:'#ff4757', title:'System Design & Interview Mastery', weeks:'Weeks 37–44 · ~2 months',
+    focus:'HLD + LLD · DSA MASTERY · MOCKS · APPLY',
+    desc:"Flip to offense. Master HLD + LLD, push DSA to interview level, run mocks, polish your story, and apply. Your unique full-stack + DevOps + AI profile is now a weapon.",
+    tracks:[
+      {label:'HLD — framework first, drill-driven', ico:'🏛️', dom:'sysdes', items:[
+        {id:'p5-hld-0', t:"<b>Delivery framework</b> (week 1, used in every drill) — functional → non-functional+scale → API → high-level → deep-dives"},
+        {id:'p5-hld-8', t:"<b>Back-of-the-envelope math</b> — QPS, storage, bandwidth, server count + a memorized latency-numbers cheat sheet"},
+        {id:'p5-hld-1', t:"Fundamentals — scalability, latency/throughput, availability"},
+        {id:'p5-hld-2', t:"Load balancing, <b>caching layers</b>, CDNs, reverse proxies"},
+        {id:'p5-hld-3', t:"DB scaling — replication, <b>sharding</b>, partitioning, SQL vs NoSQL"},
+        {id:'p5-hld-9', t:"Consistency depth — <b>CAP + PACELC</b> + the ladder (linearizable→sequential→causal→read-your-writes→eventual)"},
+        {id:'p5-hld-4', t:"Messaging — <b>Kafka</b>, queues, pub/sub, async + event-driven"},
+        {id:'p5-hld-5', t:"Microservices — API gateway, rate limiting, idempotency"},
+        {id:'p5-hld-10', t:"<b>Operational concerns</b> — SLA/SLO/SLI, graceful degradation, circuit breakers, retry+backoff+jitter"},
+        {id:'p5-hld-6', t:"Interleave <b>DDIA 2nd ed</b> (Kleppmann & Riccomini, 2026) per-drill — don't binge it"},
+        {id:'p5-hld-7', t:"Drill-first (URL shortener by wk 2) → rate limiter → chat → Twitter → YouTube → Uber"},
+        {id:'p5-hld-11', t:"<b>ML/LLM/RAG system design</b> — design a RAG pipeline + an LLM-serving layer (cost/latency/hallucination) — your leverage"},
+      ]},
+      {label:'Low-Level Design (LLD)', ico:'🧩', dom:'sysdes', items:[
+        {id:'p5-lld-1', t:"OOP design + <b>SOLID</b> (the actual evaluation rubric)"},
+        {id:'p5-lld-2', t:"<b>~8 high-ROI patterns</b> — Strategy, Factory, Builder, Observer, Decorator, Adapter, Singleton, State (learn by using)"},
+        {id:'p5-lld-3', t:"<b>Concurrency depth</b> — locks/mutexes, deadlock, atomics, producer-consumer (your C/Linux edge)"},
+        {id:'p5-lld-5', t:"UML = whiteboard class + sequence sketch only (don't study formal notation)"},
+        {id:'p5-lld-4', t:"LLD drills — parking lot, elevator, BookMyShow (seat-locking), vending machine, Splitwise"},
+      ]},
+      {label:'DSA Mastery', ico:'⚡', dom:'dsa', items:[
+        {id:'p5-dsa-1', t:"Hard problems + advanced patterns; pattern-based revision"},
+        {id:'p5-dsa-2', t:"Company-tagged sets; timed full mocks; weekly contests"},
+        {id:'p5-dsa-3', t:"<b>Reach 500+ LeetCode</b> with true pattern mastery"},
+      ]},
+      {label:'Interview & Career', ico:'🎯', dom:'sysdes', items:[
+        {id:'p5-int-1', t:"Behavioral — <b>STAR stories</b> (early promotion, Star Award, owning Core-Stacks CI)"},
+        {id:'p5-int-2', t:"Resume + LinkedIn + portfolio site (4 flagship projects)"},
+        {id:'p5-int-3', t:"<b>Mock interviews</b> — 10 DSA · 10 System Design · 6 ML/AI design · 8 behavioral (track on Stats)"},
+        {id:'p5-int-4', t:"Apply in waves; negotiate offers"},
+      ]},
+    ],
+    resources:[
+      {name:"Hello Interview — System Design in a Hurry", url:"https://www.hellointerview.com/learn/system-design/in-a-hurry/introduction", why:"Highest-signal free resource, by ex-FAANG staff who run loops. Its delivery framework + core concepts fix the 'know the parts, can't drive the interview' failure mode."},
+      {name:"Hello Interview — ML System Design in a Hurry", url:"https://www.hellointerview.com/learn/ml-system-design/in-a-hurry/introduction", why:"The free ML/RAG system-design track (separate URL) — covers the must-add 'design a RAG pipeline / LLM-serving' content with the same framework. Your differentiator."},
+      {name:"Designing Data-Intensive Applications, 2nd ed (Kleppmann & Riccomini)", url:"https://www.oreilly.com/library/view/designing-data-intensive-applications/9781098119058/", why:"The canonical 'why' behind replication, partitioning, transactions, consistency, consensus, streaming. Use the 2026 2nd ed, not the 2017 one. Interleave per-drill."},
+      {name:"System Design Primer (donnemartin) — GitHub", url:"https://github.com/donnemartin/system-design-primer", why:"~354k-star free repo. Best free source for the back-of-envelope latency/throughput numbers and concise primitive write-ups. Week-1 skim + quick reference."},
+      {name:"Refactoring.Guru — Design Patterns & SOLID", url:"https://refactoring.guru/design-patterns", why:"Clearest free GoF + SOLID reference with Java examples. Learn the ~8 high-ROI patterns by USING them in LLD drills, not as flashcards."},
+      {name:"The Algorithm Design Manual (Skiena) + CP-Algorithms", url:"https://cp-algorithms.com/", why:"For the DSA-mastery push: Skiena (algorist.com) for problem→algorithm mapping; CP-Algorithms for the advanced/range-query reference (gate segment-tree behind algo-heavy targets)."},
+    ],
+    proof:[
+      "Public GitHub repo of 8–10 of your OWN system-design write-ups: each with the delivery-framework structure — requirements, explicit capacity math (QPS/storage/bandwidth), API spec, an architecture diagram (excalidraw), and a 'deep-dive + tradeoffs' section.",
+      "One drill taken from diagram to a DEPLOYED, benchmarked service: e.g. a distributed token-bucket rate limiter (Spring Boot/FastAPI + Redis), deployed, with a load-test number — 'sustained X,000 req/s at p99 < Y ms, here's the k6 report'. Crosses you from 'can talk about it' to 'has built it'.",
+      "An LLD repo with 3–4 fully-coded drills (parking lot, elevator, Splitwise, BookMyShow w/ seat-locking) demonstrating SOLID + the right pattern + a concurrency test that proves no double-booking under N threads — your C/Linux edge, exactly what LLD interviewers probe.",
+      "A RAG/LLM system-design artifact tied to your work: a written design doc + small reference impl (chunking, vector store, reranking, eval/hallucination guardrails) with a documented cost-and-latency budget. Most candidates can't show real GenAI design — you can.",
+    ],
+    project:{title:"Portfolio + Resume + System-Design notes", desc:"A polished portfolio (4 flagship projects), a system-design notes repo, and a refined resume — the proof that ties the whole journey together and gets you interviews."},
+    milestone:"Interview-ready for senior full-stack / backend / AI / platform roles and top product companies · offers in hand."
+  },
+];
+
+function mstLoad(){ try { return JSON.parse(localStorage.getItem(MASTERY_KEY)) || {}; } catch(e){ return {}; } }
+function mstSaveState(){ localStorage.setItem(MASTERY_KEY, JSON.stringify(mstState)); }
+let mstState = mstLoad();
+
+function mstAllItems(){
+  const a = [];
+  MASTERY_PHASES.forEach(p => p.tracks.forEach(tr => tr.items.forEach(it => a.push({ id: it.id, dom: tr.dom }))));
+  return a;
+}
+
+function renderMastery(){
+  const tl = document.getElementById('mst-timeline');
+  if (!tl) return;
+  let html = '';
+  MASTERY_PHASES.forEach(p => {
+    const open = p.open ? ' open' : '';
+    let body = '<div class="mst-phase-desc">' + p.desc + '</div>';
+    p.tracks.forEach(tr => {
+      const dc = MST_DOMAINS[tr.dom];
+      let items = '';
+      tr.items.forEach(it => {
+        const ck = mstState[it.id] ? ' checked' : '';
+        items += '<div class="mst-item' + ck + '" onclick="toggleMasteryItem(\'' + it.id + '\', this)"><div class="mst-box"></div><div class="mst-text">' + it.t + '</div></div>';
+      });
+      body += '<div class="mst-track"><div class="mst-track-head"><span class="mst-track-ico">' + tr.ico + '</span><span class="mst-track-name">' + tr.label + '</span><span class="mst-track-tag" style="background:' + dc.color + '18;color:' + dc.color + ';">' + dc.name + '</span></div>' + items + '</div>';
+    });
+    if (p.project) body += '<div class="mst-project"><div class="mst-project-tag">🛠️ Ship this project</div><div class="mst-project-title">' + p.project.title + '</div><div class="mst-project-desc">' + p.project.desc + '</div></div>';
+    if (p.resources && p.resources.length) {
+      var rl = p.resources.map(function(r){ return '<a class="mst-res" href="' + r.url + '" target="_blank" rel="noopener"><span class="mst-res-name">' + r.name + '</span><span class="mst-res-why">' + r.why + '</span></a>'; }).join('');
+      body += '<div class="mst-block"><div class="mst-block-h">📚 Proof-grade resources <span class="mst-block-sub">web-verified real &amp; current</span></div>' + rl + '</div>';
+    }
+    if (p.proof && p.proof.length) {
+      var pl = p.proof.map(function(x){ return '<div class="mst-proof-item"><span class="mst-proof-ico">🎖️</span><div>' + x + '</div></div>'; }).join('');
+      body += '<div class="mst-block proof"><div class="mst-block-h">🎖️ Proof of work <span class="mst-block-sub">what makes the skill undeniable</span></div>' + pl + '</div>';
+    }
+    if (p.milestone) body += '<div class="mst-milestone"><span class="mi-ico">🏁</span><div><b>Phase complete when:</b> ' + p.milestone + '</div></div>';
+    html += '<div class="mst-phase' + open + '" id="mst-' + p.id + '">' +
+      '<div class="mst-phase-head" onclick="togglePhase(\'' + p.id + '\')">' +
+        '<span class="mst-phase-badge" style="background:' + p.badgeColor + ';">' + p.badge + '</span>' +
+        '<div class="mst-phase-meta"><div class="mst-phase-title">' + p.title + '</div><div class="mst-phase-focus">' + p.weeks + ' · ' + p.focus + '</div></div>' +
+        '<div class="mst-phase-right"><span class="mst-phase-count" id="cnt-' + p.id + '">0/0</span><div class="mst-phase-minibar"><div class="mst-phase-minifill" id="mini-' + p.id + '" style="width:0%"></div></div></div>' +
+        '<span class="mst-phase-chev">▶</span>' +
+      '</div>' +
+      '<div class="mst-phase-body">' + body + '</div>' +
+    '</div>';
+  });
+  tl.innerHTML = html;
+
+  const dg = document.getElementById('mst-dom-grid');
+  if (dg) {
+    dg.innerHTML = MST_DOM_ORDER.map(k => {
+      const d = MST_DOMAINS[k];
+      return '<div class="mst-dom"><div class="mst-dom-top"><span class="mst-dom-name">' + d.ico + ' ' + d.name + '</span><span class="mst-dom-pct" id="dom-pct-' + k + '">0%</span></div><div class="mst-dom-track"><div class="mst-dom-fill" id="dom-fill-' + k + '" style="width:0%;background:' + d.color + ';"></div></div></div>';
+    }).join('');
+  }
+  window.__mstReady = true;
+  updateMasteryProgress();
+}
+
+function toggleMasteryItem(id, el){
+  if (mstState[id]) delete mstState[id]; else mstState[id] = true;
+  mstSaveState();
+  if (el) el.classList.toggle('checked');
+  updateMasteryProgress();
+}
+function togglePhase(id){ const el = document.getElementById('mst-' + id); if (el) el.classList.toggle('open'); }
+function expandAllPhases(open){ MASTERY_PHASES.forEach(p => { const el = document.getElementById('mst-' + p.id); if (el) el.classList.toggle('open', open); }); }
+
+function mstSetText(id, v){ const e = document.getElementById(id); if (e) e.textContent = v; }
+function mstSetW(id, p){ const e = document.getElementById(id); if (e) e.style.width = p + '%'; }
+
+function updateMasteryProgress(){
+  const all = mstAllItems();
+  const total = all.length;
+  const done = all.filter(it => mstState[it.id]).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  mstSetText('mst-overall-pct', pct + '%');
+  mstSetText('mst-overall-count', done + ' / ' + total + ' topics');
+  mstSetW('mst-overall-fill', pct);
+  MASTERY_PHASES.forEach(p => {
+    let t = 0, d = 0;
+    p.tracks.forEach(tr => tr.items.forEach(it => { t++; if (mstState[it.id]) d++; }));
+    mstSetText('cnt-' + p.id, d + '/' + t);
+    mstSetW('mini-' + p.id, t ? Math.round(d / t * 100) : 0);
+  });
+  MST_DOM_ORDER.forEach(k => {
+    const items = all.filter(it => it.dom === k);
+    const d = items.filter(it => mstState[it.id]).length;
+    const dp = items.length ? Math.round(d / items.length * 100) : 0;
+    mstSetText('dom-pct-' + k, dp + '%');
+    mstSetW('dom-fill-' + k, dp);
+  });
+}
+
+renderMastery();
+</script>
+
 </body>
 </html>

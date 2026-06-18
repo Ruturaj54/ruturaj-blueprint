@@ -72,10 +72,10 @@ const THEMES = [
 
   { emoji:"📈", accent:"#22d3ee", g1:"#001820", g2:"#000d14",
     quote:"₹1 CR CTC = 100 SMALL WINS COMPOUNDING.",
-    sub:"You don't crack MAANG in 1 day. You crack it in 210 small daily wins.",
+    sub:"You don't crack MAANG in 1 day. You crack it in 308 small daily wins.",
     mission:"Win TODAY by 9 PM. Repeat tomorrow. Repeat 200x.",
     push:"TICK TODAY'S FIRST BOX RIGHT NOW.",
-    story:"₹1 cr = ₹47,619/day for 210 days. That's what TODAY pays — if you do the work. You won't see the deposit, but the bank of your future is recording every rep. Skip today = ₹47,619 stolen from yourself." },
+    story:"₹1 cr = ₹47,619/day for 308 days. That's what TODAY pays — if you do the work. You won't see the deposit, but the bank of your future is recording every rep. Skip today = ₹47,619 stolen from yourself." },
 
   { emoji:"⚔️", accent:"#fde047", g1:"#1c1800", g2:"#0e0c00",
     quote:"DISCIPLINE > MOTIVATION. ALWAYS.",
@@ -107,7 +107,7 @@ const THEMES = [
 ];
 
 function getDayNumber() {
-  return Math.max(1, Math.floor((new Date() - new Date("2026-05-07T00:00:00+05:30")) / 86400000) + 1);
+  return Math.max(1, Math.floor((new Date() - new Date("2026-06-19T00:00:00+05:30")) / 86400000) + 1);
 }
 function getDateStr() {
   return new Date().toLocaleDateString("en-IN", { weekday:"long", day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata" });
@@ -177,7 +177,7 @@ function generateCardSvg(theme, dayNum) {
 <rect width="${W}" height="${svgH}" rx="18" ry="18" fill="url(#bg)"/>
 <rect y="0" width="${W}" height="4" fill="url(#bd)" clip-path="url(#rr)"/>
 <rect x="24" y="24" width="96" height="26" rx="6" fill="${theme.accent}22" stroke="${theme.accent}55" stroke-width="1"/>
-<text x="32" y="41" font-family="Courier New,monospace" font-weight="700" font-size="11" fill="${theme.accent}">DAY ${dayNum} / 210</text>
+<text x="32" y="41" font-family="Courier New,monospace" font-weight="700" font-size="11" fill="${theme.accent}">DAY ${dayNum} / 308</text>
 <text x="24" y="112" font-size="42">${theme.emoji}</text>
 <text x="24" y="138" font-family="Courier New,monospace" font-weight="700" font-size="10" fill="${theme.accent}" opacity="0.75">TODAY'S IGNITION</text>
 ${quoteSvg}
@@ -211,7 +211,7 @@ function buildMonthProgress(dayNum, accent) {
     + "<tr>"
     + "<td style='padding:8px;text-align:center;background:#1a1a1a;border-radius:8px;border:1px solid #2a2a2a;'>"
     + "<div style='font-size:22px;font-weight:800;color:" + accent + ";font-family:monospace;'>DAY " + dayNum + "</div>"
-    + "<div style='font-size:9px;color:#666;letter-spacing:2px;text-transform:uppercase;margin-top:3px;'>of 210</div>"
+    + "<div style='font-size:9px;color:#666;letter-spacing:2px;text-transform:uppercase;margin-top:3px;'>of 308</div>"
     + "</td><td width='10'></td>"
     + "<td style='padding:8px;text-align:center;background:#1a1a1a;border-radius:8px;border:1px solid #2a2a2a;'>"
     + "<div style='font-size:22px;font-weight:800;color:#4ade80;font-family:monospace;'>" + pct + "%</div>"
@@ -267,7 +267,7 @@ export default async function handler() {
     + "<body style='margin:0;padding:0;background:#080808;'>"
     + "<div style='max-width:560px;margin:0 auto;padding:24px 16px;font-family:Arial,sans-serif;background:#080808;'>"
     + "<div style='height:4px;background:linear-gradient(to right," + accent + "," + accent + "44,transparent);border-radius:4px;margin-bottom:28px;'></div>"
-    + "<p style='margin:0 0 6px;font-size:10px;letter-spacing:4px;color:" + accent + ";text-transform:uppercase;'>GOOD MORNING RUTURAJ · DAY " + dayNum + " OF 210</p>"
+    + "<p style='margin:0 0 6px;font-size:10px;letter-spacing:4px;color:" + accent + ";text-transform:uppercase;'>GOOD MORNING RUTURAJ · DAY " + dayNum + " OF 308</p>"
     + "<h1 style='margin:0 0 4px;font-size:28px;font-weight:900;color:#f0f0f0;'>🌅 Get Up. Get Moving.</h1>"
     + "<p style='margin:0 0 24px;font-size:12px;color:#555;'>" + dateStr + "</p>"
     + buildPushBlock(theme)
@@ -281,12 +281,12 @@ export default async function handler() {
     + buildAccountabilityBlock(accent)
     + buildMonthProgress(dayNum, accent)
     + "<div style='text-align:center;padding-top:16px;border-top:1px solid #1a1a1a;'>"
-    + "<p style='margin:0 0 4px;font-size:13px;color:#888;font-weight:700;'>Ruturaj — 23 years old. " + (210 - dayNum) + " days till the new you.</p>"
+    + "<p style='margin:0 0 4px;font-size:13px;color:#888;font-weight:700;'>Ruturaj — 23 years old. " + (308 - dayNum) + " days till the new you.</p>"
     + "<p style='margin:0 0 4px;font-size:11px;color:#555;'>Every box you tick today = ₹10,000 of your future CTC. Compound it.</p>"
     + "<p style='margin:0;font-size:10px;color:#2a2a2a;letter-spacing:2px;'>RUTURAJ BLUEPRINT · 7 MONTH PLAN · 2026</p>"
     + "</div></div></body></html>";
 
-  const text = "GOOD MORNING RUTURAJ 🌅\nDay " + dayNum + " of 210 · " + dateStr
+  const text = "GOOD MORNING RUTURAJ 🌅\nDay " + dayNum + " of 308 · " + dateStr
     + "\n\n" + theme.emoji + " " + theme.quote + "\n" + theme.sub
     + "\n\n>>> " + theme.push + " <<<"
     + "\n\nSTORY OF THE DAY:\n" + theme.story
