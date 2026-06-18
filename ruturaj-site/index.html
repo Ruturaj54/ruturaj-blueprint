@@ -681,6 +681,39 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .mst-callout{background:linear-gradient(135deg,rgba(255,71,87,0.07),rgba(232,255,71,0.04));border:1px solid rgba(255,71,87,0.2);border-radius:12px;padding:14px 16px;margin-bottom:14px;font-size:12.5px;line-height:1.65;color:var(--muted);}
 .mst-callout b{color:var(--text);}
 .mst-callout .ch{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);font-weight:700;display:block;margin-bottom:6px;}
+
+/* ====== DAILY PLAN TAB ====== */
+.dp-hero{background:linear-gradient(135deg,rgba(232,255,71,0.09),rgba(76,255,145,0.05));border:1px solid rgba(232,255,71,0.22);border-radius:16px;padding:22px;margin:24px 0 14px;}
+.dp-daynum{font-family:'Bebas Neue',sans-serif;font-size:clamp(46px,12vw,76px);line-height:.95;color:var(--accent);}
+.dp-date{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:1px;margin-top:2px;}
+.dp-phasechip{display:inline-block;margin-top:11px;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;}
+.dp-kick{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;}
+.dp-prog{height:8px;background:var(--border2);border-radius:4px;overflow:hidden;margin-top:14px;}
+.dp-prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:4px;transition:width .5s;}
+.dp-progtext{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:5px;}
+.dp-nav{display:flex;gap:8px;margin:0 0 14px;flex-wrap:wrap;}
+.dp-card{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:11px;overflow:hidden;}
+.dp-card-h{display:flex;align-items:center;gap:9px;padding:11px 16px;border-bottom:1px solid var(--border);font-weight:700;font-size:13px;}
+.dp-card-h .tm{margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:1px;white-space:nowrap;}
+.dp-card-b{padding:13px 16px;font-size:13.5px;line-height:1.55;color:var(--text);}
+.dp-card-b .big{font-size:15px;font-weight:700;}
+.dp-card-b .sub{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.55;}
+.dp-tag2{display:inline-block;font-size:9px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:4px;background:var(--accent-dim);color:var(--accent);margin-left:4px;letter-spacing:1px;vertical-align:middle;}
+.dp-habits{display:flex;flex-wrap:wrap;gap:6px;}
+.dp-habit{font-size:11px;background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:5px 9px;color:var(--muted);}
+.dp-done-btn{background:var(--green);color:#000;border:none;border-radius:10px;padding:13px 18px;font-weight:800;font-size:14px;cursor:pointer;width:100%;margin:4px 0 6px;}
+.dp-done-btn.isdone{background:var(--card2);color:var(--green);border:1px solid var(--green);}
+.dp-week{margin-top:16px;}
+.dp-week-row{display:grid;grid-template-columns:50px 1fr;gap:10px;padding:9px 12px;border:1px solid var(--border);border-radius:9px;margin-bottom:6px;background:var(--card);align-items:center;}
+.dp-week-row.istoday{border-color:var(--accent);background:var(--accent-dim);}
+.dp-week-row.isdone{opacity:.5;}
+.dp-wr-day{text-align:center;}
+.dp-wr-dn{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);line-height:1;}
+.dp-wr-dd{font-size:8.5px;color:var(--muted);font-family:'DM Mono',monospace;}
+.dp-wr-focus{font-size:12px;font-weight:600;line-height:1.3;}
+.dp-wr-dsa{font-size:10.5px;color:var(--muted);margin-top:1px;}
+.dp-msg{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;font-size:14px;line-height:1.7;color:var(--muted);}
+.dp-msg b{color:var(--text);}
 </style>
 </head>
 <body>
@@ -689,7 +722,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 <nav class="nav">
   <div class="nav-logo">RUTURAJ</div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('today')">Today</button>
+    <button class="nav-tab active" onclick="showPage('daily')" style="color:var(--green);">📆 Daily</button>
+    <button class="nav-tab" onclick="showPage('today')">Today</button>
     <button class="nav-tab" onclick="showPage('mastery')" style="color:var(--accent);">🚀 Blueprint</button>
     <button class="nav-tab" onclick="showPage('base')" style="color:var(--accent2);">🏗️ Base</button>
     <button class="nav-tab" onclick="showPage('plan')">Plan</button>
@@ -703,6 +737,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
+
+<!-- ========== PAGE: DAILY PLAN (day-by-day) ========== -->
+<div class="page active" id="page-daily">
+  <div class="container">
+    <div id="daily-body"></div>
+  </div>
+</div>
 
 <!-- ========== PAGE: MASTERY / BLUEPRINT (UNIFIED PLAN) ========== -->
 <div class="page" id="page-mastery">
@@ -764,7 +805,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 </div>
 
 <!-- ========== PAGE: TODAY ========== -->
-<div class="page active" id="page-today">
+<div class="page" id="page-today">
   <div class="hero">
     <div class="hero-label">44-Week Blueprint · Reset to Day 1 · 2026</div>
     <h1>BECOME<br><span>UNSTOPPABLE</span></h1>
@@ -1236,7 +1277,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <div class="container">
     <div class="section">
       <div class="section-title"><div class="dot"></div> DAILY SCHEDULE</div>
-      <div class="section-sub">Your optimised daily flow — 7:30 AM wake · gym 7:50–9:00 · office 10:00 · 5–7 PM extended office (lectures + work) · 7:15 PM early dinner · 8 PM–12:30 AM study · sleep 1:30 AM.</div>
+      <div class="section-sub">Your optimised daily flow — 7:30 AM wake · gym 7:50–9:00 · office 10:00–5:00 · home by 5 PM · 5:30 PM dinner+family · 6:30–9 PM Block 1 · 9:30 PM–1 AM Block 2 · sleep 2:00 AM. (~6 hrs deep study every weekday.)</div>
       <div class="schedule-grid">
         <div class="schedule-row" style="border-left:3px solid var(--accent);"><div class="sched-time">7:30 AM</div><div class="sched-content"><div class="sched-icon">⏰</div><div><div class="sched-title">Wake Up + Hydrate + AM Skincare</div><div class="sched-desc">500ml water immediately. Open curtains. Sunlight in face. Cleanser → Niacinamide → SPF 50+. High-protein breakfast: 4 eggs / dal chilla / oats+nuts.</div></div><div class="sched-tag tag-rest">WAKE</div></div></div>
         <div class="schedule-row" style="border-left:3px solid var(--green);"><div class="sched-time">7:50 AM</div><div class="sched-content"><div class="sched-icon">🏋️</div><div><div class="sched-title">GYM — Cardio + Weights</div><div class="sched-desc">7:50 AM → 9:00 AM. 20 min cardio first (treadmill 7 km/h) → 50 min weights (PPL split). No scrolling. Full focus. Creatine pre-workout.</div></div><div class="sched-tag tag-fitness" style="background:rgba(76,255,145,0.1);color:var(--green);">GYM</div></div></div>
@@ -1244,15 +1285,15 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
         <div class="schedule-row"><div class="sched-time">9:45 AM</div><div class="sched-content"><div class="sched-icon">🚶</div><div><div class="sched-title">Leave for Office</div><div class="sched-desc">Listen to tech podcasts on commute: Lex Fridman / Karpathy / MLST. No doomscrolling — learn on the go.</div></div><div class="sched-tag tag-mind">COMMUTE</div></div></div>
         <div class="schedule-row" style="border-left:3px solid var(--accent2);"><div class="sched-time">10:00 AM</div><div class="sched-content"><div class="sched-icon">💼</div><div><div class="sched-title">Office Work — Parallel Wireless</div><div class="sched-desc">Pomodoro 25/5. Deliver core work fast. Link everything you do to AI context. Start early, get more done before 1 PM.</div></div><div class="sched-tag tag-work">WORK</div></div></div>
         <div class="schedule-row"><div class="sched-time">1:00 PM</div><div class="sched-content"><div class="sched-icon">🥗</div><div><div class="sched-title">Lunch — High Protein (1:00–1:30)</div><div class="sched-desc">Dal + sabzi + chapati + curd. 5 min walk after. Avoid heavy rice — crashes afternoon focus. Back to desk by 1:30 sharp.</div></div><div class="sched-tag tag-care">FUEL</div></div></div>
-        <div class="schedule-row"><div class="sched-time">1:30 PM</div><div class="sched-content"><div class="sched-icon">📚</div><div><div class="sched-title">Office Afternoon — Work + Opportunistic Study</div><div class="sched-desc">Deep work until 5 PM. Use gaps: LeetCode on phone, ML videos, Neetcode. Every idle minute = compound interest.</div></div><div class="sched-tag tag-study-s">STUDY</div></div></div>
-        <div class="schedule-row" style="border-left:3px solid var(--accent2);"><div class="sched-time">5:00 PM</div><div class="sched-content"><div class="sched-icon">🎓</div><div><div class="sched-title">Office Extended — Lectures + Work (5:00–7:00 PM)</div><div class="sched-desc">Stay in office: attend lectures, deliver pending work, mentor / pair-up, prep tomorrow. This is your edge — extra 2 hours = compound career growth. Use breaks to skim 1 LeetCode pattern.</div></div><div class="sched-tag tag-work">OFFICE+</div></div></div>
-        <div class="schedule-row"><div class="sched-time">7:00 PM</div><div class="sched-content"><div class="sched-icon">🏃</div><div><div class="sched-title">Leave Office + Reach Home by 7:15</div><div class="sched-desc">15-min commute. Wash face, change to home clothes immediately — this mentally separates office mode from study mode.</div></div><div class="sched-tag tag-rest">TRANSIT</div></div></div>
-        <div class="schedule-row"><div class="sched-time">7:15 PM</div><div class="sched-content"><div class="sched-icon">🍽️</div><div><div class="sched-title">EARLY DINNER + Family Time</div><div class="sched-desc">7:15–8:00 PM. Eat first, study later. Dal / sabzi / paneer + roti. Talk with Mummy–Papa for 15 min. No phone at the table. Eating early = better focus + better sleep + no late-night bloat.</div></div><div class="sched-tag tag-care">FUEL</div></div></div>
-        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">8:00 PM</div><div class="sched-content"><div class="sched-icon">💡</div><div><div class="sched-title">STUDY BLOCK 1 — 2.5 Hours</div><div class="sched-desc">8:00–10:30 PM: LeetCode (2 problems), ML course (fast.ai / Karpathy), DSA theory or system design. Phone silent + face-down + in another room. This is your peak focus session.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">DEEP</div></div></div>
-        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">10:30 PM</div><div class="sched-content"><div class="sched-icon">📖</div><div><div class="sched-title">STUDY BLOCK 2 — 2 Hours</div><div class="sched-desc">10:30 PM–12:30 AM: System design (DDIA), ML implementation, GitHub push, mock interview prep, building projects. Second wind = ship code.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">STUDY</div></div></div>
-        <div class="schedule-row"><div class="sched-time">12:30 AM</div><div class="sched-content"><div class="sched-icon">🌿</div><div><div class="sched-title">PM Skincare + Night Walk</div><div class="sched-desc">Double cleanse → Niacinamide → AHA/Kojic/Retinol → Moisturizer → Minoxidil temples. Then 15-min walk, no phone, reset mind.</div></div><div class="sched-tag tag-care">SKIN</div></div></div>
-        <div class="schedule-row" style="border-left:3px solid var(--accent);"><div class="sched-time">1:00 AM</div><div class="sched-content"><div class="sched-icon">📝</div><div><div class="sched-title">REVIEW + WIND DOWN — 30 min</div><div class="sched-desc">1:00–1:30 AM: Revise today's notes, journal 3 lines (what worked / what to fix), prep tomorrow's checklist. Zinc+Magnesium supplement. Warm light only.</div></div><div class="sched-tag tag-study-s">REVIEW</div></div></div>
-        <div class="schedule-row"><div class="sched-time">1:30 AM</div><div class="sched-content"><div class="sched-icon">😴</div><div><div class="sched-title">SLEEP — 6 hours (You're 23!)</div><div class="sched-desc">1:30 AM → 7:30 AM = 6 hrs. At 23, your body recovers fast. Quality beats quantity — cool room, dark, phone face-down. Testosterone + muscle repair happens here.</div></div><div class="sched-tag tag-rest">SLEEP</div></div></div>
+        <div class="schedule-row"><div class="sched-time">1:30 PM</div><div class="sched-content"><div class="sched-icon">📚</div><div><div class="sched-title">Office Afternoon — Work + Opportunistic Study</div><div class="sched-desc">Deep work; wrap up and leave by ~4:45 PM so you're home by 5. Use gaps: LeetCode on phone, ML videos, NeetCode. Every idle minute = compound interest.</div></div><div class="sched-tag tag-study-s">STUDY</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent2);"><div class="sched-time">5:00 PM</div><div class="sched-content"><div class="sched-icon">🏠</div><div><div class="sched-title">Reach Home from Office</div><div class="sched-desc">Home by 5. Change to home clothes, wash face, 10-min decompress — mentally switch from office mode to study mode. The whole evening (5 PM → 2 AM) is yours.</div></div><div class="sched-tag tag-rest">HOME</div></div></div>
+        <div class="schedule-row"><div class="sched-time">5:30 PM</div><div class="sched-content"><div class="sched-icon">🍽️</div><div><div class="sched-title">Early Dinner + Family Time (5:30–6:30)</div><div class="sched-desc">Eat first, study later. Dal / sabzi / paneer + roti. Talk with Mummy–Papa. No phone at the table. Eating early = better focus + better sleep + no late-night bloat.</div></div><div class="sched-tag tag-care">FUEL</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">6:30 PM</div><div class="sched-content"><div class="sched-icon">💡</div><div><div class="sched-title">STUDY BLOCK 1 — Core Build (2.5 hrs)</div><div class="sched-desc">6:30–9:00 PM: the current Blueprint phase's main skill (Spring Boot / React / K8s / RAG). Phone silent, face-down, in another room. Your peak focus session.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">DEEP</div></div></div>
+        <div class="schedule-row"><div class="sched-time">9:00 PM</div><div class="sched-content"><div class="sched-icon">🌿</div><div><div class="sched-title">Break + Reset (30 min)</div><div class="sched-desc">9:00–9:30 PM: short walk, stretch, water, light snack. No doomscrolling — protect the second block.</div></div><div class="sched-tag tag-care">RESET</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">9:30 PM</div><div class="sched-content"><div class="sched-icon">📖</div><div><div class="sched-title">STUDY BLOCK 2 — Project + AI + DSA (3.5 hrs)</div><div class="sched-desc">9:30 PM–1:00 AM: build the phase project, the AI/RAG thread, then 2–3 NeetCode problems, and push to GitHub. Second wind = ship code.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">STUDY</div></div></div>
+        <div class="schedule-row"><div class="sched-time">1:00 AM</div><div class="sched-content"><div class="sched-icon">✨</div><div><div class="sched-title">PM Skincare + Minoxidil</div><div class="sched-desc">Double cleanse → Niacinamide → AHA/Kojic/Retinol → Moisturizer → Minoxidil on temples.</div></div><div class="sched-tag tag-care">SKIN</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent);"><div class="sched-time">1:15 AM</div><div class="sched-content"><div class="sched-icon">📝</div><div><div class="sched-title">Review + Plan Tomorrow (1:15–1:45)</div><div class="sched-desc">Revise today's notes, journal 3 lines (what worked / what to fix), set tomorrow's 3 must-dos. Zinc+Magnesium. Warm light only — start winding down.</div></div><div class="sched-tag tag-study-s">REVIEW</div></div></div>
+        <div class="schedule-row"><div class="sched-time">2:00 AM</div><div class="sched-content"><div class="sched-icon">😴</div><div><div class="sched-title">SLEEP — by 2:00 AM</div><div class="sched-desc">2:00 AM → 7:30 AM ≈ 5.5 hrs. It's tight — protect it fiercely (cool, dark, phone away) and add a 20-min post-lunch nap. On no-gym days, sleep in to 8:00 for a full 6 hrs. Take a full deload day every ~6 weeks.</div></div><div class="sched-tag tag-rest">SLEEP</div></div></div>
       </div>
     </div>
 
@@ -2525,7 +2566,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
           <span style="background:var(--green);color:#000;border-radius:5px;padding:3px 8px;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;">#9</span>
           <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;">APPLICATION EXECUTION — VOLUME + SPEED</div>
         </div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Once Month 5 hits, treat applying as a full-time job inside the 5-7 PM block. Volume + tracking = offers.</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Once Month 5 hits, treat applying as a full-time job inside your evening study block. Volume + tracking = offers.</div>
         <div style="display:flex;flex-direction:column;gap:6px;">
           <div style="font-size:12px;color:var(--muted);display:flex;align-items:flex-start;gap:7px;background:var(--card2);padding:9px 11px;border-radius:7px;border:1px solid var(--border);"><span style="color:var(--green);flex-shrink:0;">▸</span><span><strong style="color:var(--text);">Tracker (Notion/Airtable):</strong> 50+ companies tracked — applied date, status, contact, follow-up date. Never lose a thread.</span></div>
           <div style="font-size:12px;color:var(--muted);display:flex;align-items:flex-start;gap:7px;background:var(--card2);padding:9px 11px;border-radius:7px;border:1px solid var(--border);"><span style="color:var(--green);flex-shrink:0;">▸</span><span><strong style="color:var(--text);">Cold email playbook:</strong> 1-paragraph note to hiring managers (LinkedIn → email via Hunter.io). 5/week. 5% reply = 2.5 interviews/month free.</span></div>
@@ -2573,11 +2614,11 @@ const DAILY_TASKS = [
   { id:'sunscreen', label:'Reapplied sunscreen every 2–3 hrs if outdoors', cat:'skin', tag:'SPF' },
   { id:'haircare', label:'Minoxidil 5% applied on temples (evening)', cat:'skin', tag:'Hair' },
   // MIND
-  { id:'sleep8', label:'Slept 8 hours', cat:'mind', tag:'Mind' },
+  { id:'sleep8', label:'Slept 6+ hours (protect recovery)', cat:'mind', tag:'Mind' },
   { id:'nosugar', label:'No sugar / junk food', cat:'food', tag:'Nutrition' },
   { id:'sunlight', label:'Morning sunlight (5 min)', cat:'mind', tag:'Mind' },
   { id:'podcast', label:'Tech podcast / lecture (commute or chores)', cat:'study', tag:'Study' },
-  { id:'noscreen', label:'Screens off by 1:30 AM (sleep on time)', cat:'mind', tag:'Mind' },
+  { id:'noscreen', label:'Screens off by 2:00 AM (sleep on time)', cat:'mind', tag:'Mind' },
   { id:'supps', label:'Took supplements (creatine/D3/zinc)', cat:'food', tag:'Nutrition' },
 ];
 
@@ -2595,7 +2636,7 @@ function saveStorage(data) {
 let appData = loadStorage();
 if (!appData.days) appData.days = {};
 if (!appData.weights) appData.weights = [];
-appData.startDate = '2026-06-19'; // RESET — journey restarts June 19, 2026 (Day 1)
+appData.startDate = '2026-06-20'; // Journey Day 1 = 20 June 2026 (matches the Daily Plan tab)
 
 function todayStr() {
   // Use LOCAL date (IST) so the calendar marks the correct day, not UTC
@@ -2621,6 +2662,7 @@ function showPage(name) {
   if (name === 'maangai') initMAAngAI();
   if (name === 'base') renderBaseTracker();
   if (name === 'mastery' && !window.__mstReady) renderMastery();
+  if (name === 'daily') renderDaily();
   window.scrollTo(0,0);
 }
 
@@ -4483,13 +4525,13 @@ TODAY'S BATTLE PLAN
 ⏰  7:30 AM  → Wake up + hydrate + AM skincare
 🏋️  7:50 AM  → GYM (cardio + PPL weights)
 💼  10:00 AM → Office — deliver fast, learn in gaps
-🎓  5:00 PM  → Office Extended (5–7 PM) — lectures + work
-🍽️  7:15 PM  → Early Dinner + family (45 min)
-💡  8:00 PM  → STUDY BLOCK 1 (2.5 hrs) — 2 LeetCode + DSA
-📖  10:30 PM → STUDY BLOCK 2 (2 hrs) — AI/ML project + GitHub
-🌿  12:30 AM → PM skincare + Minoxidil + 15 min walk
-📝  1:00 AM  → REVIEW + journal (30 min)
-😴  1:30 AM  → SLEEP (6 hrs)
+🏠  5:00 PM  → Home from office — the evening is yours
+🍽️  5:30 PM  → Early dinner + family (5:30–6:30)
+💡  6:30 PM  → STUDY BLOCK 1 (2.5 hrs) — core build (current phase)
+📖  9:30 PM  → STUDY BLOCK 2 (3.5 hrs) — project + AI + 2–3 DSA + GitHub
+✨  1:00 AM  → PM skincare + Minoxidil
+📝  1:15 AM  → REVIEW + plan tomorrow
+😴  2:00 AM  → SLEEP (~5.5–6 hrs)
 
 ─────────────────────────────────────
 TODAY'S IGNITION 🔥
@@ -4547,13 +4589,13 @@ TODAY'S MOTIVATION 💎
 TOMORROW'S NON-NEGOTIABLES
 ─────────────────────────────────────
   ✦ Gym 7:50 AM — no excuses
-  ✦ Office Extended (5–7 PM) used
-  ✦ Early dinner by 7:15 PM (no late eating)
-  ✦ Block 1 (8:00 PM): 2 LeetCode solved
-  ✦ Block 2 (10:30 PM): AI project commit
+  ✦ Home by 5 PM — protect the evening
+  ✦ Early dinner by 5:30 PM (no late eating)
+  ✦ Block 1 (6:30 PM): core build done
+  ✦ Block 2 (9:30 PM): 2–3 DSA + project commit
   ✦ GitHub push before sleeping
   ✦ PM skincare + Minoxidil
-  ✦ Screens off by 1:30 AM
+  ✦ Screens off by 2:00 AM
 
 ─────────────────────────────────────
 You are 23. This is YOUR time.
@@ -5246,6 +5288,146 @@ function updateMasteryProgress(){
 }
 
 renderMastery();
+</script>
+
+<!-- ===================== DAILY PLAN ENGINE (day-by-day) ===================== -->
+<script>
+const DAILY_START = '2026-06-20';                 // Day 1
+const DP_ORDER = ['p0','p1','p2','p3','p4','p5'];
+const DP_WEEKS = { p0:4, p1:8, p2:6, p3:8, p4:10, p5:8 };
+const DP_RANGE = {};
+(function(){ var acc=0; DP_ORDER.forEach(function(id){ var d=DP_WEEKS[id]*7; DP_RANGE[id]={start:acc+1,end:acc+d}; acc+=d; }); DP_RANGE.total=acc; })();
+const DP_TOTAL = DP_RANGE.total; // 308
+
+// Blind 75 — proven set, in NeetCode order (the daily DSA spine for the first 75 days)
+const BLIND75 = [
+  {n:'Contains Duplicate',p:'Arrays & Hashing'},{n:'Valid Anagram',p:'Arrays & Hashing'},{n:'Two Sum',p:'Arrays & Hashing'},{n:'Group Anagrams',p:'Arrays & Hashing'},{n:'Top K Frequent Elements',p:'Arrays & Hashing'},{n:'Product of Array Except Self',p:'Arrays & Hashing'},{n:'Encode & Decode Strings',p:'Arrays & Hashing'},{n:'Longest Consecutive Sequence',p:'Arrays & Hashing'},
+  {n:'Valid Palindrome',p:'Two Pointers'},{n:'3Sum',p:'Two Pointers'},{n:'Container With Most Water',p:'Two Pointers'},
+  {n:'Best Time to Buy & Sell Stock',p:'Sliding Window'},{n:'Longest Substring Without Repeating',p:'Sliding Window'},{n:'Longest Repeating Character Replacement',p:'Sliding Window'},{n:'Minimum Window Substring',p:'Sliding Window'},
+  {n:'Valid Parentheses',p:'Stack'},
+  {n:'Find Minimum in Rotated Sorted Array',p:'Binary Search'},{n:'Search in Rotated Sorted Array',p:'Binary Search'},
+  {n:'Reverse Linked List',p:'Linked List'},{n:'Merge Two Sorted Lists',p:'Linked List'},{n:'Reorder List',p:'Linked List'},{n:'Remove Nth Node from End',p:'Linked List'},{n:'Linked List Cycle',p:'Linked List'},{n:'Merge K Sorted Lists',p:'Linked List'},
+  {n:'Invert Binary Tree',p:'Trees'},{n:'Maximum Depth of Binary Tree',p:'Trees'},{n:'Same Tree',p:'Trees'},{n:'Subtree of Another Tree',p:'Trees'},{n:'Lowest Common Ancestor of a BST',p:'Trees'},{n:'Binary Tree Level Order Traversal',p:'Trees'},{n:'Validate BST',p:'Trees'},{n:'Kth Smallest Element in a BST',p:'Trees'},{n:'Construct Tree (Preorder + Inorder)',p:'Trees'},{n:'Binary Tree Maximum Path Sum',p:'Trees'},{n:'Serialize & Deserialize Binary Tree',p:'Trees'},
+  {n:'Implement Trie (Prefix Tree)',p:'Tries'},{n:'Design Add & Search Words',p:'Tries'},{n:'Word Search II',p:'Tries'},
+  {n:'Find Median from Data Stream',p:'Heap'},
+  {n:'Combination Sum',p:'Backtracking'},{n:'Word Search',p:'Backtracking'},
+  {n:'Number of Islands',p:'Graphs'},{n:'Clone Graph',p:'Graphs'},{n:'Pacific Atlantic Water Flow',p:'Graphs'},{n:'Course Schedule',p:'Graphs'},{n:'Number of Connected Components',p:'Graphs'},{n:'Graph Valid Tree',p:'Graphs'},{n:'Alien Dictionary',p:'Graphs'},
+  {n:'Climbing Stairs',p:'1-D DP'},{n:'House Robber',p:'1-D DP'},{n:'House Robber II',p:'1-D DP'},{n:'Longest Palindromic Substring',p:'1-D DP'},{n:'Palindromic Substrings',p:'1-D DP'},{n:'Decode Ways',p:'1-D DP'},{n:'Coin Change',p:'1-D DP'},{n:'Maximum Product Subarray',p:'1-D DP'},{n:'Word Break',p:'1-D DP'},{n:'Longest Increasing Subsequence',p:'1-D DP'},
+  {n:'Unique Paths',p:'2-D DP'},{n:'Longest Common Subsequence',p:'2-D DP'},
+  {n:'Maximum Subarray',p:'Greedy'},{n:'Jump Game',p:'Greedy'},
+  {n:'Insert Interval',p:'Intervals'},{n:'Merge Intervals',p:'Intervals'},{n:'Non-overlapping Intervals',p:'Intervals'},{n:'Meeting Rooms',p:'Intervals'},{n:'Meeting Rooms II',p:'Intervals'},
+  {n:'Rotate Image',p:'Math & Geometry'},{n:'Spiral Matrix',p:'Math & Geometry'},{n:'Set Matrix Zeroes',p:'Math & Geometry'},
+  {n:'Number of 1 Bits',p:'Bit Manipulation'},{n:'Counting Bits',p:'Bit Manipulation'},{n:'Reverse Bits',p:'Bit Manipulation'},{n:'Missing Number',p:'Bit Manipulation'},{n:'Sum of Two Integers',p:'Bit Manipulation'}
+];
+const DP_PATTERNS = ['Arrays & Hashing','Two Pointers','Sliding Window','Binary Search','Stack','Linked List','Trees','Tries','Heap','Backtracking','Graphs','1-D DP','2-D DP','Greedy','Intervals','Bit Manipulation'];
+
+const DP_DONE_KEY = 'ruturaj_daily_done_v1';
+function dpLoadDone(){ try { return JSON.parse(localStorage.getItem(DP_DONE_KEY)) || {}; } catch(e){ return {}; } }
+let dpDone = dpLoadDone();
+function dpSaveDone(){ localStorage.setItem(DP_DONE_KEY, JSON.stringify(dpDone)); }
+
+const _dpLessonCache = {};
+function dpLessons(pid){
+  if (_dpLessonCache[pid]) return _dpLessonCache[pid];
+  var ph = MASTERY_PHASES.find(function(p){ return p.id===pid; });
+  var out = [];
+  ph.tracks.forEach(function(tr){ if (tr.dom!=='dsa') tr.items.forEach(function(it){ out.push(it.t.replace(/<\/?b>/g,'')); }); });
+  _dpLessonCache[pid] = out;
+  return out;
+}
+function dpFmt(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function dpDateForDay(n){ var d=new Date(DAILY_START+'T12:00:00'); d.setDate(d.getDate()+(n-1)); return dpFmt(d); }
+function dpDayForDate(s){ var a=new Date(DAILY_START+'T12:00:00'); var b=new Date(s+'T12:00:00'); return Math.round((b-a)/86400000)+1; }
+
+function dpPlan(n){
+  if (n < 1) return { state:'pre', n:n };
+  if (n > DP_TOTAL) return { state:'post', n:n };
+  var pid = DP_ORDER.find(function(id){ return n>=DP_RANGE[id].start && n<=DP_RANGE[id].end; });
+  var ph = MASTERY_PHASES.find(function(p){ return p.id===pid; });
+  var r = DP_RANGE[pid], dip = n - r.start, dur = r.end - r.start + 1;
+  var lessons = dpLessons(pid);
+  var idxAt = function(x){ return Math.min(lessons.length-1, Math.floor(x*lessons.length/dur)); };
+  var li = idxAt(dip);
+  var a = dip; while (a-1>=0 && idxAt(a-1)===li) a--;
+  var b = dip; while (b+1<dur && idxAt(b+1)===li) b++;
+  var dayOf = dip-a+1, span = b-a+1;
+  var dateStr = dpDateForDay(n), dow = new Date(dateStr+'T12:00:00').getDay();
+  var isSun = dow===0, isSat = dow===6, week = Math.ceil(n/7), deload = (week%6===0);
+  var dsa;
+  if (n-1 < BLIND75.length) { var pr = BLIND75[n-1]; dsa = { main:'Solve <b>'+pr.n+'</b>', tag:pr.p, note:'Learn the pattern from scratch, then re-solve one earlier problem cold (&lt;20 min).' }; }
+  else if (isSun) { dsa = { main:'<b>Weekly DSA test</b>', tag:'timed', note:'1 contest, or 3 problems under time with no hints. Log your solve time.' }; }
+  else { var pat = DP_PATTERNS[(n-1)%DP_PATTERNS.length]; dsa = { main:'<b>2 Medium problems</b>', tag:pat, note:'Then re-solve 1 old problem cold. Track "re-solved &lt;20 min", not raw count.' }; }
+  return { state:'on', n:n, pid:pid, ph:ph, week:week, lesson:lessons[li], dayOf:dayOf, span:span, isSun:isSun, isSat:isSat, weekend:(isSun||isSat), deload:deload, dsa:dsa, dateStr:dateStr };
+}
+
+let dpView = null;
+function dpCurrentDate(){ return dpView || todayStr(); }
+function dpShift(delta){ var d=new Date(dpCurrentDate()+'T12:00:00'); d.setDate(d.getDate()+delta); dpView=dpFmt(d); renderDaily(); }
+function dpToday(){ dpView=null; renderDaily(); }
+function dpMarkDone(n){ if (dpDone[n]) delete dpDone[n]; else dpDone[n]=true; dpSaveDone(); renderDaily(); }
+
+function dpWeekRows(n){
+  var weekStart = n - ((n-1)%7);
+  var todayN = dpDayForDate(todayStr());
+  var rows = '';
+  for (var d=weekStart; d<weekStart+7; d++){
+    if (d<1 || d>DP_TOTAL) continue;
+    var p = dpPlan(d);
+    var cls = (d===n?' istoday':'') + (dpDone[d]?' isdone':'');
+    var dd = new Date(dpDateForDay(d)+'T12:00:00').toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+    var focus = (p.state==='on'? p.lesson : (p.state==='pre'?'Prep / rest':'Done'));
+    var dsa = (p.state==='on'? (p.dsa.main.replace(/<\/?b>/g,'')) : '');
+    rows += '<div class="dp-week-row'+cls+'" onclick="dpGo('+d+')" style="cursor:pointer;">'
+      + '<div class="dp-wr-day"><div class="dp-wr-dn">'+d+'</div><div class="dp-wr-dd">'+dd+'</div></div>'
+      + '<div><div class="dp-wr-focus">'+(dpDone[d]?'✓ ':'')+focus+'</div><div class="dp-wr-dsa">💻 '+dsa+'</div></div>'
+      + '</div>';
+  }
+  return rows;
+}
+function dpGo(n){ dpView = dpDateForDay(n); renderDaily(); }
+
+function renderDaily(){
+  var host = document.getElementById('daily-body'); if(!host) return;
+  var dateStr = dpCurrentDate(), n = dpDayForDate(dateStr), plan = dpPlan(n);
+  window.__dpReady = true;
+  if (plan.state==='pre'){
+    host.innerHTML = '<div class="dp-hero"><div class="dp-kick">Countdown</div><div class="dp-daynum">DAY 0</div><div class="dp-date">'+formatDate(dateStr)+'</div></div>'
+      + '<div class="dp-msg">Your journey starts <b>20 June 2026</b>. Use today to set the stage: <b>install JDK 25 + IntelliJ</b>, create/clean your <b>GitHub</b>, open the <b>🚀 Blueprint</b> tab and skim Phase 0, and sleep early. Tomorrow = Day 1. 🔥</div>'
+      + '<div class="dp-nav" style="margin-top:14px;"><button class="btn secondary" onclick="dpShift(1)">See Day 1 ▶</button><button class="btn secondary" onclick="dpToday()">● Today</button></div>';
+    return;
+  }
+  if (plan.state==='post'){
+    host.innerHTML = '<div class="dp-hero"><div class="dp-kick">Journey complete</div><div class="dp-daynum">DAY '+DP_TOTAL+'+</div></div>'
+      + '<div class="dp-msg">🎉 You finished the 308-day blueprint. You are <b>interview-ready</b> across full-stack, DevOps, AI and system design. Keep applying in waves, keep DSA warm, and negotiate hard. Then reset and aim higher.</div>'
+      + '<div class="dp-nav" style="margin-top:14px;"><button class="btn secondary" onclick="dpShift(-1)">◀ Prev</button><button class="btn secondary" onclick="dpToday()">● Today</button></div>';
+    return;
+  }
+  var ph = plan.ph, bc = ph.badgeColor, pct = Math.round(n/DP_TOTAL*100);
+  var doneCount = Object.keys(dpDone).filter(function(k){ return dpDone[k]; }).length;
+  var isDone = !!dpDone[n];
+  var kick = plan.deload ? 'Deload week — go lighter, recover' : (plan.weekend ? "Weekend — 8–10 hrs, push the project" : "Today's mission");
+  var html = ''
+    + '<div class="dp-hero">'
+    +   '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">'
+    +     '<div><div class="dp-kick">'+kick+'</div><div class="dp-daynum">DAY '+n+'</div><div class="dp-date">'+formatDate(dateStr)+'</div>'
+    +       '<div class="dp-phasechip" style="background:'+bc+'22;color:'+bc+';">'+ph.badge+' · '+ph.title+' · Week '+plan.week+'</div></div>'
+    +     '<div style="text-align:right;"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:32px;color:var(--green);">'+doneCount+'</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;">DAYS DONE</div></div>'
+    +   '</div>'
+    +   '<div class="dp-prog"><div class="dp-prog-fill" style="width:'+pct+'%"></div></div>'
+    +   '<div class="dp-progtext">Day '+n+' of '+DP_TOTAL+' · '+pct+'% of the journey</div>'
+    + '</div>'
+    + '<div class="dp-nav"><button class="btn secondary" onclick="dpShift(-1)">◀ Prev</button><button class="btn secondary" onclick="dpToday()">● Today</button><button class="btn secondary" onclick="dpShift(1)">Next ▶</button></div>'
+    + '<div class="dp-card"><div class="dp-card-h">🎯 Learn this today <span class="tm">Block 1 · 6:30–9 PM</span></div><div class="dp-card-b"><div class="big">'+plan.lesson+'</div><div class="sub">'+(plan.span>1?('Day '+plan.dayOf+' of ~'+plan.span+' on this topic. '):'')+'Learn it deeply, take notes, try a tiny example.</div></div></div>'
+    + '<div class="dp-card"><div class="dp-card-h">🛠️ Build &amp; ship <span class="tm">Block 2 · 9:30 PM–1 AM</span></div><div class="dp-card-b"><div>Apply today\'s topic to your phase project: <span class="big">'+ph.project.title+'</span>.'+(plan.weekend?' Weekend = go deep + catch up anything pending.':'')+'</div><div class="sub">End the night with a <b>GitHub commit</b> — even a small one. Never break the chain.</div></div></div>'
+    + '<div class="dp-card"><div class="dp-card-h">💻 DSA today <span class="tm">~45 min</span></div><div class="dp-card-b"><div class="big">'+plan.dsa.main+' <span class="dp-tag2">'+plan.dsa.tag+'</span></div><div class="sub">'+plan.dsa.note+(n-1<BLIND75.length?' (Full Blind-75 list is in your printed checklist.)':'')+'</div></div></div>'
+    + '<div class="dp-card"><div class="dp-card-h">✅ Daily non-negotiables <span class="tm" style="cursor:pointer;color:var(--accent3);" onclick="showPage(\'today\')">tick in Today →</span></div><div class="dp-card-b"><div class="dp-habits"><span class="dp-habit">🏋️ Gym 7:50 AM</span><span class="dp-habit">🍽️ Dinner by 6:30</span><span class="dp-habit">💡 Block 1 (6:30)</span><span class="dp-habit">📖 Block 2 (9:30)</span><span class="dp-habit">💻 GitHub commit</span><span class="dp-habit">✨ Skincare AM+PM</span><span class="dp-habit">😴 Sleep by 2 AM</span></div></div></div>'
+    + '<div class="dp-card"><div class="dp-card-h">🏁 This phase\'s goal</div><div class="dp-card-b"><div class="sub" style="margin-top:0;">'+ph.milestone+'</div></div></div>'
+    + '<button class="dp-done-btn'+(isDone?' isdone':'')+'" onclick="dpMarkDone('+n+')">'+(isDone?'✓ Day '+n+' completed — tap to undo':'✅ Mark Day '+n+' complete')+'</button>'
+    + '<div class="dp-week"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:22px;letter-spacing:1px;margin:6px 0 10px;">📅 This week (tap a day)</div>'+dpWeekRows(n)+'</div>';
+  host.innerHTML = html;
+}
+
+renderDaily();
 </script>
 
 </body>

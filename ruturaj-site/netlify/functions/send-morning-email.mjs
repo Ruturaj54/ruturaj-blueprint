@@ -107,7 +107,7 @@ const THEMES = [
 ];
 
 function getDayNumber() {
-  return Math.max(1, Math.floor((new Date() - new Date("2026-06-19T00:00:00+05:30")) / 86400000) + 1);
+  return Math.max(1, Math.floor((new Date() - new Date("2026-06-20T00:00:00+05:30")) / 86400000) + 1);
 }
 function getDateStr() {
   return new Date().toLocaleDateString("en-IN", { weekday:"long", day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata" });
@@ -256,12 +256,13 @@ export default async function handler() {
   const planRows = planRow("⏰","7:30 AM","Wake up · 500ml water · AM skincare",accent)
     + planRow("🏋️","7:50 AM","GYM — cardio + PPL weights (NON-NEGOTIABLE)",accent)
     + planRow("💼","10:00 AM","Office — deliver fast, learn in gaps",accent)
-    + planRow("🎓","5:00 PM","Office Extended — lectures + work (5–7 PM)",accent)
-    + planRow("🍽️","7:15 PM","Early dinner + family (45 min) — eat first",accent)
-    + planRow("💡","8:00 PM","STUDY BLOCK 1 (2.5 hrs) — 2 LeetCode + DSA",accent)
-    + planRow("📖","10:30 PM","STUDY BLOCK 2 (2 hrs) — AI/ML project + GitHub",accent)
-    + planRow("🌿","12:30 AM","PM skincare + Minoxidil + 15 min walk",accent)
-    + planRow("😴","1:30 AM","SLEEP — 6 hrs solid",accent);
+    + planRow("🏠","5:00 PM","Home from office — the evening is yours",accent)
+    + planRow("🍽️","5:30 PM","Early dinner + family (5:30–6:30) — eat first",accent)
+    + planRow("💡","6:30 PM","STUDY BLOCK 1 (2.5 hrs) — core build (current phase)",accent)
+    + planRow("📖","9:30 PM","STUDY BLOCK 2 (3.5 hrs) — project + AI + 2–3 DSA + GitHub",accent)
+    + planRow("✨","1:00 AM","PM skincare + Minoxidil",accent)
+    + planRow("📝","1:15 AM","Review + plan tomorrow",accent)
+    + planRow("😴","2:00 AM","SLEEP — protect ~5.5–6 hrs",accent);
 
   const html = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head>"
     + "<body style='margin:0;padding:0;background:#080808;'>"

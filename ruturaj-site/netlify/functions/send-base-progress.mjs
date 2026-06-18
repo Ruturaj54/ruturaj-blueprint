@@ -1,6 +1,6 @@
 // Scheduled — 5:00 PM IST = 11:30 UTC daily
 // BASE 30-DAY PROGRESS MAIL — fires only during the first 30 days of the plan
-// Purpose: snapshot of the Month-1 BASE rebuild (foundation) + push for Office Extended block (5–7 PM)
+// Purpose: snapshot of the Month-1 BASE rebuild (foundation) + push for Evening Block 1 (6:30–9 PM)
 import nodemailer from "nodemailer";
 
 const SENDER_EMAIL = "shivjiforyou@gmail.com";
@@ -13,9 +13,9 @@ const BASE_TOTAL_DAYS = 30;
 const BASE_DAYS = [
   { phase:"WEEK 1 · IGNITION",      focus:"Wake at 7:30 · Gym at 7:50 · Office at 10",     drill:"Track wake time + gym time. No misses." },
   { phase:"WEEK 1 · IGNITION",      focus:"Gym + 1 LeetCode Easy + AM skincare",            drill:"Lock the morning: 7:30 → 9:30 routine." },
-  { phase:"WEEK 1 · IGNITION",      focus:"Establish 8 PM Block 1 — phone in another room", drill:"Sit for 2.5 hrs no matter what." },
-  { phase:"WEEK 1 · IGNITION",      focus:"Establish 10:30 PM Block 2 — open AI repo",      drill:"Even 30 min of AI reading counts." },
-  { phase:"WEEK 1 · IGNITION",      focus:"Office Extended 5–7 PM lecture window",          drill:"Watch 1 PPA lecture or solve 3 logic problems." },
+  { phase:"WEEK 1 · IGNITION",      focus:"Establish 6:30 PM Block 1 — phone in another room", drill:"Sit for 2.5 hrs no matter what." },
+  { phase:"WEEK 1 · IGNITION",      focus:"Establish 9:30 PM Block 2 — open AI repo",       drill:"Even 30 min of AI reading counts." },
+  { phase:"WEEK 1 · IGNITION",      focus:"Home by 5 PM — protect the evening blocks",      drill:"Watch 1 PPA lecture or solve 3 logic problems." },
   { phase:"WEEK 1 · IGNITION",      focus:"Skincare AM + PM both sides locked",             drill:"Cleanser → Niacinamide → SPF (AM) · Retinol (PM)." },
   { phase:"WEEK 1 · IGNITION",      focus:"Sunday review — write what worked + what failed",drill:"30-min journaling. Reset for Week 2." },
 
@@ -32,7 +32,7 @@ const BASE_DAYS = [
   { phase:"WEEK 3 · MOMENTUM",      focus:"Block 1 — start Trees / BFS / DFS",              drill:"5 problems on tree traversal pattern." },
   { phase:"WEEK 3 · MOMENTUM",      focus:"Block 2 AI — RAG hello-world over 4G PDFs",      drill:"Ingest 1 PDF → embed → query. Public GitHub." },
   { phase:"WEEK 3 · MOMENTUM",      focus:"Cardio hits 5x/week — 20 min each",              drill:"VO2 max climbing means brain stamina too." },
-  { phase:"WEEK 3 · MOMENTUM",      focus:"Track sleep window — bed by 1:30 AM, no later",  drill:"6 hrs solid > 8 hrs interrupted." },
+  { phase:"WEEK 3 · MOMENTUM",      focus:"Track sleep window — bed by 2:00 AM, no later",  drill:"Protect ~6 hrs solid > 8 hrs interrupted." },
   { phase:"WEEK 3 · MOMENTUM",      focus:"Sunday review #3 — calculate weekly LC count",   drill:"Aim: 14+ problems / week from now on." },
 
   { phase:"WEEK 4 · LOCK-IN",       focus:"50 LeetCode total milestone",                    drill:"Heavy week: 3 problems/day target." },
@@ -48,7 +48,7 @@ const BASE_DAYS = [
 ];
 
 function getDayNumber() {
-  return Math.max(1, Math.floor((new Date() - new Date("2026-06-19T00:00:00+05:30")) / 86400000) + 1);
+  return Math.max(1, Math.floor((new Date() - new Date("2026-06-20T00:00:00+05:30")) / 86400000) + 1);
 }
 function getDateStr() {
   return new Date().toLocaleDateString("en-IN", { weekday:"long", day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata" });
@@ -144,7 +144,7 @@ function buildBigProgressBar(dayInBase, accent) {
 
 function buildOfficeExtendedBlock(accent) {
   return "<div style='background:linear-gradient(135deg," + accent + "18," + accent + "08);border:2px solid " + accent + "55;border-radius:12px;padding:18px 20px;margin-bottom:20px;text-align:center;'>"
-    + "<p style='margin:0 0 8px;font-size:9px;letter-spacing:3px;color:" + accent + ";text-transform:uppercase;'>⚡ OFFICE EXTENDED · 5–7 PM · DO NOW</p>"
+    + "<p style='margin:0 0 8px;font-size:9px;letter-spacing:3px;color:" + accent + ";text-transform:uppercase;'>⚡ EVENING BLOCK 1 · 6:30 PM · DO NOW</p>"
     + "<p style='margin:0 0 6px;font-size:18px;font-weight:900;color:#fff;letter-spacing:1px;'>2 HRS LEFT IN OFFICE.</p>"
     + "<p style='margin:0;font-size:13px;color:#ccc;'>Watch 1 PPA / DSA / fast.ai lecture · or solve 3 logic problems. <strong style='color:" + accent + ";'>This block alone = +8 hrs/week.</strong></p>"
     + "</div>";
@@ -158,7 +158,7 @@ function buildBaseChecklist(accent) {
     + "<p style='margin:0 0 4px;font-size:12px;color:#aaa;'>☐ Minoxidil 2x applied</p>"
     + "<p style='margin:0 0 4px;font-size:12px;color:#aaa;'>☐ 150g+ protein hit</p>"
     + "<p style='margin:0 0 4px;font-size:12px;color:#aaa;'>☐ 1 LeetCode + 1 GitHub commit</p>"
-    + "<p style='margin:0 0 4px;font-size:12px;color:#aaa;'>☐ Office Extended (5–7 PM) used</p>"
+    + "<p style='margin:0 0 4px;font-size:12px;color:#aaa;'>☐ Evening Block 1 (6:30 PM) done</p>"
     + "<p style='margin:0 0 4px;font-size:12px;color:#aaa;'>☐ Block 1 (8 PM) + Block 2 (10:30 PM) done</p>"
     + "<p style='margin:0;font-size:11px;color:" + accent + ";font-style:italic;margin-top:8px;'>Every box = one brick in the BASE. 30 days of bricks = the foundation.</p>"
     + "</div>";
@@ -238,13 +238,13 @@ export default async function handler() {
     + "\n" + plan.phase + "\n"
     + "FOCUS: " + plan.focus + "\n"
     + "DRILL: " + plan.drill + "\n"
-    + "\n>>> OFFICE EXTENDED 5-7 PM · USE IT NOW <<<\n"
+    + "\n>>> EVENING BLOCK 1 · 6:30 PM · START NOW <<<\n"
     + "Watch 1 lecture or solve 3 logic problems. +8 hrs/week.\n"
     + "\nNON-NEGOTIABLES BY 9 PM:\n"
     + "  [ ] Gym + skincare + Minoxidil\n"
     + "  [ ] 150g+ protein\n"
     + "  [ ] 1 LeetCode + 1 GitHub commit\n"
-    + "  [ ] Office Extended (5-7 PM) used\n"
+    + "  [ ] Evening Block 1 (6:30 PM) done\n"
     + "  [ ] Block 1 + Block 2 done\n"
     + "\n" + (BASE_TOTAL_DAYS - dayInBase) + " days till BASE graduates.\n"
     + "RUTURAJ BLUEPRINT · MONTH 1 BASE · 2026";

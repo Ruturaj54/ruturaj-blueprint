@@ -110,7 +110,7 @@ const THEMES = [
 ];
 
 function getDayNumber() {
-  const start = new Date("2026-06-19T00:00:00+05:30");
+  const start = new Date("2026-06-20T00:00:00+05:30");
   return Math.max(1, Math.floor((new Date() - start) / 86400000) + 1);
 }
 function getDateStr() {
@@ -281,22 +281,23 @@ function buildHtml(type, body, theme, dayNum, dateStr, svgDataUri) {
     ? planRow("⏰","7:30 AM","Wake up · 500ml water · AM skincare",accent)
       + planRow("🏋️","7:50 AM","GYM — cardio + PPL weights",accent)
       + planRow("💼","10:00 AM","Office — deliver fast, learn in gaps",accent)
-      + planRow("🎓","5:00 PM","Office Extended — lectures + work (5–7 PM)",accent)
-      + planRow("🍽️","7:15 PM","Early dinner + family (45 min)",accent)
-      + planRow("💡","8:00 PM","STUDY BLOCK 1 (2.5 hrs) — 2 LeetCode + DSA",accent)
-      + planRow("📖","10:30 PM","STUDY BLOCK 2 (2 hrs) — AI/ML project",accent)
-      + planRow("🌿","12:30 AM","PM skincare + Minoxidil + 15 min walk",accent)
-      + planRow("😴","1:30 AM","SLEEP — 6 hrs solid",accent)
-    : planRow("🍽️","7:15 PM","Early dinner with family (45 min)",accent)
-      + planRow("💡","8:00 PM","STUDY BLOCK 1 (2.5 hrs) — 2 LeetCode, phone away",accent)
-      + planRow("📖","10:30 PM","STUDY BLOCK 2 (2 hrs) — AI project + GitHub push",accent)
-      + planRow("🌿","12:30 AM","PM skincare + Minoxidil",accent)
-      + planRow("📝","1:00 AM","Review · journal · prep tomorrow",accent)
-      + planRow("😴","1:30 AM","SCREENS OFF. SLEEP.",accent);
+      + planRow("🏠","5:00 PM","Home from office — evening is yours",accent)
+      + planRow("🍽️","5:30 PM","Early dinner + family (5:30–6:30)",accent)
+      + planRow("💡","6:30 PM","STUDY BLOCK 1 (2.5 hrs) — core build",accent)
+      + planRow("📖","9:30 PM","STUDY BLOCK 2 (3.5 hrs) — project + AI + DSA",accent)
+      + planRow("✨","1:00 AM","PM skincare + Minoxidil",accent)
+      + planRow("📝","1:15 AM","Review + plan tomorrow",accent)
+      + planRow("😴","2:00 AM","SLEEP — ~5.5–6 hrs",accent)
+    : planRow("🍽️","5:30 PM","Early dinner with family (5:30–6:30)",accent)
+      + planRow("💡","6:30 PM","STUDY BLOCK 1 (2.5 hrs) — core build, phone away",accent)
+      + planRow("📖","9:30 PM","STUDY BLOCK 2 (3.5 hrs) — project + AI + GitHub push",accent)
+      + planRow("✨","1:00 AM","PM skincare + Minoxidil",accent)
+      + planRow("📝","1:15 AM","Review · journal · prep tomorrow",accent)
+      + planRow("😴","2:00 AM","SCREENS OFF. SLEEP.",accent);
 
   const nonNeg = isMorning
     ? [["🏋️","Gym 7:50 AM — no excuses"],["📚","Solve 2 LeetCode problems"],["💻","Push 1 commit to GitHub"],["☀️","AM skincare: Cleanser → Niacinamide → SPF 50+"],["🥗","150g+ protein · 3–4L water"]]
-    : [["📚","2 LeetCode problems solved"],["💻","GitHub commit pushed tonight"],["🤖","AI project progress made"],["🌿","PM skincare + Minoxidil done"],["😴","In bed by 1:30 AM"]];
+    : [["📚","2 LeetCode problems solved"],["💻","GitHub commit pushed tonight"],["🤖","AI project progress made"],["🌿","PM skincare + Minoxidil done"],["😴","In bed by 2:00 AM"]];
   const nonNegRows = nonNeg.map(([ico,task]) => chipRow(ico, task, accent)).join("");
 
   const scoreLine = !isMorning
@@ -327,7 +328,7 @@ function buildHtml(type, body, theme, dayNum, dateStr, svgDataUri) {
 
     + "<div style='background:#111;border:1px solid #222;border-radius:10px;padding:16px 18px;margin-bottom:20px;'>"
     + "<p style='margin:0 0 12px;font-size:10px;letter-spacing:3px;color:#444;text-transform:uppercase;'>"
-    + (isMorning ? "TODAY'S BATTLE PLAN" : "EVENING PLAN — 7:15 PM → 1:30 AM") + "</p>"
+    + (isMorning ? "TODAY'S BATTLE PLAN" : "EVENING PLAN — 5:30 PM → 2:00 AM") + "</p>"
     + "<table cellpadding='0' cellspacing='0' width='100%'>" + planRows + "</table>"
     + "</div>"
 

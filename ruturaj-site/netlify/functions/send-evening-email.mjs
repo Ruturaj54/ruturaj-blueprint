@@ -107,7 +107,7 @@ const THEMES = [
 ];
 
 function getDayNumber() {
-  return Math.max(1, Math.floor((new Date() - new Date("2026-06-19T00:00:00+05:30")) / 86400000) + 1);
+  return Math.max(1, Math.floor((new Date() - new Date("2026-06-20T00:00:00+05:30")) / 86400000) + 1);
 }
 function getDateStr() {
   return new Date().toLocaleDateString("en-IN", { weekday:"long", day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata" });
@@ -239,7 +239,7 @@ function buildEveningChecklist(accent) {
     + "<p style='margin:0 0 4px;font-size:12px;color:#aaa;'>☐ 50+ lines on AI project (Block 2)</p>"
     + "<p style='margin:0 0 4px;font-size:12px;color:#aaa;'>☐ 1 GitHub commit pushed</p>"
     + "<p style='margin:0 0 4px;font-size:12px;color:#aaa;'>☐ PM skincare + Minoxidil applied</p>"
-    + "<p style='margin:0 0 4px;font-size:12px;color:#aaa;'>☐ In bed by 1:30 AM (no later)</p>"
+    + "<p style='margin:0 0 4px;font-size:12px;color:#aaa;'>☐ In bed by 2:00 AM (no later)</p>"
     + "<p style='margin:0;font-size:11px;color:" + accent + ";font-style:italic;margin-top:8px;'>Cross every box. Sleep proud. Repeat tomorrow.</p>"
     + "</div>";
 }
@@ -254,12 +254,12 @@ export default async function handler() {
   const svgCard = generateCardSvg(theme, dayNum);
   const svgDataUri = "data:image/svg+xml;base64," + Buffer.from(svgCard).toString("base64");
 
-  const planRows = planRow("🍽️","7:15 PM","Early dinner with family (45 min) — eat first",accent)
-    + planRow("💡","8:00 PM","STUDY BLOCK 1 (2.5 hrs) — 2 LeetCode, phone away",accent)
-    + planRow("📖","10:30 PM","STUDY BLOCK 2 (2 hrs) — AI project + GitHub push",accent)
-    + planRow("🌿","12:30 AM","PM skincare + Minoxidil + 15 min night walk",accent)
-    + planRow("📝","1:00 AM","Review day · journal 3 lines · prep tomorrow",accent)
-    + planRow("😴","1:30 AM","SCREENS OFF. SLEEP. WIN TOMORROW.",accent);
+  const planRows = planRow("🍽️","5:30 PM","Early dinner with family (5:30–6:30) — eat first",accent)
+    + planRow("💡","6:30 PM","STUDY BLOCK 1 (2.5 hrs) — core build, phone away",accent)
+    + planRow("📖","9:30 PM","STUDY BLOCK 2 (3.5 hrs) — project + AI + DSA + GitHub push",accent)
+    + planRow("✨","1:00 AM","PM skincare + Minoxidil",accent)
+    + planRow("📝","1:15 AM","Review day · journal 3 lines · prep tomorrow",accent)
+    + planRow("😴","2:00 AM","SCREENS OFF. SLEEP. WIN TOMORROW.",accent);
 
   const html = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head>"
     +"<body style='margin:0;padding:0;background:#080808;'>"
@@ -273,7 +273,7 @@ export default async function handler() {
     +"<img src='" + svgDataUri + "' width='560' style='display:block;width:100%;border-radius:14px;border:0;' alt='" + escXml(theme.quote) + "'>"
     +"</div>"
     +"<div style='background:#111;border:1px solid #222;border-radius:10px;padding:16px 18px;margin-bottom:20px;'>"
-    +"<p style='margin:0 0 12px;font-size:10px;letter-spacing:3px;color:#444;text-transform:uppercase;'>EVENING PLAN — 7:15 PM → 1:30 AM</p>"
+    +"<p style='margin:0 0 12px;font-size:10px;letter-spacing:3px;color:#444;text-transform:uppercase;'>EVENING PLAN — 5:30 PM → 2:00 AM</p>"
     +"<table cellpadding='0' cellspacing='0' width='100%'>"+planRows+"</table>"
     +"</div>"
     + buildEveningChecklist(accent)
@@ -294,7 +294,7 @@ export default async function handler() {
     +"\n  [ ] 50+ lines AI project (Block 2)"
     +"\n  [ ] 1 GitHub commit"
     +"\n  [ ] Skincare + Minoxidil"
-    +"\n  [ ] In bed by 1:30 AM"
+    +"\n  [ ] In bed by 2:00 AM"
     +"\n\nRUTURAJ BLUEPRINT · 2026";
 
   const transporter = nodemailer.createTransport({host:"smtp.gmail.com",port:587,secure:false,auth:{user:SENDER_EMAIL,pass:SENDER_PASS}});
