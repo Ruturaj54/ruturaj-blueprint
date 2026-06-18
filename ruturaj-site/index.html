@@ -902,6 +902,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 
 <!-- ========== PAGE: BASE MONTH ========== -->
 <div class="page" id="page-base">
+  <div onclick="showPage('daily')" style="cursor:pointer;background:rgba(76,255,145,0.08);border-bottom:1px solid rgba(76,255,145,0.25);padding:11px 18px;display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap;font-size:13px;color:var(--muted);">
+    <span>📆 These first <b style="color:var(--text)">30 days = your Daily plan's Phase 0</b> (fast revision — 2 topics/day).</span>
+    <span style="color:var(--green);font-weight:700;">Open the Daily tab for the exact Day-by-Day →</span>
+  </div>
   <div style="background:linear-gradient(135deg,rgba(255,107,53,0.12),rgba(232,255,71,0.05));border-bottom:2px solid rgba(255,107,53,0.3);padding:40px 24px 32px;text-align:center;position:relative;overflow:hidden;">
     <div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:500px;height:400px;background:radial-gradient(ellipse,rgba(255,107,53,0.08),transparent 65%);pointer-events:none;"></div>
     <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--accent2);text-transform:uppercase;margin-bottom:12px;opacity:.8;">Month 0 · Your Foundation Month</div>
@@ -5326,11 +5330,17 @@ function dpLoadDone(){ try { return JSON.parse(localStorage.getItem(DP_DONE_KEY)
 let dpDone = dpLoadDone();
 function dpSaveDone(){ localStorage.setItem(DP_DONE_KEY, JSON.stringify(dpDone)); }
 
+// Phase 0 = REVISION sprint for an experienced engineer — fold in BASE / PPA refresh, move fast
+const DP_P0_REVISION = [
+  'Quick one-time setup — JDK 25 + IntelliJ + VS Code + Git ready',
+  'PPA / C++ refresh — pointers, OOP, STL (speed-run, your old strength)',
+  'Logic-building drills — patterns &amp; 5 levels (you already know this)'
+];
 const _dpLessonCache = {};
 function dpLessons(pid){
   if (_dpLessonCache[pid]) return _dpLessonCache[pid];
   var ph = MASTERY_PHASES.find(function(p){ return p.id===pid; });
-  var out = [];
+  var out = (pid==='p0') ? DP_P0_REVISION.slice() : [];
   ph.tracks.forEach(function(tr){ if (tr.dom!=='dsa') tr.items.forEach(function(it){ out.push(it.t.replace(/<\/?b>/g,'')); }); });
   _dpLessonCache[pid] = out;
   return out;
@@ -5339,91 +5349,117 @@ function dpFmt(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,
 function dpDateForDay(n){ var d=new Date(DAILY_START+'T12:00:00'); d.setDate(d.getDate()+(n-1)); return dpFmt(d); }
 function dpDayForDate(s){ var a=new Date(DAILY_START+'T12:00:00'); var b=new Date(s+'T12:00:00'); return Math.round((b-a)/86400000)+1; }
 
-function dpPlan(n){
+function dpPlan(n, dateStrOverride){
   if (n < 1) return { state:'pre', n:n };
   if (n > DP_TOTAL) return { state:'post', n:n };
   var pid = DP_ORDER.find(function(id){ return n>=DP_RANGE[id].start && n<=DP_RANGE[id].end; });
   var ph = MASTERY_PHASES.find(function(p){ return p.id===pid; });
   var r = DP_RANGE[pid], dip = n - r.start, dur = r.end - r.start + 1;
   var lessons = dpLessons(pid);
-  var idxAt = function(x){ return Math.min(lessons.length-1, Math.floor(x*lessons.length/dur)); };
-  var li = idxAt(dip);
-  var a = dip; while (a-1>=0 && idxAt(a-1)===li) a--;
-  var b = dip; while (b+1<dur && idxAt(b+1)===li) b++;
-  var dayOf = dip-a+1, span = b-a+1;
-  var dateStr = dpDateForDay(n), dow = new Date(dateStr+'T12:00:00').getDay();
+  var lesson, dayOf = 1, span = 1, revision = false, ahead = false;
+  if (pid === 'p0') {
+    revision = true;
+    var K = 2, s = dip * K;          // 2 topics/day — revision pace
+    if (s < lessons.length) {
+      lesson = lessons.slice(s, Math.min(s + K, lessons.length)).join('  &nbsp;+&nbsp;  ');
+    } else {
+      ahead = true;
+      var msgs = [
+        'Build your Java CLI project — apply what you revised; push to GitHub.',
+        'Revise your weakest topic from this phase + one extra DSA problem.',
+        'Polish the Java CLI project — add unit tests + a clean README.',
+        "Head start on Spring Boot basics (IoC / DI) — you're ahead of pace."
+      ];
+      lesson = msgs[dip % msgs.length];
+    }
+  } else {
+    var idxAt = function(x){ return Math.min(lessons.length-1, Math.floor(x*lessons.length/dur)); };
+    var li = idxAt(dip);
+    var a = dip; while (a-1>=0 && idxAt(a-1)===li) a--;
+    var b = dip; while (b+1<dur && idxAt(b+1)===li) b++;
+    dayOf = dip-a+1; span = b-a+1; lesson = lessons[li];
+  }
+  var dateStr = dateStrOverride || dpDateForDay(n), dow = new Date(dateStr+'T12:00:00').getDay();
   var isSun = dow===0, isSat = dow===6, week = Math.ceil(n/7), deload = (week%6===0);
   var dsa;
   if (n-1 < BLIND75.length) { var pr = BLIND75[n-1]; dsa = { main:'Solve <b>'+pr.n+'</b>', tag:pr.p, note:'Learn the pattern from scratch, then re-solve one earlier problem cold (&lt;20 min).' }; }
   else if (isSun) { dsa = { main:'<b>Weekly DSA test</b>', tag:'timed', note:'1 contest, or 3 problems under time with no hints. Log your solve time.' }; }
   else { var pat = DP_PATTERNS[(n-1)%DP_PATTERNS.length]; dsa = { main:'<b>2 Medium problems</b>', tag:pat, note:'Then re-solve 1 old problem cold. Track "re-solved &lt;20 min", not raw count.' }; }
-  return { state:'on', n:n, pid:pid, ph:ph, week:week, lesson:lessons[li], dayOf:dayOf, span:span, isSun:isSun, isSat:isSat, weekend:(isSun||isSat), deload:deload, dsa:dsa, dateStr:dateStr };
+  return { state:'on', n:n, pid:pid, ph:ph, week:week, lesson:lesson, dayOf:dayOf, span:span, revision:revision, ahead:ahead, isSun:isSun, isSat:isSat, weekend:(isSun||isSat), deload:deload, dsa:dsa, dateStr:dateStr };
 }
 
-let dpView = null;
-function dpCurrentDate(){ return dpView || todayStr(); }
-function dpShift(delta){ var d=new Date(dpCurrentDate()+'T12:00:00'); d.setDate(d.getDate()+delta); dpView=dpFmt(d); renderDaily(); }
-function dpToday(){ dpView=null; renderDaily(); }
+// ===== COMPLETION-DRIVEN: your "current day" = the next day you haven't finished =====
+let dpViewDay = null; // null = auto (jump to your next unfinished day)
+function dpNextIncomplete(){ for (var d=1; d<=DP_TOTAL; d++){ if (!dpDone[d]) return d; } return DP_TOTAL+1; }
+function dpCurrentDay(){ return dpViewDay || dpNextIncomplete(); }
+function dpShift(delta){ var n=dpCurrentDay()+delta; if(n<1)n=1; if(n>DP_TOTAL)n=DP_TOTAL; dpViewDay=n; renderDaily(); }
+function dpNow(){ dpViewDay=null; renderDaily(); }
+function dpGo(n){ dpViewDay=n; renderDaily(); }
 function dpMarkDone(n){ if (dpDone[n]) delete dpDone[n]; else dpDone[n]=true; dpSaveDone(); renderDaily(); }
 
 function dpWeekRows(n){
   var weekStart = n - ((n-1)%7);
-  var todayN = dpDayForDate(todayStr());
   var rows = '';
   for (var d=weekStart; d<weekStart+7; d++){
     if (d<1 || d>DP_TOTAL) continue;
     var p = dpPlan(d);
     var cls = (d===n?' istoday':'') + (dpDone[d]?' isdone':'');
-    var dd = new Date(dpDateForDay(d)+'T12:00:00').toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
-    var focus = (p.state==='on'? p.lesson : (p.state==='pre'?'Prep / rest':'Done'));
+    var focus = (p.state==='on'? p.lesson : 'Done');
     var dsa = (p.state==='on'? (p.dsa.main.replace(/<\/?b>/g,'')) : '');
     rows += '<div class="dp-week-row'+cls+'" onclick="dpGo('+d+')" style="cursor:pointer;">'
-      + '<div class="dp-wr-day"><div class="dp-wr-dn">'+d+'</div><div class="dp-wr-dd">'+dd+'</div></div>'
+      + '<div class="dp-wr-day"><div class="dp-wr-dn">'+d+'</div><div class="dp-wr-dd">'+(dpDone[d]?'✓ done':'day')+'</div></div>'
       + '<div><div class="dp-wr-focus">'+(dpDone[d]?'✓ ':'')+focus+'</div><div class="dp-wr-dsa">💻 '+dsa+'</div></div>'
       + '</div>';
   }
   return rows;
 }
-function dpGo(n){ dpView = dpDateForDay(n); renderDaily(); }
 
 function renderDaily(){
   var host = document.getElementById('daily-body'); if(!host) return;
-  var dateStr = dpCurrentDate(), n = dpDayForDate(dateStr), plan = dpPlan(n);
   window.__dpReady = true;
-  if (plan.state==='pre'){
-    host.innerHTML = '<div class="dp-hero"><div class="dp-kick">Countdown</div><div class="dp-daynum">DAY 0</div><div class="dp-date">'+formatDate(dateStr)+'</div></div>'
-      + '<div class="dp-msg">Your journey starts <b>20 June 2026</b>. Use today to set the stage: <b>install JDK 25 + IntelliJ</b>, create/clean your <b>GitHub</b>, open the <b>🚀 Blueprint</b> tab and skim Phase 0, and sleep early. Tomorrow = Day 1. 🔥</div>'
-      + '<div class="dp-nav" style="margin-top:14px;"><button class="btn secondary" onclick="dpShift(1)">See Day 1 ▶</button><button class="btn secondary" onclick="dpToday()">● Today</button></div>';
-    return;
-  }
-  if (plan.state==='post'){
-    host.innerHTML = '<div class="dp-hero"><div class="dp-kick">Journey complete</div><div class="dp-daynum">DAY '+DP_TOTAL+'+</div></div>'
-      + '<div class="dp-msg">🎉 You finished the 308-day blueprint. You are <b>interview-ready</b> across full-stack, DevOps, AI and system design. Keep applying in waves, keep DSA warm, and negotiate hard. Then reset and aim higher.</div>'
-      + '<div class="dp-nav" style="margin-top:14px;"><button class="btn secondary" onclick="dpShift(-1)">◀ Prev</button><button class="btn secondary" onclick="dpToday()">● Today</button></div>';
-    return;
-  }
-  var ph = plan.ph, bc = ph.badgeColor, pct = Math.round(n/DP_TOTAL*100);
   var doneCount = Object.keys(dpDone).filter(function(k){ return dpDone[k]; }).length;
+  var n = dpCurrentDay();
+  if (n > DP_TOTAL){
+    host.innerHTML = '<div class="dp-hero"><div class="dp-kick">Journey complete</div><div class="dp-daynum">DONE ✓</div><div class="dp-date">All '+DP_TOTAL+' days completed</div></div>'
+      + '<div class="dp-msg">🎉 You finished the whole blueprint — '+doneCount+' days done. You are <b>interview-ready</b> across full-stack, DevOps, AI and system design. Keep applying in waves, keep DSA warm, negotiate hard.</div>'
+      + '<div class="dp-nav" style="margin-top:14px;"><button class="btn secondary" onclick="dpShift(-1)">◀ Review a day</button></div>';
+    return;
+  }
+  var realDate = todayStr();
+  var plan = dpPlan(n, realDate);
+  var ph = plan.ph, bc = ph.badgeColor, pct = Math.round(doneCount/DP_TOTAL*100);
   var isDone = !!dpDone[n];
-  var kick = plan.deload ? 'Deload week — go lighter, recover' : (plan.weekend ? "Weekend — 8–10 hrs, push the project" : "Today's mission");
+  var nextInc = dpNextIncomplete();
+  var browsing = (dpViewDay !== null && dpViewDay !== nextInc);
+  var kick = plan.deload ? 'Deload week — go lighter, recover'
+    : plan.ahead ? "You're AHEAD of pace — surge forward 🚀"
+    : plan.revision ? "⚡ Revision sprint — move FAST, you already know most of this"
+    : (plan.weekend ? "Weekend — go long, push the project" : "Your next mission");
+  var coreH = plan.revision ? (plan.ahead ? '🚀 Push ahead' : '🎯 Revise — fast') : '🎯 Learn this';
+  var coreSub = plan.revision
+    ? (plan.ahead ? "Foundation revised early — keep the momentum, you're ahead of schedule."
+                  : 'Revision pace: refresh both quickly (~1 hr each). Don\'t perfect it — just reload what you already know.')
+    : ((plan.span>1?('Day '+plan.dayOf+' of ~'+plan.span+' on this topic. '):'')+'Learn it deeply, take notes, try a tiny example.');
   var html = ''
     + '<div class="dp-hero">'
     +   '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">'
-    +     '<div><div class="dp-kick">'+kick+'</div><div class="dp-daynum">DAY '+n+'</div><div class="dp-date">'+formatDate(dateStr)+'</div>'
+    +     '<div><div class="dp-kick">'+kick+'</div><div class="dp-daynum">DAY '+n+'</div><div class="dp-date">📅 '+formatDate(realDate)+' · <b style="color:var(--green)">your pace, not the calendar</b></div>'
     +       '<div class="dp-phasechip" style="background:'+bc+'22;color:'+bc+';">'+ph.badge+' · '+ph.title+' · Week '+plan.week+'</div></div>'
     +     '<div style="text-align:right;"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:32px;color:var(--green);">'+doneCount+'</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;">DAYS DONE</div></div>'
     +   '</div>'
     +   '<div class="dp-prog"><div class="dp-prog-fill" style="width:'+pct+'%"></div></div>'
-    +   '<div class="dp-progtext">Day '+n+' of '+DP_TOTAL+' · '+pct+'% of the journey</div>'
+    +   '<div class="dp-progtext">'+doneCount+' / '+DP_TOTAL+' days done · '+pct+'% — do more per day and you finish well before 308 days</div>'
     + '</div>'
-    + '<div class="dp-nav"><button class="btn secondary" onclick="dpShift(-1)">◀ Prev</button><button class="btn secondary" onclick="dpToday()">● Today</button><button class="btn secondary" onclick="dpShift(1)">Next ▶</button></div>'
-    + '<div class="dp-card"><div class="dp-card-h">🎯 Learn this today <span class="tm">Block 1 · 6:30–9 PM</span></div><div class="dp-card-b"><div class="big">'+plan.lesson+'</div><div class="sub">'+(plan.span>1?('Day '+plan.dayOf+' of ~'+plan.span+' on this topic. '):'')+'Learn it deeply, take notes, try a tiny example.</div></div></div>'
-    + '<div class="dp-card"><div class="dp-card-h">🛠️ Build &amp; ship <span class="tm">Block 2 · 9:30 PM–1 AM</span></div><div class="dp-card-b"><div>Apply today\'s topic to your phase project: <span class="big">'+ph.project.title+'</span>.'+(plan.weekend?' Weekend = go deep + catch up anything pending.':'')+'</div><div class="sub">End the night with a <b>GitHub commit</b> — even a small one. Never break the chain.</div></div></div>'
-    + '<div class="dp-card"><div class="dp-card-h">💻 DSA today <span class="tm">~45 min</span></div><div class="dp-card-b"><div class="big">'+plan.dsa.main+' <span class="dp-tag2">'+plan.dsa.tag+'</span></div><div class="sub">'+plan.dsa.note+(n-1<BLIND75.length?' (Full Blind-75 list is in your printed checklist.)':'')+'</div></div></div>'
-    + '<div class="dp-card"><div class="dp-card-h">✅ Daily non-negotiables <span class="tm" style="cursor:pointer;color:var(--accent3);" onclick="showPage(\'today\')">tick in Today →</span></div><div class="dp-card-b"><div class="dp-habits"><span class="dp-habit">🏋️ Gym 7:50 AM</span><span class="dp-habit">🍽️ Dinner by 6:30</span><span class="dp-habit">💡 Block 1 (6:30)</span><span class="dp-habit">📖 Block 2 (9:30)</span><span class="dp-habit">💻 GitHub commit</span><span class="dp-habit">✨ Skincare AM+PM</span><span class="dp-habit">😴 Sleep by 2 AM</span></div></div></div>'
+    + '<div class="dp-nav"><button class="btn secondary" onclick="dpShift(-1)">◀ Prev</button><button class="btn secondary" onclick="dpNow()">● My next day</button><button class="btn secondary" onclick="dpShift(1)">Peek ahead ▶</button></div>'
+    + (browsing ? '<div class="mst-callout" style="margin-bottom:12px;"><span class="ch">Just browsing Day '+n+'</span>Tap <b>● My next day</b> to jump back to where you actually are — <b>Day '+nextInc+'</b>.</div>' : '')
+    + '<div class="dp-card"><div class="dp-card-h">'+coreH+' <span class="tm">Block 1 · 6:30–9 PM</span></div><div class="dp-card-b"><div class="big">'+plan.lesson+'</div><div class="sub">'+coreSub+'</div></div></div>'
+    + '<div class="dp-card"><div class="dp-card-h">🛠️ Build &amp; ship <span class="tm">Block 2 · 9:30 PM–1 AM</span></div><div class="dp-card-b"><div>Apply today\'s topic to your phase project: <span class="big">'+ph.project.title+'</span>.</div><div class="sub">End with a <b>GitHub commit</b> — even a small one. Never break the chain.</div></div></div>'
+    + '<div class="dp-card"><div class="dp-card-h">💻 DSA <span class="tm">~45 min</span></div><div class="dp-card-b"><div class="big">'+plan.dsa.main+' <span class="dp-tag2">'+plan.dsa.tag+'</span></div><div class="sub">'+plan.dsa.note+(n-1<BLIND75.length?' (Full Blind-75 list is in your printed checklist.)':'')+'</div></div></div>'
+    + '<div class="dp-card"><div class="dp-card-h">✅ Daily non-negotiables <span class="tm" style="cursor:pointer;color:var(--accent3);" onclick="showPage(\'today\')">tick in Today →</span></div><div class="dp-card-b"><div class="dp-habits"><span class="dp-habit">🏋️ Gym 7:50 AM</span><span class="dp-habit">🍽️ Dinner by 6:30</span><span class="dp-habit">💡 Block 1 (6:30)</span><span class="dp-habit">📖 Block 2 (9:30)</span><span class="dp-habit">💻 GitHub commit</span><span class="dp-habit">✨ Skincare</span><span class="dp-habit">😴 Sleep by 2 AM</span></div></div></div>'
     + '<div class="dp-card"><div class="dp-card-h">🏁 This phase\'s goal</div><div class="dp-card-b"><div class="sub" style="margin-top:0;">'+ph.milestone+'</div></div></div>'
-    + '<button class="dp-done-btn'+(isDone?' isdone':'')+'" onclick="dpMarkDone('+n+')">'+(isDone?'✓ Day '+n+' completed — tap to undo':'✅ Mark Day '+n+' complete')+'</button>'
-    + '<div class="dp-week"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:22px;letter-spacing:1px;margin:6px 0 10px;">📅 This week (tap a day)</div>'+dpWeekRows(n)+'</div>';
+    + '<button class="dp-done-btn'+(isDone?' isdone':'')+'" onclick="dpMarkDone('+n+')">'+(isDone?'✓ Day '+n+' done — tap to undo':'✅ Done with Day '+n+' → unlock the next')+'</button>'
+    + '<div class="dp-progtext" style="text-align:center;margin:2px 0 8px;">Finished early? Hit the button — the next day unlocks instantly. Do 2–3 in a sitting and you\'ll finish well before 308 days.</div>'
+    + '<div class="dp-week"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:22px;letter-spacing:1px;margin:6px 0 10px;">🗓️ This stretch (tap a day)</div>'+dpWeekRows(n)+'</div>';
   host.innerHTML = html;
 }
 
