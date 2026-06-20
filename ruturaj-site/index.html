@@ -2640,7 +2640,7 @@ function saveStorage(data) {
 let appData = loadStorage();
 if (!appData.days) appData.days = {};
 if (!appData.weights) appData.weights = [];
-appData.startDate = '2026-06-20'; // Journey Day 1 = 20 June 2026 (matches the Daily Plan tab)
+appData.startDate = '2026-06-21'; // Journey Day 1 = 21 June 2026 (matches the Daily Plan tab)
 
 function todayStr() {
   // Use LOCAL date (IST) so the calendar marks the correct day, not UTC
@@ -3016,7 +3016,7 @@ function exportData() {
 function confirmReset() {
   if (confirm('Reset ALL progress data? This cannot be undone.')) {
     localStorage.removeItem(STORAGE_KEY);
-    appData = { days:{}, weights:[], startDate: '2026-05-07' };
+    appData = { days:{}, weights:[], startDate: '2026-06-21' };
     updateDashboard();
     renderChecklist();
     renderDaySummary();
@@ -4511,7 +4511,7 @@ function buildEmailContent(type) {
 
   if (type === 'morning') {
     return {
-      subject: `🌅 Good Morning Ruturaj — Day ${streak + 1} · ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'})}`,
+      subject: `🌅 Good Morning Ruturaj — Day ${calcDayNum()} · ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'})}`,
       body: `
 ╔══════════════════════════════════════╗
   GOOD MORNING RUTURAJ 🌅
@@ -5296,7 +5296,7 @@ renderMastery();
 
 <!-- ===================== DAILY PLAN ENGINE (day-by-day) ===================== -->
 <script>
-const DAILY_START = '2026-06-20';                 // Day 1
+const DAILY_START = '2026-06-21';                 // Day 1
 const DP_ORDER = ['p0','p1','p2','p3','p4','p5'];
 const DP_WEEKS = { p0:4, p1:8, p2:6, p3:8, p4:10, p5:8 };
 const DP_RANGE = {};

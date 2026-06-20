@@ -107,7 +107,7 @@ const THEMES = [
 ];
 
 function getDayNumber() {
-  return Math.max(1, Math.floor((new Date() - new Date("2026-06-20T00:00:00+05:30")) / 86400000) + 1);
+  return Math.max(1, Math.floor((new Date() - new Date("2026-06-21T00:00:00+05:30")) / 86400000) + 1);
 }
 function getDateStr() {
   return new Date().toLocaleDateString("en-IN", { weekday:"long", day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata" });
