@@ -2640,7 +2640,7 @@ function saveStorage(data) {
 let appData = loadStorage();
 if (!appData.days) appData.days = {};
 if (!appData.weights) appData.weights = [];
-appData.startDate = '2026-06-21'; // Journey Day 1 = 21 June 2026 (matches the Daily Plan tab)
+appData.startDate = '2026-06-24'; // Journey Day 1 = 24 June 2026 (matches the Daily Plan tab)
 
 function todayStr() {
   // Use LOCAL date (IST) so the calendar marks the correct day, not UTC
@@ -3016,7 +3016,7 @@ function exportData() {
 function confirmReset() {
   if (confirm('Reset ALL progress data? This cannot be undone.')) {
     localStorage.removeItem(STORAGE_KEY);
-    appData = { days:{}, weights:[], startDate: '2026-06-21' };
+    appData = { days:{}, weights:[], startDate: '2026-06-24' };
     updateDashboard();
     renderChecklist();
     renderDaySummary();
@@ -5296,7 +5296,7 @@ renderMastery();
 
 <!-- ===================== DAILY PLAN ENGINE (day-by-day) ===================== -->
 <script>
-const DAILY_START = '2026-06-21';                 // Day 1
+const DAILY_START = '2026-06-24';                 // Day 1 = today (calendar-locked)
 const DP_ORDER = ['p0','p1','p2','p3','p4','p5'];
 const DP_WEEKS = { p0:4, p1:8, p2:6, p3:8, p4:10, p5:8 };
 const DP_RANGE = {};
@@ -5388,10 +5388,11 @@ function dpPlan(n, dateStrOverride){
   return { state:'on', n:n, pid:pid, ph:ph, week:week, lesson:lesson, dayOf:dayOf, span:span, revision:revision, ahead:ahead, isSun:isSun, isSat:isSat, weekend:(isSun||isSat), deload:deload, dsa:dsa, dateStr:dateStr };
 }
 
-// ===== COMPLETION-DRIVEN: your "current day" = the next day you haven't finished =====
-let dpViewDay = null; // null = auto (jump to your next unfinished day)
+// ===== CALENDAR-DRIVEN: your "current day" = today's date counted from DAILY_START =====
+let dpViewDay = null; // null = auto (snap to today's calendar day)
+function dpToday(){ var n = dpDayForDate(todayStr()); if(n<1)n=1; if(n>DP_TOTAL)n=DP_TOTAL; return n; }
 function dpNextIncomplete(){ for (var d=1; d<=DP_TOTAL; d++){ if (!dpDone[d]) return d; } return DP_TOTAL+1; }
-function dpCurrentDay(){ return dpViewDay || dpNextIncomplete(); }
+function dpCurrentDay(){ return dpViewDay || dpToday(); }
 function dpShift(delta){ var n=dpCurrentDay()+delta; if(n<1)n=1; if(n>DP_TOTAL)n=DP_TOTAL; dpViewDay=n; renderDaily(); }
 function dpNow(){ dpViewDay=null; renderDaily(); }
 function dpGo(n){ dpViewDay=n; renderDaily(); }
@@ -5425,12 +5426,13 @@ function renderDaily(){
       + '<div class="dp-nav" style="margin-top:14px;"><button class="btn secondary" onclick="dpShift(-1)">◀ Review a day</button></div>';
     return;
   }
-  var realDate = todayStr();
+  var todayN = dpToday();
+  var realDate = dpDateForDay(n);
   var plan = dpPlan(n, realDate);
   var ph = plan.ph, bc = ph.badgeColor, pct = Math.round(doneCount/DP_TOTAL*100);
   var isDone = !!dpDone[n];
   var nextInc = dpNextIncomplete();
-  var browsing = (dpViewDay !== null && dpViewDay !== nextInc);
+  var browsing = (dpViewDay !== null && dpViewDay !== todayN);
   var kick = plan.deload ? 'Deload week — go lighter, recover'
     : plan.ahead ? "You're AHEAD of pace — surge forward 🚀"
     : plan.revision ? "⚡ Revision sprint — move FAST, you already know most of this"
@@ -5443,15 +5445,15 @@ function renderDaily(){
   var html = ''
     + '<div class="dp-hero">'
     +   '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">'
-    +     '<div><div class="dp-kick">'+kick+'</div><div class="dp-daynum">DAY '+n+'</div><div class="dp-date">📅 '+formatDate(realDate)+' · <b style="color:var(--green)">your pace, not the calendar</b></div>'
+    +     '<div><div class="dp-kick">'+kick+'</div><div class="dp-daynum">DAY '+n+'</div><div class="dp-date">📅 '+formatDate(realDate)+' · <b style="color:var(--green)">'+(n===todayN?'today':'upcoming day')+'</b></div>'
     +       '<div class="dp-phasechip" style="background:'+bc+'22;color:'+bc+';">'+ph.badge+' · '+ph.title+' · Week '+plan.week+'</div></div>'
     +     '<div style="text-align:right;"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:32px;color:var(--green);">'+doneCount+'</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;">DAYS DONE</div></div>'
     +   '</div>'
     +   '<div class="dp-prog"><div class="dp-prog-fill" style="width:'+pct+'%"></div></div>'
-    +   '<div class="dp-progtext">'+doneCount+' / '+DP_TOTAL+' days done · '+pct+'% — do more per day and you finish well before 308 days</div>'
+    +   '<div class="dp-progtext">'+doneCount+' / '+DP_TOTAL+' days completed · '+pct+'% — tick each day done as you finish it</div>'
     + '</div>'
-    + '<div class="dp-nav"><button class="btn secondary" onclick="dpShift(-1)">◀ Prev</button><button class="btn secondary" onclick="dpNow()">● My next day</button><button class="btn secondary" onclick="dpShift(1)">Peek ahead ▶</button></div>'
-    + (browsing ? '<div class="mst-callout" style="margin-bottom:12px;"><span class="ch">Just browsing Day '+n+'</span>Tap <b>● My next day</b> to jump back to where you actually are — <b>Day '+nextInc+'</b>.</div>' : '')
+    + '<div class="dp-nav"><button class="btn secondary" onclick="dpShift(-1)">◀ Prev</button><button class="btn secondary" onclick="dpNow()">● Today</button><button class="btn secondary" onclick="dpShift(1)">Peek ahead ▶</button></div>'
+    + (browsing ? '<div class="mst-callout" style="margin-bottom:12px;"><span class="ch">Just browsing Day '+n+'</span>Tap <b>● Today</b> to jump back to today — <b>Day '+todayN+'</b>.</div>' : '')
     + '<div class="dp-card"><div class="dp-card-h">'+coreH+' <span class="tm">Block 1 · 6:30–9 PM</span></div><div class="dp-card-b"><div class="big">'+plan.lesson+'</div><div class="sub">'+coreSub+'</div></div></div>'
     + '<div class="dp-card"><div class="dp-card-h">🛠️ Build &amp; ship <span class="tm">Block 2 · 9:30 PM–1 AM</span></div><div class="dp-card-b"><div>Apply today\'s topic to your phase project: <span class="big">'+ph.project.title+'</span>.</div><div class="sub">End with a <b>GitHub commit</b> — even a small one. Never break the chain.</div></div></div>'
     + '<div class="dp-card"><div class="dp-card-h">💻 DSA <span class="tm">~45 min</span></div><div class="dp-card-b"><div class="big">'+plan.dsa.main+' <span class="dp-tag2">'+plan.dsa.tag+'</span></div><div class="sub">'+plan.dsa.note+(n-1<BLIND75.length?' (Full Blind-75 list is in your printed checklist.)':'')+'</div></div></div>'
