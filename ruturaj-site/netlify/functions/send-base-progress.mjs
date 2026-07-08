@@ -48,7 +48,7 @@ const BASE_DAYS = [
 ];
 
 function getDayNumber() {
-  return Math.max(1, Math.floor((new Date() - new Date("2026-06-26T00:00:00+05:30")) / 86400000) + 1);
+  return Math.max(1, Math.floor((new Date() - new Date("2026-07-08T00:00:00+05:30")) / 86400000) + 1);
 }
 function getDateStr() {
   return new Date().toLocaleDateString("en-IN", { weekday:"long", day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata" });

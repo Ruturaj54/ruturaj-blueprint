@@ -110,7 +110,7 @@ const THEMES = [
 ];
 
 function getDayNumber() {
-  const start = new Date("2026-06-26T00:00:00+05:30");
+  const start = new Date("2026-07-08T00:00:00+05:30");
   return Math.max(1, Math.floor((new Date() - start) / 86400000) + 1);
 }
 function getDateStr() {
