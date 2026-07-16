@@ -774,6 +774,38 @@ details.pp-sec[open]>summary::before{transform:rotate(90deg);}
 <!-- ========== PAGE: DAILY PLAN (day-by-day) ========== -->
 <div class="page active" id="page-daily">
   <div class="container">
+
+    <!-- HOW TO USE — permanent guide -->
+    <details class="pp-sec" style="margin-top:18px;border:1px solid var(--border);border-radius:14px;padding:4px 18px 8px;background:var(--card);">
+      <summary style="font-size:22px;">🧭 How to use this site — the daily loop</summary>
+      <div class="pp-note" style="margin-top:4px;">
+        <b>One rule:</b> this tab (📆 Daily) tells you WHAT to study tonight. The Today tab tracks WHETHER you did it. The 🧩 Patterns tab is HOW to think while studying. Everything else is the map.
+      </div>
+      <div class="pp-cue">
+        <table>
+          <tr><td>7:30 AM</td><td>Morning email lands → <b>gym 7:50</b>, skincare, office. Nothing to decide — it's routine.</td></tr>
+          <tr><td>6:00 PM</td><td><b>🎓 5ME AI course (6–7)</b> — watch with active notes.</td></tr>
+          <tr><td>7:30 PM</td><td><b>Block 1:</b> open 📆 Daily → today's card shows the exact lesson → study THAT (nothing else). Right now you're in <b>P0 revision</b> — 7:30–8:15 Linux SysProg hands-on lab, then PPA/C++, Java, JS/TS, Python+SQL at 2 topics/day. It's refresh speed, not learning speed.</td></tr>
+          <tr><td>9:45 PM</td><td><b>Block 2:</b> Prime AIML lectures → then DSA. Before each problem, open 🧩 Patterns and <b>name the pattern out loud</b>, then solve. Push a GitHub commit.</td></tr>
+          <tr><td>Before bed</td><td>Tick <b>✓ done</b> on today's Daily card + tick your habits in the <b>Today</b> tab. Streak = the product.</td></tr>
+          <tr><td>Sat–Sun</td><td><b>Weekend plan — full layout in the Plan tab:</b> outdoor morning (temple / hills, guilt-free) → 2 deep labs a day (~6.5 hrs) → LeetCode contest live (Sat 8 PM biweekly / Sun 8 AM weekly) → Sunday 4 PM weekly review in <b>Log + 📊 Stats</b> → sleep by 12:30 to bank recovery.</td></tr>
+        </table>
+      </div>
+      <div class="pp-cue">
+        <table>
+          <tr><td>📆 Daily</td><td><b>Every evening.</b> The engine — Day N → exact lesson + DSA problem. Your single source of "what now".</td></tr>
+          <tr><td>Today</td><td><b>All day.</b> Habit checklist (gym, protein, course, blocks, skincare, commit). Tick as you go.</td></tr>
+          <tr><td>🧩 Patterns</td><td><b>While studying.</b> DSA patterns, System Design, CI/CD, Web Dev, Django/FastAPI playbooks — reference, not reading-cover-to-cover.</td></tr>
+          <tr><td>🚀 Blueprint</td><td><b>Weekly.</b> The full 44-week map — current phase's tracks, resources, proof-of-work, project. Read your phase once, revisit Sundays.</td></tr>
+          <tr><td>🏗️ Base</td><td><b>First 30 days only.</b> Month-1 foundation tracker — pairs with P0.</td></tr>
+          <tr><td>Plan</td><td>The hour-by-hour timetable. Open when unsure what the clock should look like.</td></tr>
+          <tr><td>Gym · ✨ Skin</td><td>Reference — workout program & AM/PM routine.</td></tr>
+          <tr><td>Log · 📊 Stats</td><td>Sunday review — history, streaks, readiness trackers.</td></tr>
+        </table>
+      </div>
+      <div class="pp-note" style="margin-bottom:14px;"><b>The journey:</b> P0 Revision (wks 1–4, now) → P1 Spring Boot (wks 5–12) → P2 React (13–18) → P3 DevOps/Cloud + Django/FastAPI revision (19–26) → P4 AI/RAG (27–36) → P5 System Design + Interviews (37–44). DSA never pauses. One phase at a time — the Daily card always knows where you are.</div>
+    </details>
+
     <div id="daily-body"></div>
   </div>
 </div>
@@ -1349,12 +1381,42 @@ details.pp-sec[open]>summary::before{transform:rotate(90deg);}
         <div class="schedule-row"><div class="sched-time">5:30 PM</div><div class="sched-content"><div class="sched-icon">🍽️</div><div><div class="sched-title">Early Dinner + Family Time (5:30–6:00)</div><div class="sched-desc">Eat first, study later. Dal / sabzi / paneer + roti. Talk with Mummy–Papa. No phone at the table. Eating early = better focus + better sleep + no late-night bloat.</div></div><div class="sched-tag tag-care">FUEL</div></div></div>
         <div class="schedule-row" style="border-left:3px solid var(--accent);background:rgba(232,255,71,0.03);"><div class="sched-time">6:00 PM</div><div class="sched-content"><div class="sched-icon">🎓</div><div><div class="sched-title">5 Minute Engineering — AI Course (6:00–7:00)</div><div class="sched-desc">Your fixed daily lecture hour. Watch <b>actively</b> — pause, take 5-bullet notes, redraw the diagram from memory after. One concept explained simply beats three watched passively. This hour feeds directly into Block 2's AI work.</div></div><div class="sched-tag tag-study-s">AI COURSE</div></div></div>
         <div class="schedule-row"><div class="sched-time">7:00 PM</div><div class="sched-content"><div class="sched-icon">🌿</div><div><div class="sched-title">Family + Reset (7:00–7:30)</div><div class="sched-desc">Walk, stretch, water, chai with Mummy–Papa. No doomscrolling — this half-hour is the buffer that makes a 7:30 deep-work start actually happen.</div></div><div class="sched-tag tag-care">RESET</div></div></div>
-        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">7:30 PM</div><div class="sched-content"><div class="sched-icon">💡</div><div><div class="sched-title">STUDY BLOCK 1 — Core Build (2 hrs)</div><div class="sched-desc">7:30–9:30 PM: the current Blueprint phase's main skill (Spring Boot / React / K8s / RAG). Phone silent, face-down, in another room. Your peak focus session.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">DEEP</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">7:30 PM</div><div class="sched-content"><div class="sched-icon">💡</div><div><div class="sched-title">STUDY BLOCK 1 — Core Build (2 hrs)</div><div class="sched-desc">7:30–9:30 PM: the current Blueprint phase's main skill (Spring Boot / React / K8s / RAG). <b>During P0 (now):</b> 7:30–8:15 Linux SysProg hands-on lab → 8:15–9:30 language revision. Phone silent, face-down, in another room. Your peak focus session.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">DEEP</div></div></div>
         <div class="schedule-row"><div class="sched-time">9:30 PM</div><div class="sched-content"><div class="sched-icon">☕</div><div><div class="sched-title">Micro-Break (15 min)</div><div class="sched-desc">9:30–9:45 PM: stand up, water, 2-min stretch. Short on purpose — momentum carries into Block 2.</div></div><div class="sched-tag tag-care">RESET</div></div></div>
         <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">9:45 PM</div><div class="sched-content"><div class="sched-icon">📖</div><div><div class="sched-title">STUDY BLOCK 2 — Prime AIML sprint + DSA (3.25 hrs)</div><div class="sched-desc"><b>While sprinting the AIML course (now → mid-Sep):</b> 9:45–12:00 Prime AIML (2–3 lectures + notes + code along) → 12:00–1:00 DSA (Blind 75 + 1 re-solve from the Patterns tab). <b>After the course is done:</b> this whole block flips to the phase project. DSA + a GitHub commit happen every night either way.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">STUDY</div></div></div>
         <div class="schedule-row"><div class="sched-time">1:00 AM</div><div class="sched-content"><div class="sched-icon">✨</div><div><div class="sched-title">PM Skincare + Minoxidil</div><div class="sched-desc">Double cleanse → Niacinamide → AHA/Kojic/Retinol → Moisturizer → Minoxidil on temples.</div></div><div class="sched-tag tag-care">SKIN</div></div></div>
         <div class="schedule-row" style="border-left:3px solid var(--accent);"><div class="sched-time">1:15 AM</div><div class="sched-content"><div class="sched-icon">📝</div><div><div class="sched-title">Review + Plan Tomorrow (1:15–1:45)</div><div class="sched-desc">Revise today's notes, journal 3 lines (what worked / what to fix), set tomorrow's 3 must-dos. Zinc+Magnesium. Warm light only — start winding down.</div></div><div class="sched-tag tag-study-s">REVIEW</div></div></div>
         <div class="schedule-row"><div class="sched-time">2:00 AM</div><div class="sched-content"><div class="sched-icon">😴</div><div><div class="sched-title">SLEEP — by 2:00 AM</div><div class="sched-desc">2:00 AM → 7:30 AM ≈ 5.5 hrs. It's tight — protect it fiercely (cool, dark, phone away) and add a 20-min post-lunch nap. On no-gym days, sleep in to 8:00 for a full 6 hrs. Take a full deload day every ~6 weeks.</div></div><div class="sched-tag tag-rest">SLEEP</div></div></div>
+      </div>
+    </div>
+
+    <!-- WEEKEND PLAN -->
+    <div class="section">
+      <div class="section-title"><div class="dot green"></div> WEEKEND PLAN — SAT &amp; SUN</div>
+      <div class="section-sub">Weekends = the two deep-work days weekdays can't give you (~6.5 hrs each) + the outdoor recharge that keeps the 6-day grind sustainable. Temple / hills mornings are a FEATURE of this plan, not a break from it — decide the outing on Friday night so the morning needs zero willpower. And bank sleep: weekend nights end by 12:30, not 2 AM.</div>
+
+      <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin:6px 0 10px;">🔨 Saturday — Deep Build Day</div>
+      <div class="schedule-grid">
+        <div class="schedule-row"><div class="sched-time">8:00 AM</div><div class="sched-content"><div class="sched-icon">🌅</div><div><div class="sched-title">Sleep In + Slow Morning</div><div class="sched-desc">Wake ~8:00 (recovery from the week). Sunlight, water, proper breakfast. No alarm-panic — but no doomscrolling in bed either.</div></div><div class="sched-tag tag-rest">RECOVER</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--green);background:rgba(76,255,145,0.03);"><div class="sched-time">8:45 AM</div><div class="sched-content"><div class="sched-icon">⛰️</div><div><div class="sched-title">OUTDOOR SLOT — Temple / Hills / Long Walk (8:45–11:00)</div><div class="sched-desc">Your flexible recharge block: temple morning, a hill trek, or a long walk with a tech podcast. <b>Full-day trek Saturdays are allowed</b> — shift Lab 1 to Sunday and enjoy it guilt-free; one big outdoor day a month makes the other 29 stronger. Legs + sunlight + silence = the real deload.</div></div><div class="sched-tag tag-fitness" style="background:rgba(76,255,145,0.1);color:var(--green);">OUTDOOR</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">11:15 AM</div><div class="sched-content"><div class="sched-icon">🐧</div><div><div class="sched-title">DEEP LAB 1 — Linux SysProg weekend lab (11:15–1:30)</div><div class="sched-desc">The week's ladder project (mini-shell → epoll server → tiny-container) in one contiguous ~2 hr sitting — the kind of focus weekday 45-min slots can't give. Open the 🧩 Patterns → Linux playbook and build.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">LAB</div></div></div>
+        <div class="schedule-row"><div class="sched-time">1:30 PM</div><div class="sched-content"><div class="sched-icon">🥗</div><div><div class="sched-title">Lunch + 20-min Nap</div><div class="sched-desc">Proper lunch with family, then a short nap — it buys back the afternoon.</div></div><div class="sched-tag tag-care">FUEL</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">2:30 PM</div><div class="sched-content"><div class="sched-icon">📖</div><div><div class="sched-title">DEEP LAB 2 — Prime AIML sprint (2:30–5:00)</div><div class="sched-desc">3–4 lectures + code-along + notes. The weekend push is what finishes the course BEFORE mid-Sep and frees your weeknights early.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">STUDY</div></div></div>
+        <div class="schedule-row"><div class="sched-time">5:00 PM</div><div class="sched-content"><div class="sched-icon">🎉</div><div><div class="sched-title">Free — Friends / Family / Life (5:00–7:30)</div><div class="sched-desc">Protected social time. A plan with zero life in it collapses by week 6 — this slot is load-bearing.</div></div><div class="sched-tag tag-rest">FREE</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent);"><div class="sched-time">7:30 PM</div><div class="sched-content"><div class="sched-icon">💻</div><div><div class="sched-title">DSA Session (7:30–9:30)</div><div class="sched-desc"><b>Alternate Saturdays:</b> LeetCode <b>Biweekly Contest, 8:00 PM IST — do it LIVE</b> (real timer = real interview training). Other Saturdays: 3–4 pattern problems + 1 cold re-solve from the Patterns tab.</div></div><div class="sched-tag tag-study-s">DSA</div></div></div>
+        <div class="schedule-row"><div class="sched-time">12:30 AM</div><div class="sched-content"><div class="sched-icon">😴</div><div><div class="sched-title">Sleep by 12:30 — bank it</div><div class="sched-desc">~7.5 hrs tonight. Weekend sleep is where the week's 5.5-hr nights get repaid.</div></div><div class="sched-tag tag-rest">SLEEP</div></div></div>
+      </div>
+
+      <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--accent2);text-transform:uppercase;margin:22px 0 10px;">🛕 Sunday — Temple / Hills + Review Day</div>
+      <div class="schedule-grid">
+        <div class="schedule-row" style="border-left:3px solid var(--accent);"><div class="sched-time">8:00 AM</div><div class="sched-content"><div class="sched-icon">🏆</div><div><div class="sched-title">LeetCode Weekly Contest — LIVE (8:00–9:30 AM IST)</div><div class="sched-desc">2–3 Sundays a month, do the weekly contest live — nothing calibrates interview readiness like a ticking clock. <b>Temple/hills Sunday? Skip guilt-free</b> and do it as a virtual contest in the evening slot.</div></div><div class="sched-tag tag-study-s">CONTEST</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--green);background:rgba(76,255,145,0.03);"><div class="sched-time">9:45 AM</div><div class="sched-content"><div class="sched-icon">🛕</div><div><div class="sched-title">OUTDOOR SLOT — Temple / Hills / Family Morning (9:45–12:30)</div><div class="sched-desc">Second flexible outing slot — temple with family, a hill drive, or just a long unhurried morning outside. Phone on silent. This is mind-training too: the stillness you build here shows up in interview composure.</div></div><div class="sched-tag tag-fitness" style="background:rgba(76,255,145,0.1);color:var(--green);">OUTDOOR</div></div></div>
+        <div class="schedule-row"><div class="sched-time">12:30 PM</div><div class="sched-content"><div class="sched-icon">🥗</div><div><div class="sched-title">Lunch + Nap</div><div class="sched-desc">Family lunch, 20-min nap, reset for the afternoon lab.</div></div><div class="sched-tag tag-care">FUEL</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">1:30 PM</div><div class="sched-content"><div class="sched-icon">🚢</div><div><div class="sched-title">DEEP LAB 3 — Ship It (1:30–4:00)</div><div class="sched-desc">Finish the week's Linux lab / phase project → <b>push to GitHub with a clean README</b>. Every weekend ends with something shipped and public. (Trek-Saturday weeks: this is where Lab 1 lands.)</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">LAB</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent);"><div class="sched-time">4:00 PM</div><div class="sched-content"><div class="sched-icon">📊</div><div><div class="sched-title">WEEKLY REVIEW (4:00–5:00)</div><div class="sched-desc">Open <b>Log + 📊 Stats</b>: count the week's problems &amp; commits, tick Blueprint items you've truly mastered, write 1 LinkedIn post about what you built, set next week's 3 priorities. 60 minutes that steer the other 6 days.</div></div><div class="sched-tag tag-study-s">REVIEW</div></div></div>
+        <div class="schedule-row"><div class="sched-time">5:00 PM</div><div class="sched-content"><div class="sched-icon">👨‍👩‍👦</div><div><div class="sched-title">Free — Family Evening (5:00–7:30)</div><div class="sched-desc">Dinner with family, light walk. Week's work is done — be present.</div></div><div class="sched-tag tag-rest">FREE</div></div></div>
+        <div class="schedule-row"><div class="sched-time">7:30 PM</div><div class="sched-content"><div class="sched-icon">🔁</div><div><div class="sched-title">Light Study — Re-solves + Monday Prep (7:30–9:00)</div><div class="sched-desc">NO new heavy material. 1–2 DSA cold re-solves (the retention metric), skim Monday's Daily card, lay out tomorrow. Missed the morning contest? Do it virtual now.</div></div><div class="sched-tag tag-study-s">STUDY</div></div></div>
+        <div class="schedule-row"><div class="sched-time">12:00 AM</div><div class="sched-content"><div class="sched-icon">😴</div><div><div class="sched-title">Sleep by 12:00 — enter Monday rested</div><div class="sched-desc">~7.5 hrs. Monday's 7:50 gym and the whole week ride on tonight.</div></div><div class="sched-tag tag-rest">SLEEP</div></div></div>
       </div>
     </div>
 
@@ -4421,7 +4483,7 @@ function saveSkinNotes() {
   <div class="hero" style="padding-bottom:34px;">
     <div class="hero-label">Pattern Playbook · Recognize → Reuse · 2026</div>
     <h1>THINK IN<br><span>PATTERNS</span></h1>
-    <p class="hero-sub">Not 800 random problems — ~2 dozen patterns you recognize on sight. DSA · System Design · CI/CD · Web Dev · Python Backend. Learn the shape once; every problem becomes a variation.</p>
+    <p class="hero-sub">Not 800 random problems — ~2 dozen patterns you recognize on sight. DSA · System Design · CI/CD · Web Dev · Python Backend · Linux SysProg. Learn the shape once; every problem becomes a variation.</p>
   </div>
   <div class="container" style="padding-top:26px;">
 
@@ -5256,6 +5318,65 @@ def route(db = Depends(get_db)): ...</div>
       <div class="pp-note" style="margin-top:8px;"><b>Revision drill (1 evening, repeat monthly):</b> rebuild a mini KPI-anomaly API from memory — FastAPI + Pydantic + Depends + /predict + /health, Dockerfile, 5 tests — in under 2 hours. Then say out loud how you'd do the same in Django (DRF viewset) and Spring Boot (controller + service). One problem, three stacks — that's the "best skilled guy" flex.</div>
     </details>
 
+    <details class="pp-sec">
+      <summary>🐧 Linux SysProg — Revision Playbook</summary>
+      <div class="pp-sub">You've done the course; your BBUs run Linux every day. This is <b>revision + hands-on</b>: the syscall map, the build-it ladder, and the debugging kit. During P0: 7:30–8:15 PM lab, daily.</div>
+
+      <div class="pp-note"><b>Why this is YOUR edge:</b> web-first candidates can't answer "what actually happens on fork?" or "why is epoll faster than select?". You work on real-time telecom systems — sysprog fluency makes that credible in OS interview rounds (Google/Amazon love these), makes P3's Docker/K8s phase trivial (containers = namespaces + cgroups, which you'll have built by hand), and reads as true systems seniority.</div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--green)"></span>THE SYSCALL MAP — recall on sight</div>
+      <div class="pp-cue">
+        <table>
+          <tr><td>fork / exec / wait</td><td>process creation — fork copies (CoW), exec replaces the image, wait reaps. Zombie = dead child not yet reaped; orphan → re-parented to init.</td></tr>
+          <tr><td>open / read / write / close</td><td>everything is a <b>file descriptor</b> — files, pipes, sockets, devices. lseek moves the offset; stat reads metadata; O_APPEND/O_NONBLOCK flags matter.</td></tr>
+          <tr><td>pipe / dup2</td><td>how the shell wires <code>a | b</code>: pipe() gives 2 fds, dup2 rebinds stdin/stdout, then exec. Build it once and you own it forever.</td></tr>
+          <tr><td>signal / sigaction</td><td>async notifications — SIGINT (Ctrl-C), SIGCHLD (child died), SIGTERM vs SIGKILL (can't be caught). Handlers must be async-signal-safe.</td></tr>
+          <tr><td>mmap / shm</td><td>map files or anonymous memory into the address space — zero-copy I/O, shared memory IPC (fastest IPC there is).</td></tr>
+          <tr><td>socket / bind / listen / accept</td><td>the TCP server 4-step; accept returns a NEW fd per client. Your telecom stack lives on this.</td></tr>
+          <tr><td>select / poll / <b>epoll</b></td><td>I/O multiplexing — one thread watching N fds. epoll is O(ready) not O(n) → the C10K answer, and why nginx/Redis are single-threaded-fast.</td></tr>
+          <tr><td>pthreads / mutex / condvar</td><td>threads share the address space (processes don't) — cheaper, but race conditions. Producer-consumer with a condvar is the canonical drill.</td></tr>
+          <tr><td>clone / namespaces / cgroups</td><td>what a container ACTUALLY is: clone() with NEW_PID/NET/NS flags + cgroup limits + chroot. Docker is a convenience wrapper around these.</td></tr>
+        </table>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent2)"></span>THE HANDS-ON LADDER — build these, in order</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:var(--accent2)">
+          <div class="pp-name">1 · Mini-shell</div>
+          <div class="pp-when"><span class="pp-lbl">Builds</span>fork/exec/wait, pipes, dup2, signals (Ctrl-C, SIGCHLD), job control. THE classic — one project covers half the syllabus.</div>
+          <div class="pp-tmpl">loop: read line → parse
+  fork() → child: dup2 fds, execvp
+  parent: waitpid (or bg + SIGCHLD)</div>
+          <div class="pp-cx">Done when: <b>ls -l | grep foo &gt; out.txt</b> works.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--accent2)">
+          <div class="pp-name">2 · epoll chat server</div>
+          <div class="pp-when"><span class="pp-lbl">Builds</span>sockets, non-blocking I/O, epoll event loop, buffer management. Directly answers "how does one server hold 10k connections?"</div>
+          <div class="pp-tmpl">epoll_create → add listen fd
+loop: epoll_wait
+  listen fd ready → accept, add client
+  client ready → read → fan-out write</div>
+          <div class="pp-cx">Done when: 3 terminals chat through it; test with 1k netcat clients.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--accent2)">
+          <div class="pp-name">3 · Tiny-container (mini-Docker)</div>
+          <div class="pp-when"><span class="pp-lbl">Builds</span>clone() with namespace flags, cgroup v2 limits, pivot_root/chroot. The capstone that makes P3 (Docker/K8s) feel obvious from the inside.</div>
+          <div class="pp-tmpl">clone(CLONE_NEWPID|NEWNS|NEWUTS…)
+→ cgroup: echo PID &gt; cgroup.procs
+→ pivot_root into a busybox rootfs
+→ exec /bin/sh   <span class="c"># you're "in a container"</span></div>
+          <div class="pp-cx">Done when: ps inside shows PID 1 · memory limit kills a hog.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--accent2)">
+          <div class="pp-name">Debug kit (use daily at office too)</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span><b>strace</b> (syscalls of a live process), <b>gdb</b> (break/bt/print), <b>valgrind</b> (leaks), /proc/PID (fds, maps, status), perf top, lsof, tcpdump. Run strace on your own tools first — reading the trace IS the revision.</div>
+          <div class="pp-cx">Office = paid practice: strace a BBU process, read its /proc — legit work, real revision.</div>
+        </div>
+      </div>
+
+      <div class="pp-note" style="margin-top:8px;"><b>Cadence:</b> P0 (now): 45 min/day (7:30–8:15) + one weekend deep lab → ship the ladder to a public <b>linux-sysprog</b> repo. Mid-Aug→mid-Sep (P1 + AIML crunch): weekends only. After the AIML course (~mid-Sep): Block 2 frees up → a true daily hour returns. <b>Never fund this hour from sleep</b> — a lab done at 2:30 AM is a lab you won't remember.</div>
+    </details>
+
     <div class="footer">Built for <strong>Ruturaj</strong> · Pattern Playbook · Recognize the shape, reuse the template · 2026</div>
   </div>
 </div><!-- end page-patterns -->
@@ -5784,6 +5905,16 @@ const MASTERY_PHASES = [
         {id:'p0-tool-3', t:"Linux/CLI refresh — pipes, grep/sed/awk, ssh, permissions (you're strong here)"},
         {id:'p0-tool-4', t:"Conventional commits + a <b>daily commit habit</b>"},
       ]},
+      {label:'Linux SysProg (revision + hands-on)', ico:'🐧', dom:'devops', items:[
+        {id:'p0-lx-1', t:"Toolchain revive — <b>gcc, make, gdb, strace</b>: compile a tiny C program and trace every syscall it makes"},
+        {id:'p0-lx-2', t:"File I/O &amp; the fd model — open/read/write/lseek, stat, /proc; write a <b>cat + ls -l clone</b>"},
+        {id:'p0-lx-3', t:"Processes — <b>fork / exec / wait</b>, exit codes, zombies; start your <b>mini-shell</b> (pipes + redirection)"},
+        {id:'p0-lx-4', t:"<b>Signals</b> — sigaction, SIGCHLD reaping; add Ctrl-C handling + job control to the shell"},
+        {id:'p0-lx-5', t:"IPC — pipes, FIFOs, <b>mmap / shared memory</b>: pass data between two processes 3 different ways"},
+        {id:'p0-lx-6', t:"Sockets — TCP echo server/client → upgrade to <b>epoll</b> concurrent chat server (the C10K idea)"},
+        {id:'p0-lx-7', t:"pthreads — mutex/condvar, a <b>producer-consumer queue</b>; when threads beat processes"},
+        {id:'p0-lx-8', t:"Capstone: <b>tiny-container</b> — clone() namespaces + cgroups + chroot = your own mini-Docker (feeds P3 DevOps)"},
+      ]},
     ],
     resources:[
       {name:"NeetCode 150 + Roadmap", url:"https://neetcode.io/roadmap", why:"Your DSA daily spine for the WHOLE 44 weeks. Dependency-graph ordering + a free video per problem; already includes Binary Search & Bit Manipulation."},
@@ -5794,9 +5925,10 @@ const MASTERY_PHASES = [
       "Public GitHub repo of NeetCode-150 solutions — each file headed with the pattern, time/space complexity, and a one-line 'why this approach'. A green daily commit graph is recruiter-legible proof of consistency.",
       "A from-scratch data-structures library in Java (union-find with path compression, a heap, a trie) with unit tests — proves you can BUILD the structures, not just import them.",
       "A tracked retention metric, not a solve count: 'solve any Easy / early-Medium cold in under 20 minutes'.",
+      "A public <b>linux-sysprog</b> repo: mini-shell, cat/ls clones, epoll chat server, tiny-container (namespaces + cgroups) — each README names the syscalls used. Telecom engineer + real systems depth = a combo almost no web-first candidate has.",
     ],
     project:{title:"Java CLI Toolkit", desc:"A small command-line app (expense tracker / text-stats / todo) in Java with clean OOP, unit tests, and a polished README on GitHub. Proves you can write real, structured code."},
-    milestone:"Write clean Java & TypeScript without googling syntax · 40 LeetCode solved · daily GitHub streak alive · dev environment fully dialled in."
+    milestone:"Write clean Java & TypeScript without googling syntax · 40 LeetCode solved · daily GitHub streak alive · mini-shell + epoll server shipped · dev environment fully dialled in."
   },
 
   {
