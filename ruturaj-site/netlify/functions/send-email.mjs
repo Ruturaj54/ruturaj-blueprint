@@ -110,7 +110,7 @@ const THEMES = [
 ];
 
 function getDayNumber() {
-  const start = new Date("2026-07-08T00:00:00+05:30");
+  const start = new Date("2026-07-16T00:00:00+05:30");
   return Math.max(1, Math.floor((new Date() - start) / 86400000) + 1);
 }
 function getDateStr() {
@@ -282,15 +282,17 @@ function buildHtml(type, body, theme, dayNum, dateStr, svgDataUri) {
       + planRow("🏋️","7:50 AM","GYM — cardio + PPL weights",accent)
       + planRow("💼","10:00 AM","Office — deliver fast, learn in gaps",accent)
       + planRow("🏠","5:00 PM","Home from office — evening is yours",accent)
-      + planRow("🍽️","5:30 PM","Early dinner + family (5:30–6:30)",accent)
-      + planRow("💡","6:30 PM","STUDY BLOCK 1 (2.5 hrs) — core build",accent)
-      + planRow("📖","9:30 PM","STUDY BLOCK 2 (3.5 hrs) — project + AI + DSA",accent)
+      + planRow("🍽️","5:30 PM","Early dinner + family (5:30–6:00)",accent)
+      + planRow("🎓","6:00 PM","5 Minute Engineering AI course (6:00–7:00)",accent)
+      + planRow("💡","7:30 PM","STUDY BLOCK 1 (2 hrs) — core build",accent)
+      + planRow("📖","9:45 PM","STUDY BLOCK 2 (3.25 hrs) — project + AI + DSA",accent)
       + planRow("✨","1:00 AM","PM skincare + Minoxidil",accent)
       + planRow("📝","1:15 AM","Review + plan tomorrow",accent)
       + planRow("😴","2:00 AM","SLEEP — ~5.5–6 hrs",accent)
-    : planRow("🍽️","5:30 PM","Early dinner with family (5:30–6:30)",accent)
-      + planRow("💡","6:30 PM","STUDY BLOCK 1 (2.5 hrs) — core build, phone away",accent)
-      + planRow("📖","9:30 PM","STUDY BLOCK 2 (3.5 hrs) — project + AI + GitHub push",accent)
+    : planRow("🍽️","5:30 PM","Early dinner with family (5:30–6:00)",accent)
+      + planRow("🎓","6:00 PM","5 Minute Engineering AI course (6:00–7:00)",accent)
+      + planRow("💡","7:30 PM","STUDY BLOCK 1 (2 hrs) — core build, phone away",accent)
+      + planRow("📖","9:45 PM","STUDY BLOCK 2 (3.25 hrs) — project + AI + GitHub push",accent)
       + planRow("✨","1:00 AM","PM skincare + Minoxidil",accent)
       + planRow("📝","1:15 AM","Review · journal · prep tomorrow",accent)
       + planRow("😴","2:00 AM","SCREENS OFF. SLEEP.",accent);

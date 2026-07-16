@@ -1,4 +1,4 @@
-// Scheduled — 8:00 PM IST = 14:30 UTC daily (Study Block 1 starts NOW)
+// Scheduled — 7:30 PM IST = 14:00 UTC daily (Study Block 1 starts NOW)
 import nodemailer from "nodemailer";
 
 const SENDER_EMAIL = "shivjiforyou@gmail.com";
@@ -10,7 +10,7 @@ const THEMES = [
   { emoji:"🌙", accent:"#a78bfa", g1:"#180030", g2:"#0c0018",
     quote:"DINNER DONE. NOW THE REAL WORK.",
     sub:"4.5 hours of study left. Use them or lose them.",
-    mission:"Study Block 1 (8:00 PM): 2 LeetCode + 1 system design",
+    mission:"Study Block 1 (7:30 PM): 2 LeetCode + 1 system design",
     push:"PLATE IN SINK. PHONE AWAY. SIT DOWN. CODE.",
     story:"Your office colleagues just sat down to Netflix. They'll wake at 8 AM tomorrow with 0 LeetCode solved. You ate early, sat at your desk, and DID THE WORK. In 6 months, you'll be the one with the offer letter. They'll still be at PW." },
 
@@ -86,7 +86,7 @@ const THEMES = [
 
   { emoji:"🚀", accent:"#fb923c", g1:"#1c0800", g2:"#0f0400",
     quote:"BUILD THE PROJECT. SHIP IT.",
-    sub:"Block 2 (10:30 PM) = your AI/ML project hour. Move it forward, daily.",
+    sub:"Block 2 (9:45 PM) = your AI/ML project hours. Move it forward, daily.",
     mission:"Write 50+ lines on your AI project tonight",
     push:"OPEN THE REPO. WRITE FUNCTION 1.",
     story:"In your interview, the panel will ask 'tell me about a project you built end-to-end'. The story you tell that day starts being WRITTEN tonight. One commit at a time. Make tonight's commit count." },
@@ -107,7 +107,7 @@ const THEMES = [
 ];
 
 function getDayNumber() {
-  return Math.max(1, Math.floor((new Date() - new Date("2026-07-08T00:00:00+05:30")) / 86400000) + 1);
+  return Math.max(1, Math.floor((new Date() - new Date("2026-07-16T00:00:00+05:30")) / 86400000) + 1);
 }
 function getDateStr() {
   return new Date().toLocaleDateString("en-IN", { weekday:"long", day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata" });
@@ -254,9 +254,10 @@ export default async function handler() {
   const svgCard = generateCardSvg(theme, dayNum);
   const svgDataUri = "data:image/svg+xml;base64," + Buffer.from(svgCard).toString("base64");
 
-  const planRows = planRow("🍽️","5:30 PM","Early dinner with family (5:30–6:30) — eat first",accent)
-    + planRow("💡","6:30 PM","STUDY BLOCK 1 (2.5 hrs) — core build, phone away",accent)
-    + planRow("📖","9:30 PM","STUDY BLOCK 2 (3.5 hrs) — project + AI + DSA + GitHub push",accent)
+  const planRows = planRow("🍽️","5:30 PM","Early dinner with family (5:30–6:00) — eat first",accent)
+    + planRow("🎓","6:00 PM","5 Minute Engineering AI course (6:00–7:00) — active notes",accent)
+    + planRow("💡","7:30 PM","STUDY BLOCK 1 (2 hrs) — core build, phone away",accent)
+    + planRow("📖","9:45 PM","STUDY BLOCK 2 (3.25 hrs) — project + AI + DSA + GitHub push",accent)
     + planRow("✨","1:00 AM","PM skincare + Minoxidil",accent)
     + planRow("📝","1:15 AM","Review day · journal 3 lines · prep tomorrow",accent)
     + planRow("😴","2:00 AM","SCREENS OFF. SLEEP. WIN TOMORROW.",accent);
@@ -304,4 +305,4 @@ export default async function handler() {
   console.log("Evening email sent — Day "+dayNum);
   return new Response(JSON.stringify({success:true}),{status:200});
 }
-export const config = { schedule: "30 14 * * *" };
+export const config = { schedule: "0 14 * * *" };

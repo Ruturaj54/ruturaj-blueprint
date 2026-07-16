@@ -47,7 +47,8 @@ git push -u origin main
 Netlify will automatically:
 - Host your `index.html` at a free URL like `https://ruturaj-blueprint.netlify.app`
 - Run `send-morning-email` every day at **7:30 AM IST**
-- Run `send-evening-email` every day at **5:00 PM IST**
+- Run `send-base-progress` every day at **5:00 PM IST** (first 30 days)
+- Run `send-evening-email` every day at **7:30 PM IST** (Study Block 1 kickoff)
 
 ---
 
@@ -55,7 +56,8 @@ Netlify will automatically:
 | Email         | IST Time  | UTC Time (cron) |
 |---------------|-----------|-----------------|
 | Morning email | 7:30 AM   | `0 2 * * *`     |
-| Evening email | 5:00 PM   | `30 11 * * *`   |
+| Base progress | 5:00 PM   | `30 11 * * *`   |
+| Evening email | 7:30 PM   | `0 14 * * *`    |
 
 ---
 

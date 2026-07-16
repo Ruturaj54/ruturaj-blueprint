@@ -714,6 +714,38 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 .dp-wr-dsa{font-size:10.5px;color:var(--muted);margin-top:1px;}
 .dp-msg{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;font-size:14px;line-height:1.7;color:var(--muted);}
 .dp-msg b{color:var(--text);}
+
+/* ===================== PATTERN PLAYBOOK (Patterns tab) ===================== */
+.pp-lead{color:var(--muted);font-size:13.5px;line-height:1.7;margin:0 0 20px;padding-left:21px;max-width:780px;}
+.pp-lead strong{color:var(--text);}
+details.pp-sec{margin:0 0 16px;border-bottom:1px solid var(--border);padding-bottom:8px;}
+details.pp-sec>summary{cursor:pointer;list-style:none;font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:1.5px;display:flex;align-items:center;gap:12px;padding:10px 0;color:var(--text);}
+details.pp-sec>summary::-webkit-details-marker{display:none;}
+details.pp-sec>summary::before{content:'▸';color:var(--accent);font-size:16px;transition:transform .2s;}
+details.pp-sec[open]>summary::before{transform:rotate(90deg);}
+.pp-sub{color:var(--muted);font-size:12.5px;line-height:1.6;margin:-4px 0 18px 28px;max-width:760px;}
+.pp-cat{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--text);margin:22px 0 10px;padding-left:2px;display:flex;align-items:center;gap:9px;}
+.pp-cat .d{width:8px;height:8px;border-radius:50%;background:var(--accent3);flex-shrink:0;}
+.pp-note{font-size:12.5px;color:var(--muted);line-height:1.65;margin:6px 0 18px;padding-left:12px;border-left:2px solid var(--border2);}
+.pp-note b{color:var(--text);}
+.pp-cue{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:6px 16px;margin:0 0 24px;overflow-x:auto;}
+.pp-cue table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.pp-cue td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--muted);line-height:1.5;}
+.pp-cue tr:last-child td{border-bottom:none;}
+.pp-cue td:first-child{color:var(--accent);font-family:'DM Mono',monospace;font-size:11px;white-space:nowrap;width:1%;padding-right:16px;}
+.pp-cue b{color:var(--text);}
+.pp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px;margin-bottom:14px;}
+.pp-card{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent3);border-radius:12px;padding:15px 16px;}
+.pp-card:hover{border-color:var(--border2);}
+.pp-name{font-weight:700;font-size:14.5px;color:var(--text);margin-bottom:9px;line-height:1.3;}
+.pp-when{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:9px;}
+.pp-lbl{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;margin-right:6px;}
+.pp-tmpl{font-family:'DM Mono',monospace;font-size:11.5px;color:#bfe3ff;background:var(--card2);border:1px solid var(--border);border-radius:7px;padding:10px 12px;line-height:1.6;white-space:pre-wrap;overflow-x:auto;margin-bottom:9px;}
+.pp-tmpl .c{color:var(--muted);}
+.pp-probs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px;}
+.pp-chip{font-size:10.5px;font-family:'DM Mono',monospace;background:var(--card2);border:1px solid var(--border2);color:var(--muted);border-radius:5px;padding:3px 8px;}
+.pp-cx{font-family:'DM Mono',monospace;font-size:11px;color:var(--green);line-height:1.5;}
+.pp-cx b{color:var(--text);font-weight:400;}
 </style>
 </head>
 <body>
@@ -731,6 +763,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     <button class="nav-tab" onclick="showPage('history')">Log</button>
     <button class="nav-tab" onclick="showPage('maangai')" style="color:var(--accent3);">📊 Stats</button>
     <button class="nav-tab" onclick="showPage('skin')" style="color:#ff9ff3;">✨ Skin</button>
+    <button class="nav-tab" onclick="showPage('patterns')" style="color:var(--accent3);">🧩 Patterns</button>
   </div>
   <div class="nav-date" id="navDate"></div>
 </nav>
@@ -1194,7 +1227,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     <!-- ===== BASE MONTH TRACKER ===== -->
     <div style="margin-bottom:32px;">
       <div class="section-title" style="font-size:30px;margin-bottom:6px;"><div class="dot orange"></div> MONTH 0 — PROGRESS TRACKER</div>
-      <div class="section-sub">Tick each task as you complete it. Auto-saved. Start date: 8 July 2026 — Day 1. This is the last restart.</div>
+      <div class="section-sub">Tick each task as you complete it. Auto-saved. Start date: 16 July 2026 — Day 1. This is the last restart.</div>
 
       <!-- Overall progress bar -->
       <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px;">
@@ -1302,7 +1335,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <div class="container">
     <div class="section">
       <div class="section-title"><div class="dot"></div> DAILY SCHEDULE</div>
-      <div class="section-sub">Your optimised daily flow — 7:30 AM wake · gym 7:50–9:00 · office 10:00–5:00 · home by 5 PM · 5:30 PM dinner+family · 6:30–9 PM Block 1 · 9:30 PM–1 AM Block 2 · sleep 2:00 AM. (~6 hrs deep study every weekday.)</div>
+      <div class="section-sub">Your optimised daily flow — 7:30 AM wake · gym 7:50–9:00 · office 10:00–5:00 · home by 5 PM · 5:30 dinner+family · 6–7 PM 5ME AI course · 7:30–9:30 PM Block 1 · 9:45 PM–1 AM Block 2 · sleep 2:00 AM. (~6+ hrs learning every weekday.)</div>
       <div class="schedule-grid">
         <div class="schedule-row" style="border-left:3px solid var(--accent);"><div class="sched-time">7:30 AM</div><div class="sched-content"><div class="sched-icon">⏰</div><div><div class="sched-title">Wake Up + Hydrate + AM Skincare</div><div class="sched-desc">500ml water immediately. Open curtains. Sunlight in face. Cleanser → Niacinamide → SPF 50+. High-protein breakfast: 4 eggs / dal chilla / oats+nuts.</div></div><div class="sched-tag tag-rest">WAKE</div></div></div>
         <div class="schedule-row" style="border-left:3px solid var(--green);"><div class="sched-time">7:50 AM</div><div class="sched-content"><div class="sched-icon">🏋️</div><div><div class="sched-title">GYM — or HOME WORKOUT (rain backup)</div><div class="sched-desc">7:50 → 9:00 AM. <b>Gym day:</b> 20 min cardio (treadmill 7 km/h) → 50 min weights (PPL split). <b>Raining / can't reach gym:</b> 40-min home workout — push-ups, pike push-ups, squats, lunges, plank, burpees (3–4 rounds) + skipping for cardio. Missing the gym ≠ missing the workout. Creatine either way.</div></div><div class="sched-tag tag-fitness" style="background:rgba(76,255,145,0.1);color:var(--green);">MOVE</div></div></div>
@@ -1313,10 +1346,12 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
         <div class="schedule-row"><div class="sched-time">1:00 PM</div><div class="sched-content"><div class="sched-icon">🥗</div><div><div class="sched-title">Lunch — High Protein (1:00–1:30)</div><div class="sched-desc">Dal + sabzi + chapati + curd. 5 min walk after. Avoid heavy rice — crashes afternoon focus. Back to desk by 1:30 sharp.</div></div><div class="sched-tag tag-care">FUEL</div></div></div>
         <div class="schedule-row"><div class="sched-time">1:30 PM</div><div class="sched-content"><div class="sched-icon">📚</div><div><div class="sched-title">Office Afternoon — Work (study = bonus only)</div><div class="sched-desc">Deep work; wrap up and leave by ~4:45 PM so you're home by 5. IF a gap appears: LeetCode on phone, 5ME video. But never COUNT on office time — some days give zero. The real plan runs after 5 PM.</div></div><div class="sched-tag tag-study-s">STUDY</div></div></div>
         <div class="schedule-row" style="border-left:3px solid var(--accent2);"><div class="sched-time">5:00 PM</div><div class="sched-content"><div class="sched-icon">🏠</div><div><div class="sched-title">Reach Home from Office</div><div class="sched-desc">Home by 5. Change to home clothes, wash face, 10-min decompress — mentally switch from office mode to study mode. The whole evening (5 PM → 2 AM) is yours.</div></div><div class="sched-tag tag-rest">HOME</div></div></div>
-        <div class="schedule-row"><div class="sched-time">5:30 PM</div><div class="sched-content"><div class="sched-icon">🍽️</div><div><div class="sched-title">Early Dinner + Family Time (5:30–6:30)</div><div class="sched-desc">Eat first, study later. Dal / sabzi / paneer + roti. Talk with Mummy–Papa. No phone at the table. Eating early = better focus + better sleep + no late-night bloat.</div></div><div class="sched-tag tag-care">FUEL</div></div></div>
-        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">6:30 PM</div><div class="sched-content"><div class="sched-icon">💡</div><div><div class="sched-title">STUDY BLOCK 1 — Core Build (2.5 hrs)</div><div class="sched-desc">6:30–9:00 PM: the current Blueprint phase's main skill (Spring Boot / React / K8s / RAG). Phone silent, face-down, in another room. Your peak focus session.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">DEEP</div></div></div>
-        <div class="schedule-row"><div class="sched-time">9:00 PM</div><div class="sched-content"><div class="sched-icon">🌿</div><div><div class="sched-title">Break + Reset (30 min)</div><div class="sched-desc">9:00–9:30 PM: short walk, stretch, water, light snack. No doomscrolling — protect the second block.</div></div><div class="sched-tag tag-care">RESET</div></div></div>
-        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">9:30 PM</div><div class="sched-content"><div class="sched-icon">📖</div><div><div class="sched-title">STUDY BLOCK 2 — Prime AIML sprint + DSA (3.5 hrs)</div><div class="sched-desc"><b>While sprinting the AIML course (now → mid-Sep):</b> 9:30–12:00 Prime AIML (2–3 lectures + notes + code along) → 12:00–1:00 DSA (Blind 75 + 1 re-solve). <b>After the course is done:</b> this whole block flips to the phase project. DSA + a GitHub commit happen every night either way.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">STUDY</div></div></div>
+        <div class="schedule-row"><div class="sched-time">5:30 PM</div><div class="sched-content"><div class="sched-icon">🍽️</div><div><div class="sched-title">Early Dinner + Family Time (5:30–6:00)</div><div class="sched-desc">Eat first, study later. Dal / sabzi / paneer + roti. Talk with Mummy–Papa. No phone at the table. Eating early = better focus + better sleep + no late-night bloat.</div></div><div class="sched-tag tag-care">FUEL</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent);background:rgba(232,255,71,0.03);"><div class="sched-time">6:00 PM</div><div class="sched-content"><div class="sched-icon">🎓</div><div><div class="sched-title">5 Minute Engineering — AI Course (6:00–7:00)</div><div class="sched-desc">Your fixed daily lecture hour. Watch <b>actively</b> — pause, take 5-bullet notes, redraw the diagram from memory after. One concept explained simply beats three watched passively. This hour feeds directly into Block 2's AI work.</div></div><div class="sched-tag tag-study-s">AI COURSE</div></div></div>
+        <div class="schedule-row"><div class="sched-time">7:00 PM</div><div class="sched-content"><div class="sched-icon">🌿</div><div><div class="sched-title">Family + Reset (7:00–7:30)</div><div class="sched-desc">Walk, stretch, water, chai with Mummy–Papa. No doomscrolling — this half-hour is the buffer that makes a 7:30 deep-work start actually happen.</div></div><div class="sched-tag tag-care">RESET</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">7:30 PM</div><div class="sched-content"><div class="sched-icon">💡</div><div><div class="sched-title">STUDY BLOCK 1 — Core Build (2 hrs)</div><div class="sched-desc">7:30–9:30 PM: the current Blueprint phase's main skill (Spring Boot / React / K8s / RAG). Phone silent, face-down, in another room. Your peak focus session.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">DEEP</div></div></div>
+        <div class="schedule-row"><div class="sched-time">9:30 PM</div><div class="sched-content"><div class="sched-icon">☕</div><div><div class="sched-title">Micro-Break (15 min)</div><div class="sched-desc">9:30–9:45 PM: stand up, water, 2-min stretch. Short on purpose — momentum carries into Block 2.</div></div><div class="sched-tag tag-care">RESET</div></div></div>
+        <div class="schedule-row" style="border-left:3px solid var(--accent3);"><div class="sched-time">9:45 PM</div><div class="sched-content"><div class="sched-icon">📖</div><div><div class="sched-title">STUDY BLOCK 2 — Prime AIML sprint + DSA (3.25 hrs)</div><div class="sched-desc"><b>While sprinting the AIML course (now → mid-Sep):</b> 9:45–12:00 Prime AIML (2–3 lectures + notes + code along) → 12:00–1:00 DSA (Blind 75 + 1 re-solve from the Patterns tab). <b>After the course is done:</b> this whole block flips to the phase project. DSA + a GitHub commit happen every night either way.</div></div><div class="sched-tag tag-study-s" style="background:rgba(71,200,255,0.1);color:var(--accent3);">STUDY</div></div></div>
         <div class="schedule-row"><div class="sched-time">1:00 AM</div><div class="sched-content"><div class="sched-icon">✨</div><div><div class="sched-title">PM Skincare + Minoxidil</div><div class="sched-desc">Double cleanse → Niacinamide → AHA/Kojic/Retinol → Moisturizer → Minoxidil on temples.</div></div><div class="sched-tag tag-care">SKIN</div></div></div>
         <div class="schedule-row" style="border-left:3px solid var(--accent);"><div class="sched-time">1:15 AM</div><div class="sched-content"><div class="sched-icon">📝</div><div><div class="sched-title">Review + Plan Tomorrow (1:15–1:45)</div><div class="sched-desc">Revise today's notes, journal 3 lines (what worked / what to fix), set tomorrow's 3 must-dos. Zinc+Magnesium. Warm light only — start winding down.</div></div><div class="sched-tag tag-study-s">REVIEW</div></div></div>
         <div class="schedule-row"><div class="sched-time">2:00 AM</div><div class="sched-content"><div class="sched-icon">😴</div><div><div class="sched-title">SLEEP — by 2:00 AM</div><div class="sched-desc">2:00 AM → 7:30 AM ≈ 5.5 hrs. It's tight — protect it fiercely (cool, dark, phone away) and add a 20-min post-lunch nap. On no-gym days, sleep in to 8:00 for a full 6 hrs. Take a full deload day every ~6 weeks.</div></div><div class="sched-tag tag-rest">SLEEP</div></div></div>
@@ -1720,7 +1755,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
         <div class="ws-day"><div class="ws-day-name">Sun</div><div class="ws-day-icon">📖</div><div class="ws-day-focus">Review + DDIA</div><div class="ws-day-hours">4 hrs</div></div>
       </div>
       <div style="background:var(--accent-dim);border:1px solid rgba(232,255,71,0.15);border-radius:8px;padding:14px 16px;font-size:13px;color:var(--muted);">
-        <strong style="color:var(--accent);">⚡ Your existing plan already has 8:30–11:30 PM study block.</strong> That's where this fits. Weekends are your weapon — most working engineers don't protect Saturday morning. You will.
+        <strong style="color:var(--accent);">⚡ Your existing plan already has the 7:30 PM–1 AM study blocks.</strong> That's where this fits. Weekends are your weapon — most working engineers don't protect Saturday morning. You will.
       </div>
     </div>
 
@@ -2381,8 +2416,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
         <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
           <div style="padding:10px 16px;background:rgba(255,107,53,0.05);border-bottom:1px solid var(--border);display:grid;grid-template-columns:80px 1fr 1fr;gap:12px;align-items:center;">
             <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent2);letter-spacing:1px;font-weight:700;">MON–FRI</div>
-            <div style="font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">BLOCK 1 · 5:30–7:30 PM</div>
-            <div style="font-size:10px;font-weight:700;color:var(--accent3);letter-spacing:1px;text-transform:uppercase;">BLOCK 2 · 8:30–11:00 PM</div>
+            <div style="font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">BLOCK 1 · 7:30–9:30 PM</div>
+            <div style="font-size:10px;font-weight:700;color:var(--accent3);letter-spacing:1px;text-transform:uppercase;">BLOCK 2 · 9:45 PM–1 AM</div>
           </div>
           <div style="display:flex;flex-direction:column;gap:0;">
             <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:12px;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,0.03);">
@@ -2629,8 +2664,9 @@ const DAILY_TASKS = [
   { id:'preworkout', label:'Pre-workout snack eaten', cat:'food', tag:'Nutrition' },
   // STUDY (aligned to the Blueprint)
   { id:'leetcode', label:'DSA: 2–3 problems (pattern-based)', cat:'study', tag:'DSA' },
-  { id:'study2hr', label:'Block 1 (6:30–9 PM) — core build (current phase skill)', cat:'study', tag:'Build' },
-  { id:'study2', label:'Block 2 (9:30 PM–1 AM) — project / deep work', cat:'study', tag:'Build' },
+  { id:'course5me', label:'5 Minute Engineering AI course (6:00–7:00 PM) — active notes', cat:'study', tag:'AI Course' },
+  { id:'study2hr', label:'Block 1 (7:30–9:30 PM) — core build (current phase skill)', cat:'study', tag:'Build' },
+  { id:'study2', label:'Block 2 (9:45 PM–1 AM) — project / deep work', cat:'study', tag:'Build' },
   { id:'office5to7', label:'AI / System-Design thread (30–45 min)', cat:'study', tag:'AI/SD' },
   { id:'lightread', label:'Daily review (1 AM) — notes + plan tomorrow', cat:'study', tag:'Study' },
   { id:'github', label:'Pushed a commit to GitHub', cat:'study', tag:'GitHub' },
@@ -2662,7 +2698,7 @@ function saveStorage(data) {
 let appData = loadStorage();
 if (!appData.days) appData.days = {};
 if (!appData.weights) appData.weights = [];
-appData.startDate = '2026-07-08'; // Journey Day 1 = 8 July 2026 (matches the Daily Plan tab)
+appData.startDate = '2026-07-16'; // Journey Day 1 = 16 July 2026 (matches the Daily Plan tab)
 
 function todayStr() {
   // Use LOCAL date (IST) so the calendar marks the correct day, not UTC
@@ -3038,7 +3074,7 @@ function exportData() {
 function confirmReset() {
   if (confirm('Reset ALL progress data? This cannot be undone.')) {
     localStorage.removeItem(STORAGE_KEY);
-    appData = { days:{}, weights:[], startDate: '2026-07-08' };
+    appData = { days:{}, weights:[], startDate: '2026-07-16' };
     updateDashboard();
     renderChecklist();
     renderDaySummary();
@@ -4380,6 +4416,850 @@ function saveSkinNotes() {
 <div class="footer">Built for <strong>Ruturaj</strong> · Skin &amp; Hair Protocol · 6 Months to Glow · 2026</div>
 </div><!-- end page-skin -->
 
+<!-- ========== PAGE: PATTERNS (Study Playbook) ========== -->
+<div class="page" id="page-patterns">
+  <div class="hero" style="padding-bottom:34px;">
+    <div class="hero-label">Pattern Playbook · Recognize → Reuse · 2026</div>
+    <h1>THINK IN<br><span>PATTERNS</span></h1>
+    <p class="hero-sub">Not 800 random problems — ~2 dozen patterns you recognize on sight. DSA · System Design · CI/CD · Web Dev · Python Backend. Learn the shape once; every problem becomes a variation.</p>
+  </div>
+  <div class="container" style="padding-top:26px;">
+
+    <div class="pp-lead"><strong>How to use this tab:</strong> before you open an editor, name the pattern out loud. In an interview, the first 60 seconds are pattern-recognition, not coding. Read a card, then go solve its signature problems cold — when you can map a new prompt to one of these cards in under a minute, you're interview-ready. Built for an experienced engineer: dense, no filler, senior framing.</div>
+
+    <details class="pp-sec" open>
+      <summary>🧩 DSA Pattern Playbook</summary>
+      <div class="pp-sub">~24 core patterns behind NeetCode 150 / Blind 75. Each card: when to reach for it, the mental template, signature problems, and complexity.</div>
+      <div class="pp-note"><b>The mindset shift:</b> strong problem-solvers don't memorize solutions — they classify. Read the prompt, spot the signal word, map it to a pattern, then apply the template. The table below is your 60-second triage; the cards are the templates.</div>
+
+      <div class="pp-cue">
+        <table>
+          <tr><td>"sorted array"</td><td>pair / triplet with a target sum, dedupe in place, palindrome → <b>Two Pointers</b></td></tr>
+          <tr><td>"longest / shortest / at most K"</td><td>contiguous substring or subarray with a constraint → <b>Sliding Window</b></td></tr>
+          <tr><td>"subarray sum = k / range sum"</td><td>running total, often + a hashmap of seen prefixes → <b>Prefix Sum</b></td></tr>
+          <tr><td>"cycle / find the middle"</td><td>linked list, or detect a repeat in O(1) space → <b>Fast &amp; Slow Pointers</b></td></tr>
+          <tr><td>"next greater / warmer / span"</td><td>nearest bigger-or-smaller element → <b>Monotonic Stack</b></td></tr>
+          <tr><td>"top K / K closest / median / merge K"</td><td>partial ordering, streaming → <b>Heap / Priority Queue</b></td></tr>
+          <tr><td>"sorted, or minimize a threshold"</td><td>search a value OR binary-search-on-the-answer → <b>Binary Search</b></td></tr>
+          <tr><td>"overlapping ranges / meetings"</td><td>sort by start, then sweep → <b>Merge Intervals</b></td></tr>
+          <tr><td>"all combinations / permutations / subsets"</td><td>build + undo choices → <b>Backtracking</b></td></tr>
+          <tr><td>"grid / islands / reachable / spread"</td><td>connected regions, level spread → <b>Graph BFS/DFS</b></td></tr>
+          <tr><td>"prerequisites / build order / dependency"</td><td>DAG ordering → <b>Topological Sort</b></td></tr>
+          <tr><td>"are these connected / groups / merge"</td><td>dynamic connectivity → <b>Union-Find</b></td></tr>
+          <tr><td>"shortest path with weights"</td><td>non-negative edges → <b>Dijkstra</b> (BFS if unweighted)</td></tr>
+          <tr><td>"max/min ways, and choices overlap"</td><td>optimal substructure → <b>Dynamic Programming</b></td></tr>
+          <tr><td>"single unique number / count bits"</td><td>XOR &amp; masks → <b>Bit Manipulation</b></td></tr>
+        </table>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent3)"></span>ARRAYS &amp; SCANNING</div>
+      <div class="pp-grid">
+        <div class="pp-card">
+          <div class="pp-name">Two Pointers</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>a sorted array, pair/triplet-with-target, palindrome check, or in-place partition/dedupe.</div>
+          <div class="pp-tmpl">l=0, r=n-1
+while l &lt; r:
+  s = a[l] + a[r]
+  if s == target: return (l, r)
+  if s &lt; target: l++   <span class="c"># need bigger</span>
+  else:           r--   <span class="c"># need smaller</span></div>
+          <div class="pp-probs"><span class="pp-chip">Two Sum II</span><span class="pp-chip">3Sum</span><span class="pp-chip">Container w/ Most Water</span><span class="pp-chip">Valid Palindrome</span></div>
+          <div class="pp-cx">Time <b>O(n)</b> (O(n²) for 3Sum) · Space <b>O(1)</b></div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">Sliding Window</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>longest/shortest/"at most K" over a <b>contiguous</b> substring or subarray. Grow right, shrink left when the window breaks the rule.</div>
+          <div class="pp-tmpl">l=0
+for r in range(n):
+  add a[r] to window
+  while window invalid:
+    remove a[l]; l++
+  best = max(best, r-l+1)</div>
+          <div class="pp-probs"><span class="pp-chip">Longest Substring No Repeat</span><span class="pp-chip">Min Window Substring</span><span class="pp-chip">Longest Repeating Char Replace</span></div>
+          <div class="pp-cx">Time <b>O(n)</b> · Space <b>O(k)</b> (alphabet/window)</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">Prefix Sum</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>many range-sum queries, or "subarray sums to k". Pair with a hashmap of seen prefixes for O(n).</div>
+          <div class="pp-tmpl">seen = {0: 1}; run = 0; count = 0
+for x in a:
+  run += x
+  count += seen.get(run - k, 0)
+  seen[run] = seen.get(run,0) + 1</div>
+          <div class="pp-probs"><span class="pp-chip">Subarray Sum Equals K</span><span class="pp-chip">Range Sum Query</span><span class="pp-chip">Product Except Self</span></div>
+          <div class="pp-cx">Time <b>O(n)</b> · Space <b>O(n)</b></div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">Fast &amp; Slow Pointers</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>cycle detection, finding the middle, or a repeat in O(1) space (Floyd's tortoise &amp; hare).</div>
+          <div class="pp-tmpl">slow = head; fast = head
+while fast and fast.next:
+  slow = slow.next
+  fast = fast.next.next
+  if slow == fast: return CYCLE</div>
+          <div class="pp-probs"><span class="pp-chip">Linked List Cycle</span><span class="pp-chip">Find the Duplicate Number</span><span class="pp-chip">Middle of Linked List</span></div>
+          <div class="pp-cx">Time <b>O(n)</b> · Space <b>O(1)</b></div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">Monotonic Stack</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>"next greater/smaller element", stock span, histogram area — keep the stack sorted, pop while it violates the order.</div>
+          <div class="pp-tmpl">stack = []   <span class="c"># holds indices</span>
+for i, x in enumerate(a):
+  while stack and a[stack[-1]] &lt; x:
+    j = stack.pop(); ans[j] = i
+  stack.append(i)</div>
+          <div class="pp-probs"><span class="pp-chip">Daily Temperatures</span><span class="pp-chip">Next Greater Element</span><span class="pp-chip">Largest Rectangle in Histogram</span></div>
+          <div class="pp-cx">Time <b>O(n)</b> · Space <b>O(n)</b></div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">Cyclic Sort</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>an array of numbers in a known range 1..n — place each value at its index to find missing/duplicate in O(1) space.</div>
+          <div class="pp-tmpl">i = 0
+while i &lt; n:
+  j = a[i] - 1
+  if a[i] != a[j]: swap(a[i], a[j])
+  else: i++</div>
+          <div class="pp-probs"><span class="pp-chip">Missing Number</span><span class="pp-chip">Find All Numbers Disappeared</span><span class="pp-chip">First Missing Positive</span></div>
+          <div class="pp-cx">Time <b>O(n)</b> · Space <b>O(1)</b></div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent)"></span>SEARCH &amp; ORDERING</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:var(--accent)">
+          <div class="pp-name">Binary Search (+ on the answer)</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>a sorted array, OR any problem where you can ask "is threshold X feasible?" and feasibility is monotonic. The second form is the senior-level unlock.</div>
+          <div class="pp-tmpl">lo, hi = min_ans, max_ans
+while lo &lt; hi:
+  mid = (lo + hi) // 2
+  if feasible(mid): hi = mid
+  else: lo = mid + 1
+return lo</div>
+          <div class="pp-probs"><span class="pp-chip">Search Rotated Array</span><span class="pp-chip">Koko Eating Bananas</span><span class="pp-chip">Split Array Largest Sum</span><span class="pp-chip">Median of Two Sorted</span></div>
+          <div class="pp-cx">Time <b>O(log n)</b> × cost of feasible()</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--accent)">
+          <div class="pp-name">Merge Intervals</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>overlapping ranges, meeting rooms, calendar merges. Sort by start, then sweep and extend or open a new interval.</div>
+          <div class="pp-tmpl">sort by start
+for iv in intervals:
+  if iv.start &lt;= cur.end:
+    cur.end = max(cur.end, iv.end)
+  else: out.append(cur); cur = iv</div>
+          <div class="pp-probs"><span class="pp-chip">Merge Intervals</span><span class="pp-chip">Insert Interval</span><span class="pp-chip">Meeting Rooms II</span><span class="pp-chip">Non-overlapping Intervals</span></div>
+          <div class="pp-cx">Time <b>O(n log n)</b> · Space <b>O(n)</b></div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--accent)">
+          <div class="pp-name">Heap / Top-K / Merge-K</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>"K largest/closest", a streaming median, or merging K sorted lists. Size-K heap beats a full sort.</div>
+          <div class="pp-tmpl">heap = []   <span class="c"># min-heap of size k</span>
+for x in stream:
+  push(heap, x)
+  if len(heap) &gt; k: pop(heap)
+<span class="c"># heap now holds the K largest</span></div>
+          <div class="pp-probs"><span class="pp-chip">Top K Frequent</span><span class="pp-chip">Merge K Sorted Lists</span><span class="pp-chip">Find Median from Data Stream</span><span class="pp-chip">K Closest Points</span></div>
+          <div class="pp-cx">Time <b>O(n log k)</b> · Space <b>O(k)</b></div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--accent)">
+          <div class="pp-name">Quickselect (K-th element)</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>the K-th smallest/largest in unsorted data when you don't need full order — average O(n) via one-sided partition.</div>
+          <div class="pp-tmpl">partition around a pivot (Lomuto/Hoare)
+if pivotIdx == k: return a[k]
+recurse into the ONE side that holds k</div>
+          <div class="pp-probs"><span class="pp-chip">Kth Largest Element</span><span class="pp-chip">Top K Frequent (alt)</span><span class="pp-chip">Wiggle Sort II</span></div>
+          <div class="pp-cx">Time <b>O(n)</b> avg / O(n²) worst · Space <b>O(1)</b></div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:#ff9ff3"></span>LINKED LISTS &amp; RECURSION</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:#ff9ff3">
+          <div class="pp-name">In-place Linked-List Reversal</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>reverse a list or a sub-segment, reorder, or K-group reversal — rewire pointers with no extra space.</div>
+          <div class="pp-tmpl">prev = None; cur = head
+while cur:
+  nxt = cur.next
+  cur.next = prev
+  prev = cur; cur = nxt
+return prev</div>
+          <div class="pp-probs"><span class="pp-chip">Reverse Linked List</span><span class="pp-chip">Reverse Nodes in K-Group</span><span class="pp-chip">Reorder List</span></div>
+          <div class="pp-cx">Time <b>O(n)</b> · Space <b>O(1)</b></div>
+        </div>
+        <div class="pp-card" style="border-left-color:#ff9ff3">
+          <div class="pp-name">Backtracking</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>"generate all / count all" — subsets, permutations, combinations, N-Queens, word search. Choose → recurse → un-choose.</div>
+          <div class="pp-tmpl">def bt(start, path):
+  record(path)
+  for i in range(start, n):
+    path.push(a[i])
+    bt(i+1, path)   <span class="c"># i for reuse</span>
+    path.pop()      <span class="c"># undo</span></div>
+          <div class="pp-probs"><span class="pp-chip">Subsets</span><span class="pp-chip">Permutations</span><span class="pp-chip">Combination Sum</span><span class="pp-chip">Word Search</span><span class="pp-chip">N-Queens</span></div>
+          <div class="pp-cx">Time <b>O(branch^depth)</b> · Space <b>O(depth)</b></div>
+        </div>
+        <div class="pp-card" style="border-left-color:#ff9ff3">
+          <div class="pp-name">Trie (Prefix Tree)</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>many prefix / autocomplete / dictionary lookups, or word-search-on-a-grid. Each node = a character, mark word-ends.</div>
+          <div class="pp-tmpl">node = root
+for ch in word:
+  node = node.children.setdefault(ch, {})
+node["$"] = True   <span class="c"># end of word</span></div>
+          <div class="pp-probs"><span class="pp-chip">Implement Trie</span><span class="pp-chip">Add &amp; Search Word</span><span class="pp-chip">Word Search II</span></div>
+          <div class="pp-cx">Time <b>O(L)</b> per op · Space <b>O(total chars)</b></div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--green)"></span>TREES</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Tree DFS (recursion)</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>anything about a root-to-leaf path, subtree property, height, or "return info up from children" (post-order).</div>
+          <div class="pp-tmpl">def dfs(node):
+  if not node: return base
+  L = dfs(node.left)
+  R = dfs(node.right)
+  return combine(node, L, R)</div>
+          <div class="pp-probs"><span class="pp-chip">Max Depth</span><span class="pp-chip">Diameter of Tree</span><span class="pp-chip">Path Sum</span><span class="pp-chip">Max Path Sum</span><span class="pp-chip">Validate BST</span></div>
+          <div class="pp-cx">Time <b>O(n)</b> · Space <b>O(h)</b> (recursion)</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Tree BFS (level order)</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>level-by-level work, shortest depth, right-side view, or "process the tree in layers".</div>
+          <div class="pp-tmpl">q = deque([root])
+while q:
+  for _ in range(len(q)):   <span class="c"># one level</span>
+    n = q.popleft()
+    visit(n)
+    push children</div>
+          <div class="pp-probs"><span class="pp-chip">Level Order Traversal</span><span class="pp-chip">Right Side View</span><span class="pp-chip">Min Depth</span><span class="pp-chip">Zigzag Traversal</span></div>
+          <div class="pp-cx">Time <b>O(n)</b> · Space <b>O(width)</b></div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">BST Ordered Operations</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>a BST — an <b>in-order</b> traversal is sorted. Use it for K-th smallest, validate, range queries, LCA.</div>
+          <div class="pp-tmpl">inorder(node):
+  inorder(node.left)
+  process(node.val)   <span class="c"># ascending</span>
+  inorder(node.right)</div>
+          <div class="pp-probs"><span class="pp-chip">Kth Smallest in BST</span><span class="pp-chip">Validate BST</span><span class="pp-chip">LCA of a BST</span></div>
+          <div class="pp-cx">Time <b>O(h + k)</b> · Space <b>O(h)</b></div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent2)"></span>GRAPHS</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:var(--accent2)">
+          <div class="pp-name">Graph BFS / DFS (flood fill)</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>grids/islands, connected components, reachability, "spread from sources". BFS = shortest hops on unweighted; DFS = explore/mark.</div>
+          <div class="pp-tmpl">seen = set([src])
+q = deque([src])
+while q:
+  u = q.popleft()
+  for v in adj[u]:
+    if v not in seen:
+      seen.add(v); q.append(v)</div>
+          <div class="pp-probs"><span class="pp-chip">Number of Islands</span><span class="pp-chip">Clone Graph</span><span class="pp-chip">Rotting Oranges</span><span class="pp-chip">Pacific Atlantic</span></div>
+          <div class="pp-cx">Time <b>O(V + E)</b> · Space <b>O(V)</b></div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--accent2)">
+          <div class="pp-name">Topological Sort (Kahn's)</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>ordering with prerequisites/dependencies on a DAG (build order, course schedule). Also detects cycles.</div>
+          <div class="pp-tmpl">q = [n for n if indeg[n]==0]
+while q:
+  u = q.pop(); order.append(u)
+  for v in adj[u]:
+    indeg[v]--; if 0: q.append(v)
+<span class="c"># len(order)&lt;V ⇒ cycle</span></div>
+          <div class="pp-probs"><span class="pp-chip">Course Schedule I/II</span><span class="pp-chip">Alien Dictionary</span><span class="pp-chip">Build Order</span></div>
+          <div class="pp-cx">Time <b>O(V + E)</b> · Space <b>O(V)</b></div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--accent2)">
+          <div class="pp-name">Union-Find (DSU)</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>dynamic connectivity, "are these in the same group", counting components, cycle detection in an undirected graph, Kruskal's MST.</div>
+          <div class="pp-tmpl">find(x): while p[x]!=x: p[x]=p[p[x]]; x=p[x]
+union(a,b): ra,rb=find(a),find(b)
+  if ra!=rb: p[ra]=rb   <span class="c"># + rank</span></div>
+          <div class="pp-probs"><span class="pp-chip">Number of Connected Components</span><span class="pp-chip">Graph Valid Tree</span><span class="pp-chip">Redundant Connection</span><span class="pp-chip">Accounts Merge</span></div>
+          <div class="pp-cx">Time <b>~O(α(n))</b> per op · Space <b>O(n)</b></div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--accent2)">
+          <div class="pp-name">Dijkstra (weighted shortest path)</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>shortest/cheapest path with <b>non-negative</b> weights. Min-heap by distance; plain BFS if all weights equal.</div>
+          <div class="pp-tmpl">dist[src]=0; pq=[(0,src)]
+while pq:
+  d,u = heappop(pq)
+  if d&gt;dist[u]: continue
+  for v,w in adj[u]:
+    if d+w &lt; dist[v]:
+      dist[v]=d+w; heappush(pq,(dist[v],v))</div>
+          <div class="pp-probs"><span class="pp-chip">Network Delay Time</span><span class="pp-chip">Cheapest Flights K Stops</span><span class="pp-chip">Path w/ Max Probability</span></div>
+          <div class="pp-cx">Time <b>O(E log V)</b> · Space <b>O(V)</b></div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent)"></span>DYNAMIC PROGRAMMING</div>
+      <div class="pp-note"><b>DP litmus test:</b> the answer is a max / min / count, and a choice now creates <b>overlapping</b> subproblems. Define the state in one sentence ("dp[i] = best using first i items"), write the transition, decide base cases, then memoize (top-down) or tabulate (bottom-up).</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:var(--accent)">
+          <div class="pp-name">1-D DP (sequence)</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>decisions along one axis where dp[i] depends on a few earlier states — climbing, robbing, decoding, word break.</div>
+          <div class="pp-tmpl">dp[0] = base
+for i in 1..n:
+  dp[i] = f(dp[i-1], dp[i-2], a[i])
+return dp[n]   <span class="c"># often O(1) space</span></div>
+          <div class="pp-probs"><span class="pp-chip">Climbing Stairs</span><span class="pp-chip">House Robber I/II</span><span class="pp-chip">Coin Change</span><span class="pp-chip">Word Break</span><span class="pp-chip">Decode Ways</span></div>
+          <div class="pp-cx">Time <b>O(n·k)</b> · Space <b>O(n)</b>→O(1)</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--accent)">
+          <div class="pp-name">2-D DP (grid / two sequences)</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>a grid path, or comparing two strings/arrays — dp[i][j] over two indices (edit distance, LCS, unique paths).</div>
+          <div class="pp-tmpl">for i in 1..m:
+ for j in 1..n:
+  dp[i][j] = combine(dp[i-1][j],
+                     dp[i][j-1],
+                     dp[i-1][j-1])</div>
+          <div class="pp-probs"><span class="pp-chip">Unique Paths</span><span class="pp-chip">Longest Common Subsequence</span><span class="pp-chip">Edit Distance</span><span class="pp-chip">Min Path Sum</span></div>
+          <div class="pp-cx">Time <b>O(m·n)</b> · Space <b>O(m·n)</b>→O(n)</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--accent)">
+          <div class="pp-name">0/1 Knapsack &amp; Subset-Sum</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>"pick a subset under a capacity/target" — take-or-skip each item. Partition, target-sum, and coin variants all reduce to this.</div>
+          <div class="pp-tmpl">for item in items:
+ for cap in C..item.w step -1:   <span class="c"># reverse!</span>
+  dp[cap] = max(dp[cap],
+                dp[cap-item.w] + item.val)</div>
+          <div class="pp-probs"><span class="pp-chip">Partition Equal Subset Sum</span><span class="pp-chip">Target Sum</span><span class="pp-chip">Coin Change II</span></div>
+          <div class="pp-cx">Time <b>O(n·C)</b> · Space <b>O(C)</b></div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--accent)">
+          <div class="pp-name">LIS / Sequence DP</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>longest increasing subsequence and its cousins (envelopes, chains). O(n²) DP, or O(n log n) with patience + binary search.</div>
+          <div class="pp-tmpl">tails = []
+for x in a:
+  i = bisect_left(tails, x)
+  if i==len(tails): tails.append(x)
+  else: tails[i] = x
+return len(tails)</div>
+          <div class="pp-probs"><span class="pp-chip">Longest Increasing Subsequence</span><span class="pp-chip">Russian Doll Envelopes</span><span class="pp-chip">Max Length of Pair Chain</span></div>
+          <div class="pp-cx">Time <b>O(n log n)</b> · Space <b>O(n)</b></div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent3)"></span>BIT MANIPULATION &amp; MATH</div>
+      <div class="pp-grid">
+        <div class="pp-card">
+          <div class="pp-name">Bit Tricks</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>"the one unique number", counting set bits, subset enumeration, or O(1) space where XOR cancels pairs. As a telecom engineer you already live in bitmasks.</div>
+          <div class="pp-tmpl">x ^ x == 0        <span class="c"># pairs cancel</span>
+x &amp; (x-1)         <span class="c"># drop lowest set bit</span>
+x &amp; (-x)          <span class="c"># isolate lowest set bit</span>
+(mask &gt;&gt; i) &amp; 1     <span class="c"># read bit i</span></div>
+          <div class="pp-probs"><span class="pp-chip">Single Number</span><span class="pp-chip">Number of 1 Bits</span><span class="pp-chip">Counting Bits</span><span class="pp-chip">Sum of Two Integers</span></div>
+          <div class="pp-cx">Time <b>O(n)</b> or O(1) · Space <b>O(1)</b></div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">Greedy</div>
+          <div class="pp-when"><span class="pp-lbl">Reach for</span>a locally-optimal choice that provably stays globally optimal — intervals, jumps, scheduling. Always sanity-check with a counterexample before trusting it.</div>
+          <div class="pp-tmpl">sort by the right key
+for item in items:
+  if item fits the running invariant:
+    take it; update invariant</div>
+          <div class="pp-probs"><span class="pp-chip">Jump Game I/II</span><span class="pp-chip">Gas Station</span><span class="pp-chip">Merge Intervals</span><span class="pp-chip">Task Scheduler</span></div>
+          <div class="pp-cx">Time <b>O(n log n)</b> · Space <b>O(1)</b></div>
+        </div>
+      </div>
+
+      <div class="pp-note" style="margin-top:8px;"><b>Practice protocol (retention &gt; volume):</b> pick a pattern → solve 3–4 of its signature problems → then, days later, re-solve one <b>cold under 20 minutes</b> while narrating the pattern name and complexity out loud. That "cold re-solve" metric is what you track on the Daily tab — not raw count.</div>
+    </details>
+
+    <details class="pp-sec">
+      <summary>🏛️ System Design Playbook</summary>
+      <div class="pp-sub">A repeatable interview framework, the reusable building blocks, and a drill list. Your telecom-scale, real-network experience is an edge here — use it.</div>
+      <div class="pp-note"><b>Your edge:</b> you operate real distributed systems — fleets of base stations streaming KPIs, high-throughput packet paths, time-series at scale, backpressure and failover. Most candidates have only read about this. Reach for concrete numbers from your world (events/sec, p95 latency, node counts) — it reads as senior instantly.</div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--red)"></span>THE FRAMEWORK — same 8 steps every time</div>
+      <div class="pp-cue">
+        <table>
+          <tr><td>1 · Requirements</td><td><b>Functional</b> (what it does) + <b>non-functional</b> (scale, p99 latency, consistency vs availability, read:write ratio). Ask; never assume. ~5 min.</td></tr>
+          <tr><td>2 · Estimate</td><td>Back-of-envelope: QPS, storage/yr, bandwidth, memory for cache. Sets whether it's 1 box or 1000. ~3 min.</td></tr>
+          <tr><td>3 · API</td><td>Define the contract — a handful of endpoints, request/response shapes, pagination. This anchors everything after.</td></tr>
+          <tr><td>4 · Data model</td><td>Entities + access patterns → pick storage (SQL / KV / doc / time-series / blob). Design for the read pattern.</td></tr>
+          <tr><td>5 · High-level</td><td>Draw boxes: client → DNS/CDN → LB → stateless services → cache → DB, + async workers via a queue. Happy path first.</td></tr>
+          <tr><td>6 · Deep dive</td><td>Pick the 1–2 hard parts the interviewer cares about and go deep (the feed fan-out, the matching engine, the dedupe).</td></tr>
+          <tr><td>7 · Scale &amp; resilience</td><td>Find bottlenecks, hotspots, single points of failure. Add sharding, replication, cache, queue. Discuss failure modes.</td></tr>
+          <tr><td>8 · Wrap</td><td>State the trade-offs you chose and what you'd do with more time/scale. Never end silent.</td></tr>
+        </table>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent3)"></span>ESTIMATION CHEAT-SHEET</div>
+      <div class="pp-grid">
+        <div class="pp-card">
+          <div class="pp-name">Numbers every senior keeps in their head</div>
+          <div class="pp-tmpl">1 day  ≈ 86,400 s  (~10^5)
+1 M writes/day ≈ 12 writes/s
+Read:write is often 100:1 → cache reads
+1 char=1B · UUID=16B · timestamp=8B
+1 M users × 1 KB = 1 GB
+SSD read ~100 µs · network RTT ~0.5 ms
+mem ref ~100 ns · DC-to-DC ~mss</div>
+          <div class="pp-cx">Round hard. The <b>order of magnitude</b> is the point, not precision.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">The estimation flow</div>
+          <div class="pp-when"><span class="pp-lbl">Do</span>DAU → actions/user/day → peak QPS (÷86400, ×2–3 for peak). Then storage/yr = writes/day × size × 365. Then cache size = hot set (~20% of daily reads).</div>
+          <div class="pp-cx">If peak QPS &lt; a few k and data fits one box → say so and keep it simple.</div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--green)"></span>BUILDING BLOCKS — your reusable vocabulary</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Load Balancer</div>
+          <div class="pp-when"><span class="pp-lbl">Use when</span>you have &gt;1 instance of a stateless service. L4 (TCP, fast) vs L7 (HTTP-aware routing). Health checks + round-robin / least-connections.</div>
+          <div class="pp-cx">Keeps services <b>stateless</b> so any node can serve any request.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Caching (read path)</div>
+          <div class="pp-when"><span class="pp-lbl">Use when</span>reads ≫ writes. Patterns: <b>cache-aside</b> (app fills on miss), write-through, write-back. Evict with LRU/LFU + TTL.</div>
+          <div class="pp-cx">Watch: stampede (→ locks / request-coalescing), stale data, hot keys.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">CDN</div>
+          <div class="pp-when"><span class="pp-lbl">Use when</span>static/media assets or geo-distributed users. Push vs pull; cache at the edge near the user.</div>
+          <div class="pp-cx">Cuts latency &amp; origin load for anything cacheable.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">SQL vs NoSQL</div>
+          <div class="pp-when"><span class="pp-lbl">Pick SQL</span>strong consistency, transactions, ad-hoc joins, structured relations. <span class="pp-lbl">Pick NoSQL</span>huge scale, flexible schema, known access pattern, KV/doc/wide-column/time-series.</div>
+          <div class="pp-cx">Default to Postgres until a requirement forces otherwise.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Sharding / Partitioning</div>
+          <div class="pp-when"><span class="pp-lbl">Use when</span>data or write-throughput exceeds one node. Shard by a key with even distribution; consistent hashing to add nodes without a full reshuffle.</div>
+          <div class="pp-cx">Beware <b>hot shards</b> (celebrity user) &amp; cross-shard joins/transactions.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Replication &amp; Consistency</div>
+          <div class="pp-when"><span class="pp-lbl">Use when</span>you need read scale + fault tolerance. Leader-follower (async = eventual, sync = strong). Quorum reads/writes (W+R&gt;N) for tunable consistency.</div>
+          <div class="pp-cx">Async replicas can serve stale reads — call it out.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Message Queue / Log (Kafka)</div>
+          <div class="pp-when"><span class="pp-lbl">Use when</span>decoupling, spiky load, async work, fan-out, or an event log. Queue (SQS) for tasks; log (Kafka) for replayable streams &amp; multiple consumers.</div>
+          <div class="pp-cx">Absorbs bursts (backpressure), enables at-least-once + idempotent consumers. Natural fit for your KPI/event pipelines.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Rate Limiter</div>
+          <div class="pp-when"><span class="pp-lbl">Use when</span>protecting a service / fair usage. Token bucket (bursty), leaky bucket (smooth), sliding-window counter. Usually in Redis at the gateway.</div>
+          <div class="pp-cx">Classic standalone design question — know token bucket cold.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Consistent Hashing</div>
+          <div class="pp-when"><span class="pp-lbl">Use when</span>distributing keys across a changing set of nodes (cache/shard cluster). Virtual nodes even out the ring.</div>
+          <div class="pp-cx">Adding a node moves ~1/N keys, not all of them.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Bloom Filter</div>
+          <div class="pp-when"><span class="pp-lbl">Use when</span>a cheap "definitely-not-present" check to avoid an expensive lookup — dedupe, "seen URL?", DB read-avoidance.</div>
+          <div class="pp-cx">No false negatives; tunable false positives. Tiny memory.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Idempotency &amp; Exactly-Once</div>
+          <div class="pp-when"><span class="pp-lbl">Use when</span>retries can duplicate side-effects (payments, event consumers). Client sends an idempotency key; server dedupes.</div>
+          <div class="pp-cx">"Exactly-once" = at-least-once delivery + idempotent processing.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Push: WebSocket / SSE / Polling</div>
+          <div class="pp-when"><span class="pp-lbl">Use when</span>real-time updates. WebSocket = bidirectional (chat); SSE = server→client stream (feeds/notifs); long-poll = simple fallback.</div>
+          <div class="pp-cx">Connection state + a pub/sub layer is the scaling challenge.</div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent2)"></span>DESIGN DRILLS — and the concept each one tests</div>
+      <div class="pp-cue">
+        <table>
+          <tr><td>URL Shortener</td><td>hashing/base62, KV store, read-heavy caching, redirect latency → <b>the "easy" warm-up; nail it fast</b></td></tr>
+          <tr><td>Rate Limiter</td><td>token bucket, Redis atomics, distributed counters</td></tr>
+          <tr><td>News Feed (Twitter/IG)</td><td><b>fan-out on write vs read</b>, celebrity problem, feed cache, pagination</td></tr>
+          <tr><td>Chat (WhatsApp)</td><td>WebSockets, delivery/read receipts, presence, message ordering &amp; storage</td></tr>
+          <tr><td>Typeahead / Autocomplete</td><td>trie, top-K per prefix, edge caching, debounce</td></tr>
+          <tr><td>Ride-hailing (Uber)</td><td>geospatial index (geohash/quadtree), matching, real-time location streams</td></tr>
+          <tr><td>Video (YouTube/Netflix)</td><td>blob storage, CDN, transcoding pipeline, adaptive bitrate</td></tr>
+          <tr><td>Google Docs</td><td>collaborative editing (OT / CRDT), conflict resolution, WebSockets</td></tr>
+          <tr><td>Notification System</td><td>queues, fan-out, provider abstraction, retries, dedupe, user prefs</td></tr>
+          <tr><td>Distributed Job Scheduler</td><td>leader election, at-least-once, idempotency, backoff, dead-letter</td></tr>
+          <tr><td>Metrics / Monitoring</td><td>time-series DB, ingestion at scale, rollups, alerting → <b>your KPI world</b></td></tr>
+          <tr><td>Ad-Click Aggregation</td><td>stream processing, windowing, exactly-once counts, hot partitions</td></tr>
+          <tr><td>Payment System</td><td>idempotency keys, double-entry ledger, saga/2PC, strong consistency</td></tr>
+        </table>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:#ff9ff3"></span>ML SYSTEM DESIGN — your SWE + AI combo</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:#ff9ff3">
+          <div class="pp-name">The ML-design frame</div>
+          <div class="pp-when"><span class="pp-lbl">Steps</span>problem framing &amp; metric → data &amp; features → model choice → <b>training pipeline</b> → <b>serving</b> (batch vs real-time, latency) → monitoring (drift, feedback loop) → online/offline eval.</div>
+          <div class="pp-cx">Interviewers want the <b>system</b> around the model, not the math.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:#ff9ff3">
+          <div class="pp-name">Network Anomaly Detection (your crown-jewel)</div>
+          <div class="pp-when"><span class="pp-lbl">Design</span>KPI stream (Kafka) → feature/rollup → anomaly model → alerting + LLM-based root-cause → auto-heal action. Real telecom data, real scale.</div>
+          <div class="pp-cx">This one project answers "ML design", "streaming", and "your impact" at once.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:#ff9ff3">
+          <div class="pp-name">Recommender / Fraud / Ranking</div>
+          <div class="pp-when"><span class="pp-lbl">Design</span>candidate generation → ranking model → feature store → real-time serving &lt;100ms. Fraud = imbalanced classes + streaming features + human-in-loop.</div>
+          <div class="pp-cx">Same skeleton; swap the model &amp; the metric.</div>
+        </div>
+      </div>
+
+      <div class="pp-note" style="margin-top:8px;"><b>Study source:</b> read <b>DDIA (Designing Data-Intensive Applications, 2nd ed)</b> a chapter at a time and map each concept to a block above. Drill designs out loud on a whiteboard/Excalidraw — talking through trade-offs is the actual skill being tested.</div>
+    </details>
+
+    <details class="pp-sec">
+      <summary>🔁 Jenkins CI/CD Playbook</summary>
+      <div class="pp-sub">You already run Jenkins at work — this makes it interview- and design-legible: pipeline anatomy, a reusable Jenkinsfile, stage patterns, and deploy strategies.</div>
+      <div class="pp-note"><b>The one-liner:</b> <b>CI</b> = every push is auto-built, tested, and scanned so broken code is caught in minutes. <b>CD</b> = a green build flows automatically toward production behind gates. The whole thing lives in a <b>Jenkinsfile</b> in the repo (pipeline-as-code) — reviewed and versioned like any other code. You already run this at PW; the goal here is to explain and design it, not just click "build".</div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent2)"></span>THE REUSABLE JENKINSFILE (declarative)</div>
+      <div class="pp-note">Drop-in template for a Spring Boot service → test → scan → Docker → Kubernetes. Declarative &gt; scripted: readable, restartable, and IDE-lintable.</div>
+      <div class="pp-tmpl" style="max-width:820px;">pipeline {
+  agent { kubernetes { defaultContainer 'jdk' } }   <span class="c">// ephemeral pod per build</span>
+  options { timeout(time: 30, unit: 'MINUTES'); disableConcurrentBuilds() }
+
+  environment {
+    REGISTRY = 'registry.internal'
+    IMAGE    = "${REGISTRY}/devtrackr:${GIT_COMMIT.take(7)}"   <span class="c">// immutable tag = commit SHA</span>
+    SONAR    = credentials('sonar-token')                     <span class="c">// secret, never hard-coded</span>
+  }
+
+  stages {
+    stage('Build &amp; Unit Test') {
+      steps { sh './gradlew clean test jacocoTestReport' }
+      post  { always { junit '**/build/test-results/**/*.xml' } }
+    }
+    stage('Quality Gate') {                 <span class="c">// run checks in parallel — fail fast</span>
+      parallel {
+        stage('SAST / coverage') { steps { sh './gradlew sonar' } }
+        stage('Dependency scan') { steps { sh 'trivy fs --exit-code 1 .' } }
+      }
+    }
+    stage('Package &amp; Push') {
+      steps { sh "docker build -t ${IMAGE} . &amp;&amp; docker push ${IMAGE}" }
+    }
+    stage('Deploy · staging') {
+      when { branch 'develop' }
+      steps { sh "kubectl -n staging set image deploy/devtrackr app=${IMAGE}" }
+    }
+    stage('Deploy · prod') {
+      when { branch 'main' }
+      steps {
+        input message: 'Promote to production?'    <span class="c">// manual approval gate</span>
+        sh "kubectl -n prod set image deploy/devtrackr app=${IMAGE}"
+      }
+    }
+  }
+
+  post {
+    failure { mail to: 'you@ex.com', subject: "FAILED: ${BUILD_TAG}" }
+    always  { cleanWs() }                    <span class="c">// clean workspace</span>
+  }
+}</div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent3)"></span>PIPELINE ANATOMY — know each piece</div>
+      <div class="pp-grid">
+        <div class="pp-card">
+          <div class="pp-name">agent</div>
+          <div class="pp-when"><span class="pp-lbl">What</span>where the stage runs. Prefer <b>ephemeral</b> agents (Kubernetes/Docker) so every build starts from a clean, reproducible image — no "works on that node" drift.</div>
+          <div class="pp-cx">Clean env per build = reproducibility.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">stages / steps</div>
+          <div class="pp-when"><span class="pp-lbl">What</span>stages are the visible pipeline phases (Build, Test, Deploy); steps are the commands inside. Order them cheap→expensive so failures surface early.</div>
+          <div class="pp-cx">Fail fast: lint/unit before the slow integration &amp; deploy.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">environment + credentials()</div>
+          <div class="pp-when"><span class="pp-lbl">What</span>env vars for the pipeline; <b>credentials()</b> injects secrets from Jenkins' store (masked in logs). Never commit tokens.</div>
+          <div class="pp-cx">Secrets come from the credential store, not the repo.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">when { }</div>
+          <div class="pp-when"><span class="pp-lbl">What</span>conditional stages — branch, tag, changeset, or expression. This is how one Jenkinsfile serves dev/staging/prod paths.</div>
+          <div class="pp-cx">Branch → environment routing lives here.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">parallel { }</div>
+          <div class="pp-when"><span class="pp-lbl">What</span>run independent stages at once (unit vs lint vs scan; test shards). Cuts wall-clock on the critical path.</div>
+          <div class="pp-cx">Biggest easy speedup for a slow pipeline.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">post { }</div>
+          <div class="pp-when"><span class="pp-lbl">What</span>always/success/failure/unstable hooks — publish JUnit + coverage, notify Slack/email, clean the workspace. Runs even when the build fails.</div>
+          <div class="pp-cx">Where reporting &amp; cleanup belong.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">Shared Library</div>
+          <div class="pp-when"><span class="pp-lbl">What</span>reusable pipeline code (vars/*.groovy) shared across repos, so 50 services share one hardened pipeline. This is the senior/platform move.</div>
+          <div class="pp-cx">DRY pipelines = one place to fix, everywhere improved.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">Artifacts &amp; caching</div>
+          <div class="pp-when"><span class="pp-lbl">What</span>archive build outputs; cache deps (~/.gradle, node_modules) between runs. Publish the JUnit/JaCoCo reports for the trend graphs.</div>
+          <div class="pp-cx">Dep caching often halves build time.</div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--green)"></span>DEPLOY STRATEGIES</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Rolling</div>
+          <div class="pp-when"><span class="pp-lbl">How</span>replace pods a few at a time (k8s default). Simple, no extra infra.</div>
+          <div class="pp-cx">Both versions briefly live — keep APIs backward-compatible.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Blue-Green</div>
+          <div class="pp-when"><span class="pp-lbl">How</span>stand up the new version (green) beside old (blue), flip the LB when healthy. Instant rollback = flip back.</div>
+          <div class="pp-cx">Costs 2× capacity during the switch.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Canary</div>
+          <div class="pp-when"><span class="pp-lbl">How</span>route 1% → 5% → 25% → 100% while watching error rate &amp; latency. Auto-rollback on a bad signal.</div>
+          <div class="pp-cx">Safest for risky changes; needs good metrics (your strength).</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">GitOps (Argo CD / Flux)</div>
+          <div class="pp-when"><span class="pp-lbl">How</span>Jenkins builds+pushes the image and commits a manifest bump; a controller reconciles the cluster to match Git. Git is the single source of truth.</div>
+          <div class="pp-cx">The 2026 direction — "push image, PR the manifest, controller deploys".</div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:#ff9ff3"></span>PATTERNS &amp; GOTCHAS</div>
+      <div class="pp-note">
+        <b>Quality gates block the merge:</b> coverage threshold, SAST, dependency/CVE scan, license check — a red gate fails the build, not just warns.<br>
+        <b>Immutable image tags:</b> tag by commit SHA, never <code>:latest</code> — you must know exactly what's running.<br>
+        <b>Idempotent, repeatable deploys:</b> re-running the same pipeline yields the same result (declarative manifests, not imperative one-off scripts).<br>
+        <b>Trunk-based + short-lived branches</b> keep CI green and merges small.<br>
+        <b>Observability of the pipeline itself:</b> track build time, flaky-test rate, and DORA metrics (deploy frequency, lead time, change-fail rate, MTTR) — you already think in KPIs.
+      </div>
+    </details>
+
+    <details class="pp-sec">
+      <summary>🌐 Web Dev Playbook</summary>
+      <div class="pp-sub">Front-end & full-stack patterns for the React 19 + TypeScript + Spring Boot stack: state, rendering strategies, secure auth, performance, and API contracts.</div>
+      <div class="pp-note"><b>The senior frontend insight:</b> most "hard React bugs" are really a wrong mental model of <b>state</b> and <b>rendering</b>. Get those two right and the rest is composition. Stack assumed: React 19 + TypeScript + Vite on the front, Spring Boot on the back.</div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent3)"></span>STATE — the decision that fixes most bugs</div>
+      <div class="pp-grid">
+        <div class="pp-card">
+          <div class="pp-name">Server state ≠ client state</div>
+          <div class="pp-when"><span class="pp-lbl">Rule</span>data that lives on the server (lists, entities) → <b>TanStack Query</b> (cache, refetch, invalidation). UI-only state (modal open, theme, wizard step) → <b>Zustand</b>/useState. Most "global state" is really server state.</div>
+          <div class="pp-cx">Stop putting fetched data in Redux/global stores.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">useEffect is a last resort</div>
+          <div class="pp-when"><span class="pp-lbl">Rule</span>not for data-fetching (use a query lib) and not for derived state (just compute it during render). Effects are for syncing with <b>external</b> systems only.</div>
+          <div class="pp-tmpl">const full = `${first} ${last}`   <span class="c">// derive in render</span>
+<span class="c">// NOT: useEffect(()=&gt;setFull(...))</span></div>
+          <div class="pp-cx">"You Might Not Need an Effect" — the top React footgun.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">React 19 auto-memoization</div>
+          <div class="pp-when"><span class="pp-lbl">Rule</span>the React Compiler memoizes for you — treat useMemo/useCallback as the <b>exception</b> (proven hot path), not the default. Lift state only as high as needed.</div>
+          <div class="pp-cx">Premature memo everywhere = noise; measure with the Profiler.</div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent)"></span>RENDERING STRATEGIES — pick per route</div>
+      <div class="pp-cue">
+        <table>
+          <tr><td>CSR</td><td>ship JS, render in browser. <b>Use for</b> dashboards / auth-gated apps behind a login (your admin-style tools). Vite SPA.</td></tr>
+          <tr><td>SSR</td><td>render HTML per request on the server. <b>Use for</b> personalized + SEO pages. Slower TTFB, fresh data.</td></tr>
+          <tr><td>SSG</td><td>pre-render at build time. <b>Use for</b> docs, marketing, blogs — fastest, cacheable on a CDN.</td></tr>
+          <tr><td>ISR</td><td>SSG + periodic background regen. <b>Use for</b> semi-static content that changes hourly (catalogs).</td></tr>
+          <tr><td>RSC</td><td>React Server Components — components that run only on the server, zero JS shipped for them. <b>Use for</b> data-heavy trees; the Next.js App Router default.</td></tr>
+        </table>
+      </div>
+      <div class="pp-note"><b>Rule of thumb:</b> auth-gated app tool → Vite SPA (CSR). Public, SEO-sensitive, content-heavy → Next.js with SSG/ISR/RSC. Don't reach for SSR "because it's fancy" — justify it with SEO or first-paint.</div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--green)"></span>COMPONENT &amp; DATA PATTERNS</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Forms: React Hook Form + Zod</div>
+          <div class="pp-when"><span class="pp-lbl">Pattern</span>one Zod schema is the single source of truth — validate the form AND infer the TS type from it. Uncontrolled inputs = fewer re-renders.</div>
+          <div class="pp-tmpl">const schema = z.object({ email: z.string().email() })
+type Form = z.infer&lt;typeof schema&gt;   <span class="c">// one truth</span></div>
+          <div class="pp-cx">Share the same schema on the Spring side conceptually — contract parity.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Data fetching &amp; caching</div>
+          <div class="pp-when"><span class="pp-lbl">Pattern</span>TanStack Query: keys, staleTime, invalidateQueries after mutations, optimistic updates with rollback. It dedupes and caches so you stop hand-rolling loading flags.</div>
+          <div class="pp-cx">Mutation → invalidate the affected query keys.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Loading / error / empty states</div>
+          <div class="pp-when"><span class="pp-lbl">Pattern</span>every async view has <b>four</b> states: loading, error, empty, data. Juniors ship only "data". Handle all four (skeletons, retry, empty CTA).</div>
+          <div class="pp-cx">The empty &amp; error states are what separate polished from prototype.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Composition &gt; configuration</div>
+          <div class="pp-when"><span class="pp-lbl">Pattern</span>compound components + children over a 20-prop mega-component. Custom hooks extract logic; keep components about rendering.</div>
+          <div class="pp-cx">If props explode, you want composition or a hook.</div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--red)"></span>SECURE AUTH — the pattern interviewers probe</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:var(--red)">
+          <div class="pp-name">JWT done right</div>
+          <div class="pp-when"><span class="pp-lbl">Pattern</span>short-lived <b>access token in memory</b> (JS var, not localStorage) + long-lived <b>refresh token in an httpOnly, Secure, SameSite cookie</b>. On 401 → call refresh → retry once → else log out.</div>
+          <div class="pp-tmpl">request → 401
+  → POST /refresh (cookie sent automatically)
+  → new access token in memory
+  → retry original request once</div>
+          <div class="pp-cx">localStorage tokens are XSS-exfiltratable — that's the trap answer.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--red)">
+          <div class="pp-name">Front↔Back integration</div>
+          <div class="pp-when"><span class="pp-lbl">Pattern</span>configure <b>CORS</b> on Spring (allowed origin, credentials:true) AND send credentials from the client. Central axios/fetch interceptor attaches the token &amp; handles refresh.</div>
+          <div class="pp-cx">CORS is config on BOTH sides — a classic full-stack gotcha.</div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:#ff9ff3"></span>PERFORMANCE · A11Y · API CONTRACT</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:#ff9ff3">
+          <div class="pp-name">Core Web Vitals</div>
+          <div class="pp-when"><span class="pp-lbl">Targets</span>LCP &lt; 2.5s · INP &lt; 200ms · CLS &lt; 0.1. Levers: code-split (lazy + Suspense), image sizing, fewer blocking requests, virtualize long lists.</div>
+          <div class="pp-cx">Verify in Lighthouse — cite the numbers, don't guess.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:#ff9ff3">
+          <div class="pp-name">Accessibility (the senior gap)</div>
+          <div class="pp-when"><span class="pp-lbl">Checklist</span>semantic HTML first, ARIA only to fill gaps, full keyboard nav, visible focus, labelled inputs, adequate contrast. Run axe / Lighthouse a11y.</div>
+          <div class="pp-cx">a11y questions increasingly appear in senior FE loops.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:#ff9ff3">
+          <div class="pp-name">API contract discipline</div>
+          <div class="pp-when"><span class="pp-lbl">Pattern</span>versioned REST, consistent errors (RFC 9457 ProblemDetail on Spring), pagination, idempotent PUT/DELETE. Generate the TS client from OpenAPI so types can't drift.</div>
+          <div class="pp-cx">Typed client from the spec = no front/back type drift.</div>
+        </div>
+      </div>
+
+      <div class="pp-note" style="margin-top:8px;"><b>Proof to build:</b> one full-stack app — React 19 + TS front, your Spring Boot API back — with the secure-JWT flow, TanStack Query, all four async states, Playwright E2E in CI, and a Lighthouse score in the README. That single artifact demonstrates every pattern above.</div>
+    </details>
+
+    <details class="pp-sec">
+      <summary>🐍 Django + FastAPI — Revision Playbook</summary>
+      <div class="pp-sub">You've already shipped with Django and FastAPI — this is <b>revision, not learning</b>. Refresh the patterns interviewers probe, sharpen the "when to pick which" answer, and keep Python backend as your second stack beside Spring Boot.</div>
+
+      <div class="pp-note"><b>Your positioning:</b> "Java/Spring Boot primary, Python (Django/FastAPI) proven in production" is a strong senior combo — one JVM stack for scale + one Python stack that plugs straight into your AI/ML work. FastAPI is how your ML models get served; Django is how a product gets built fast. Say it that way.</div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--green)"></span>WHEN TO PICK WHICH — the interview answer</div>
+      <div class="pp-cue">
+        <table>
+          <tr><td>FastAPI</td><td><b>APIs &amp; ML serving.</b> Async-first, Pydantic validation, auto OpenAPI docs, minimal footprint. Your default for model inference endpoints, microservices, webhook handlers.</td></tr>
+          <tr><td>Django</td><td><b>Full products, fast.</b> ORM + migrations + admin + auth batteries-included. Pick it when the job is "a real app with users, permissions and a DB" and shipping speed wins.</td></tr>
+          <tr><td>Spring Boot</td><td><b>Large-scale, long-lived, typed services.</b> JVM performance, mature observability/resilience ecosystem, enterprise teams. Your primary stack for the senior-backend story.</td></tr>
+          <tr><td>Flask</td><td>Know it exists; answer "I'd reach for FastAPI today — same simplicity, plus types, validation and async".</td></tr>
+        </table>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--green)"></span>DJANGO — REVISION CARDS</div>
+      <div class="pp-grid">
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Request lifecycle (MTV)</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span>URLconf → middleware (in) → view → ORM/template → middleware (out) → response. Middleware is Django's cross-cutting hook — auth, CSRF, logging live there.</div>
+          <div class="pp-cx">Be able to draw this in 30 seconds.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">ORM + the N+1 trap</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span>lazy QuerySets; <b>select_related</b> (FK, SQL JOIN) vs <b>prefetch_related</b> (M2M/reverse, second query). Same N+1 story you tell in JPA — one narrative, two stacks.</div>
+          <div class="pp-tmpl">Book.objects.select_related("author")
+Author.objects.prefetch_related("books")
+qs.only("id","name")  <span class="c"># column trim</span>
+qs.annotate(n=Count("books"))</div>
+          <div class="pp-cx">Quantify a fix: "200 queries → 3" — senior signal.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Migrations discipline</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span>makemigrations → review the generated SQL (sqlmigrate) → migrate. Never edit an applied migration; add a new one. Data migrations via RunPython.</div>
+          <div class="pp-cx">Same rule as Flyway on the Spring side — never mutate applied history.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">DRF — the serializer pipeline</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span>Serializer (validate in / shape out) → ViewSet (CRUD logic) → Router (URLs). Permissions per-view or per-object; throttling; pagination classes.</div>
+          <div class="pp-tmpl">class BookVS(ModelViewSet):
+  queryset = Book.objects.select_related("author")
+  serializer_class = BookSerializer
+  permission_classes = [IsAuthenticated]</div>
+          <div class="pp-cx">DRF serializer ≈ DTO + Bean Validation in one.</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Auth &amp; security batteries</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span>sessions + CSRF for browser apps; JWT (simplejwt) for SPAs/APIs. Built-in: password hashing, XSS-escaped templates, SQL-injection-safe ORM, clickjacking middleware.</div>
+          <div class="pp-cx">"Django is secure by default — you opt <b>out</b>, not in."</div>
+        </div>
+        <div class="pp-card" style="border-left-color:var(--green)">
+          <div class="pp-name">Async Django &amp; scaling</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span>async views + ASGI exist, but the ORM is still the sync heart — heavy async work goes to <b>Celery</b> workers + Redis broker. Cache with Redis; static via WhiteNoise/CDN.</div>
+          <div class="pp-cx">Celery = your "queue + workers" system-design block, in Python.</div>
+        </div>
+      </div>
+
+      <div class="pp-cat"><span class="d" style="background:var(--accent3)"></span>FASTAPI — REVISION CARDS</div>
+      <div class="pp-grid">
+        <div class="pp-card">
+          <div class="pp-name">Pydantic v2 contracts</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span>request/response models declared as types — validation, serialization and OpenAPI docs generated from one source of truth. Same "one schema" philosophy as Zod on the frontend.</div>
+          <div class="pp-tmpl">class Pred(BaseModel):
+    cell_id: str
+    kpi: float = Field(gt=0)
+
+@app.post("/predict", response_model=Out)
+async def predict(p: Pred): ...</div>
+          <div class="pp-cx">Types ARE the contract — /docs is free.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">Dependency Injection</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span><b>Depends()</b> — inject DB sessions, auth, settings; override in tests. It's Spring's IoC idea in ~10 lines of Python. yield-dependencies give setup/teardown.</div>
+          <div class="pp-tmpl">def get_db():
+    db = Session()
+    try: yield db
+    finally: db.close()
+
+def route(db = Depends(get_db)): ...</div>
+          <div class="pp-cx">app.dependency_overrides = clean test mocking.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">async def vs def — the trap</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span><b>async def</b> + a blocking call (sync DB driver, requests, model.predict) freezes the whole event loop. Plain <b>def</b> routes run in a threadpool — often the safer choice.</div>
+          <div class="pp-cx">The #1 FastAPI interview probe. Blocking work → def, or run_in_executor.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">Serving ML models (your lane)</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span>load the model once at startup (lifespan), validate with Pydantic, batch if possible, run inference in a threadpool, expose /health + /metrics, run gunicorn with uvicorn workers in Docker.</div>
+          <div class="pp-tmpl">gunicorn app:app -k uvicorn.workers.UvicornWorker -w 4</div>
+          <div class="pp-cx">Your resume line already says "FastAPI serving 500 req/sec" — be ready to defend every piece of it.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">Background &amp; streaming</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span>BackgroundTasks for fire-and-forget (emails, logging); StreamingResponse for LLM token streams / large files; WebSocket endpoints built-in.</div>
+          <div class="pp-cx">Heavy jobs still go to Celery/queue — BackgroundTasks dies with the process.</div>
+        </div>
+        <div class="pp-card">
+          <div class="pp-name">Testing FastAPI</div>
+          <div class="pp-when"><span class="pp-lbl">Recall</span>TestClient (sync) / httpx.AsyncClient, override dependencies for a test DB, pytest fixtures. Same shape as @SpringBootTest + Testcontainers — one testing story, two stacks.</div>
+          <div class="pp-cx">A tested FastAPI service in CI = proof, not claim.</div>
+        </div>
+      </div>
+
+      <div class="pp-note" style="margin-top:8px;"><b>Revision drill (1 evening, repeat monthly):</b> rebuild a mini KPI-anomaly API from memory — FastAPI + Pydantic + Depends + /predict + /health, Dockerfile, 5 tests — in under 2 hours. Then say out loud how you'd do the same in Django (DRF viewset) and Spring Boot (controller + service). One problem, three stacks — that's the "best skilled guy" flex.</div>
+    </details>
+
+    <div class="footer">Built for <strong>Ruturaj</strong> · Pattern Playbook · Recognize the shape, reuse the template · 2026</div>
+  </div>
+</div><!-- end page-patterns -->
+
 
 
 <!-- ========== MOTIVATION POPUP ========== -->
@@ -4405,7 +5285,7 @@ const MOTIVATIONS = [
   { emoji: "🔥", quote: "YOU ARE 23. THE TIME IS NOW.", sub: "Every hour you sleep past 7:30 AM is an hour someone else used to get ahead. Your 23-year-old body is a machine built for this grind.", mission: "Wake at 7:30 · Gym by 7:50 · 2 LeetCode today" },
   { emoji: "⚡", quote: "MAANG IS NOT LUCK. IT IS DAILY REPS.", sub: "The engineers at Google did not get lucky. They solved 300+ problems. They showed up every single day. You can too - starting today.", mission: "Solve 2 LeetCode + read 1 chapter DDIA" },
   { emoji: "💎", quote: "YOUR TELECOM BACKGROUND IS A MOAT.", sub: "You know 4G/5G internals, DevOps, and production systems. AI on top of this = a profile that 99% of freshers cannot replicate. Build that edge.", mission: "Push 1 GitHub commit + 1 AI project task" },
-  { emoji: "🧠", quote: "CONSISTENCY > INTENSITY EVERY SINGLE TIME.", sub: "One bad day does not define your journey. One skipped workout, one missed study block - it is fine. Just never miss two in a row. That is the rule.", mission: "Study Block 1 (5:30PM): full 2 hours, no phone" },
+  { emoji: "🧠", quote: "CONSISTENCY > INTENSITY EVERY SINGLE TIME.", sub: "One bad day does not define your journey. One skipped workout, one missed study block - it is fine. Just never miss two in a row. That is the rule.", mission: "Study Block 1 (7:30 PM): full 2 hours, no phone" },
   { emoji: "🏆", quote: "SIX MONTHS FROM NOW, EVERYTHING CHANGES.", sub: "You will look back at this exact moment as the day you decided. Not someday. Not next week. Today. The plan is built. Now execute.", mission: "Complete all checklist tasks today - 100% score" },
   { emoji: "🚀", quote: "REVISE FIRST. THEN CONQUER.", sub: "Month 0 is not wasted time - it is compound interest on what you already know. PPA + Logic + Python = the foundation everything else is built on.", mission: "Revise 1 PPA chapter + 3 logic building problems" },
   { emoji: "💪", quote: "GYM + BRAIN. BOTH. EVERY DAY.", sub: "You want to look sharp in the interview room AND think sharp. The gym is not optional - it keeps cortisol low and testosterone high for studying.", mission: "Hit gym by 7:50 AM - do not skip for any reason" },
@@ -4552,9 +5432,10 @@ TODAY'S BATTLE PLAN
 🏋️  7:50 AM  → GYM (cardio + PPL weights)
 💼  10:00 AM → Office — deliver fast, learn in gaps
 🏠  5:00 PM  → Home from office — the evening is yours
-🍽️  5:30 PM  → Early dinner + family (5:30–6:30)
-💡  6:30 PM  → STUDY BLOCK 1 (2.5 hrs) — core build (current phase)
-📖  9:30 PM  → STUDY BLOCK 2 (3.5 hrs) — project + AI + 2–3 DSA + GitHub
+🍽️  5:30 PM  → Early dinner + family (5:30–6:00)
+🎓  6:00 PM  → 5 Minute Engineering AI course (6:00–7:00)
+💡  7:30 PM  → STUDY BLOCK 1 (2 hrs) — core build (current phase)
+📖  9:45 PM  → STUDY BLOCK 2 (3.25 hrs) — project + AI + 2–3 DSA + GitHub
 ✨  1:00 AM  → PM skincare + Minoxidil
 📝  1:15 AM  → REVIEW + plan tomorrow
 😴  2:00 AM  → SLEEP (~5.5–6 hrs)
@@ -4617,8 +5498,9 @@ TOMORROW'S NON-NEGOTIABLES
   ✦ Gym 7:50 AM — no excuses
   ✦ Home by 5 PM — protect the evening
   ✦ Early dinner by 5:30 PM (no late eating)
-  ✦ Block 1 (6:30 PM): core build done
-  ✦ Block 2 (9:30 PM): 2–3 DSA + project commit
+  ✦ 5ME AI course (6:00–7:00 PM): active notes
+  ✦ Block 1 (7:30 PM): core build done
+  ✦ Block 2 (9:45 PM): 2–3 DSA + project commit
   ✦ GitHub push before sleeping
   ✦ PM skincare + Minoxidil
   ✦ Screens off by 2:00 AM
@@ -5042,7 +5924,7 @@ const MASTERY_PHASES = [
   {
     id:'p3', badge:'P3', badgeColor:'#4cff91', title:'DevOps, Cloud & Django', weeks:'Weeks 19–26 · ~2 months',
     focus:'CLOUD-NATIVE · YOUR HOME TURF · DSA → HARD DP',
-    desc:"This is your home turf — go from CI/CD pro to full cloud-native. Containers, Kubernetes, AWS, IaC, observability. Add Django (fast, you know Python) as a second backend stack. DSA hits hard DP + advanced graphs.",
+    desc:"This is your home turf — go from CI/CD pro to full cloud-native. Containers, Kubernetes, AWS, IaC, observability. Revise Django + FastAPI (you've shipped with both) as your second backend stack. DSA hits hard DP + advanced graphs.",
     tracks:[
       {label:'Containers & Orchestration', ico:'🐳', dom:'devops', items:[
         {id:'p3-k-1', t:"<b>Docker deep</b> — images, layers, multi-stage builds, networking, volumes"},
@@ -5069,10 +5951,11 @@ const MASTERY_PHASES = [
         {id:'p3-iac-2', t:"<b>OpenTelemetry</b> + Prometheus + Grafana + Loki/Tempo — metrics, logs & <b>distributed traces</b>"},
         {id:'p3-iac-3', t:"Centralized logging + alerting; SLO/SLI; trace_id correlation"},
       ]},
-      {label:'Django + DRF (time-boxed ~1 wk)', ico:'🐍', dom:'backend', items:[
-        {id:'p3-dj-1', t:"Django 5.2 LTS — models, ORM, migrations, admin (fast: you already know Python/Flask)"},
+      {label:'Django + DRF + FastAPI (revision ~1 wk)', ico:'🐍', dom:'backend', items:[
+        {id:'p3-dj-1', t:"Django 5.2 LTS <b>revision</b> — models, ORM (select_related / prefetch_related), migrations, admin (you've shipped Django before — sharpen, don't relearn)"},
         {id:'p3-dj-2', t:"<b>Django REST Framework</b> — serializers, viewsets, auth, permissions"},
-        {id:'p3-dj-3', t:"Ship a CRUD API + reason about the ORM/N+1 — breadth, not Spring-level depth"},
+        {id:'p3-dj-3', t:"Ship a CRUD API + reason about the ORM/N+1 — same story you tell for JPA"},
+        {id:'p3-dj-4', t:"<b>FastAPI revision</b> — Pydantic v2, Depends() injection, async-vs-def trap, serve an ML model (gunicorn + uvicorn workers) — see the Patterns tab playbook"},
       ]},
       {label:'DSA Build', ico:'⚡', dom:'dsa', items:[
         {id:'p3-dsa-1', t:"<b>Advanced DP</b> — state compression, DP on trees/graphs, intervals"},
@@ -5088,6 +5971,7 @@ const MASTERY_PHASES = [
       {name:"Terraform: Up & Running, 3rd ed. + OpenTofu docs", url:"https://opentofu.org/docs/", why:"The definitive IaC book (3rd ed, Gruntwork) for modules/state/patterns; HCL transfers to OpenTofu. Use the free OpenTofu docs for the post-2023 license/state-encryption currency."},
       {name:"Argo CD Official Docs", url:"https://argo-cd.readthedocs.io/", why:"Primary source for your GitOps tool (CNCF Graduated, majority-adopted). Applications, ApplicationSets, sync waves, app-of-apps — the patterns you'll demo."},
       {name:"Django (5.2 LTS) + DRF docs", url:"https://docs.djangoproject.com/en/5.2/", why:"Source-of-truth for the time-boxed Django pillar; the official tutorial is best-in-class. (Be able to say why you pinned to LTS vs Django 6.0.)"},
+      {name:"FastAPI official docs (tutorial + advanced)", url:"https://fastapi.tiangolo.com/", why:"Canonical revision source — Pydantic v2, Depends(), async-vs-def, testing. You've used it before; skim the advanced sections you skipped (lifespan, dependencies with yield, WebSockets)."},
     ],
     proof:[
       "Public repo with a multi-stage Dockerfile (final image < ~50MB, non-root) + README showing image-size before/after + a Trivy scan result (0 HIGH/CRITICAL CVEs). Concrete, measurable, security-aware.",
@@ -5096,7 +5980,7 @@ const MASTERY_PHASES = [
       "Cloud footprint (VPC + EKS + RDS + S3 + least-privilege IAM) provisioned entirely with OpenTofu/Terraform — encrypted remote state, a GitHub Actions plan/apply pipeline, and a Grafana + OTel-traces screenshot. The full senior stack in one verifiable repo.",
     ],
     project:{title:"Cloud Deploy — portfolio centerpiece", desc:"Take your full-stack app to Kubernetes on AWS (EKS) via Gateway API + Helm v4 + ArgoCD, OpenTofu-provisioned infra, with an OpenTelemetry → Prometheus/Grafana/Loki/Tempo dashboard. This is your edge — make it loud."},
-    milestone:"Deploy & operate a real app on K8s + cloud with CI/CD + tracing · OpenTofu infra · Django API shipped · 350 LeetCode."
+    milestone:"Deploy & operate a real app on K8s + cloud with CI/CD + tracing · OpenTofu infra · Django + FastAPI APIs shipped · 350 LeetCode."
   },
 
   {
@@ -5318,7 +6202,7 @@ renderMastery();
 
 <!-- ===================== DAILY PLAN ENGINE (day-by-day) ===================== -->
 <script>
-const DAILY_START = '2026-07-08';                 // Day 1 = 8 July 2026 (calendar-locked — the real restart)
+const DAILY_START = '2026-07-16';                 // Day 1 = 16 July 2026 (calendar-locked — the real restart)
 const DP_ORDER = ['p0','p1','p2','p3','p4','p5'];
 const DP_WEEKS = { p0:4, p1:8, p2:6, p3:8, p4:10, p5:8 };
 const DP_RANGE = {};
@@ -5347,7 +6231,7 @@ const BLIND75 = [
 ];
 const DP_PATTERNS = ['Arrays & Hashing','Two Pointers','Sliding Window','Binary Search','Stack','Linked List','Trees','Tries','Heap','Backtracking','Graphs','1-D DP','2-D DP','Greedy','Intervals','Bit Manipulation'];
 
-const DP_DONE_KEY = 'ruturaj_daily_done_v2'; // v2 = 8-Jul-2026 restart; old v1 ticks belonged to the June attempt
+const DP_DONE_KEY = 'ruturaj_daily_done_v3'; // v3 = 16-Jul-2026 restart; v2 ticks belonged to the 8-Jul attempt
 function dpLoadDone(){ try { return JSON.parse(localStorage.getItem(DP_DONE_KEY)) || {}; } catch(e){ return {}; } }
 let dpDone = dpLoadDone();
 function dpSaveDone(){ localStorage.setItem(DP_DONE_KEY, JSON.stringify(dpDone)); }
@@ -5476,10 +6360,10 @@ function renderDaily(){
     + '</div>'
     + '<div class="dp-nav"><button class="btn secondary" onclick="dpShift(-1)">◀ Prev</button><button class="btn secondary" onclick="dpNow()">● Today</button><button class="btn secondary" onclick="dpShift(1)">Peek ahead ▶</button></div>'
     + (browsing ? '<div class="mst-callout" style="margin-bottom:12px;"><span class="ch">Just browsing Day '+n+'</span>Tap <b>● Today</b> to jump back to today — <b>Day '+todayN+'</b>.</div>' : '')
-    + '<div class="dp-card"><div class="dp-card-h">'+coreH+' <span class="tm">Block 1 · 6:30–9 PM</span></div><div class="dp-card-b"><div class="big">'+plan.lesson+'</div><div class="sub">'+coreSub+'</div></div></div>'
+    + '<div class="dp-card"><div class="dp-card-h">'+coreH+' <span class="tm">Block 1 · 7:30–9:30 PM</span></div><div class="dp-card-b"><div class="big">'+plan.lesson+'</div><div class="sub">'+coreSub+'</div></div></div>'
     + '<div class="dp-card"><div class="dp-card-h">🛠️ Build &amp; ship <span class="tm">Block 2 · 9:30 PM–1 AM</span></div><div class="dp-card-b"><div>Apply today\'s topic to your phase project: <span class="big">'+ph.project.title+'</span>.</div><div class="sub">End with a <b>GitHub commit</b> — even a small one. Never break the chain.</div></div></div>'
     + '<div class="dp-card"><div class="dp-card-h">💻 DSA <span class="tm">~45 min</span></div><div class="dp-card-b"><div class="big">'+plan.dsa.main+' <span class="dp-tag2">'+plan.dsa.tag+'</span></div><div class="sub">'+plan.dsa.note+(n-1<BLIND75.length?' (Full Blind-75 list is in your printed checklist.)':'')+'</div></div></div>'
-    + '<div class="dp-card"><div class="dp-card-h">✅ Daily non-negotiables <span class="tm" style="cursor:pointer;color:var(--accent3);" onclick="showPage(\'today\')">tick in Today →</span></div><div class="dp-card-b"><div class="dp-habits"><span class="dp-habit">🏋️ Gym 7:50 AM</span><span class="dp-habit">🍽️ Dinner by 6:30</span><span class="dp-habit">💡 Block 1 (6:30)</span><span class="dp-habit">📖 Block 2 (9:30)</span><span class="dp-habit">💻 GitHub commit</span><span class="dp-habit">✨ Skincare</span><span class="dp-habit">😴 Sleep by 2 AM</span></div></div></div>'
+    + '<div class="dp-card"><div class="dp-card-h">✅ Daily non-negotiables <span class="tm" style="cursor:pointer;color:var(--accent3);" onclick="showPage(\'today\')">tick in Today →</span></div><div class="dp-card-b"><div class="dp-habits"><span class="dp-habit">🏋️ Gym 7:50 AM</span><span class="dp-habit">🍽️ Dinner by 6:00</span><span class="dp-habit">🎓 5ME course (6–7)</span><span class="dp-habit">💡 Block 1 (7:30)</span><span class="dp-habit">📖 Block 2 (9:45)</span><span class="dp-habit">💻 GitHub commit</span><span class="dp-habit">✨ Skincare</span><span class="dp-habit">😴 Sleep by 2 AM</span></div></div></div>'
     + '<div class="dp-card"><div class="dp-card-h">🏁 This phase\'s goal</div><div class="dp-card-b"><div class="sub" style="margin-top:0;">'+ph.milestone+'</div></div></div>'
     + '<button class="dp-done-btn'+(isDone?' isdone':'')+'" onclick="dpMarkDone('+n+')">'+(isDone?'✓ Day '+n+' done — tap to undo':'✅ Done with Day '+n+' → unlock the next')+'</button>'
     + '<div class="dp-progtext" style="text-align:center;margin:2px 0 8px;">Finished early? Hit the button — the next day unlocks instantly. Do 2–3 in a sitting and you\'ll finish well before 308 days.</div>'
