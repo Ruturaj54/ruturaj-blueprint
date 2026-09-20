@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Trash2, FlaskConical, Pill } from 'lucide-react';
+import { Plus, Trash2, FlaskConical, Pill, Check } from 'lucide-react';
 import { useAppState, useUpdateState } from '@/hooks/useAppState';
 import { Card, SectionTitle, Button, Chip, EmptyState } from '@/components/ui/primitives';
 import { cn } from '@/lib/cn';
@@ -99,12 +99,14 @@ export function SupplementSection() {
                           : [...list, s.id];
                       })
                     }
+                    aria-label={`Mark ${s.name} taken`}
+                    aria-pressed={taken}
                     className={cn(
-                      'grid size-[20px] shrink-0 place-items-center rounded-[6px] border text-[11px]',
-                      taken ? 'border-success bg-success text-black' : 'border-line2',
+                      'grid size-[20px] shrink-0 place-items-center rounded-[6px] border',
+                      taken ? 'border-success bg-success' : 'border-line2',
                     )}
                   >
-                    {taken ? '✓' : ''}
+                    {taken && <Check size={13} strokeWidth={3.5} className="text-black" />}
                   </button>
                   <span className={cn('min-w-0 flex-1 text-[14px]', taken && 'text-faint')}>
                     {s.name}

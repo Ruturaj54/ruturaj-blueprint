@@ -10,6 +10,7 @@ import { TRACK_META } from '@/data/tasks';
 import { dayScore, executionStreak } from '@/engine/planner';
 import { dsaTotals } from '@/engine/dsa';
 import { todayISO, addDays, formatShort, currentDay, TOTAL_DAYS } from '@/engine/dates';
+import { WeeklyReviewCard } from '@/components/analytics/WeeklyReviewCard';
 
 export function Analytics() {
   const state = useAppState();
@@ -78,6 +79,8 @@ export function Analytics() {
           </div>
         </div>
       </Card>
+
+      <WeeklyReviewCard />
 
       {/* ---- execution ---- */}
       <section>
