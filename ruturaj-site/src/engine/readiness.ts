@@ -111,10 +111,14 @@ export function interviewReadiness(state: AppState): InterviewReadiness {
   const totals = dsaTotals(state);
   const patterns = patternStats(state);
 
-  // DSA readiness: half coverage across patterns, half clean-solve accuracy.
+  // DSA readiness: coverage across patterns, plus clean-solve accuracy scaled
+  // by how much evidence there is for it. A single perfect solve is 100%
+  // accurate and means nothing, so accuracy only reaches full weight around 40
+  // logged attempts — otherwise one lucky problem reads as half-ready.
   const avgCoverage =
     patterns.reduce((s, p) => s + p.coverage, 0) / Math.max(1, patterns.length);
-  const dsa = Math.round((avgCoverage * 0.5 + totals.accuracy * 0.5) * 100);
+  const confidence = Math.min(1, totals.total / 40);
+  const dsa = Math.round((avgCoverage * 0.6 + totals.accuracy * confidence * 0.4) * 100);
 
   const sdTasks = ALL_TASKS.filter((t) => t.id.startsWith('cs-sd-'));
   const systemDesign = Math.round(
