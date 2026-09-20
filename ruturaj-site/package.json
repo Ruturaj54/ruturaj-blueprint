@@ -3,12 +3,14 @@
   "private": true,
   "version": "2.0.0",
   "type": "module",
-  "description": "Ruturaj Blueprint — 117-day career execution and accountability system",
+  "description": "Ruturaj Blueprint \u2014 117-day career execution and accountability system",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "node scripts/gen-catalog.mjs && tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "gen:catalog": "node scripts/gen-catalog.mjs",
+    "verify": "node scripts/verify-engine.mjs"
   },
   "dependencies": {
     "@netlify/blobs": "^8.1.0",

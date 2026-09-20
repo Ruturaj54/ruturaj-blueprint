@@ -1,0 +1,1894 @@
+{
+  "generatedAt": "2026-09-20T22:27:22.066Z",
+  "tasks": [
+    {
+      "id": "ai-embed-1",
+      "title": "Embeddings deep dive — dimensionality, similarity metrics, model choice",
+      "track": "ai",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 9,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "ai-vector-1",
+      "title": "Vector database hands-on — pgvector, index types, recall vs latency",
+      "track": "ai",
+      "priority": "P0",
+      "estMinutes": 120,
+      "careerValue": 9,
+      "proof": "implement",
+      "prereqs": [
+        "ai-embed-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ai-retrieval-1",
+      "title": "Hybrid retrieval — BM25 plus dense, and why pure vector search underperforms",
+      "track": "ai",
+      "priority": "P0",
+      "estMinutes": 120,
+      "careerValue": 9,
+      "proof": "implement",
+      "prereqs": [
+        "ai-vector-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ai-rerank-1",
+      "title": "Reranking — cross-encoder stage and its latency and cost tradeoff",
+      "track": "ai",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [
+        "ai-retrieval-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ai-eval-1",
+      "title": "Retrieval evaluation harness — hit-rate, MRR, nDCG on a labelled set",
+      "track": "ai",
+      "priority": "P0",
+      "estMinutes": 150,
+      "careerValue": 10,
+      "proof": "implement",
+      "prereqs": [
+        "ai-retrieval-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ai-eval-2",
+      "title": "Answer-quality evaluation — groundedness and faithfulness scoring",
+      "track": "ai",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 9,
+      "proof": "implement",
+      "prereqs": [
+        "ai-eval-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ai-serve-1",
+      "title": "FastAPI AI service — streaming responses, timeouts, backpressure",
+      "track": "ai",
+      "priority": "P0",
+      "estMinutes": 150,
+      "careerValue": 9,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ai-serve-2",
+      "title": "Caching and cost control — semantic cache, token budgets, model routing",
+      "track": "ai",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [
+        "ai-serve-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ai-serve-3",
+      "title": "Observability for LLM systems — tracing, token accounting, latency budgets",
+      "track": "ai",
+      "priority": "P1",
+      "estMinutes": 100,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [
+        "ai-serve-1"
+      ],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ai-agent-1",
+      "title": "Tool calling and agent loop — build one from scratch, no framework",
+      "track": "ai",
+      "priority": "P0",
+      "estMinutes": 150,
+      "careerValue": 9,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ai-agent-2",
+      "title": "Agent memory, planning and guardrails",
+      "track": "ai",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [
+        "ai-agent-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "ai-agent-3",
+      "title": "Agent evaluation — trajectory scoring and regression suite",
+      "track": "ai",
+      "priority": "P2",
+      "estMinutes": 120,
+      "careerValue": 7,
+      "proof": "implement",
+      "prereqs": [
+        "ai-agent-2"
+      ],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ai-dl-1",
+      "title": "Transformer internals — attention maths worked through by hand",
+      "track": "ai",
+      "priority": "P1",
+      "estMinutes": 150,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "ai-dl-2",
+      "title": "Fine-tuning vs prompting vs RAG — decision framework with cost model",
+      "track": "ai",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "ai-dl-3",
+      "title": "LoRA and quantisation — read the papers, reproduce the intuition",
+      "track": "ai",
+      "priority": "P2",
+      "estMinutes": 150,
+      "careerValue": 6,
+      "proof": "notes",
+      "prereqs": [
+        "ai-dl-1"
+      ],
+      "interviewCritical": false,
+      "portfolioCritical": false
+    },
+    {
+      "id": "ai-sd-1",
+      "title": "System design for AI — design a RAG platform at scale",
+      "track": "ai",
+      "priority": "P0",
+      "estMinutes": 120,
+      "careerValue": 10,
+      "proof": "exercise",
+      "prereqs": [
+        "ai-eval-1",
+        "ai-serve-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-arrays-learn",
+      "title": "Arrays & Hashing — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 60,
+      "careerValue": 10,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-arrays-drill",
+      "title": "Arrays & Hashing — solve 12 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 240,
+      "careerValue": 10,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-arrays-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-twopointers-learn",
+      "title": "Two Pointers — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 60,
+      "careerValue": 9,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-twopointers-drill",
+      "title": "Two Pointers — solve 8 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 160,
+      "careerValue": 9,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-twopointers-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-sliding-learn",
+      "title": "Sliding Window — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 60,
+      "careerValue": 9,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-sliding-drill",
+      "title": "Sliding Window — solve 8 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 160,
+      "careerValue": 9,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-sliding-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-binarysearch-learn",
+      "title": "Binary Search — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 60,
+      "careerValue": 10,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-binarysearch-drill",
+      "title": "Binary Search — solve 10 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 200,
+      "careerValue": 10,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-binarysearch-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-stack-learn",
+      "title": "Stack — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 60,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-stack-drill",
+      "title": "Stack — solve 8 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 160,
+      "careerValue": 8,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-stack-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-queue-learn",
+      "title": "Queue & Deque — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 60,
+      "careerValue": 6,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-queue-drill",
+      "title": "Queue & Deque — solve 5 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 100,
+      "careerValue": 6,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-queue-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-linkedlist-learn",
+      "title": "Linked List — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 60,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-linkedlist-drill",
+      "title": "Linked List — solve 8 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 160,
+      "careerValue": 8,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-linkedlist-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-trees-learn",
+      "title": "Trees — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 60,
+      "careerValue": 10,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-trees-drill",
+      "title": "Trees — solve 14 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 280,
+      "careerValue": 10,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-trees-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-bst-learn",
+      "title": "Binary Search Tree — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 60,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-bst-drill",
+      "title": "Binary Search Tree — solve 6 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 120,
+      "careerValue": 8,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-bst-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-heap-learn",
+      "title": "Heap & Priority Queue — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 60,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-heap-drill",
+      "title": "Heap & Priority Queue — solve 7 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 140,
+      "careerValue": 8,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-heap-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-graphs-learn",
+      "title": "Graphs — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 60,
+      "careerValue": 10,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-graphs-drill",
+      "title": "Graphs — solve 14 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 280,
+      "careerValue": 10,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-graphs-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-recursion-learn",
+      "title": "Recursion — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 60,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-recursion-drill",
+      "title": "Recursion — solve 6 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 120,
+      "careerValue": 8,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-recursion-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-backtracking-learn",
+      "title": "Backtracking — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 60,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-backtracking-drill",
+      "title": "Backtracking — solve 8 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 160,
+      "careerValue": 8,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-backtracking-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-greedy-learn",
+      "title": "Greedy — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 60,
+      "careerValue": 7,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-greedy-drill",
+      "title": "Greedy — solve 7 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 140,
+      "careerValue": 7,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-greedy-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-dp1-learn",
+      "title": "1-D Dynamic Programming — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 60,
+      "careerValue": 9,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-dp1-drill",
+      "title": "1-D Dynamic Programming — solve 12 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 240,
+      "careerValue": 9,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-dp1-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-dp2-learn",
+      "title": "2-D Dynamic Programming — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 60,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-dp2-drill",
+      "title": "2-D Dynamic Programming — solve 8 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 160,
+      "careerValue": 8,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-dp2-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-intervals-learn",
+      "title": "Intervals — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 60,
+      "careerValue": 7,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-intervals-drill",
+      "title": "Intervals — solve 6 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 7,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-intervals-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-bits-learn",
+      "title": "Bit Manipulation — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 60,
+      "careerValue": 6,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-bits-drill",
+      "title": "Bit Manipulation — solve 6 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 6,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-bits-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-tries-learn",
+      "title": "Tries — learn the pattern and its invariants",
+      "track": "dsa",
+      "priority": "P2",
+      "estMinutes": 60,
+      "careerValue": 6,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-tries-drill",
+      "title": "Tries — solve 4 problems, tagged and timed",
+      "track": "dsa",
+      "priority": "P2",
+      "estMinutes": 80,
+      "careerValue": 6,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-tries-learn"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-timed-1",
+      "title": "Weekly timed set — 3 problems, no hints, solve times logged",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 10,
+      "proof": "checkpoint",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-amazon-1",
+      "title": "Amazon-tagged set — graphs, heaps, intervals, BFS-heavy problems",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 9,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-graphs-drill",
+        "dsa-heap-drill"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-google-1",
+      "title": "Google-style set — harder algorithmic reasoning, fewer templates",
+      "track": "dsa",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 9,
+      "proof": "exercise",
+      "prereqs": [
+        "dsa-dp1-drill",
+        "dsa-graphs-drill"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "dsa-revision-1",
+      "title": "Cold re-solve loop — 5 old problems, under 20 minutes each",
+      "track": "dsa",
+      "priority": "P0",
+      "estMinutes": 100,
+      "careerValue": 10,
+      "proof": "checkpoint",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-os-1",
+      "title": "Processes vs threads, context switching, scheduling algorithms",
+      "track": "cs",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-os-2",
+      "title": "Memory: virtual memory, paging, segmentation, TLB",
+      "track": "cs",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-os-3",
+      "title": "Synchronisation: mutex, semaphore, deadlock conditions and prevention",
+      "track": "cs",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 9,
+      "proof": "implement",
+      "prereqs": [
+        "cs-os-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-os-4",
+      "title": "IPC and file systems — inodes, journaling, buffering",
+      "track": "cs",
+      "priority": "P1",
+      "estMinutes": 75,
+      "careerValue": 6,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": false,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-net-1",
+      "title": "TCP/IP stack, handshake, flow control, congestion control",
+      "track": "cs",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 9,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-net-2",
+      "title": "HTTP/1.1 vs HTTP/2 vs HTTP/3, TLS handshake, DNS resolution",
+      "track": "cs",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-net-3",
+      "title": "Load balancing, reverse proxies, WebSockets, keep-alive",
+      "track": "cs",
+      "priority": "P1",
+      "estMinutes": 75,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [
+        "cs-net-2"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-db-1",
+      "title": "SQL depth — joins, window functions, query plans",
+      "track": "cs",
+      "priority": "P0",
+      "estMinutes": 120,
+      "careerValue": 9,
+      "proof": "exercise",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-db-2",
+      "title": "Indexes — B-tree internals, covering indexes, EXPLAIN ANALYZE",
+      "track": "cs",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 9,
+      "proof": "implement",
+      "prereqs": [
+        "cs-db-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-db-3",
+      "title": "Transactions, ACID, isolation levels and the anomalies each allows",
+      "track": "cs",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 9,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-db-4",
+      "title": "Normalisation, denormalisation, relational vs NoSQL tradeoffs",
+      "track": "cs",
+      "priority": "P1",
+      "estMinutes": 75,
+      "careerValue": 7,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-oop-1",
+      "title": "SOLID principles with real refactors, not definitions",
+      "track": "cs",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 7,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-oop-2",
+      "title": "Low-level design — parking lot, rate limiter, cache, from scratch",
+      "track": "cs",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [
+        "cs-oop-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-sd-1",
+      "title": "Building blocks — caching, queues, sharding, replication, consistency",
+      "track": "cs",
+      "priority": "P0",
+      "estMinutes": 150,
+      "careerValue": 10,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-sd-2",
+      "title": "Design a URL shortener — end to end, with numbers",
+      "track": "cs",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 9,
+      "proof": "exercise",
+      "prereqs": [
+        "cs-sd-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-sd-3",
+      "title": "Design a notification system — fan-out, retries, idempotency",
+      "track": "cs",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "exercise",
+      "prereqs": [
+        "cs-sd-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-sd-4",
+      "title": "Design a chat system — presence, ordering, delivery guarantees",
+      "track": "cs",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "exercise",
+      "prereqs": [
+        "cs-sd-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-sd-5",
+      "title": "Design a file storage service — chunking, dedupe, metadata",
+      "track": "cs",
+      "priority": "P2",
+      "estMinutes": 90,
+      "careerValue": 7,
+      "proof": "exercise",
+      "prereqs": [
+        "cs-sd-1"
+      ],
+      "interviewCritical": false,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-sd-6",
+      "title": "Design a news feed — ranking, fan-out on read vs write",
+      "track": "cs",
+      "priority": "P2",
+      "estMinutes": 90,
+      "careerValue": 7,
+      "proof": "exercise",
+      "prereqs": [
+        "cs-sd-1"
+      ],
+      "interviewCritical": false,
+      "portfolioCritical": false
+    },
+    {
+      "id": "cs-sd-7",
+      "title": "Distributed systems basics — CAP, consensus, leader election",
+      "track": "cs",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [
+        "cs-sd-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "be-py-1",
+      "title": "Python internals — GIL, memory model, references, descriptors",
+      "track": "backend",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "be-py-2",
+      "title": "asyncio in anger — event loop, gather, cancellation, blocking-call traps",
+      "track": "backend",
+      "priority": "P0",
+      "estMinutes": 120,
+      "careerValue": 9,
+      "proof": "implement",
+      "prereqs": [
+        "be-py-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "be-drf-1",
+      "title": "DRF at production depth — serializers, viewsets, permissions, throttling",
+      "track": "backend",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "be-drf-2",
+      "title": "Django ORM performance — N+1, select_related, prefetch_related, query counts",
+      "track": "backend",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 9,
+      "proof": "implement",
+      "prereqs": [
+        "be-drf-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "be-fastapi-1",
+      "title": "FastAPI — dependency injection, Pydantic v2, background tasks, lifespan",
+      "track": "backend",
+      "priority": "P0",
+      "estMinutes": 120,
+      "careerValue": 9,
+      "proof": "implement",
+      "prereqs": [
+        "be-py-2"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "be-auth-1",
+      "title": "Auth done properly — JWT, refresh rotation, RBAC, session tradeoffs",
+      "track": "backend",
+      "priority": "P0",
+      "estMinutes": 120,
+      "careerValue": 9,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "be-pg-1",
+      "title": "PostgreSQL operationally — connection pooling, migrations, backups",
+      "track": "backend",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "be-redis-1",
+      "title": "Redis — caching patterns, TTL, invalidation, stampede protection",
+      "track": "backend",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "be-celery-1",
+      "title": "Background jobs — Celery, retries, idempotency, dead-letter handling",
+      "track": "backend",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [
+        "be-redis-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "be-test-1",
+      "title": "Testing — pytest fixtures, factories, mocking boundaries, coverage that means something",
+      "track": "backend",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 7,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "be-docker-1",
+      "title": "Docker for Python services — multi-stage builds, slim images, compose",
+      "track": "backend",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "be-api-1",
+      "title": "API design — versioning, pagination, error contracts, idempotency keys",
+      "track": "backend",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "be-deploy-1",
+      "title": "Deploy a service properly — health checks, logging, metrics, zero-downtime",
+      "track": "backend",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 8,
+      "proof": "project",
+      "prereqs": [
+        "be-docker-1"
+      ],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "java-1",
+      "title": "Java syntax, OOP and collections — refresh to fluency",
+      "track": "java",
+      "priority": "P2",
+      "estMinutes": 120,
+      "careerValue": 6,
+      "proof": "exercise",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "java-2",
+      "title": "Generics, exceptions, streams and lambdas",
+      "track": "java",
+      "priority": "P2",
+      "estMinutes": 90,
+      "careerValue": 5,
+      "proof": "exercise",
+      "prereqs": [
+        "java-1"
+      ],
+      "interviewCritical": false,
+      "portfolioCritical": false
+    },
+    {
+      "id": "java-3",
+      "title": "Concurrency and JVM basics — threads, executors, heap vs stack, GC",
+      "track": "java",
+      "priority": "P2",
+      "estMinutes": 120,
+      "careerValue": 6,
+      "proof": "notes",
+      "prereqs": [
+        "java-2"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "java-4",
+      "title": "Spring Boot — DI, REST controllers, JPA basics, one working service",
+      "track": "java",
+      "priority": "P3",
+      "estMinutes": 180,
+      "careerValue": 5,
+      "proof": "project",
+      "prereqs": [
+        "java-3"
+      ],
+      "interviewCritical": false,
+      "portfolioCritical": false
+    },
+    {
+      "id": "react-1",
+      "title": "Modern React — hooks, effects, state patterns, when to reach for context",
+      "track": "react",
+      "priority": "P2",
+      "estMinutes": 90,
+      "careerValue": 5,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "react-2",
+      "title": "API integration, forms, auth flows, error and loading states",
+      "track": "react",
+      "priority": "P2",
+      "estMinutes": 90,
+      "careerValue": 5,
+      "proof": "implement",
+      "prereqs": [
+        "react-1"
+      ],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "react-3",
+      "title": "Performance — memoisation, list virtualisation, bundle size",
+      "track": "react",
+      "priority": "P3",
+      "estMinutes": 75,
+      "careerValue": 4,
+      "proof": "notes",
+      "prereqs": [
+        "react-2"
+      ],
+      "interviewCritical": false,
+      "portfolioCritical": false
+    },
+    {
+      "id": "sys-conc-1",
+      "title": "Concurrency in C++ — threads, atomics, memory ordering",
+      "track": "systems",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "sys-perf-1",
+      "title": "Profiling and debugging — perf, gdb, valgrind, strace",
+      "track": "systems",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "sys-mem-1",
+      "title": "Memory layout, cache behaviour, false sharing",
+      "track": "systems",
+      "priority": "P2",
+      "estMinutes": 90,
+      "careerValue": 7,
+      "proof": "notes",
+      "prereqs": [
+        "sys-conc-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "sys-sock-1",
+      "title": "Socket programming at depth — non-blocking I/O, epoll, timeouts",
+      "track": "systems",
+      "priority": "P1",
+      "estMinutes": 120,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "sys-linux-1",
+      "title": "Linux internals — namespaces, cgroups, and what a container really is",
+      "track": "systems",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "ops-cicd-1",
+      "title": "Pipeline architecture — parallel stages, caching, artefact promotion",
+      "track": "devops",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ops-k8s-1",
+      "title": "Kubernetes fundamentals — pods, services, deployments, probes",
+      "track": "devops",
+      "priority": "P2",
+      "estMinutes": 150,
+      "careerValue": 7,
+      "proof": "implement",
+      "prereqs": [
+        "sys-linux-1"
+      ],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ops-obs-1",
+      "title": "Observability — structured logs, metrics, traces, useful alerts",
+      "track": "devops",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "implement",
+      "prereqs": [],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "ops-cloud-1",
+      "title": "Cloud fundamentals — compute, storage, networking, IAM, cost",
+      "track": "devops",
+      "priority": "P2",
+      "estMinutes": 120,
+      "careerValue": 7,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": false,
+      "portfolioCritical": false
+    },
+    {
+      "id": "tel-arch-1",
+      "title": "4G/5G architecture — explain the full call flow end to end",
+      "track": "telecom",
+      "priority": "P1",
+      "estMinutes": 90,
+      "careerValue": 8,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "tel-proto-1",
+      "title": "Protocol depth — the layers you touch, and the tradeoffs in each",
+      "track": "telecom",
+      "priority": "P2",
+      "estMinutes": 90,
+      "careerValue": 7,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": false,
+      "portfolioCritical": false
+    },
+    {
+      "id": "tel-story-1",
+      "title": "Three telecom engineering stories, written in STAR form",
+      "track": "telecom",
+      "priority": "P0",
+      "estMinutes": 90,
+      "careerValue": 9,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": false
+    },
+    {
+      "id": "proj-rag-ship",
+      "title": "Production RAG Service — deployed, documented, defensible",
+      "track": "project",
+      "priority": "P0",
+      "estMinutes": 600,
+      "careerValue": 10,
+      "proof": "project",
+      "prereqs": [
+        "ai-eval-1",
+        "ai-serve-1"
+      ],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    },
+    {
+      "id": "proj-agent-ship",
+      "title": "AI + Backend Platform — auth, queues, agent loop, deployed",
+      "track": "project",
+      "priority": "P1",
+      "estMinutes": 600,
+      "careerValue": 9,
+      "proof": "project",
+      "prereqs": [
+        "ai-agent-1",
+        "be-auth-1"
+      ],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "proj-systems-ship",
+      "title": "Telecom Observability Tool — the differentiator project",
+      "track": "project",
+      "priority": "P2",
+      "estMinutes": 480,
+      "careerValue": 8,
+      "proof": "project",
+      "prereqs": [],
+      "interviewCritical": false,
+      "portfolioCritical": true
+    },
+    {
+      "id": "proj-writeup",
+      "title": "Write each project up — problem, decisions, tradeoffs, measured result",
+      "track": "project",
+      "priority": "P0",
+      "estMinutes": 180,
+      "careerValue": 9,
+      "proof": "notes",
+      "prereqs": [],
+      "interviewCritical": true,
+      "portfolioCritical": true
+    }
+  ],
+  "foundation": [
+    {
+      "id": "f-python",
+      "name": "Python",
+      "source": "Apna College",
+      "milestones": [
+        {
+          "id": "f-python-1",
+          "title": "Core syntax and data structures reviewed at speed",
+          "mandatory": true
+        },
+        {
+          "id": "f-python-2",
+          "title": "Comprehensions, generators, decorators, context managers — written from memory",
+          "mandatory": true
+        },
+        {
+          "id": "f-python-3",
+          "title": "OOP: dunder methods, properties, dataclasses, MRO",
+          "mandatory": true
+        },
+        {
+          "id": "f-python-4",
+          "title": "Typing, virtualenv/poetry, project layout, pytest basics",
+          "mandatory": true
+        },
+        {
+          "id": "f-python-5",
+          "title": "Closing checkpoint: 10 idiomatic-Python questions answered cold",
+          "mandatory": true
+        },
+        {
+          "id": "f-python-6",
+          "title": "asyncio and concurrency model — event loop, await, gather",
+          "mandatory": false
+        }
+      ]
+    },
+    {
+      "id": "f-mldl",
+      "name": "ML / Deep Learning",
+      "source": "Apna College",
+      "milestones": [
+        {
+          "id": "f-mldl-1",
+          "title": "NumPy and Pandas — real data manipulation, not toy examples",
+          "mandatory": true
+        },
+        {
+          "id": "f-mldl-2",
+          "title": "Supervised learning: regression, classification, train/test discipline",
+          "mandatory": true
+        },
+        {
+          "id": "f-mldl-3",
+          "title": "Model evaluation: precision/recall/F1, ROC-AUC — and when each misleads",
+          "mandatory": true
+        },
+        {
+          "id": "f-mldl-4",
+          "title": "Overfitting, regularisation, cross-validation, feature engineering",
+          "mandatory": true
+        },
+        {
+          "id": "f-mldl-5",
+          "title": "Neural network from scratch — forward and backward pass in NumPy",
+          "mandatory": true
+        },
+        {
+          "id": "f-mldl-6",
+          "title": "End-to-end mini project: data to model to evaluation to written conclusion",
+          "mandatory": true
+        },
+        {
+          "id": "f-mldl-7",
+          "title": "Unsupervised: clustering and dimensionality reduction",
+          "mandatory": false
+        }
+      ]
+    },
+    {
+      "id": "f-5me",
+      "name": "AI / ML Engineering",
+      "source": "Five Minute Engineering",
+      "milestones": [
+        {
+          "id": "f-5me-1",
+          "title": "LLM fundamentals: tokens, embeddings, context windows, inference cost",
+          "mandatory": true
+        },
+        {
+          "id": "f-5me-2",
+          "title": "Transformer architecture — attention explained in your own words",
+          "mandatory": true
+        },
+        {
+          "id": "f-5me-3",
+          "title": "Prompt engineering and structured outputs",
+          "mandatory": true
+        },
+        {
+          "id": "f-5me-4",
+          "title": "Function and tool calling — working implementation",
+          "mandatory": true
+        },
+        {
+          "id": "f-5me-5",
+          "title": "Checkpoint: explain an LLM request end to end, token in to token out",
+          "mandatory": true
+        }
+      ]
+    },
+    {
+      "id": "f-rag",
+      "name": "RAG",
+      "source": "Five Minute Engineering + own build",
+      "milestones": [
+        {
+          "id": "f-rag-1",
+          "title": "Ingestion and chunking strategies — and why chunk size changes answers",
+          "mandatory": true
+        },
+        {
+          "id": "f-rag-2",
+          "title": "Embeddings and a vector store working locally",
+          "mandatory": true
+        },
+        {
+          "id": "f-rag-3",
+          "title": "Retrieval pipeline with a reranking step",
+          "mandatory": true
+        },
+        {
+          "id": "f-rag-4",
+          "title": "Retrieval evaluation — measured hit-rate and MRR on a real question set",
+          "mandatory": true
+        },
+        {
+          "id": "f-rag-5",
+          "title": "Working RAG service behind a FastAPI endpoint",
+          "mandatory": true
+        },
+        {
+          "id": "f-rag-6",
+          "title": "Hallucination reduction: grounding, citations, refusal behaviour",
+          "mandatory": false
+        }
+      ]
+    },
+    {
+      "id": "f-lsp",
+      "name": "Linux System Programming",
+      "source": "LSP course",
+      "milestones": [
+        {
+          "id": "f-lsp-1",
+          "title": "Processes, fork/exec/wait, process lifecycle",
+          "mandatory": true
+        },
+        {
+          "id": "f-lsp-2",
+          "title": "File descriptors, I/O, pipes, redirection",
+          "mandatory": true
+        },
+        {
+          "id": "f-lsp-3",
+          "title": "Threads and synchronisation: mutex, condition variables, race conditions",
+          "mandatory": true
+        },
+        {
+          "id": "f-lsp-4",
+          "title": "IPC: shared memory, message queues, semaphores",
+          "mandatory": true
+        },
+        {
+          "id": "f-lsp-5",
+          "title": "Sockets — a working TCP client and server",
+          "mandatory": true
+        },
+        {
+          "id": "f-lsp-6",
+          "title": "Signals and the memory layout of a running process",
+          "mandatory": false
+        }
+      ]
+    },
+    {
+      "id": "f-c",
+      "name": "C",
+      "source": "Revision",
+      "milestones": [
+        {
+          "id": "f-c-1",
+          "title": "Pointers, pointer arithmetic, arrays vs pointers — recalled cold",
+          "mandatory": true
+        },
+        {
+          "id": "f-c-2",
+          "title": "Memory: stack vs heap, malloc and free, leaks and dangling pointers",
+          "mandatory": true
+        },
+        {
+          "id": "f-c-3",
+          "title": "Structs, unions, function pointers",
+          "mandatory": true
+        },
+        {
+          "id": "f-c-4",
+          "title": "Five classic C programs written from scratch, no reference",
+          "mandatory": true
+        }
+      ]
+    },
+    {
+      "id": "f-cpp",
+      "name": "C++",
+      "source": "Revision",
+      "milestones": [
+        {
+          "id": "f-cpp-1",
+          "title": "OOP: inheritance, virtual functions, vtables",
+          "mandatory": true
+        },
+        {
+          "id": "f-cpp-2",
+          "title": "STL fluency: vector, map, set, queue, priority_queue",
+          "mandatory": true
+        },
+        {
+          "id": "f-cpp-3",
+          "title": "Smart pointers, RAII, move semantics",
+          "mandatory": true
+        },
+        {
+          "id": "f-cpp-4",
+          "title": "Ten LeetCode problems solved in C++ using the STL",
+          "mandatory": true
+        }
+      ]
+    },
+    {
+      "id": "f-dsa",
+      "name": "DSA Basics",
+      "source": "NeetCode / Striver",
+      "milestones": [
+        {
+          "id": "f-dsa-1",
+          "title": "Big-O and space complexity — fluent, including recursion stacks",
+          "mandatory": true
+        },
+        {
+          "id": "f-dsa-2",
+          "title": "Arrays, strings, hashing — pattern recognised, not memorised",
+          "mandatory": true
+        },
+        {
+          "id": "f-dsa-3",
+          "title": "Two pointers and sliding window",
+          "mandatory": true
+        },
+        {
+          "id": "f-dsa-4",
+          "title": "Binary search, including binary-search-on-the-answer",
+          "mandatory": true
+        },
+        {
+          "id": "f-dsa-5",
+          "title": "Stack, queue, linked list — implemented from scratch",
+          "mandatory": true
+        },
+        {
+          "id": "f-dsa-6",
+          "title": "Recursion and backtracking basics",
+          "mandatory": true
+        },
+        {
+          "id": "f-dsa-7",
+          "title": "50 problems logged with pattern tags and solve times",
+          "mandatory": true
+        },
+        {
+          "id": "f-dsa-8",
+          "title": "Daily solve streak unbroken for 14 days",
+          "mandatory": false
+        }
+      ]
+    }
+  ],
+  "patterns": [
+    {
+      "id": "arrays",
+      "name": "Arrays & Hashing",
+      "weight": 10,
+      "targetProblems": 12
+    },
+    {
+      "id": "twopointers",
+      "name": "Two Pointers",
+      "weight": 9,
+      "targetProblems": 8
+    },
+    {
+      "id": "sliding",
+      "name": "Sliding Window",
+      "weight": 9,
+      "targetProblems": 8
+    },
+    {
+      "id": "binarysearch",
+      "name": "Binary Search",
+      "weight": 10,
+      "targetProblems": 10
+    },
+    {
+      "id": "stack",
+      "name": "Stack",
+      "weight": 8,
+      "targetProblems": 8
+    },
+    {
+      "id": "queue",
+      "name": "Queue & Deque",
+      "weight": 6,
+      "targetProblems": 5
+    },
+    {
+      "id": "linkedlist",
+      "name": "Linked List",
+      "weight": 8,
+      "targetProblems": 8
+    },
+    {
+      "id": "trees",
+      "name": "Trees",
+      "weight": 10,
+      "targetProblems": 14
+    },
+    {
+      "id": "bst",
+      "name": "Binary Search Tree",
+      "weight": 8,
+      "targetProblems": 6
+    },
+    {
+      "id": "heap",
+      "name": "Heap & Priority Queue",
+      "weight": 8,
+      "targetProblems": 7
+    },
+    {
+      "id": "graphs",
+      "name": "Graphs",
+      "weight": 10,
+      "targetProblems": 14
+    },
+    {
+      "id": "recursion",
+      "name": "Recursion",
+      "weight": 8,
+      "targetProblems": 6
+    },
+    {
+      "id": "backtracking",
+      "name": "Backtracking",
+      "weight": 8,
+      "targetProblems": 8
+    },
+    {
+      "id": "greedy",
+      "name": "Greedy",
+      "weight": 7,
+      "targetProblems": 7
+    },
+    {
+      "id": "dp1",
+      "name": "1-D Dynamic Programming",
+      "weight": 9,
+      "targetProblems": 12
+    },
+    {
+      "id": "dp2",
+      "name": "2-D Dynamic Programming",
+      "weight": 8,
+      "targetProblems": 8
+    },
+    {
+      "id": "intervals",
+      "name": "Intervals",
+      "weight": 7,
+      "targetProblems": 6
+    },
+    {
+      "id": "bits",
+      "name": "Bit Manipulation",
+      "weight": 6,
+      "targetProblems": 6
+    },
+    {
+      "id": "tries",
+      "name": "Tries",
+      "weight": 6,
+      "targetProblems": 4
+    }
+  ]
+}
