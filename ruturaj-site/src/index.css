@@ -1,13 +1,17 @@
 @import 'tailwindcss';
 
+/* Tokens declared here become real Tailwind utilities: `--color-accent`
+   generates text-accent / bg-accent / border-accent, `--font-display`
+   generates font-display. That is why nothing in this codebase writes
+   `text-[var(--color-accent)]`. */
 @theme {
   --color-bg: #08080a;
   --color-surface: #101014;
-  --color-surface-2: #16161b;
-  --color-border-hair: rgb(255 255 255 / 0.08);
-  --color-border-strong: rgb(255 255 255 / 0.14);
+  --color-raised: #16161b;
+  --color-line: rgb(255 255 255 / 0.08);
+  --color-line2: rgb(255 255 255 / 0.14);
 
-  --color-text: #f4f4f5;
+  --color-fg: #f4f4f5;
   --color-muted: #a1a1aa;
   --color-faint: #52525b;
 
@@ -21,7 +25,6 @@
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
   --radius-card: 16px;
-  --radius-control: 10px;
 }
 
 @layer base {
@@ -37,14 +40,12 @@
   body {
     margin: 0;
     background-color: var(--color-bg);
-    color: var(--color-text);
+    color: var(--color-fg);
     font-family: var(--font-sans);
     font-size: 15px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    /* Safe-area padding so the bottom nav clears the iPhone home indicator. */
-    padding-bottom: env(safe-area-inset-bottom);
   }
 
   :focus-visible {
@@ -53,7 +54,7 @@
     border-radius: 4px;
   }
 
-  /* Tabular numerals everywhere a number changes in place, so counters and
+  /* Tabular numerals wherever a number changes in place, so counters and
      timers do not jitter as digits swap. */
   .tnum {
     font-variant-numeric: tabular-nums;
@@ -68,23 +69,13 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-border-strong);
+    background: var(--color-line2);
     border-radius: 999px;
   }
 }
 
 @layer utilities {
-  .card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border-hair);
-    border-radius: var(--radius-card);
-  }
-
-  .hairline {
-    border-color: var(--color-border-hair);
-  }
-
-  /* Hides a horizontal scroller's bar without disabling the scrolling itself. */
+  /* Hides a horizontal scroller's bar without disabling the scrolling. */
   .no-scrollbar {
     scrollbar-width: none;
     -ms-overflow-style: none;
