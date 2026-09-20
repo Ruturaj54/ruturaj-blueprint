@@ -80,9 +80,11 @@ export const READINESS_TRACKS: readonly TrackId[] = [
   'dsa',
   'cs',
   'backend',
+  'systems',
+  'devops',
+  'telecom',
   'java',
   'react',
-  'systems',
   'project',
 ];
 

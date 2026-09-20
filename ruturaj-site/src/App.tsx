@@ -3,11 +3,11 @@ import { useRoute } from '@/lib/router';
 import { Shell } from '@/components/Shell';
 import { pageVariants } from '@/lib/motion';
 import { Home } from '@/screens/Home';
+import { Roadmap } from '@/screens/Roadmap';
+import { Today } from '@/screens/Today';
 import { Placeholder } from '@/screens/Placeholder';
 
 const PENDING: Record<string, string> = {
-  today: 'Daily execution — planned vs actual, deep work timer, day close.',
-  roadmap: 'Foundation Gate and all career tracks.',
   dsa: 'Problem log, pattern coverage and the weakness engine.',
   ai: 'AI Engineer mode — today’s AI task and the project track.',
   sde: 'Core CS, system design and backend depth.',
@@ -34,6 +34,10 @@ export function App() {
         >
           {route === 'home' ? (
             <Home navigate={navigate} />
+          ) : route === 'roadmap' ? (
+            <Roadmap />
+          ) : route === 'today' ? (
+            <Today />
           ) : (
             <Placeholder
               title={route.charAt(0).toUpperCase() + route.slice(1)}

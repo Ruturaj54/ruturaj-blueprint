@@ -68,7 +68,9 @@ export function Button({
       transition={spring}
       className={cn(
         'inline-flex select-none items-center justify-center gap-2 rounded-[10px] font-medium transition-colors',
-        'disabled:cursor-not-allowed disabled:opacity-40',
+        // A dimmed amber fill turns olive against the dark background and the
+        // black label stops being readable, so disabled drops the fill entirely.
+        'disabled:cursor-not-allowed disabled:border disabled:border-line disabled:bg-transparent disabled:text-faint disabled:hover:brightness-100',
         size === 'sm' && 'min-h-[36px] px-3 text-[13px]',
         size === 'md' && 'min-h-[44px] px-4 text-[14px]',
         size === 'lg' && 'min-h-[52px] px-6 text-[15px]',

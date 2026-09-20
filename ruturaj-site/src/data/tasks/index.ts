@@ -5,6 +5,7 @@ import { CS_TASKS } from './cs';
 import { BACKEND_TASKS } from './backend';
 import { JAVA_TASKS, REACT_TASKS } from './java-react';
 import { PROJECT_TASKS } from './projects';
+import { SYSTEMS_TASKS, DEVOPS_TASKS, TELECOM_TASKS } from './systems';
 
 /** Every advanced-phase task, flattened. Foundation work lives separately. */
 export const ALL_TASKS: readonly Task[] = [
@@ -15,6 +16,9 @@ export const ALL_TASKS: readonly Task[] = [
   ...BACKEND_TASKS,
   ...JAVA_TASKS,
   ...REACT_TASKS,
+  ...SYSTEMS_TASKS,
+  ...DEVOPS_TASKS,
+  ...TELECOM_TASKS,
   ...PROJECT_TASKS,
 ];
 
@@ -43,5 +47,6 @@ export const TRACK_META: Record<TrackId, { name: string; blurb: string }> = {
 };
 
 export { AI_TASKS, DSA_TASKS, DSA_META_TASKS, CS_TASKS, BACKEND_TASKS, JAVA_TASKS, REACT_TASKS, PROJECT_TASKS };
+export { SYSTEMS_TASKS, DEVOPS_TASKS, TELECOM_TASKS };
 export { PROJECTS } from './projects';
 export { DSA_PATTERNS, patternById, patternName, DSA_PATTERN_IDS } from './dsa';
