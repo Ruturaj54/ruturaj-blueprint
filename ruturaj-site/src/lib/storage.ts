@@ -217,6 +217,51 @@ export function exportState(): string {
   return JSON.stringify(getState(), null, 2);
 }
 
+/**
+ * Wipes everything back to a fresh Day 1.
+ *
+ * Must push as well as clear locally: clearing only this browser would leave
+ * the old state on the server, and the next pull would quietly restore it.
+ * The sync passphrase is deliberately kept — resetting progress should not
+ * also sign you out of your own store.
+ *
+ * Returns once the server has been told, so the caller can report honestly
+ * rather than claiming success while a push is still in flight.
+ */
+export async function resetAll(): Promise<{ localCleared: boolean; remoteCleared: boolean }> {
+  if (pushTimer) {
+    clearTimeout(pushTimer);
+    pushTimer = null;
+  }
+
+  state = defaultState();
+  let localCleared = true;
+  try {
+    localStorage.removeItem(LOCAL_KEY);
+    writeLocal(state);
+  } catch {
+    localCleared = false;
+  }
+  emit();
+
+  const pass = getPassphrase();
+  if (!pass) return { localCleared, remoteCleared: false };
+
+  setStatus('syncing');
+  try {
+    const res = await fetch(SYNC_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'x-blueprint-key': pass },
+      body: JSON.stringify(state),
+    });
+    setStatus(res.ok ? 'synced' : statusForFailure(res.status));
+    return { localCleared, remoteCleared: res.ok };
+  } catch {
+    setStatus('offline');
+    return { localCleared, remoteCleared: false };
+  }
+}
+
 /** Forces a push now, e.g. before the tab closes. */
 export function flush(): void {
   if (pushTimer) {

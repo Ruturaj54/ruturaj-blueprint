@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Upload, KeyRound, Clock, CheckCircle2, RefreshCw } from 'lucide-react';
+import { Download, Upload, KeyRound, Clock, CheckCircle2, RefreshCw, TriangleAlert, RotateCcw } from 'lucide-react';
 import { useAppState, useUpdateState, useSyncStatus } from '@/hooks/useAppState';
 import { Card, SectionTitle, Button, Chip } from '@/components/ui/primitives';
 import { listContainer } from '@/lib/motion';
@@ -47,6 +47,9 @@ export function Settings() {
   const [pass, setPass] = useState(storage.getPassphrase() ?? '');
   const [passSaved, setPassSaved] = useState(false);
   const [importNote, setImportNote] = useState<string | null>(null);
+  const [resetStep, setResetStep] = useState<0 | 1>(0);
+  const [resetNote, setResetNote] = useState<string | null>(null);
+  const [resetting, setResetting] = useState(false);
 
   /** Generic so each call is checked against that field's own type. */
   const setField = <K extends keyof SettingsShape>(key: K, value: SettingsShape[K]) => {
@@ -86,6 +89,20 @@ export function Settings() {
       setTimeout(() => setImportNote(null), 3000);
     };
     reader.readAsText(file);
+  };
+
+  const doReset = async () => {
+    setResetting(true);
+    const r = await storage.resetAll();
+    setResetting(false);
+    setResetStep(0);
+    setResetNote(
+      r.remoteCleared
+        ? 'Everything cleared, here and on the server. You are back to a clean Day 1.'
+        : r.localCleared
+          ? 'Cleared in this browser, but the server was not reachable. Reconnect and reset again, or the old data may sync back.'
+          : 'Could not clear local storage. Try a normal window rather than private browsing.',
+    );
   };
 
   return (
@@ -267,6 +284,47 @@ export function Settings() {
             />
           </div>
           {importNote && <p className="mt-2 text-[12px] text-muted">{importNote}</p>}
+        </Card>
+      </section>
+
+      {/* ---- reset ---- */}
+      <section>
+        <SectionTitle>Start over</SectionTitle>
+        <Card className="border-danger/25">
+          <p className="text-[13px] text-muted">
+            Clears every tick, task, day log, DSA attempt, run, achievement and health entry —
+            here and on the server — and puts you back to a clean Day 1. Your sync passphrase and
+            your schedule settings are kept. This cannot be undone.
+          </p>
+
+          {resetStep === 0 ? (
+            <Button variant="danger" className="mt-3 w-full" onClick={() => setResetStep(1)}>
+              <RotateCcw size={15} />
+              Reset all progress
+            </Button>
+          ) : (
+            <div className="mt-3 rounded-[10px] border border-danger/30 bg-danger/[0.05] p-3">
+              <div className="flex items-start gap-2">
+                <TriangleAlert size={15} className="mt-0.5 shrink-0 text-danger" />
+                <div className="min-w-0">
+                  <p className="text-[13px]">
+                    This wipes everything permanently. Export a backup first if there is anything
+                    here worth keeping.
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <Button variant="danger" size="sm" onClick={() => void doReset()} disabled={resetting}>
+                      {resetting ? 'Clearing…' : 'Yes, wipe everything'}
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => setResetStep(0)}>
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {resetNote && <p className="mt-2 text-[12px] text-muted">{resetNote}</p>}
         </Card>
       </section>
     </motion.div>
