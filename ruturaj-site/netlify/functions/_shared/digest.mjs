@@ -7,6 +7,7 @@
 import { getStore } from '@netlify/blobs';
 import catalog from './catalog.json' with { type: 'json' };
 import { buildSchedule } from './schedule.mjs';
+import { buildPraise } from './praise.mjs';
 
 export const MISSION_START = '2026-09-21';
 export const MISSION_END = '2027-02-28';
@@ -236,6 +237,8 @@ export function buildDigest(state) {
     yesterday: dayLog(s, addDays(today, -1)),
     todayLog: dayLog(s, today),
     schedule: buildSchedule(s.settings, missions, dsaSummary(s)),
+    praise: buildPraise(s, today, addDays),
+    dayClosed: Boolean(s.days?.[today]?.closedAt),
     runsToday: runsToday.map((r) => `${r.slot} ${r.km}km`),
     focusToday,
     workCount: (s.work ?? []).length,

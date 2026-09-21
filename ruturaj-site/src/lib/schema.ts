@@ -16,6 +16,8 @@ export interface RunLog {
 }
 
 export interface DayLog {
+  /** Set when the night check-in is done. Presence means the day is reviewed. */
+  closedAt?: string;
   /** Task ids planned for this date, captured when the day was started. */
   planned: string[];
   /** Task ids actually completed. */
@@ -141,6 +143,8 @@ export interface AppState {
   foundationOverride?: boolean;
   tasks: Record<string, TaskState>;
   days: Record<string, DayLog>;
+  /** ISO dates whose praise card has already been shown, so it appears once. */
+  praiseSeen: Record<string, boolean>;
   dsa: DsaAttempt[];
   deepWork: DeepWorkSession[];
   runs: RunLog[];
@@ -180,6 +184,7 @@ export function defaultState(): AppState {
     foundation: {},
     tasks: {},
     days: {},
+    praiseSeen: {},
     dsa: [],
     deepWork: [],
     runs: [],
@@ -227,6 +232,7 @@ export function parseState(raw: unknown): AppState {
     foundationOverride: raw.foundationOverride === true,
     tasks: rec<TaskState>(raw.tasks),
     days: rec<DayLog>(raw.days),
+    praiseSeen: rec<boolean>(raw.praiseSeen),
     dsa: arr<DsaAttempt>(raw.dsa),
     deepWork: arr<DeepWorkSession>(raw.deepWork),
     runs: arr<RunLog>(raw.runs),

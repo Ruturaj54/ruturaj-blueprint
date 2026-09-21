@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import type { ReactElement } from 'react';
 import { useRoute } from '@/lib/router';
 import { Shell } from '@/components/Shell';
+import { PraiseModal } from '@/components/PraiseModal';
 import { pageVariants } from '@/lib/motion';
 import { Home } from '@/screens/Home';
 import { Roadmap } from '@/screens/Roadmap';
@@ -40,6 +41,7 @@ export function App() {
 
   return (
     <Shell route={route} navigate={navigate}>
+      <PraiseModal />
       <AnimatePresence mode="wait">
         <motion.div key={route} variants={pageVariants} initial="hidden" animate="show" exit="exit">
           {screenFor(route, navigate)}

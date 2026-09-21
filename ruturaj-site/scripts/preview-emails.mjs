@@ -35,13 +35,13 @@ const fixture = {
       planned: ['f-python-5', 'f-data-3', 'f-math-1'],
       completed: ['f-python-5', 'f-data-3'],
       notes: 'Production incident ate the evening.',
+      closedAt: new Date().toISOString(),
     },
   },
   dsa: [
     { id: 'a1', date: today, problem: 'Two Sum', pattern: 'arrays', difficulty: 'easy', outcome: 'solved', minutes: 12 },
     { id: 'a2', date: today, problem: 'Valid Anagram', pattern: 'arrays', difficulty: 'easy', outcome: 'solved', minutes: 15 },
-    { id: 'a3', date: yesterday, problem: 'Binary Search', pattern: 'binarysearch', difficulty: 'easy', outcome: 'solved_with_hint', minutes: 30 },
-    { id: 'a4', date: yesterday, problem: 'Course Schedule', pattern: 'graphs', difficulty: 'medium', outcome: 'failed', minutes: 45 },
+    { id: 'a3', date: today, problem: 'Valid Palindrome', pattern: 'twopointers', difficulty: 'easy', outcome: 'solved', minutes: 18 },
   ],
   deepWork: [
     { id: 'd1', date: today, label: 'Python checkpoint', plannedMinutes: 50, actualMinutes: 50, outcome: 'completed' },

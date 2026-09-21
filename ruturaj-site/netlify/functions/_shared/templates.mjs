@@ -166,6 +166,30 @@ export function buildMorning(d) {
 
 /* ---------- evening ------------------------------------------------------- */
 
+/** Named wins from the real day-over-day delta, not a stock compliment. */
+function praiseHtml(p) {
+  const esc = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const rows = p.wins
+    .map(
+      (w) => `
+      <tr>
+        <td width="12" valign="top" style="padding-top:6px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:${C.success};"></div>
+        </td>
+        <td style="padding:0 0 9px 8px;font:400 14px/1.45 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.fg};">
+          <b style="font-weight:600;">${esc(w.label)}</b>
+          <span style="display:block;margin-top:2px;font-size:12px;color:${C.muted};">${esc(w.detail)}</span>
+        </td>
+      </tr>`,
+    )
+    .join('');
+  return `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid rgba(52,211,153,.28);background:rgba(52,211,153,.06);border-radius:10px;">
+      <tr><td style="padding:13px 14px 6px;font:700 17px/1.25 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.fg};">${esc(p.headline)}</td></tr>
+      <tr><td style="padding:0 14px 12px;"><table role="presentation" width="100%">${rows}</table></td></tr>
+    </table>`;
+}
+
 export function buildEvening(d) {
   const t = d.todayLog;
   const recovery = recoveryPlan(d);
@@ -223,6 +247,7 @@ export function buildEvening(d) {
       ]),
     ),
 
+    d.praise?.hasWins ? section('What you did well today', praiseHtml(d.praise)) : '',
     praise ? section('Worth naming', callout(praise, C.success)) : '',
     recovery ? section('Recovery plan', callout(recovery, C.danger)) : '',
 
@@ -238,6 +263,9 @@ export function buildEvening(d) {
     t && t.missed.length ? line(`  Still open: ${t.missed.join(' · ')}`) : '',
     line(`  Focused minutes: ${d.focusToday}`),
     line(''),
+    d.praise?.hasWins ? line(`WHAT YOU DID WELL: ${d.praise.headline}`) : '',
+    ...(d.praise?.wins ?? []).map((w) => line(`  + ${w.label} — ${w.detail}`)),
+    d.praise?.hasWins ? line('') : '',
     line('ANSWER HONESTLY'),
     ...questions.map((q) => line(`  - ${q}`)),
     line(''),

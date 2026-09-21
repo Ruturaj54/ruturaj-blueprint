@@ -7,6 +7,7 @@ import { MissionList } from '@/components/home/MissionList';
 import { DayTimetable } from '@/components/today/DayTimetable';
 import { DeepWork } from '@/components/today/DeepWork';
 import { QuickLog } from '@/components/today/QuickLog';
+import { CloseDay } from '@/components/today/CloseDay';
 import { buildPlan, dayScore } from '@/engine/planner';
 import { currentDay, todayISO, formatLong } from '@/engine/dates';
 import { taskById } from '@/data/tasks';
@@ -165,6 +166,9 @@ export function Today() {
 
       {/* ---- quick log ---- */}
       <QuickLog />
+
+      {/* ---- close the day ---- */}
+      <CloseDay />
 
       {/* ---- notes ---- */}
       <section>
