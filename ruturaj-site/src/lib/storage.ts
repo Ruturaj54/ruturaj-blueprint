@@ -15,7 +15,22 @@ const PASSPHRASE_KEY = 'ruturaj_blueprint_pass';
 const SYNC_URL = '/.netlify/functions/sync';
 const PUSH_DEBOUNCE_MS = 1500;
 
-export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'offline' | 'unauthorized';
+export type SyncStatus =
+  | 'idle'
+  | 'syncing'
+  | 'synced'
+  | 'offline'
+  /** Passphrase here does not match BLUEPRINT_KEY on the server. */
+  | 'unauthorized'
+  /** Server has no BLUEPRINT_KEY set at all — a deploy/config problem, not a typo. */
+  | 'misconfigured';
+
+/** 503 from the sync endpoint means the server was never given a key. */
+function statusForFailure(status: number): SyncStatus {
+  if (status === 503) return 'misconfigured';
+  if (status === 401) return 'unauthorized';
+  return 'offline';
+}
 
 type Listener = (state: AppState) => void;
 type StatusListener = (status: SyncStatus) => void;
@@ -116,11 +131,7 @@ async function pushRemote(): Promise<void> {
       },
       body: JSON.stringify(state),
     });
-    if (res.status === 401) {
-      setStatus('unauthorized');
-      return;
-    }
-    setStatus(res.ok ? 'synced' : 'offline');
+    setStatus(res.ok ? 'synced' : statusForFailure(res.status));
   } catch {
     setStatus('offline');
   }
@@ -145,12 +156,8 @@ export async function pullRemote(): Promise<void> {
   setStatus('syncing');
   try {
     const res = await fetch(SYNC_URL, { headers: { 'x-blueprint-key': pass } });
-    if (res.status === 401) {
-      setStatus('unauthorized');
-      return;
-    }
     if (!res.ok) {
-      setStatus('offline');
+      setStatus(statusForFailure(res.status));
       return;
     }
     const remote = parseState(await res.json());

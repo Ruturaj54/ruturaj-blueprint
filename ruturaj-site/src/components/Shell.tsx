@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { MoreHorizontal, X, Cloud, CloudOff, RefreshCw, Lock } from 'lucide-react';
+import { MoreHorizontal, X, Cloud, CloudOff, RefreshCw, Lock, ServerCog } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { spring } from '@/lib/motion';
 import { NAV_ITEMS, PRIMARY_NAV, OVERFLOW_NAV } from '@/nav';
@@ -20,6 +20,7 @@ function SyncBadge() {
     synced: { icon: Cloud, text: 'Synced', tone: 'text-success' },
     offline: { icon: CloudOff, text: 'Offline', tone: 'text-muted' },
     unauthorized: { icon: Lock, text: 'Key rejected', tone: 'text-danger' },
+    misconfigured: { icon: ServerCog, text: 'Server key unset', tone: 'text-danger' },
   } as const;
   const { icon: Icon, text, tone } = map[status];
   return (

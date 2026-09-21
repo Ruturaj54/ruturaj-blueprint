@@ -133,8 +133,14 @@ export function Settings() {
           </div>
           {syncStatus === 'unauthorized' && (
             <p className="mt-2 text-[12px] text-danger">
-              The server rejected that passphrase. It must match BLUEPRINT_KEY in the Netlify
-              environment variables exactly.
+              The server has a BLUEPRINT_KEY, but this passphrase does not match it. Check for a
+              trailing space or a case difference, and confirm the value in Netlify.
+            </p>
+          )}
+          {syncStatus === 'misconfigured' && (
+            <p className="mt-2 text-[12px] text-danger">
+              BLUEPRINT_KEY is not set on the server at all, so nothing you type here can match.
+              Add it in Netlify under Site settings &rarr; Environment variables, then redeploy.
             </p>
           )}
         </Card>

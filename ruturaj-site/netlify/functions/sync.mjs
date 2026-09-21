@@ -14,18 +14,25 @@ import { timingSafeEqual } from 'node:crypto';
 const STORE = 'blueprint';
 const KEY = 'state';
 
-function authorized(req) {
+/**
+ * Returns 'ok', 'no_server_key' or 'mismatch'.
+ *
+ * The two failure modes are reported separately on purpose: an unset
+ * BLUEPRINT_KEY and a wrong passphrase are completely different problems, and
+ * collapsing both into a bare 401 leaves no way to tell them apart from the
+ * browser. The endpoint stays shut in both cases.
+ */
+function authorize(req) {
   const expected = process.env.BLUEPRINT_KEY;
-  // With no key configured the endpoint stays shut rather than open.
-  if (!expected) return false;
+  if (!expected) return 'no_server_key';
 
   const supplied = req.headers.get('x-blueprint-key') ?? '';
   const a = Buffer.from(supplied);
   const b = Buffer.from(expected);
   // timingSafeEqual throws on length mismatch, so compare lengths first — the
   // length of a passphrase is not the secret.
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
+  if (a.length !== b.length) return 'mismatch';
+  return timingSafeEqual(a, b) ? 'ok' : 'mismatch';
 }
 
 const json = (body, status = 200) =>
@@ -35,8 +42,20 @@ const json = (body, status = 200) =>
   });
 
 export default async function handler(req) {
-  if (!authorized(req)) {
-    return json({ error: 'unauthorized' }, 401);
+  const auth = authorize(req);
+  if (auth === 'no_server_key') {
+    console.error('sync: BLUEPRINT_KEY is not set in the Netlify environment.');
+    return json(
+      {
+        error: 'no_server_key',
+        detail:
+          'BLUEPRINT_KEY is not set in the Netlify environment. Add it under Site settings then redeploy.',
+      },
+      503,
+    );
+  }
+  if (auth !== 'ok') {
+    return json({ error: 'mismatch', detail: 'Passphrase does not match BLUEPRINT_KEY.' }, 401);
   }
 
   const store = getStore(STORE);
