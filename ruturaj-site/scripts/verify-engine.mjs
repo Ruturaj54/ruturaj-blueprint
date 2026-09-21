@@ -1,7 +1,7 @@
 // Boundary verification for the 117-day mission engine.
 // Mirrors src/engine logic in plain JS so it runs with no build step.
 const MISSION_START = '2026-09-21';
-const TOTAL_DAYS = 117;
+const TOTAL_DAYS = 161;
 const MS = 86400000;
 const parse = (s) => new Date(`${s}T12:00:00`);
 const fmt = (d) =>
@@ -11,10 +11,10 @@ const dayForDate = (s) => Math.round((parse(s) - parse(MISSION_START)) / MS) + 1
 const weekOfDay = (n) => Math.ceil(n / 7);
 
 const PHASES = [
-  { id: 'm1', title: 'Foundation Gate', startDay: 1, endDay: 30 },
-  { id: 'm2', title: 'SDE Fundamentals + AI', startDay: 31, endDay: 60 },
-  { id: 'm3', title: 'Interview-Level Prep', startDay: 61, endDay: 90 },
-  { id: 'm4', title: 'Interview Execution', startDay: 91, endDay: TOTAL_DAYS },
+  { id: 'm1', title: 'Foundation Gate', startDay: 1, endDay: 42 },
+  { id: 'm2', title: 'SDE Fundamentals + AI', startDay: 43, endDay: 91 },
+  { id: 'm3', title: 'Interview-Level Prep', startDay: 92, endDay: 133 },
+  { id: 'm4', title: 'Interview Execution', startDay: 134, endDay: TOTAL_DAYS },
 ];
 const phaseFor = (n) => PHASES.find((p) => n >= p.startDay && n <= p.endDay);
 
@@ -37,8 +37,8 @@ check('last phase ends on TOTAL_DAYS', PHASES.at(-1).endDay, TOTAL_DAYS);
 
 console.log('\n=== BOUNDARY DAYS → PHASE ===');
 const bounds = [
-  [1, 'm1'], [30, 'm1'], [31, 'm2'], [60, 'm2'],
-  [61, 'm3'], [90, 'm3'], [91, 'm4'], [117, 'm4'],
+  [1, 'm1'], [42, 'm1'], [43, 'm2'], [91, 'm2'],
+  [92, 'm3'], [133, 'm3'], [134, 'm4'], [161, 'm4'],
 ];
 for (const [day, expected] of bounds) {
   const p = phaseFor(day);
@@ -47,8 +47,8 @@ for (const [day, expected] of bounds) {
 
 console.log('\n=== BOUNDARY DAYS → DATE ===');
 const dates = [
-  [1, '2026-09-21'], [30, '2026-10-20'], [31, '2026-10-21'], [60, '2026-11-19'],
-  [61, '2026-11-20'], [90, '2026-12-19'], [91, '2026-12-20'], [117, '2027-01-15'],
+  [1, '2026-09-21'], [42, '2026-11-01'], [43, '2026-11-02'], [91, '2026-12-20'],
+  [92, '2026-12-21'], [133, '2027-01-31'], [134, '2027-02-01'], [161, '2027-02-28'],
 ];
 for (const [day, expected] of dates) check(`day ${String(day).padStart(3)} → date`, dateForDay(day), expected);
 
@@ -59,12 +59,12 @@ console.log('\n=== WEEKS ===');
 check('day 1 is week 1', weekOfDay(1), 1);
 check('day 7 is week 1', weekOfDay(7), 1);
 check('day 8 is week 2', weekOfDay(8), 2);
-check('day 117 is week 17', weekOfDay(117), 17);
+check('day 161 is week 23', weekOfDay(161), 23);
 
 console.log('\n=== DAY 1 SANITY ===');
 check('Day 1 is a Monday', parse(dateForDay(1)).getDay(), 1);
-check('Day 117 is a Friday', parse(dateForDay(117)).getDay(), 5);
-check('days remaining on day 1', TOTAL_DAYS - 1, 116);
+check('Day 161 is a Sunday', parse(dateForDay(161)).getDay(), 0);
+check('days remaining on day 1', TOTAL_DAYS - 1, 160);
 
 console.log(`\n${fail === 0 ? 'ALL CHECKS PASSED' : `${fail} CHECK(S) FAILED`}\n`);
 process.exit(fail === 0 ? 0 : 1);

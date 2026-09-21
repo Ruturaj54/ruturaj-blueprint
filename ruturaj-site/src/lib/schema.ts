@@ -98,7 +98,15 @@ export interface Settings {
   morningRunTime: string;
   officeStart: string;
   officeEnd: string;
+  /** Spare capacity at work, used for course/reading only — never instead of the job. */
+  officeStudyHours: number;
+  /** Evening block: course and learning. */
+  studyBlock1Start: string;
+  studyBlock1End: string;
   eveningRunTime: string;
+  /** Night block: deep work, DSA and project building. */
+  studyBlock2Start: string;
+  studyBlock2End: string;
   deepWorkStart: string;
   sleepTarget: string;
   timezone: string;
@@ -148,9 +156,14 @@ export const DEFAULT_SETTINGS: Settings = {
   morningRunTime: '07:00',
   officeStart: '10:30',
   officeEnd: '18:00',
+  officeStudyHours: 2,
+  studyBlock1Start: '18:00',
+  studyBlock1End: '20:00',
   eveningRunTime: '20:30',
-  deepWorkStart: '21:30',
-  sleepTarget: '23:59',
+  studyBlock2Start: '22:00',
+  studyBlock2End: '02:00',
+  deepWorkStart: '22:00',
+  sleepTarget: '02:00',
   timezone: 'Asia/Kolkata',
   morningEmailTime: '07:00',
   eveningEmailTime: '22:00',

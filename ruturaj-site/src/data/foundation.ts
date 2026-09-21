@@ -1,142 +1,183 @@
 import type { FoundationSubject } from '@/engine/types';
 
 /**
- * Month 1 — the Foundation Gate.
+ * Phase 1 — the Foundation Gate. Six weeks, days 1–42.
  *
- * These are courses already in flight, not a beginner syllabus. Ruturaj has
- * ~2 years of professional Python/Django/C/C++/Jenkins/telecom work, so the
- * milestones are weighted toward implementation and recall rather than
- * watching. A subject only reaches `verified` when something was built or
- * recalled cold — never because a video progress bar moved.
+ * Built from the two real syllabi rather than a generic list:
+ *   - Apna College "Prime: AI/ML Batch" (62 modules + AI Projects module)
+ *   - Five Minute Engineering "Ultimate AI Mastery" bootcamp (40 modules)
  *
- * `mandatory: false` milestones are real work but do not block the gate; they
- * are the first thing dropped in a bad week.
+ * The two overlap heavily on Python, NumPy/Pandas, ML and DL. Doing both in
+ * full would burn most of the runway twice, so Apna Prime is the spine — it is
+ * structured, project-led, and already started — and 5ME is used only for the
+ * AI-engineering depth Apna does not reach (LangChain, VectorDB, Transformers,
+ * Agentic AI). Module numbers below map to Apna Prime so progress is easy to
+ * find in the course player.
+ *
+ * Everything from the 5ME syllabus that serves a data-analyst rather than an
+ * AI engineer — Power BI, Tableau, Looker, Excel, Streamlit, Snowflake,
+ * Airflow, Kafka, dbt, Spark, Cassandra — is deliberately excluded. It is real
+ * material, it is just not what a Feb-2027 AI Engineer loop asks about.
  */
 export const FOUNDATION_SUBJECTS: readonly FoundationSubject[] = [
   {
     id: 'f-python',
     name: 'Python',
-    source: 'Apna College',
+    source: 'Apna Prime 4–9 · 5ME Python',
     track: 'backend',
     blurb:
-      'You write Python professionally. This closes the gaps that show up in interviews: internals, idioms and the standard library you never had to reach for at work.',
+      'You write Python professionally, so this is a speed-run for gaps, not a course. Both syllabi cover it — do it once, here.',
     milestones: [
-      { id: 'f-python-1', title: 'Core syntax and data structures reviewed at speed', proof: 'watch', mandatory: true },
-      { id: 'f-python-2', title: 'Comprehensions, generators, decorators, context managers — written from memory', proof: 'implement', mandatory: true },
-      { id: 'f-python-3', title: 'OOP: dunder methods, properties, dataclasses, MRO', proof: 'notes', mandatory: true },
-      { id: 'f-python-4', title: 'Typing, virtualenv/poetry, project layout, pytest basics', proof: 'implement', mandatory: true },
-      { id: 'f-python-5', title: 'Closing checkpoint: 10 idiomatic-Python questions answered cold', proof: 'checkpoint', mandatory: true },
-      { id: 'f-python-6', title: 'asyncio and concurrency model — event loop, await, gather', proof: 'notes', mandatory: false },
+      { id: 'f-python-1', title: 'Fundamentals Parts 1–3 — syntax, types, collections at speed', proof: 'watch', mandatory: true },
+      { id: 'f-python-2', title: 'Fundamentals Parts 4–5 — OOP, modules, error handling', proof: 'watch', mandatory: true },
+      { id: 'f-python-3', title: 'Comprehensions, generators, decorators, context managers from memory', proof: 'implement', mandatory: true },
+      { id: 'f-python-4', title: 'Environment set up — venv, pip, project layout, pytest basics', proof: 'implement', mandatory: true },
+      { id: 'f-python-5', title: 'Checkpoint: 10 idiomatic-Python questions answered cold', proof: 'checkpoint', mandatory: true },
+      { id: 'f-python-6', title: 'asyncio — event loop, await, gather (needed for FastAPI later)', proof: 'notes', mandatory: false },
     ],
   },
   {
-    id: 'f-mldl',
-    name: 'ML / Deep Learning',
-    source: 'Apna College',
+    id: 'f-data',
+    name: 'Data Stack',
+    source: 'Apna Prime 10–21',
     track: 'ai',
     blurb:
-      'The mathematical and practical base under everything in the AI track. Without this, LLM work stays shallow and an interviewer finds the floor in two questions.',
+      'NumPy, Pandas, SQL and visualisation. The layer everything in ML sits on, and SQL is separately interview-critical.',
     milestones: [
-      { id: 'f-mldl-1', title: 'NumPy and Pandas — real data manipulation, not toy examples', proof: 'implement', mandatory: true },
-      { id: 'f-mldl-2', title: 'Supervised learning: regression, classification, train/test discipline', proof: 'watch', mandatory: true },
-      { id: 'f-mldl-3', title: 'Model evaluation: precision/recall/F1, ROC-AUC — and when each misleads', proof: 'notes', mandatory: true },
-      { id: 'f-mldl-4', title: 'Overfitting, regularisation, cross-validation, feature engineering', proof: 'notes', mandatory: true },
-      { id: 'f-mldl-5', title: 'Neural network from scratch — forward and backward pass in NumPy', proof: 'implement', mandatory: true },
-      { id: 'f-mldl-6', title: 'End-to-end mini project: data to model to evaluation to written conclusion', proof: 'project', mandatory: true },
-      { id: 'f-mldl-7', title: 'Unsupervised: clustering and dimensionality reduction', proof: 'watch', mandatory: false },
+      { id: 'f-data-1', title: 'NumPy (11) — arrays, broadcasting, vectorised thinking', proof: 'implement', mandatory: true },
+      { id: 'f-data-2', title: 'Pandas Parts 1–2 (12–13) — real manipulation, not toy frames', proof: 'implement', mandatory: true },
+      { id: 'f-data-3', title: 'SQL Parts 1–2 (15–16) — joins, aggregates, subqueries', proof: 'exercise', mandatory: true },
+      { id: 'f-data-4', title: 'Data collection + web scraping (14, 17, 19)', proof: 'implement', mandatory: true },
+      { id: 'f-data-5', title: 'Data visualisation Parts 1–2 (20–21)', proof: 'implement', mandatory: true },
+      { id: 'f-data-6', title: 'Checkpoint: load a messy dataset, clean it, and defend every choice', proof: 'checkpoint', mandatory: true },
     ],
   },
   {
-    id: 'f-5me',
-    name: 'AI / ML Engineering',
-    source: 'Five Minute Engineering',
+    id: 'f-math',
+    name: 'Math for AI',
+    source: 'Apna Prime 22–24 · 5ME Stats/LinAlg',
     track: 'ai',
     blurb:
-      'The applied-AI layer: how LLM systems are actually assembled in production, which is the job being targeted.',
+      'Probability, linear algebra and calculus at the depth that makes transformers and backprop legible rather than magic.',
     milestones: [
-      { id: 'f-5me-1', title: 'LLM fundamentals: tokens, embeddings, context windows, inference cost', proof: 'notes', mandatory: true },
-      { id: 'f-5me-2', title: 'Transformer architecture — attention explained in your own words', proof: 'notes', mandatory: true },
-      { id: 'f-5me-3', title: 'Prompt engineering and structured outputs', proof: 'implement', mandatory: true },
-      { id: 'f-5me-4', title: 'Function and tool calling — working implementation', proof: 'implement', mandatory: true },
-      { id: 'f-5me-5', title: 'Checkpoint: explain an LLM request end to end, token in to token out', proof: 'checkpoint', mandatory: true },
+      { id: 'f-math-1', title: 'Probability (22) — distributions, Bayes, expectation', proof: 'notes', mandatory: true },
+      { id: 'f-math-2', title: 'Linear algebra (23) — vectors, matrices, dot products, eigen intuition', proof: 'notes', mandatory: true },
+      { id: 'f-math-3', title: 'Calculus (24) — derivatives, chain rule, gradients', proof: 'notes', mandatory: true },
+      { id: 'f-math-4', title: 'Checkpoint: explain a gradient descent step in your own words', proof: 'checkpoint', mandatory: true },
     ],
   },
   {
-    id: 'f-rag',
-    name: 'RAG',
-    source: 'Five Minute Engineering + own build',
+    id: 'f-ml',
+    name: 'Machine Learning',
+    source: 'Apna Prime 25–36',
     track: 'ai',
     blurb:
-      'You already have RAG exposure. The gate is not building a RAG demo — it is measuring retrieval quality, which is what separates an AI engineer from a tutorial follower.',
+      'Supervised through unsupervised, including the two minor projects. Evaluation matters more than algorithm count.',
     milestones: [
-      { id: 'f-rag-1', title: 'Ingestion and chunking strategies — and why chunk size changes answers', proof: 'notes', mandatory: true },
-      { id: 'f-rag-2', title: 'Embeddings and a vector store working locally', proof: 'implement', mandatory: true },
-      { id: 'f-rag-3', title: 'Retrieval pipeline with a reranking step', proof: 'implement', mandatory: true },
-      { id: 'f-rag-4', title: 'Retrieval evaluation — measured hit-rate and MRR on a real question set', proof: 'exercise', mandatory: true },
-      { id: 'f-rag-5', title: 'Working RAG service behind a FastAPI endpoint', proof: 'project', mandatory: true },
-      { id: 'f-rag-6', title: 'Hallucination reduction: grounding, citations, refusal behaviour', proof: 'notes', mandatory: false },
+      { id: 'f-ml-1', title: 'Starting with ML (25) + Supervised Parts 1–3 (26–28)', proof: 'watch', mandatory: true },
+      { id: 'f-ml-2', title: 'Scratch implementations (29) — write the algorithms yourself', proof: 'implement', mandatory: true },
+      { id: 'f-ml-3', title: 'CreditWise Loan System (30) — minor project shipped', proof: 'project', mandatory: true },
+      { id: 'f-ml-4', title: 'Supervised Parts 4–6 (31–33)', proof: 'watch', mandatory: true },
+      { id: 'f-ml-5', title: 'Evaluation — precision/recall/F1, ROC-AUC, and when each misleads', proof: 'notes', mandatory: true },
+      { id: 'f-ml-6', title: 'Bias/variance, overfitting, regularisation, cross-validation', proof: 'notes', mandatory: true },
+      { id: 'f-ml-7', title: 'Unsupervised Parts 1–2 (34–35) + SmartCart Clustering (36)', proof: 'project', mandatory: true },
+    ],
+  },
+  {
+    id: 'f-dl',
+    name: 'Deep Learning',
+    source: 'Apna Prime 39–55',
+    track: 'ai',
+    blurb:
+      'Eleven parts in the course. The bar is a network written from scratch — importing Keras is not understanding.',
+    milestones: [
+      { id: 'f-dl-1', title: 'Parts 1–3 (39–41) — perceptron, activation, forward pass', proof: 'watch', mandatory: true },
+      { id: 'f-dl-2', title: 'Backpropagation derived and implemented in NumPy', proof: 'implement', mandatory: true },
+      { id: 'f-dl-3', title: 'Parts 4–6 (42–44) — optimisers, regularisation, tuning', proof: 'watch', mandatory: true },
+      { id: 'f-dl-4', title: 'Parts 7–8 (49–50) — CNN architecture', proof: 'notes', mandatory: true },
+      { id: 'f-dl-5', title: 'Text Summarizer (51) — minor project shipped', proof: 'project', mandatory: true },
+      { id: 'f-dl-6', title: 'Parts 9–11 (54–55, 60) — sequence models and TensorFlow', proof: 'implement', mandatory: true },
+      { id: 'f-dl-7', title: 'Reinforcement learning Parts 1–3 (45–47)', proof: 'watch', mandatory: false },
+    ],
+  },
+  {
+    id: 'f-genai',
+    name: 'LLMs, RAG & Agents',
+    source: 'Apna Prime 56, 59, 61 · 5ME LangChain/VectorDB/Transformers',
+    track: 'ai',
+    blurb:
+      'The part that actually maps to the job title. You already have RAG exposure — the gate here is measuring retrieval quality, not building another demo.',
+    milestones: [
+      { id: 'f-genai-1', title: 'Transformer architecture — attention explained in your own words', proof: 'notes', mandatory: true },
+      { id: 'f-genai-2', title: 'Tokens, embeddings, context windows, inference cost', proof: 'notes', mandatory: true },
+      { id: 'f-genai-3', title: 'OpenAI APIs (56) — structured outputs and tool calling working', proof: 'implement', mandatory: true },
+      { id: 'f-genai-4', title: 'Vector DB + retrieval pipeline running locally', proof: 'implement', mandatory: true },
+      { id: 'f-genai-5', title: 'Retrieval evaluation — measured hit-rate on a real question set', proof: 'exercise', mandatory: true },
+      { id: 'f-genai-6', title: 'Working with Flask (59) — serve the model behind an API', proof: 'implement', mandatory: true },
+      { id: 'f-genai-7', title: 'Agentic AI (61) — an agent loop you wrote, not a framework demo', proof: 'project', mandatory: true },
+      { id: 'f-genai-8', title: 'LangChain — enough to read it, not to depend on it', proof: 'notes', mandatory: false },
+    ],
+  },
+  {
+    id: 'f-ppa',
+    name: 'PPA · C · C++',
+    source: 'PPA notes + revision',
+    track: 'systems',
+    blurb:
+      'Revision pace, not learning pace. You use C professionally; C++ is your fastest DSA language. Target interview-grade recall.',
+    milestones: [
+      { id: 'f-ppa-1', title: 'PPA — problem-solving patterns and logic drills revised', proof: 'exercise', mandatory: true },
+      { id: 'f-ppa-2', title: 'C — pointers, memory, structs, function pointers recalled cold', proof: 'exercise', mandatory: true },
+      { id: 'f-ppa-3', title: 'C — five classic programs from scratch, no reference', proof: 'exercise', mandatory: true },
+      { id: 'f-ppa-4', title: 'C++ — OOP, virtual functions, vtables', proof: 'notes', mandatory: true },
+      { id: 'f-ppa-5', title: 'C++ — STL fluency: vector, map, set, priority_queue', proof: 'exercise', mandatory: true },
+      { id: 'f-ppa-6', title: 'C++ — smart pointers, RAII, move semantics', proof: 'notes', mandatory: false },
     ],
   },
   {
     id: 'f-lsp',
     name: 'Linux System Programming',
-    source: 'LSP course',
+    source: 'LSP notes',
     track: 'systems',
     blurb:
-      'Direct leverage on your telecom systems work and on any systems-flavoured interview. This is the differentiator most AI candidates do not have.',
+      'Direct leverage on your telecom work and the differentiator most AI candidates simply do not have.',
     milestones: [
-      { id: 'f-lsp-1', title: 'Processes, fork/exec/wait, process lifecycle', proof: 'implement', mandatory: true },
+      { id: 'f-lsp-1', title: 'Processes — fork/exec/wait, lifecycle', proof: 'implement', mandatory: true },
       { id: 'f-lsp-2', title: 'File descriptors, I/O, pipes, redirection', proof: 'implement', mandatory: true },
-      { id: 'f-lsp-3', title: 'Threads and synchronisation: mutex, condition variables, race conditions', proof: 'implement', mandatory: true },
-      { id: 'f-lsp-4', title: 'IPC: shared memory, message queues, semaphores', proof: 'notes', mandatory: true },
+      { id: 'f-lsp-3', title: 'Threads and synchronisation — mutex, condition variables, races', proof: 'implement', mandatory: true },
+      { id: 'f-lsp-4', title: 'IPC — shared memory, message queues, semaphores', proof: 'notes', mandatory: true },
       { id: 'f-lsp-5', title: 'Sockets — a working TCP client and server', proof: 'project', mandatory: true },
-      { id: 'f-lsp-6', title: 'Signals and the memory layout of a running process', proof: 'notes', mandatory: false },
-    ],
-  },
-  {
-    id: 'f-c',
-    name: 'C',
-    source: 'Revision',
-    track: 'systems',
-    blurb:
-      'Revision pace, not learning pace. You use C professionally — this is about interview-grade recall of pointers and memory.',
-    milestones: [
-      { id: 'f-c-1', title: 'Pointers, pointer arithmetic, arrays vs pointers — recalled cold', proof: 'exercise', mandatory: true },
-      { id: 'f-c-2', title: 'Memory: stack vs heap, malloc and free, leaks and dangling pointers', proof: 'notes', mandatory: true },
-      { id: 'f-c-3', title: 'Structs, unions, function pointers', proof: 'implement', mandatory: true },
-      { id: 'f-c-4', title: 'Five classic C programs written from scratch, no reference', proof: 'exercise', mandatory: true },
-    ],
-  },
-  {
-    id: 'f-cpp',
-    name: 'C++',
-    source: 'Revision',
-    track: 'systems',
-    blurb:
-      'Your fastest DSA language and a credible systems signal. Revision pace — target STL fluency and modern idioms.',
-    milestones: [
-      { id: 'f-cpp-1', title: 'OOP: inheritance, virtual functions, vtables', proof: 'notes', mandatory: true },
-      { id: 'f-cpp-2', title: 'STL fluency: vector, map, set, queue, priority_queue', proof: 'exercise', mandatory: true },
-      { id: 'f-cpp-3', title: 'Smart pointers, RAII, move semantics', proof: 'notes', mandatory: true },
-      { id: 'f-cpp-4', title: 'Ten LeetCode problems solved in C++ using the STL', proof: 'exercise', mandatory: true },
     ],
   },
   {
     id: 'f-dsa',
     name: 'DSA Basics',
-    source: 'NeetCode / Striver',
+    source: 'LB notes · NeetCode',
     track: 'dsa',
     blurb:
-      'The single highest-weight item for Amazon, Google and Microsoft. Month 1 establishes the daily habit and the base patterns; Months 2 to 4 build depth on top.',
+      'The single highest-weight item for Amazon, Google and Microsoft. Starts on day 1 and never pauses for the whole 161 days.',
     milestones: [
-      { id: 'f-dsa-1', title: 'Big-O and space complexity — fluent, including recursion stacks', proof: 'notes', mandatory: true },
-      { id: 'f-dsa-2', title: 'Arrays, strings, hashing — pattern recognised, not memorised', proof: 'exercise', mandatory: true },
-      { id: 'f-dsa-3', title: 'Two pointers and sliding window', proof: 'exercise', mandatory: true },
-      { id: 'f-dsa-4', title: 'Binary search, including binary-search-on-the-answer', proof: 'exercise', mandatory: true },
-      { id: 'f-dsa-5', title: 'Stack, queue, linked list — implemented from scratch', proof: 'implement', mandatory: true },
-      { id: 'f-dsa-6', title: 'Recursion and backtracking basics', proof: 'exercise', mandatory: true },
-      { id: 'f-dsa-7', title: '50 problems logged with pattern tags and solve times', proof: 'checkpoint', mandatory: true },
-      { id: 'f-dsa-8', title: 'Daily solve streak unbroken for 14 days', proof: 'checkpoint', mandatory: false },
+      { id: 'f-dsa-1', title: 'LB — logic-building drills cleared', proof: 'exercise', mandatory: true },
+      { id: 'f-dsa-2', title: 'Big-O and space complexity fluent, including recursion stacks', proof: 'notes', mandatory: true },
+      { id: 'f-dsa-3', title: 'Arrays, strings, hashing — pattern recognised, not memorised', proof: 'exercise', mandatory: true },
+      { id: 'f-dsa-4', title: 'Two pointers and sliding window', proof: 'exercise', mandatory: true },
+      { id: 'f-dsa-5', title: 'Binary search, including binary-search-on-the-answer', proof: 'exercise', mandatory: true },
+      { id: 'f-dsa-6', title: 'Stack, queue, linked list implemented from scratch', proof: 'implement', mandatory: true },
+      { id: 'f-dsa-7', title: 'Recursion and backtracking basics', proof: 'exercise', mandatory: true },
+      { id: 'f-dsa-8', title: '75 problems logged with pattern tags and solve times', proof: 'checkpoint', mandatory: true },
+    ],
+  },
+  {
+    id: 'f-tools',
+    name: 'Terminal & Git',
+    source: 'Apna Prime 37–38',
+    track: 'devops',
+    blurb:
+      'Quick wins you mostly have already. Close them early so the daily commit habit is running from week one.',
+    milestones: [
+      { id: 'f-tools-1', title: 'Terminal (37) — confirm nothing is missing', proof: 'watch', mandatory: true },
+      { id: 'f-tools-2', title: 'Git & GitHub (38) — branches, rebase vs merge, clean history', proof: 'implement', mandatory: true },
+      { id: 'f-tools-3', title: 'GitHub profile and READMEs presentable to a recruiter', proof: 'project', mandatory: true },
     ],
   },
 ] as const;

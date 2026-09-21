@@ -8,15 +8,15 @@ import { getStore } from '@netlify/blobs';
 import catalog from './catalog.json' with { type: 'json' };
 
 export const MISSION_START = '2026-09-21';
-export const MISSION_END = '2027-01-15';
-export const TOTAL_DAYS = 117;
+export const MISSION_END = '2027-02-28';
+export const TOTAL_DAYS = 161;
 const DAY_MS = 86_400_000;
 
 const PHASES = [
-  { id: 'm1', label: 'M1', title: 'Foundation Gate', startDay: 1, endDay: 30 },
-  { id: 'm2', label: 'M2', title: 'SDE Fundamentals + AI Engineering', startDay: 31, endDay: 60 },
-  { id: 'm3', label: 'M3', title: 'Interview-Level Preparation', startDay: 61, endDay: 90 },
-  { id: 'm4', label: 'M4', title: 'Interview Execution', startDay: 91, endDay: TOTAL_DAYS },
+  { id: 'm1', label: 'P1', title: 'Foundation Gate', startDay: 1, endDay: 42 },
+  { id: 'm2', label: 'P2', title: 'SDE Fundamentals + AI Engineering', startDay: 43, endDay: 91 },
+  { id: 'm3', label: 'P3', title: 'Interview-Level Preparation', startDay: 92, endDay: 133 },
+  { id: 'm4', label: 'P4', title: 'Interview Execution', startDay: 134, endDay: TOTAL_DAYS },
 ];
 
 const parse = (iso) => new Date(`${iso}T12:00:00`);
@@ -158,7 +158,10 @@ export function titleFor(id) {
     const m = s.milestones.find((x) => x.id === id);
     if (m) return m.title;
   }
-  return id;
+  // The id is in an old day log but no longer in the catalog — the syllabus was
+  // rewritten under it. A raw id in an email reads like a bug, so say what
+  // actually happened instead.
+  return 'a retired item (syllabus has since changed)';
 }
 
 /**

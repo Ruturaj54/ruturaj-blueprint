@@ -57,7 +57,7 @@ export function Shell({
           <p className="font-display text-[17px] font-bold leading-tight tracking-tight">
             Ruturaj Blueprint
           </p>
-          <p className="mt-1 text-[11px] text-muted">117-day mission</p>
+          <p className="mt-1 text-[11px] text-muted">161-day mission</p>
         </div>
         <nav className="flex flex-1 flex-col gap-0.5">
           {NAV_ITEMS.map((item) => {

@@ -8,8 +8,8 @@
  */
 
 export const MISSION_START = '2026-09-21';
-export const MISSION_END = '2027-01-15';
-export const TOTAL_DAYS = 117;
+export const MISSION_END = '2027-02-28';
+export const TOTAL_DAYS = 161;
 
 const MS_PER_DAY = 86_400_000;
 

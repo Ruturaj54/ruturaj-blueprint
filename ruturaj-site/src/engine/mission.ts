@@ -2,48 +2,53 @@ import { TOTAL_DAYS, clampDay, dateForDay, weekOfDay, isSunday } from './dates';
 import type { MissionPhase } from './types';
 
 /**
- * The 117-day mission: 21 Sep 2026 → 15 Jan 2027, ending just before the
- * two-year mark at Parallel Wireless on ~15 Jan 2027.
+ * The 161-day mission: 21 Sep 2026 → 28 Feb 2027. Exactly 23 weeks.
  *
- * Month 1 is the Foundation Gate. Months 2–4 only unlock once it clears, so
+ * Extended from the original 15 Jan target because the course load is real:
+ * the Five Minute Engineering bootcamp alone is a 7–8 month syllabus, and the
+ * foundation needs six weeks rather than four to clear honestly. The two-year
+ * mark at Parallel Wireless still passes in mid-January, so applications can
+ * start before the mission ends.
+ *
+ * Phase 1 is the Foundation Gate. Phases 2–4 only unlock once it clears, so
  * course-collecting cannot quietly consume the whole runway.
  */
 export const MISSION_PHASES: readonly MissionPhase[] = [
   {
     id: 'm1',
-    label: 'M1',
+    label: 'P1',
     title: 'Foundation Gate',
     startDay: 1,
-    endDay: 30,
+    endDay: 42,
     focus: 'FINISH WHAT YOU ALREADY STARTED',
     description:
-      'Close out the courses already in flight — Apna College Python/ML/DL, Five Minute Engineering AI, LSP, C, C++ and DSA basics. Nothing new gets added this month. Each subject is proven by an implementation, not a completion percentage.',
+      'Six weeks to close out the courses already in flight — Apna College Prime AI/ML, the Five Minute Engineering bootcamp core, PPA/C/C++, LSP and DSA basics. Nothing new gets added. Each subject is proven by an implementation, not a completion percentage.',
   },
   {
     id: 'm2',
-    label: 'M2',
+    label: 'P2',
     title: 'SDE Fundamentals + AI Engineering',
-    startDay: 31,
-    endDay: 60,
+    startDay: 43,
+    endDay: 91,
     focus: 'DEPTH OVER COVERAGE',
     description:
       'DSA moves to daily patterns. Core CS (OS, networking, DBMS) gets formal treatment. Django/DRF and FastAPI move toward production shape, and the first real AI engineering work starts — embeddings, retrieval, evaluation.',
   },
   {
     id: 'm3',
-    label: 'M3',
+    label: 'P3',
     title: 'Interview-Level Preparation',
-    startDay: 61,
-    endDay: 90,
+    startDay: 92,
+    endDay: 133,
     focus: 'MEDIUM-HEAVY DSA · SYSTEM DESIGN · SHIP THE AI PROJECT',
     description:
       'DSA shifts medium-heavy with timed sets. System design becomes a daily thread. The flagship AI/RAG project reaches a deployed, defensible state. Java/Spring Boot enters at interview depth only.',
   },
   {
     id: 'm4',
-    label: 'M4',
+    label: 'P4',
     title: 'Interview Execution',
-    startDay: 91,
+    startDay: 134,
     endDay: TOTAL_DAYS,
     focus: 'APPLY · MOCK · NEGOTIATE',
     description:

@@ -57,7 +57,7 @@ export function Home({ navigate }: { navigate: (id: string) => void }) {
 
           <div className="min-w-0 flex-1 text-center sm:text-left">
             <p className="font-display text-[11px] uppercase tracking-[0.18em] text-accent">
-              4-month mission
+              161-day mission
             </p>
             <h1 className="mt-1.5 font-display text-[26px] font-bold leading-tight sm:text-[30px]">
               Become interview-ready for top-tier SDE and AI Engineer roles.

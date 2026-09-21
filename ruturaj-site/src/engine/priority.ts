@@ -94,7 +94,7 @@ export function scoreTask(task: Task, ctx: ScoreContext): ScoredTask {
     if (hit) add('Weak pattern — needs work', 30);
   }
 
-  // Long tasks are not worse, but on a 117-day budget they must justify
+  // Long tasks are not worse, but on a 161-day budget they must justify
   // themselves. Roughly one point per 20 minutes.
   add('Time cost', -Math.round(task.estMinutes / 20));
 

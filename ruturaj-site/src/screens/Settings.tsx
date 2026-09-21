@@ -18,7 +18,10 @@ type TimeKey =
   | 'officeStart'
   | 'officeEnd'
   | 'eveningRunTime'
-  | 'deepWorkStart'
+  | 'studyBlock1Start'
+  | 'studyBlock1End'
+  | 'studyBlock2Start'
+  | 'studyBlock2End'
   | 'morningEmailTime'
   | 'eveningEmailTime';
 
@@ -27,8 +30,11 @@ const TIME_FIELDS: Array<{ key: TimeKey; label: string }> = [
   { key: 'morningRunTime', label: 'Morning run' },
   { key: 'officeStart', label: 'Office start' },
   { key: 'officeEnd', label: 'Office end' },
+  { key: 'studyBlock1Start', label: 'Study block 1 start' },
+  { key: 'studyBlock1End', label: 'Study block 1 end' },
   { key: 'eveningRunTime', label: 'Evening run' },
-  { key: 'deepWorkStart', label: 'Night study block' },
+  { key: 'studyBlock2Start', label: 'Night block start' },
+  { key: 'studyBlock2End', label: 'Night block end' },
   { key: 'morningEmailTime', label: 'Morning email' },
   { key: 'eveningEmailTime', label: 'Evening email' },
 ];
@@ -183,6 +189,18 @@ export function Settings() {
                 max={120}
                 value={state.settings.deepWorkMinutes}
                 onChange={(e) => setField('deepWorkMinutes', Number(e.target.value))}
+                className={inputCls}
+              />
+            </label>
+            <label className="block">
+              <span className="mb-1.5 block text-[12px] text-muted">Office study hours</span>
+              <input
+                type="number"
+                min={0}
+                max={6}
+                step={0.5}
+                value={state.settings.officeStudyHours}
+                onChange={(e) => setField('officeStudyHours', Number(e.target.value))}
                 className={inputCls}
               />
             </label>

@@ -1,6 +1,7 @@
 // §19 and §20 — the two daily mails, built from the digest.
 
 import {
+  SITE_URL,
   layout,
   section,
   numberedList,
@@ -83,8 +84,8 @@ export function buildMorning(d) {
   ].join('');
 
   const text = [
-    line(`GOOD MORNING RUTURAJ — Day ${d.day} of 117`),
-    line(`${d.phase.label} ${d.phase.title} · ${d.daysLeft} days to 15 Jan 2027`),
+    line(`GOOD MORNING RUTURAJ — Day ${d.day} of 161`),
+    line(`${d.phase.label} ${d.phase.title} · ${d.daysLeft} days to 28 Feb 2027`),
     line(''),
     line("TODAY'S MISSION"),
     ...d.missions.map((m, i) => line(`  ${i + 1}. ${m.title}${m.context ? ` (${m.context})` : ''}`)),
@@ -96,6 +97,8 @@ export function buildMorning(d) {
     line(`THE CHALLENGE: ${challenge}`),
     line(''),
     line(`Gate ${d.gate.pct}% · ${d.daysLeft} days remaining`),
+    line(''),
+    line(`Open today's plan: ${SITE_URL}/#/today`),
   ].join('');
 
   return {
@@ -177,7 +180,7 @@ export function buildEvening(d) {
   ].join('');
 
   const text = [
-    line(`RUTURAJ — DAILY ACCOUNTABILITY — Day ${d.day} of 117`),
+    line(`RUTURAJ — DAILY ACCOUNTABILITY — Day ${d.day} of 161`),
     line(''),
     t && t.score !== null
       ? line(`PLANNED VS ACTUAL: ${t.completed}/${t.planned} closed — ${t.score}%`)
@@ -192,6 +195,8 @@ export function buildEvening(d) {
     line(''),
     recovery ? line(`RECOVERY: ${recovery}`) : '',
     line(`TOMORROW'S MISSION: ${tomorrow}`),
+    line(''),
+    line(`Log it: ${SITE_URL}/#/today`),
   ].join('');
 
   return {

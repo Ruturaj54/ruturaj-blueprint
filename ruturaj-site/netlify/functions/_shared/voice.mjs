@@ -15,7 +15,7 @@ export function morningSubject(d) {
     return `Ruturaj — clean day yesterday. Day ${d.day}, same standard.`;
   }
   if (d.dsa.streak >= 7) {
-    return `Ruturaj — ${d.dsa.streak}-day DSA streak. Day ${d.day} of ${117}.`;
+    return `Ruturaj — ${d.dsa.streak}-day DSA streak. Day ${d.day} of ${161}.`;
   }
   if (d.dsa.total === 0) {
     return `Ruturaj — ${d.daysLeft} days left and zero problems logged.`;

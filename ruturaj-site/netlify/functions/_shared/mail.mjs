@@ -17,6 +17,9 @@ const C = {
   danger: '#FB7185',
 };
 
+/** Where the mail sends him. Overridable so a rename does not need a code change. */
+export const SITE_URL = process.env.SITE_URL || 'https://winner-ruturaj.netlify.app';
+
 export function mailConfig() {
   const user = process.env.SENDER_EMAIL;
   const pass = process.env.SENDER_PASS;
@@ -127,16 +130,29 @@ export function layout({ kicker, day, daysLeft, phase, body }) {
 
         <tr><td style="padding:26px 24px 0;">
           <p style="margin:0 0 6px;font:600 11px/1 -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:${C.accent};">${esc(kicker)}</p>
-          <p style="margin:0;font:700 38px/1 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.fg};">Day ${day}<span style="font-size:16px;font-weight:400;color:${C.faint};"> / 117</span></p>
-          <p style="margin:8px 0 0;font:400 13px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.muted};">${esc(phase)} &middot; ${daysLeft} days to 15 Jan 2027</p>
+          <p style="margin:0;font:700 38px/1 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.fg};">Day ${day}<span style="font-size:16px;font-weight:400;color:${C.faint};"> / 161</span></p>
+          <p style="margin:8px 0 0;font:400 13px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.muted};">${esc(phase)} &middot; ${daysLeft} days to 28 Feb 2027</p>
         </td></tr>
 
         ${body}
 
+        <tr><td style="padding:22px 24px 0;">
+          <a href="${SITE_URL}/#/today"
+             style="display:block;padding:14px 18px;border-radius:10px;background:${C.accent};color:#000;font:600 15px/1 -apple-system,Segoe UI,Roboto,sans-serif;text-align:center;text-decoration:none;">
+            Open today&rsquo;s plan &rarr;
+          </a>
+          <p style="margin:10px 0 0;text-align:center;font:400 11px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.faint};">
+            <a href="${SITE_URL}/#/home" style="color:${C.muted};text-decoration:none;">Home</a> &middot;
+            <a href="${SITE_URL}/#/dsa" style="color:${C.muted};text-decoration:none;">DSA</a> &middot;
+            <a href="${SITE_URL}/#/ai" style="color:${C.muted};text-decoration:none;">AI</a> &middot;
+            <a href="${SITE_URL}/#/analytics" style="color:${C.muted};text-decoration:none;">Analytics</a>
+          </p>
+        </td></tr>
+
         <tr><td style="padding:24px;">
           <div style="border-top:1px solid ${C.line};padding-top:14px;">
             <p style="margin:0;font:400 11px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.faint};">
-              Ruturaj Blueprint &middot; 117-day mission &middot; AI Engineer / SDE
+              Ruturaj Blueprint &middot; 161-day mission &middot; AI Engineer / SDE
             </p>
           </div>
         </td></tr>
