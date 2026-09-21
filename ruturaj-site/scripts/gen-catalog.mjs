@@ -44,6 +44,7 @@ const catalog = {
     prereqs: t.prereqs ?? [],
     interviewCritical: t.interviewCritical,
     portfolioCritical: t.portfolioCritical,
+    earliestPhase: t.earliestPhase ?? 'm2',
   })),
   foundation: mod.FOUNDATION_SUBJECTS.map((s) => ({
     id: s.id,

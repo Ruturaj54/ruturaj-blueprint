@@ -87,9 +87,12 @@ function nextFoundation(state, count) {
 }
 
 /** Mirrors the client priority engine closely enough to agree on the top few. */
-function nextTasks(state, count) {
+function nextTasks(state, count, phaseId = 'm2') {
   const PRIORITY_BONUS = { P0: 45, P1: 25, P2: 8, P3: 0 };
+  const PHASE_ORDER = { m1: 1, m2: 2, m3: 3, m4: 4 };
   const done = (id) => state.tasks?.[id]?.status === 'done';
+  const tooEarly = (t) =>
+    PHASE_ORDER[t.earliestPhase ?? 'm2'] > PHASE_ORDER[phaseId] ? -70 : 0;
 
   return catalog.tasks
     .filter((t) => !done(t.id) && state.tasks?.[t.id]?.status !== 'skipped')
@@ -101,7 +104,8 @@ function nextTasks(state, count) {
       score:
         t.careerValue * 8 +
         (PRIORITY_BONUS[t.priority] ?? 0) +
-        (state.tasks?.[t.id]?.status === 'in_progress' ? 18 : 0) -
+        (state.tasks?.[t.id]?.status === 'in_progress' ? 18 : 0) +
+        tooEarly(t) -
         Math.round(t.estMinutes / 20),
     }))
     .sort((a, b) => b.score - a.score)
@@ -198,7 +202,7 @@ export function buildDigest(state) {
   );
   const gateOpen = Boolean(s.foundationUnlockedAt);
 
-  const missions = gateOpen ? nextTasks(s, 3) : nextFoundation(s, 3);
+  const missions = gateOpen ? nextTasks(s, 3, phase.id) : nextFoundation(s, 3);
 
   const runsToday = (s.runs ?? []).filter((r) => r.date === today);
   const focusToday = (s.deepWork ?? [])

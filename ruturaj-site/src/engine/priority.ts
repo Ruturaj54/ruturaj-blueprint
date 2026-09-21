@@ -98,6 +98,15 @@ export function scoreTask(task: Task, ctx: ScoreContext): ScoredTask {
   // themselves. Roughly one point per 20 minutes.
   add('Time cost', -Math.round(task.estMinutes / 20));
 
+  // Work that belongs to a later phase sorts to the bottom rather than being
+  // hidden, so an early phase can never produce an empty plan — but mock
+  // interviews and company prep stop crowding out month-2 fundamentals.
+  const phaseOrder = { m1: 1, m2: 2, m3: 3, m4: 4 } as const;
+  const earliest = task.earliestPhase ?? 'm2';
+  if (phaseOrder[earliest] > phaseOrder[ctx.phase.id]) {
+    add(`Belongs to ${earliest.toUpperCase()}`, -70);
+  }
+
   // §4 — shed optional work automatically when the week has gone badly.
   if (ctx.behindSchedule) {
     if (task.priority === 'P2') add('Behind schedule — deprioritised', -25);

@@ -7,9 +7,10 @@ import { JAVA_TASKS, REACT_TASKS } from './java-react';
 import { PROJECT_TASKS } from './projects';
 import { SYSTEMS_TASKS, DEVOPS_TASKS, TELECOM_TASKS } from './systems';
 import { MLOPS_TASKS } from './mlops';
+import { withPhasing } from './phasing';
 
 /** Every advanced-phase task, flattened. Foundation work lives separately. */
-export const ALL_TASKS: readonly Task[] = [
+export const ALL_TASKS: readonly Task[] = withPhasing([
   ...AI_TASKS,
   ...MLOPS_TASKS,
   ...DSA_TASKS,
@@ -22,7 +23,7 @@ export const ALL_TASKS: readonly Task[] = [
   ...DEVOPS_TASKS,
   ...TELECOM_TASKS,
   ...PROJECT_TASKS,
-];
+]);
 
 const byId = new Map(ALL_TASKS.map((t) => [t.id, t]));
 

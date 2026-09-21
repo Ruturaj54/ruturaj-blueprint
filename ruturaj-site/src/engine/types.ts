@@ -58,6 +58,16 @@ export interface Task {
   optional: boolean;
   /** Why this earns a slot — evidence, stated separately from the pitch. */
   rationale?: string;
+  /**
+   * Earliest phase this should realistically surface in. Without it the
+   * priority engine ranks globally and pulls mock interviews and company-
+   * specific prep into month 2, leaving months 3 and 4 with nothing.
+   *
+   * It is a heavy ranking penalty rather than a hard filter, so an early phase
+   * can never end up with an empty plan — the work just sorts to the bottom
+   * until its time comes.
+   */
+  earliestPhase?: 'm2' | 'm3' | 'm4';
 }
 
 export interface TaskState {
