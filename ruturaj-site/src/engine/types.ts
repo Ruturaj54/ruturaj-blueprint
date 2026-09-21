@@ -89,15 +89,35 @@ export interface FoundationMilestone {
   proof: ProofType;
   /** Mandatory milestones gate the Foundation Gate; optional ones do not. */
   mandatory: boolean;
+  /**
+   * Realistic focused minutes. Course parts run 60–120 min each, so a
+   * milestone covering three parts is budgeted at three parts, not one.
+   * This is what makes the daily plan honest about how much fits in a day.
+   */
+  estMinutes: number;
 }
+
+/**
+ * Priority tier. The planner clears tier 1 before tier 2, and tier 2 before
+ * tier 3 — Ruturaj's stated order: Apna College first, then Five Minute
+ * Engineering, then his own PPA/LB/LSP/DSA practice. Mixing is allowed: when
+ * the current tier has nothing workable left, the planner pulls forward.
+ */
+export type FoundationTier = 1 | 2 | 3;
 
 export interface FoundationSubject {
   id: string;
   name: string;
   source: string;
   track: TrackId;
+  tier: FoundationTier;
   blurb: string;
   milestones: FoundationMilestone[];
+}
+
+/** Total budgeted minutes for a subject. */
+export function subjectMinutes(s: FoundationSubject): number {
+  return s.milestones.reduce((n, m) => n + m.estMinutes, 0);
 }
 
 export interface MissionPhase {

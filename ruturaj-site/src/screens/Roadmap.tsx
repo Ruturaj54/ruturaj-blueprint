@@ -5,7 +5,7 @@ import { useAppState, useUpdateState } from '@/hooks/useAppState';
 import { Card, SectionTitle, Button, ProgressBar, Chip, TaskCheckbox } from '@/components/ui/primitives';
 import { listContainer } from '@/lib/motion';
 import { cn } from '@/lib/cn';
-import { FOUNDATION_SUBJECTS } from '@/data/foundation';
+import { FOUNDATION_SUBJECTS, TIER_LABEL, MANDATORY_HOURS } from '@/data/foundation';
 import { gateStatus, allSubjectProgress, FOUNDATION_UNLOCK_MESSAGE } from '@/engine/foundation';
 import { MISSION_PHASES } from '@/engine/mission';
 import { currentDay } from '@/engine/dates';
@@ -127,14 +127,44 @@ export function Roadmap() {
         </Card>
       </section>
 
-      {/* ---- subjects ---- */}
+      {/* ---- subjects, grouped by your priority order ---- */}
       <section>
-        <SectionTitle>Foundation subjects</SectionTitle>
-        <div className="space-y-3">
-          {progress.map((p) => (
-            <SubjectCard key={p.subject.id} subjectId={p.subject.id} />
-          ))}
-        </div>
+        <SectionTitle
+          action={
+            <span className="tnum text-[11px] text-faint">~{MANDATORY_HOURS}h budgeted</span>
+          }
+        >
+          Foundation subjects
+        </SectionTitle>
+        {([1, 2, 3] as const).map((tier) => {
+          const inTier = progress.filter((p) => p.subject.tier === tier);
+          if (inTier.length === 0) return null;
+          const hours = Math.round(
+            inTier.reduce(
+              (n, p) =>
+                n +
+                p.subject.milestones
+                  .filter((m) => m.mandatory)
+                  .reduce((x, m) => x + m.estMinutes, 0),
+              0,
+            ) / 60,
+          );
+          return (
+            <div key={tier} className="mb-5">
+              <div className="mb-2 flex items-baseline justify-between gap-3 px-1">
+                <p className="text-[11px] uppercase tracking-[0.12em] text-accent">
+                  {tier}. {TIER_LABEL[tier]}
+                </p>
+                <span className="tnum text-[11px] text-faint">~{hours}h</span>
+              </div>
+              <div className="space-y-3">
+                {inTier.map((p) => (
+                  <SubjectCard key={p.subject.id} subjectId={p.subject.id} />
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </section>
 
       {/* ---- phases ---- */}
@@ -217,7 +247,10 @@ function SubjectCard({ subjectId }: { subjectId: string }) {
                 {meta.label}
               </span>
             </div>
-            <p className="mt-0.5 text-[11px] text-faint">{subject.source}</p>
+            <p className="mt-0.5 text-[11px] text-faint">
+              {subject.source} &middot;{' '}
+              {Math.round(subject.milestones.reduce((n, m) => n + m.estMinutes, 0) / 60)}h
+            </p>
           </div>
           <div className="flex shrink-0 items-center gap-3">
             <span className="tnum font-mono text-[12px] text-muted">
@@ -257,7 +290,8 @@ function SubjectCard({ subjectId }: { subjectId: string }) {
                   onChange={(v) => toggle(m.id, v)}
                   label={m.title}
                   sublabel={
-                    <span className="flex gap-1.5">
+                    <span className="flex flex-wrap gap-1.5">
+                      <Chip>{m.estMinutes} min</Chip>
                       <Chip>{m.proof}</Chip>
                       {m.mandatory ? (
                         <Chip tone="accent">Gates the unlock</Chip>

@@ -49,10 +49,12 @@ const catalog = {
     id: s.id,
     name: s.name,
     source: s.source,
+    tier: s.tier,
     milestones: s.milestones.map((m) => ({
       id: m.id,
       title: m.title,
       mandatory: m.mandatory,
+      estMinutes: m.estMinutes,
     })),
   })),
   patterns: mod.DSA_PATTERNS.map((p) => ({

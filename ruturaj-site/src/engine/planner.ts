@@ -46,20 +46,38 @@ export interface DailyPlan {
   estimatedMinutes: number;
 }
 
-/** Round-robins across subjects so one course cannot starve the others. */
+/**
+ * Walks the subjects in Ruturaj's stated priority order — Apna College, then
+ * Five Minute Engineering, then his own PPA/LB/LSP/DSA practice.
+ *
+ * Within a tier it round-robins so one subject cannot starve the rest, and it
+ * only drops to the next tier once the current one has no mandatory work left.
+ * Optional milestones are picked up last, across all tiers — that is the
+ * "can be mixed" case: nothing sits idle if the priority tier is exhausted.
+ */
 function nextFoundationMissions(state: AppState, count: number): FoundationMission[] {
   const out: FoundationMission[] = [];
+  const open = (m: { id: string }) => !state.foundation[m.id];
 
-  // Two passes: mandatory work everywhere first, optional extras only after.
-  for (const mandatoryOnly of [true, false]) {
-    for (const subject of FOUNDATION_SUBJECTS) {
+  for (const tier of [1, 2, 3] as const) {
+    const subjects = FOUNDATION_SUBJECTS.filter((s) => s.tier === tier);
+    for (const subject of subjects) {
       if (out.length >= count) return out;
-      const next = subject.milestones.find(
-        (m) => !state.foundation[m.id] && (!mandatoryOnly || m.mandatory),
-      );
+      const next = subject.milestones.find((m) => open(m) && m.mandatory);
       if (next && !out.some((o) => o.milestone.id === next.id)) {
         out.push({ kind: 'foundation', subject, milestone: next });
       }
+    }
+    // Only move to the next tier once this one has nothing mandatory left.
+    if (out.length > 0) return out;
+  }
+
+  // Everything mandatory is done — fall back to optional work, any tier.
+  for (const subject of FOUNDATION_SUBJECTS) {
+    if (out.length >= count) return out;
+    const next = subject.milestones.find(open);
+    if (next && !out.some((o) => o.milestone.id === next.id)) {
+      out.push({ kind: 'foundation', subject, milestone: next });
     }
   }
   return out;
@@ -123,7 +141,8 @@ export function buildPlan(state: AppState, day: number = currentDay()): DailyPla
   );
 
   const estimatedMinutes = missions.reduce(
-    (sum, m) => sum + (m.kind === 'task' ? m.scored.task.estMinutes : 60),
+    (sum, m) =>
+      sum + (m.kind === 'task' ? m.scored.task.estMinutes : m.milestone.estMinutes),
     0,
   );
 

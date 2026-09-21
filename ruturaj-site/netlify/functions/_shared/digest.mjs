@@ -56,18 +56,31 @@ export async function readState() {
   }
 }
 
-/** Round-robins the foundation subjects, mandatory milestones first. */
+/**
+ * Mirrors the client planner: Apna College (tier 1), then Five Minute
+ * Engineering (tier 2), then PPA/LB/LSP/DSA (tier 3). A tier is only left
+ * behind once it has no mandatory work remaining.
+ */
 function nextFoundation(state, count) {
   const out = [];
-  for (const mandatoryOnly of [true, false]) {
-    for (const subject of catalog.foundation) {
+  const open = (m) => !state.foundation?.[m.id];
+
+  for (const tier of [1, 2, 3]) {
+    for (const subject of catalog.foundation.filter((s) => s.tier === tier)) {
       if (out.length >= count) return out;
-      const next = subject.milestones.find(
-        (m) => !state.foundation?.[m.id] && (!mandatoryOnly || m.mandatory),
-      );
+      const next = subject.milestones.find((m) => open(m) && m.mandatory);
       if (next && !out.some((o) => o.id === next.id)) {
         out.push({ id: next.id, title: next.title, context: subject.name });
       }
+    }
+    if (out.length > 0) return out;
+  }
+
+  for (const subject of catalog.foundation) {
+    if (out.length >= count) return out;
+    const next = subject.milestones.find(open);
+    if (next && !out.some((o) => o.id === next.id)) {
+      out.push({ id: next.id, title: next.title, context: subject.name });
     }
   }
   return out;
