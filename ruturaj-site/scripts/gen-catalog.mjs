@@ -56,6 +56,7 @@ const catalog = {
       title: m.title,
       mandatory: m.mandatory,
       estMinutes: m.estMinutes,
+      proof: m.proof,
     })),
   })),
   patterns: mod.DSA_PATTERNS.map((p) => ({

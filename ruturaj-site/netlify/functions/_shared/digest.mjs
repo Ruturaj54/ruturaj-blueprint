@@ -6,6 +6,7 @@
 
 import { getStore } from '@netlify/blobs';
 import catalog from './catalog.json' with { type: 'json' };
+import { buildSchedule } from './schedule.mjs';
 
 export const MISSION_START = '2026-09-21';
 export const MISSION_END = '2027-02-28';
@@ -70,7 +71,7 @@ function nextFoundation(state, count) {
       if (out.length >= count) return out;
       const next = subject.milestones.find((m) => open(m) && m.mandatory);
       if (next && !out.some((o) => o.id === next.id)) {
-        out.push({ id: next.id, title: next.title, context: subject.name });
+        out.push({ id: next.id, title: next.title, context: subject.name, minutes: next.estMinutes, proof: next.proof });
       }
     }
     if (out.length > 0) return out;
@@ -80,7 +81,7 @@ function nextFoundation(state, count) {
     if (out.length >= count) return out;
     const next = subject.milestones.find(open);
     if (next && !out.some((o) => o.id === next.id)) {
-      out.push({ id: next.id, title: next.title, context: subject.name });
+      out.push({ id: next.id, title: next.title, context: subject.name, minutes: next.estMinutes, proof: next.proof });
     }
   }
   return out;
@@ -101,6 +102,8 @@ function nextTasks(state, count, phaseId = 'm2') {
       id: t.id,
       title: t.title,
       context: t.track,
+      minutes: t.estMinutes,
+      proof: t.proof,
       score:
         t.careerValue * 8 +
         (PRIORITY_BONUS[t.priority] ?? 0) +
@@ -141,7 +144,12 @@ function dsaSummary(state) {
     cursor = addDays(cursor, -1);
   }
 
+  const target = state.settings?.dsaTargetPerDay ?? 3;
+  const weakestName = weakest?.name ?? null;
   return {
+    headline: weakestName
+      ? `${weakestName} — ${target} problems`
+      : `${target} problems, pattern-tagged`,
     total: attempts.length,
     solvedClean: solved,
     accuracy: attempts.length ? Math.round((solved / attempts.length) * 100) : 0,
@@ -149,7 +157,7 @@ function dsaSummary(state) {
     patternsTouched: seen.size,
     weakest: weakest?.name ?? null,
     streak,
-    target: state.settings?.dsaTargetPerDay ?? 3,
+    target,
   };
 }
 
@@ -227,6 +235,7 @@ export function buildDigest(state) {
     dsa: dsaSummary(s),
     yesterday: dayLog(s, addDays(today, -1)),
     todayLog: dayLog(s, today),
+    schedule: buildSchedule(s.settings, missions, dsaSummary(s)),
     runsToday: runsToday.map((r) => `${r.slot} ${r.km}km`),
     focusToday,
     workCount: (s.work ?? []).length,

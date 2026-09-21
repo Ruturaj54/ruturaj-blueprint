@@ -4,6 +4,7 @@ import { useAppState, useUpdateState } from '@/hooks/useAppState';
 import { Card, SectionTitle, ProgressBar, Chip, EmptyState } from '@/components/ui/primitives';
 import { listContainer } from '@/lib/motion';
 import { MissionList } from '@/components/home/MissionList';
+import { DayTimetable } from '@/components/today/DayTimetable';
 import { DeepWork } from '@/components/today/DeepWork';
 import { QuickLog } from '@/components/today/QuickLog';
 import { buildPlan, dayScore } from '@/engine/planner';
@@ -78,6 +79,9 @@ export function Today() {
           </>
         )}
       </Card>
+
+      {/* ---- timetable: what, and when ---- */}
+      <DayTimetable plan={plan} />
 
       {/* ---- planned vs actual ---- */}
       {log && log.planned.length > 0 && (

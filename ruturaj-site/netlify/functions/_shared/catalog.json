@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-21T05:35:39.031Z",
+  "generatedAt": "2026-09-21T05:58:26.630Z",
   "tasks": [
     {
       "id": "ai-embed-1",
@@ -1735,43 +1735,50 @@
           "id": "f-python-1",
           "title": "Fundamentals Parts 1–2 (4–5) — syntax, types, operators",
           "mandatory": true,
-          "estMinutes": 150
+          "estMinutes": 150,
+          "proof": "watch"
         },
         {
           "id": "f-python-2",
           "title": "Fundamentals Parts 3–4 (6–7) — collections, functions, modules",
           "mandatory": true,
-          "estMinutes": 150
+          "estMinutes": 150,
+          "proof": "watch"
         },
         {
           "id": "f-python-3",
           "title": "Fundamentals Part 5 (8) + Installation (9)",
           "mandatory": true,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "watch"
         },
         {
           "id": "f-python-4",
           "title": "Comprehensions, generators, decorators, context managers from memory",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "implement"
         },
         {
           "id": "f-python-5",
           "title": "venv, pip, project layout, pytest basics",
           "mandatory": true,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "implement"
         },
         {
           "id": "f-python-6",
           "title": "Checkpoint: 10 idiomatic-Python questions answered cold",
           "mandatory": true,
-          "estMinutes": 60
+          "estMinutes": 60,
+          "proof": "checkpoint"
         },
         {
           "id": "f-python-7",
           "title": "asyncio — event loop, await, gather (needed for FastAPI later)",
           "mandatory": false,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "notes"
         }
       ]
     },
@@ -1785,43 +1792,50 @@
           "id": "f-data-1",
           "title": "Phase 2 intro (10) + NumPy (11)",
           "mandatory": true,
-          "estMinutes": 150
+          "estMinutes": 150,
+          "proof": "implement"
         },
         {
           "id": "f-data-2",
           "title": "Pandas Parts 1–2 (12–13) — real manipulation, not toy frames",
           "mandatory": true,
-          "estMinutes": 180
+          "estMinutes": 180,
+          "proof": "implement"
         },
         {
           "id": "f-data-3",
           "title": "Data Collection (14) + continuation (17)",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "implement"
         },
         {
           "id": "f-data-4",
           "title": "SQL Parts 1–2 (15–16) — joins, aggregates, subqueries",
           "mandatory": true,
-          "estMinutes": 180
+          "estMinutes": 180,
+          "proof": "exercise"
         },
         {
           "id": "f-data-5",
           "title": "Web scraping activity (19)",
           "mandatory": true,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "implement"
         },
         {
           "id": "f-data-6",
           "title": "Data visualisation Parts 1–2 (20–21)",
           "mandatory": true,
-          "estMinutes": 150
+          "estMinutes": 150,
+          "proof": "implement"
         },
         {
           "id": "f-data-7",
           "title": "Checkpoint: clean a messy dataset and defend every choice",
           "mandatory": true,
-          "estMinutes": 60
+          "estMinutes": 60,
+          "proof": "checkpoint"
         }
       ]
     },
@@ -1835,25 +1849,29 @@
           "id": "f-math-1",
           "title": "Probability (22) — distributions, Bayes, expectation",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "notes"
         },
         {
           "id": "f-math-2",
           "title": "Linear Algebra (23) — vectors, matrices, dot products, eigen intuition",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "notes"
         },
         {
           "id": "f-math-3",
           "title": "Calculus (24) — derivatives, chain rule, gradients",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "notes"
         },
         {
           "id": "f-math-4",
           "title": "Checkpoint: explain one gradient-descent step in your own words",
           "mandatory": true,
-          "estMinutes": 45
+          "estMinutes": 45,
+          "proof": "checkpoint"
         }
       ]
     },
@@ -1867,49 +1885,57 @@
           "id": "f-ml-1",
           "title": "Starting with ML (25) + Supervised Parts 1–2 (26–27)",
           "mandatory": true,
-          "estMinutes": 210
+          "estMinutes": 210,
+          "proof": "watch"
         },
         {
           "id": "f-ml-2",
           "title": "Supervised Part 3 (28) + Scratch Implementations (29)",
           "mandatory": true,
-          "estMinutes": 180
+          "estMinutes": 180,
+          "proof": "implement"
         },
         {
           "id": "f-ml-3",
           "title": "CreditWise Loan System (30) — minor project shipped",
           "mandatory": true,
-          "estMinutes": 240
+          "estMinutes": 240,
+          "proof": "project"
         },
         {
           "id": "f-ml-4",
           "title": "Supervised Parts 4–6 (31–33)",
           "mandatory": true,
-          "estMinutes": 240
+          "estMinutes": 240,
+          "proof": "watch"
         },
         {
           "id": "f-ml-5",
           "title": "Evaluation — precision/recall/F1, ROC-AUC, and when each misleads",
           "mandatory": true,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "notes"
         },
         {
           "id": "f-ml-6",
           "title": "Bias/variance, overfitting, regularisation, cross-validation",
           "mandatory": true,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "notes"
         },
         {
           "id": "f-ml-7",
           "title": "Unsupervised Parts 1–2 (34–35)",
           "mandatory": true,
-          "estMinutes": 180
+          "estMinutes": 180,
+          "proof": "watch"
         },
         {
           "id": "f-ml-8",
           "title": "SmartCart Clustering System (36) — minor project shipped",
           "mandatory": true,
-          "estMinutes": 210
+          "estMinutes": 210,
+          "proof": "project"
         }
       ]
     },
@@ -1923,43 +1949,50 @@
           "id": "f-dl-1",
           "title": "Parts 1–3 (39–41) — perceptron, activations, forward pass",
           "mandatory": true,
-          "estMinutes": 270
+          "estMinutes": 270,
+          "proof": "watch"
         },
         {
           "id": "f-dl-2",
           "title": "Backpropagation derived and implemented in NumPy",
           "mandatory": true,
-          "estMinutes": 180
+          "estMinutes": 180,
+          "proof": "implement"
         },
         {
           "id": "f-dl-3",
           "title": "Parts 4–6 (42–44) — optimisers, regularisation, tuning",
           "mandatory": true,
-          "estMinutes": 270
+          "estMinutes": 270,
+          "proof": "watch"
         },
         {
           "id": "f-dl-4",
           "title": "Parts 7–8 (49–50) — CNN architecture",
           "mandatory": true,
-          "estMinutes": 180
+          "estMinutes": 180,
+          "proof": "watch"
         },
         {
           "id": "f-dl-5",
           "title": "Text Summarizer (51) — minor project shipped",
           "mandatory": true,
-          "estMinutes": 210
+          "estMinutes": 210,
+          "proof": "project"
         },
         {
           "id": "f-dl-6",
           "title": "Parts 9–11 (54–55, 60) — sequence models and TensorFlow",
           "mandatory": true,
-          "estMinutes": 270
+          "estMinutes": 270,
+          "proof": "implement"
         },
         {
           "id": "f-dl-7",
           "title": "Reinforcement Learning Parts 1–3 (45–47)",
           "mandatory": false,
-          "estMinutes": 240
+          "estMinutes": 240,
+          "proof": "watch"
         }
       ]
     },
@@ -1973,19 +2006,22 @@
           "id": "f-apps-1",
           "title": "OpenAI APIs (56) — calls, streaming, tool calling",
           "mandatory": true,
-          "estMinutes": 150
+          "estMinutes": 150,
+          "proof": "implement"
         },
         {
           "id": "f-apps-2",
           "title": "Working with Flask (59) — serve a model behind an endpoint",
           "mandatory": true,
-          "estMinutes": 150
+          "estMinutes": 150,
+          "proof": "implement"
         },
         {
           "id": "f-apps-3",
           "title": "Agentic AI (61) — course module, compared against your own loop",
           "mandatory": true,
-          "estMinutes": 180
+          "estMinutes": 180,
+          "proof": "project"
         }
       ]
     },
@@ -1999,19 +2035,22 @@
           "id": "f-tools-1",
           "title": "Terminal (37) — confirm nothing is missing",
           "mandatory": true,
-          "estMinutes": 60
+          "estMinutes": 60,
+          "proof": "watch"
         },
         {
           "id": "f-tools-2",
           "title": "Git & GitHub (38) — branches, rebase vs merge, clean history",
           "mandatory": true,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "implement"
         },
         {
           "id": "f-tools-3",
           "title": "GitHub profile and READMEs presentable to a recruiter",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "project"
         }
       ]
     },
@@ -2025,49 +2064,57 @@
           "id": "f-5me-1",
           "title": "Transformer evolution — RNN, LSTM, Seq2Seq, attention",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "notes"
         },
         {
           "id": "f-5me-2",
           "title": "\"Attention Is All You Need\" — read the paper, note what it solved",
           "mandatory": true,
-          "estMinutes": 150
+          "estMinutes": 150,
+          "proof": "notes"
         },
         {
           "id": "f-5me-3",
           "title": "Transformer architecture — self-attention, heads, positional encoding",
           "mandatory": true,
-          "estMinutes": 150
+          "estMinutes": 150,
+          "proof": "notes"
         },
         {
           "id": "f-5me-4",
           "title": "BERT vs GPT lineage, instruction tuning, the LLM era",
           "mandatory": true,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "notes"
         },
         {
           "id": "f-5me-5",
           "title": "Prompt anatomy — instruction, context, input, output format",
           "mandatory": true,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "implement"
         },
         {
           "id": "f-5me-6",
           "title": "System/user/assistant roles and structured outputs",
           "mandatory": true,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "implement"
         },
         {
           "id": "f-5me-7",
           "title": "Prompting across models — GPT, Claude, Gemini, Llama/Mistral",
           "mandatory": false,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "exercise"
         },
         {
           "id": "f-5me-8",
           "title": "Checkpoint: explain one LLM request end to end, token in to token out",
           "mandatory": true,
-          "estMinutes": 60
+          "estMinutes": 60,
+          "proof": "checkpoint"
         }
       ]
     },
@@ -2081,61 +2128,71 @@
           "id": "f-rag-1",
           "title": "Vectors, dimensionality, embedding models (OpenAI, SentenceTransformers)",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "notes"
         },
         {
           "id": "f-rag-2",
           "title": "VectorDB landscape — ChromaDB, FAISS, Pinecone, Weaviate",
           "mandatory": true,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "notes"
         },
         {
           "id": "f-rag-3",
           "title": "ChromaDB or FAISS running locally with real documents",
           "mandatory": true,
-          "estMinutes": 150
+          "estMinutes": 150,
+          "proof": "implement"
         },
         {
           "id": "f-rag-4",
           "title": "Chunking strategies — and why chunk size changes the answer",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "implement"
         },
         {
           "id": "f-rag-5",
           "title": "Retrieval evaluation — measured hit-rate on a real question set",
           "mandatory": true,
-          "estMinutes": 180
+          "estMinutes": 180,
+          "proof": "exercise"
         },
         {
           "id": "f-rag-6",
           "title": "LangChain core — models, prompts, chains, memory, retrievers",
           "mandatory": true,
-          "estMinutes": 210
+          "estMinutes": 210,
+          "proof": "implement"
         },
         {
           "id": "f-rag-7",
           "title": "LangChain vs direct API calls — know when not to use it",
           "mandatory": true,
-          "estMinutes": 60
+          "estMinutes": 60,
+          "proof": "notes"
         },
         {
           "id": "f-rag-8",
           "title": "Agent components — perception, reasoning, tools, memory",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "notes"
         },
         {
           "id": "f-rag-9",
           "title": "Agent loop built from scratch, no framework",
           "mandatory": true,
-          "estMinutes": 210
+          "estMinutes": 210,
+          "proof": "implement"
         },
         {
           "id": "f-rag-10",
           "title": "LangGraph / CrewAI / AutoGen — enough to compare them",
           "mandatory": false,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "notes"
         }
       ]
     },
@@ -2149,43 +2206,50 @@
           "id": "f-ppa-1",
           "title": "PPA — problem-solving patterns and logic drills revised",
           "mandatory": true,
-          "estMinutes": 180
+          "estMinutes": 180,
+          "proof": "exercise"
         },
         {
           "id": "f-ppa-2",
           "title": "C — pointers, memory, arrays vs pointers recalled cold",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "exercise"
         },
         {
           "id": "f-ppa-3",
           "title": "C — structs, unions, function pointers, file I/O",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "implement"
         },
         {
           "id": "f-ppa-4",
           "title": "C — five classic programs from scratch, no reference",
           "mandatory": true,
-          "estMinutes": 150
+          "estMinutes": 150,
+          "proof": "exercise"
         },
         {
           "id": "f-ppa-5",
           "title": "C++ — OOP, virtual functions, vtables",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "notes"
         },
         {
           "id": "f-ppa-6",
           "title": "C++ — STL fluency: vector, map, set, priority_queue",
           "mandatory": true,
-          "estMinutes": 150
+          "estMinutes": 150,
+          "proof": "exercise"
         },
         {
           "id": "f-ppa-7",
           "title": "C++ — smart pointers, RAII, move semantics",
           "mandatory": false,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "notes"
         }
       ]
     },
@@ -2199,37 +2263,43 @@
           "id": "f-lsp-1",
           "title": "Processes — fork/exec/wait, process lifecycle",
           "mandatory": true,
-          "estMinutes": 150
+          "estMinutes": 150,
+          "proof": "implement"
         },
         {
           "id": "f-lsp-2",
           "title": "File descriptors, I/O, pipes, redirection",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "implement"
         },
         {
           "id": "f-lsp-3",
           "title": "Threads and synchronisation — mutex, condition variables, races",
           "mandatory": true,
-          "estMinutes": 180
+          "estMinutes": 180,
+          "proof": "implement"
         },
         {
           "id": "f-lsp-4",
           "title": "IPC — shared memory, message queues, semaphores",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "notes"
         },
         {
           "id": "f-lsp-5",
           "title": "Sockets — a working TCP client and server",
           "mandatory": true,
-          "estMinutes": 180
+          "estMinutes": 180,
+          "proof": "project"
         },
         {
           "id": "f-lsp-6",
           "title": "Signals and the memory layout of a running process",
           "mandatory": false,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "notes"
         }
       ]
     },
@@ -2243,49 +2313,57 @@
           "id": "f-dsa-1",
           "title": "LB — logic-building drills cleared",
           "mandatory": true,
-          "estMinutes": 240
+          "estMinutes": 240,
+          "proof": "exercise"
         },
         {
           "id": "f-dsa-2",
           "title": "Big-O and space complexity fluent, including recursion stacks",
           "mandatory": true,
-          "estMinutes": 90
+          "estMinutes": 90,
+          "proof": "notes"
         },
         {
           "id": "f-dsa-3",
           "title": "Arrays, strings, hashing — pattern recognised, not memorised",
           "mandatory": true,
-          "estMinutes": 300
+          "estMinutes": 300,
+          "proof": "exercise"
         },
         {
           "id": "f-dsa-4",
           "title": "Two pointers and sliding window",
           "mandatory": true,
-          "estMinutes": 240
+          "estMinutes": 240,
+          "proof": "exercise"
         },
         {
           "id": "f-dsa-5",
           "title": "Binary search, including binary-search-on-the-answer",
           "mandatory": true,
-          "estMinutes": 240
+          "estMinutes": 240,
+          "proof": "exercise"
         },
         {
           "id": "f-dsa-6",
           "title": "Stack, queue, linked list implemented from scratch",
           "mandatory": true,
-          "estMinutes": 240
+          "estMinutes": 240,
+          "proof": "implement"
         },
         {
           "id": "f-dsa-7",
           "title": "Recursion and backtracking basics",
           "mandatory": true,
-          "estMinutes": 240
+          "estMinutes": 240,
+          "proof": "exercise"
         },
         {
           "id": "f-dsa-8",
           "title": "75 problems logged with pattern tags and solve times",
           "mandatory": true,
-          "estMinutes": 120
+          "estMinutes": 120,
+          "proof": "checkpoint"
         }
       ]
     }
