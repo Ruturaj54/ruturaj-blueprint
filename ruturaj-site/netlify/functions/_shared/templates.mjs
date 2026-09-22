@@ -1,6 +1,8 @@
 // §19 and §20 — the two daily mails, built from the digest.
 
 import { formatHM } from './schedule.mjs';
+import { morningQuote, eveningQuote } from './quotes.mjs';
+import { quoteHtml, unlockHtml, scheduleHtml, praiseHtml } from './blocks.mjs';
 import {
   SITE_URL,
   layout,
@@ -24,47 +26,15 @@ const line = (s) => `${s}\n`;
 
 /* ---------- morning ------------------------------------------------------- */
 
-/** The day as a timetable — answers "when", which a task list does not. */
-function scheduleHtml(d) {
-  const esc = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
-  return d.schedule.slots
-    .filter((s) => s.items.length > 0 || s.id === 'run')
-    .map((s) => {
-      const rest = s.id === 'run';
-      const rows = s.items
-        .map(
-          (i) => `
-          <tr>
-            <td width="10" valign="top" style="padding-top:7px;">
-              <div style="width:6px;height:6px;border-radius:50%;background:${i.context === 'DSA' ? C.info : C.accent};"></div>
-            </td>
-            <td style="padding:2px 0 8px 8px;font:400 14px/1.45 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.fg};">
-              ${esc(i.title)}
-              <span style="display:block;margin-top:2px;font-size:11px;color:${C.faint};">${esc(i.context)} &middot; ${formatHM(i.minutes)}</span>
-            </td>
-          </tr>`,
-        )
-        .join('');
-      return `
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;border:1px solid ${C.line};border-radius:10px;">
-          <tr><td style="padding:11px 13px ${s.items.length ? '4px' : '11px'};">
-            <table role="presentation" width="100%"><tr>
-              <td style="font:600 13px/1.2 -apple-system,Segoe UI,Roboto,sans-serif;color:${rest ? C.success : C.fg};">${esc(s.label)}</td>
-              <td align="right" style="font:500 12px/1.2 ui-monospace,monospace;color:${C.muted};">${esc(s.start)}&ndash;${esc(s.end)}</td>
-            </tr></table>
-          </td></tr>
-          ${s.items.length ? `<tr><td style="padding:0 13px 8px;"><table role="presentation" width="100%">${rows}</table></td></tr>` : ''}
-          ${s.note ? `<tr><td style="padding:0 13px 11px;font:400 11px/1.45 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.faint};">${esc(s.note)}</td></tr>` : ''}
-        </table>`;
-    })
-    .join('');
-}
-
 export function buildMorning(d) {
   const praise = recognition(d);
   const challenge = morningChallenge(d);
 
+  const q = morningQuote(d.day, d.phase.id);
+
   const body = [
+    section('', quoteHtml(q)),
+
     section(
       "Today's mission",
       `${paragraph(
@@ -75,6 +45,8 @@ export function buildMorning(d) {
     ),
 
     section('Your day', scheduleHtml(d)),
+
+    section('', unlockHtml(d)),
 
     section(
       'DSA target',
@@ -124,7 +96,9 @@ export function buildMorning(d) {
 
   const text = [
     line(`GOOD MORNING RUTURAJ — Day ${d.day} of 161`),
-    line(`${d.phase.label} ${d.phase.title} · ${d.daysLeft} days to 28 Feb 2027`),
+    line(`${d.phase.label} ${d.phase.title} · ${d.daysLeft} days to 2 Mar 2027`),
+    line(''),
+    line(`"${q.line}"`),
     line(''),
     line("TODAY'S MISSION"),
     ...d.missions.map((m, i) => line(`  ${i + 1}. ${m.title}${m.context ? ` (${m.context})` : ''}`)),
@@ -166,30 +140,6 @@ export function buildMorning(d) {
 
 /* ---------- evening ------------------------------------------------------- */
 
-/** Named wins from the real day-over-day delta, not a stock compliment. */
-function praiseHtml(p) {
-  const esc = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
-  const rows = p.wins
-    .map(
-      (w) => `
-      <tr>
-        <td width="12" valign="top" style="padding-top:6px;">
-          <div style="width:6px;height:6px;border-radius:50%;background:${C.success};"></div>
-        </td>
-        <td style="padding:0 0 9px 8px;font:400 14px/1.45 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.fg};">
-          <b style="font-weight:600;">${esc(w.label)}</b>
-          <span style="display:block;margin-top:2px;font-size:12px;color:${C.muted};">${esc(w.detail)}</span>
-        </td>
-      </tr>`,
-    )
-    .join('');
-  return `
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid rgba(52,211,153,.28);background:rgba(52,211,153,.06);border-radius:10px;">
-      <tr><td style="padding:13px 14px 6px;font:700 17px/1.25 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.fg};">${esc(p.headline)}</td></tr>
-      <tr><td style="padding:0 14px 12px;"><table role="presentation" width="100%">${rows}</table></td></tr>
-    </table>`;
-}
-
 export function buildEvening(d) {
   const t = d.todayLog;
   const recovery = recoveryPlan(d);
@@ -206,27 +156,48 @@ export function buildEvening(d) {
     `What blocked you?`,
   ];
 
+  const eq = eveningQuote(t?.score ?? null);
+
   const body = [
     section(
       'Planned vs actual',
       t && t.score !== null
         ? `${statRow([
             {
-              label: 'Day score',
+              label: 'Of your plan',
               value: `${t.score}%`,
               tone: t.score >= 70 ? C.success : t.score >= 40 ? C.accent : C.danger,
             },
-            { label: 'Closed', value: `${t.completed}/${t.planned}` },
+            { label: 'Planned', value: `${t.completed}/${t.planned}` },
+            { label: 'Extra', value: t.extras ?? 0, tone: (t.extras ?? 0) > 0 ? C.success : C.fg },
             { label: 'Focus min', value: d.focusToday },
           ])}${
+            (t.extras ?? 0) > 0
+              ? `<div style="height:12px"></div>${paragraph(`Plus ${t.extras} item${t.extras > 1 ? 's' : ''} beyond the plan. That is real work — it does not inflate the percentage, it sits on top of it.`)}`
+              : ''
+          }${
+            t.done && t.done.length
+              ? `<div style="height:14px"></div><p style="margin:0 0 7px;font:600 10px/1 -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:${C.faint};">What you closed</p>` +
+                t.done
+                  .slice(0, 8)
+                  .map(
+                    (x) =>
+                      `<p style="margin:0 0 5px;font:400 13px/1.45 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.fg};">&#10003;&nbsp; ${String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;')}</p>`,
+                  )
+                  .join('') +
+                (t.done.length > 8 ? `<p style="margin:4px 0 0;font-size:12px;color:${C.faint};">and ${t.done.length - 8} more</p>` : '')
+              : ''
+          }${
             t.missed.length
               ? `<div style="height:14px"></div>${paragraph(`Still open: ${t.missed.join(' · ')}`)}`
               : ''
           }`
         : paragraph(
-            'Today was never started in the app, so there is nothing to measure it against. That is the first thing to fix tomorrow.',
+            'Today was never started in the app, so there is nothing to measure it against. Hit Start today tomorrow morning — an unplanned day cannot be scored, and what cannot be measured drifts.',
           ),
     ),
+
+    section('', quoteHtml({ line: eq, tag: 'Tonight' })),
 
     section(
       'Answer honestly',
@@ -258,10 +229,13 @@ export function buildEvening(d) {
     line(`RUTURAJ — DAILY ACCOUNTABILITY — Day ${d.day} of 161`),
     line(''),
     t && t.score !== null
-      ? line(`PLANNED VS ACTUAL: ${t.completed}/${t.planned} closed — ${t.score}%`)
+      ? line(`PLANNED VS ACTUAL: ${t.completed}/${t.planned} of your plan — ${t.score}%${(t.extras ?? 0) > 0 ? ` (plus ${t.extras} extra)` : ''}`)
       : line('PLANNED VS ACTUAL: today was never started in the app.'),
     t && t.missed.length ? line(`  Still open: ${t.missed.join(' · ')}`) : '',
     line(`  Focused minutes: ${d.focusToday}`),
+    ...(t?.done ?? []).slice(0, 8).map((x) => line(`  + ${x}`)),
+    line(''),
+    line(`"${eq}"`),
     line(''),
     d.praise?.hasWins ? line(`WHAT YOU DID WELL: ${d.praise.headline}`) : '',
     ...(d.praise?.wins ?? []).map((w) => line(`  + ${w.label} — ${w.detail}`)),

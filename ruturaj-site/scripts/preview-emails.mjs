@@ -31,9 +31,13 @@ const fixture = {
       planned: ['f-python-4', 'f-data-3', 'f-math-1'],
       completed: ['f-python-4'],
     },
+    // Reproduces the 800% bug: 3 planned, 24 ticked through the day.
     [today]: {
       planned: ['f-python-5', 'f-data-3', 'f-math-1'],
-      completed: ['f-python-5', 'f-data-3'],
+      completed: [
+        'f-python-5', 'f-data-3',
+        ...Array.from({ length: 22 }, (_, i) => `extra-${i}`),
+      ],
       notes: 'Production incident ate the evening.',
       closedAt: new Date().toISOString(),
     },

@@ -7,6 +7,7 @@ import { cn } from '@/lib/cn';
 import { spring } from '@/lib/motion';
 import { todayISO } from '@/engine/dates';
 import { buildPraise } from '@/engine/praise';
+import { dayScore, dayExtras, plannedHits } from '@/engine/planner';
 import * as storage from '@/lib/storage';
 import { PraiseCard } from '@/components/PraiseCard';
 
@@ -26,12 +27,13 @@ export function CloseDay() {
   const praise = buildPraise(state, today);
 
   const close = () => {
+    // Score the plan, not the running total. `completed` accumulates every tick
+    // all day while `planned` is a snapshot, so the naive ratio produced 800%.
+    const score = dayScore(state, today) ?? 0;
     update((draft) => {
       const d = (draft.days[today] ??= { planned: [], completed: [] });
       d.closedAt = new Date().toISOString();
-      d.score = d.planned.length
-        ? Math.round((d.completed.length / d.planned.length) * 100)
-        : 0;
+      d.score = score;
     });
   };
 
@@ -81,7 +83,8 @@ export function CloseDay() {
             the day. The app compares tonight against yesterday and tells you what changed.
           </p>
           <div className="mt-3 flex flex-wrap gap-4">
-            <Mini label="Closed" value={`${log?.completed.length ?? 0}/${log?.planned.length ?? 0}`} />
+            <Mini label="Planned" value={`${plannedHits(state, today)}/${log?.planned.length ?? 0}`} />
+            <Mini label="Extra" value={dayExtras(state, today)} />
             <Mini label="DSA" value={state.dsa.filter((a) => a.date === today).length} />
             <Mini label="Runs" value={state.runs.filter((r) => r.date === today).length} />
             <Mini

@@ -175,11 +175,40 @@ export function isBehindSchedule(state: AppState): boolean {
   return completed / planned < 0.5;
 }
 
-/** Daily score, 0–100: what was closed against what was planned. */
+/**
+ * Daily score, 0–100: how much of the PLAN got done.
+ *
+ * Measured as planned-items-completed over planned, not total-completed over
+ * planned. `planned` is a three-item snapshot taken at "Start today" while
+ * `completed` accumulates every tick all day, so the naive ratio produced
+ * scores like 800% — which is meaningless and quietly destroys the point of
+ * having a score at all.
+ *
+ * Work done beyond the plan is real and is credited by `dayExtras`, separately,
+ * rather than by inflating a percentage past 100.
+ */
 export function dayScore(state: AppState, date: string): number | undefined {
   const log = state.days[date];
   if (!log || log.planned.length === 0) return undefined;
-  return Math.round((log.completed.length / log.planned.length) * 100);
+  const planned = new Set(log.planned);
+  const hit = log.completed.filter((id) => planned.has(id)).length;
+  return Math.min(100, Math.round((hit / log.planned.length) * 100));
+}
+
+/** Items closed today that were not in the plan — genuine bonus work. */
+export function dayExtras(state: AppState, date: string): number {
+  const log = state.days[date];
+  if (!log) return 0;
+  const planned = new Set(log.planned);
+  return log.completed.filter((id) => !planned.has(id)).length;
+}
+
+/** Planned items actually closed, for "3 of 3" style display. */
+export function plannedHits(state: AppState, date: string): number {
+  const log = state.days[date];
+  if (!log) return 0;
+  const planned = new Set(log.planned);
+  return log.completed.filter((id) => planned.has(id)).length;
 }
 
 /** Consecutive days scoring 50 or better, counting back from yesterday. */

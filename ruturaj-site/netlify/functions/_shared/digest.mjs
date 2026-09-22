@@ -9,8 +9,8 @@ import catalog from './catalog.json' with { type: 'json' };
 import { buildSchedule } from './schedule.mjs';
 import { buildPraise } from './praise.mjs';
 
-export const MISSION_START = '2026-09-21';
-export const MISSION_END = '2027-02-28';
+export const MISSION_START = '2026-09-23';
+export const MISSION_END = '2027-03-02';
 export const TOTAL_DAYS = 161;
 const DAY_MS = 86_400_000;
 
@@ -167,12 +167,20 @@ function dayLog(state, date) {
   if (!log) return null;
   const planned = log.planned ?? [];
   const completed = log.completed ?? [];
+  const plannedSet = new Set(planned);
+  // Only planned work scores. Everything else is credited as extra, because
+  // `completed` accumulates all day while `planned` is a snapshot — the naive
+  // ratio produced scores like 800%.
+  const hit = completed.filter((id) => plannedSet.has(id)).length;
+  const extras = completed.filter((id) => !plannedSet.has(id)).length;
   return {
     date,
     planned: planned.length,
-    completed: completed.length,
-    score: planned.length ? Math.round((completed.length / planned.length) * 100) : null,
+    completed: hit,
+    extras,
+    score: planned.length ? Math.min(100, Math.round((hit / planned.length) * 100)) : null,
     missed: planned.filter((id) => !completed.includes(id)).map(titleFor),
+    done: completed.map(titleFor),
     notes: log.notes ?? null,
   };
 }
@@ -237,6 +245,23 @@ export function buildDigest(state) {
     yesterday: dayLog(s, addDays(today, -1)),
     todayLog: dayLog(s, today),
     schedule: buildSchedule(s.settings, missions, dsaSummary(s)),
+    // What today's plan is worth: the gate moves by this much if it all lands.
+    gateAfterToday: (() => {
+      const total = catalog.foundation.reduce(
+        (n, x) => n + x.milestones.filter((m) => m.mandatory).length,
+        0,
+      );
+      const doneNow = catalog.foundation.reduce(
+        (n, x) => n + x.milestones.filter((m) => m.mandatory && s.foundation?.[m.id]).length,
+        0,
+      );
+      const mandatoryToday = missions.filter((m) =>
+        catalog.foundation.some((x) =>
+          x.milestones.some((y) => y.id === m.id && y.mandatory),
+        ),
+      ).length;
+      return Math.round(((doneNow + mandatoryToday) / total) * 100);
+    })(),
     praise: buildPraise(s, today, addDays),
     dayClosed: Boolean(s.days?.[today]?.closedAt),
     runsToday: runsToday.map((r) => `${r.slot} ${r.km}km`),

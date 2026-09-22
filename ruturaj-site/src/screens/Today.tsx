@@ -8,7 +8,7 @@ import { DayTimetable } from '@/components/today/DayTimetable';
 import { DeepWork } from '@/components/today/DeepWork';
 import { QuickLog } from '@/components/today/QuickLog';
 import { CloseDay } from '@/components/today/CloseDay';
-import { buildPlan, dayScore } from '@/engine/planner';
+import { buildPlan, dayScore, dayExtras, plannedHits } from '@/engine/planner';
 import { currentDay, todayISO, formatLong } from '@/engine/dates';
 import { taskById } from '@/data/tasks';
 import { FOUNDATION_SUBJECTS } from '@/data/foundation';
@@ -30,6 +30,8 @@ export function Today() {
   const plan = buildPlan(state, currentDay());
   const log = state.days[today];
   const score = dayScore(state, today);
+  const hits = plannedHits(state, today);
+  const extras = dayExtras(state, today);
 
   const sessions = state.deepWork.filter((d) => d.date === today);
   const focusedMinutes = sessions.reduce((s, d) => s + d.actualMinutes, 0);
@@ -62,20 +64,23 @@ export function Today() {
             <p className="tnum font-display text-[30px] font-bold leading-none">
               {score === undefined ? '—' : `${score}%`}
             </p>
-            <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-muted">Day score</p>
+            <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-muted">Of your plan</p>
           </div>
         </div>
 
         {log && log.planned.length > 0 && (
           <>
             <ProgressBar
-              value={(log.completed.length / log.planned.length) * 100}
+              value={score ?? 0}
               tone={score !== undefined && score >= 70 ? 'success' : 'accent'}
               className="mt-4"
             />
             <p className="tnum mt-2 text-[12px] text-muted">
-              {log.completed.length} of {log.planned.length} planned items closed ·{' '}
-              {focusedMinutes} focused minutes logged
+              {hits} of {log.planned.length} planned closed
+              {extras > 0 && (
+                <span className="text-success"> · {extras} extra beyond the plan</span>
+              )}{' '}
+              · {focusedMinutes} focused minutes
             </p>
           </>
         )}

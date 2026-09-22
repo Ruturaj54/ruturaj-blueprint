@@ -1,6 +1,6 @@
 // Boundary verification for the 117-day mission engine.
 // Mirrors src/engine logic in plain JS so it runs with no build step.
-const MISSION_START = '2026-09-21';
+const MISSION_START = '2026-09-23';
 const TOTAL_DAYS = 161;
 const MS = 86400000;
 const parse = (s) => new Date(`${s}T12:00:00`);
@@ -47,8 +47,8 @@ for (const [day, expected] of bounds) {
 
 console.log('\n=== BOUNDARY DAYS → DATE ===');
 const dates = [
-  [1, '2026-09-21'], [42, '2026-11-01'], [43, '2026-11-02'], [91, '2026-12-20'],
-  [92, '2026-12-21'], [133, '2027-01-31'], [134, '2027-02-01'], [161, '2027-02-28'],
+  [1, '2026-09-23'], [42, '2026-11-03'], [43, '2026-11-04'], [91, '2026-12-22'],
+  [92, '2026-12-23'], [133, '2027-02-02'], [134, '2027-02-03'], [161, '2027-03-02'],
 ];
 for (const [day, expected] of dates) check(`day ${String(day).padStart(3)} → date`, dateForDay(day), expected);
 
@@ -62,8 +62,8 @@ check('day 8 is week 2', weekOfDay(8), 2);
 check('day 161 is week 23', weekOfDay(161), 23);
 
 console.log('\n=== DAY 1 SANITY ===');
-check('Day 1 is a Monday', parse(dateForDay(1)).getDay(), 1);
-check('Day 161 is a Sunday', parse(dateForDay(161)).getDay(), 0);
+check('Day 1 is a Wednesday', parse(dateForDay(1)).getDay(), 3);
+check('Day 161 is a Tuesday', parse(dateForDay(161)).getDay(), 2);
 check('days remaining on day 1', TOTAL_DAYS - 1, 160);
 
 console.log(`\n${fail === 0 ? 'ALL CHECKS PASSED' : `${fail} CHECK(S) FAILED`}\n`);

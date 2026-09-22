@@ -131,7 +131,7 @@ export function layout({ kicker, day, daysLeft, phase, body }) {
         <tr><td style="padding:26px 24px 0;">
           <p style="margin:0 0 6px;font:600 11px/1 -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:${C.accent};">${esc(kicker)}</p>
           <p style="margin:0;font:700 38px/1 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.fg};">Day ${day}<span style="font-size:16px;font-weight:400;color:${C.faint};"> / 161</span></p>
-          <p style="margin:8px 0 0;font:400 13px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.muted};">${esc(phase)} &middot; ${daysLeft} days to 28 Feb 2027</p>
+          <p style="margin:8px 0 0;font:400 13px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.muted};">${esc(phase)} &middot; ${daysLeft} days to 2 Mar 2027</p>
         </td></tr>
 
         ${body}

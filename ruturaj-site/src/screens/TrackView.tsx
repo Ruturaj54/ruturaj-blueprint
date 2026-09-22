@@ -93,10 +93,21 @@ export function TrackView({
               <Chip>{next.task.proof}</Chip>
             </div>
             {next.task.rationale && (
-              <p className="mt-2.5 border-t border-line pt-2.5 text-[12px] text-muted">
-                {next.task.rationale}
-              </p>
+              <div className="mt-2.5 border-t border-line pt-2.5">
+                <p className="text-[10px] uppercase tracking-[0.12em] text-faint">Why this one</p>
+                <p className="mt-1 text-[12px] text-muted">{next.task.rationale}</p>
+              </div>
             )}
+            <div className="mt-2.5 border-t border-line pt-2.5">
+              <p className="text-[10px] uppercase tracking-[0.12em] text-faint">Why now</p>
+              <p className="mt-1 text-[12px] text-muted">
+                {candidates.length - 1} other task{candidates.length === 2 ? '' : 's'} in these
+                tracks are unblocked; this one ranked highest on career value
+                {next.task.interviewCritical ? ', interview weight' : ''}
+                {next.task.priority === 'P0' ? ' and P0 priority' : ''} for {ctx.phase.label}{' '}
+                {ctx.phase.title}.
+              </p>
+            </div>
           </div>
         ) : (
           <p className="mt-4 text-[13px] text-muted">
