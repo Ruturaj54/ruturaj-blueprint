@@ -43,7 +43,7 @@ export function Roadmap() {
                   <Lock size={16} className="text-accent" />
                 )}
                 <p className="font-display text-[18px] font-bold">
-                  {gate.unlocked ? 'Advanced Mode is open' : 'Month 1 — finish what you started'}
+                  {gate.unlocked ? 'Advanced Mode is open' : 'Phase 1 — finish what you started'}
                 </p>
               </div>
               <p className="mt-2 max-w-[560px] text-[13px] text-muted">
@@ -51,7 +51,7 @@ export function Roadmap() {
                   ? gate.overridden
                     ? 'Unlocked by manual override. The mandatory milestones below are still the real bar — they are worth closing anyway.'
                     : FOUNDATION_UNLOCK_MESSAGE
-                  : 'Nothing new gets added this month. Advanced Mode opens when every mandatory milestone below is ticked — not when a button is pressed.'}
+                  : 'Your courses first: Apna College, then Five Minute Engineering, then PPA, LB, DSA and LSP. Advanced Mode opens when every mandatory milestone below is ticked — not when a button is pressed.'}
               </p>
             </div>
             <div className="shrink-0 text-right">
@@ -162,7 +162,7 @@ export function Roadmap() {
 
       {/* ---- phases ---- */}
       <section>
-        <SectionTitle>The four months</SectionTitle>
+        <SectionTitle>The four phases</SectionTitle>
         <div className="space-y-3">
           {MISSION_PHASES.map((phase) => {
             const active = day >= phase.startDay && day <= phase.endDay;

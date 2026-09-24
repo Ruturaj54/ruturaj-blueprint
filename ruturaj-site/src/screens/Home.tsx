@@ -110,7 +110,7 @@ export function Home({ navigate }: { navigate: (id: string) => void }) {
                     <Lock size={15} className="text-accent" />
                   )}
                   <p className="text-[15px] font-medium">
-                    {gate.unlocked ? 'Advanced Mode unlocked' : 'Month 1 — finish what you started'}
+                    {gate.unlocked ? 'Advanced Mode unlocked' : 'Phase 1 — finish what you started'}
                   </p>
                 </div>
                 <p className="mt-1.5 text-[13px] text-muted">

@@ -7,7 +7,9 @@ const stats = (state, date) => {
   const runs = (state.runs ?? []).filter((r) => r.date === date);
   const log = state.days?.[date];
   const planned = log?.planned?.length ?? 0;
-  const completed = log?.completed?.length ?? 0;
+  // Planned work closed, not every tick — the raw count produced "24 of 3".
+  const plannedSet = new Set(log?.planned ?? []);
+  const completed = (log?.completed ?? []).filter((id) => plannedSet.has(id)).length;
   return {
     dsa: attempts.length,
     runs: runs.length,

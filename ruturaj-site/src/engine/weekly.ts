@@ -1,11 +1,11 @@
 import type { AppState } from '@/lib/schema';
 import { todayISO, addDays, weekStartISO } from './dates';
-import { dayScore } from './planner';
+import { dayScore, plannedHits } from './scoring';
 import { weakPatternIds, patternStats } from './dsa';
 import { nextUp } from './priority';
 import { dayContext } from './mission';
 import { currentDay } from './dates';
-import { isBehindSchedule } from './planner';
+import { isBehindSchedule } from './scoring';
 import { gateStatus } from './foundation';
 import { FOUNDATION_SUBJECTS } from '@/data/foundation';
 
@@ -91,7 +91,8 @@ export function buildWeeklyReview(state: AppState, anchor = todayISO()): WeeklyR
     if (!log) continue;
     daysLogged += 1;
     planned += log.planned.length;
-    completed += log.completed.length;
+    // Planned work closed, not every tick — the raw count put this past 100%.
+    completed += plannedHits(state, d);
   }
   const focusMinutes = state.deepWork
     .filter((s) => inWeek(s.date))

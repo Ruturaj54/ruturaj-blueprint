@@ -1,7 +1,8 @@
 # Ruturaj Blueprint
 
-A 117-day career execution and accountability system.
-**Day 1 = 21 Sep 2026 · Day 117 = 15 Jan 2027.**
+A 161-day career execution and accountability system.
+**Day 1 = 23 Sep 2026 · Day 161 = 2 Mar 2027.** A mission day runs from 04:00 to 04:00,
+so the 22:00–02:00 night block counts toward the day it was planned on.
 
 Static React SPA on Netlify, four serverless functions, no database server.
 
@@ -57,7 +58,7 @@ hardcoded; the functions refuse to run without them. See `.env.example`.
 |---|---|---|---|
 | `sync` | HTTP GET/PUT | — | — |
 | `send-morning-email` | Scheduled | `30 1 * * *` | 07:00 |
-| `send-evening-email` | Scheduled | `30 16 * * *` | 22:00 |
+| `send-evening-email` | Scheduled | `0 21 * * *` | 02:30 — after the night block; skipped if the recap was already sent |
 | `send-email` | HTTP POST, key-gated | — | — |
 
 IST is UTC+5:30, so the cron times above are the IST times minus 5h30.

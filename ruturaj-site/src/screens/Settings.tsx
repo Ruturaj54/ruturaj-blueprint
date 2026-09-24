@@ -21,9 +21,7 @@ type TimeKey =
   | 'studyBlock1Start'
   | 'studyBlock1End'
   | 'studyBlock2Start'
-  | 'studyBlock2End'
-  | 'morningEmailTime'
-  | 'eveningEmailTime';
+  | 'studyBlock2End';
 
 const TIME_FIELDS: Array<{ key: TimeKey; label: string }> = [
   { key: 'wakeTime', label: 'Wake up' },
@@ -35,8 +33,6 @@ const TIME_FIELDS: Array<{ key: TimeKey; label: string }> = [
   { key: 'eveningRunTime', label: 'Evening run' },
   { key: 'studyBlock2Start', label: 'Night block start' },
   { key: 'studyBlock2End', label: 'Night block end' },
-  { key: 'morningEmailTime', label: 'Morning email' },
-  { key: 'eveningEmailTime', label: 'Evening email' },
 ];
 
 export function Settings() {
@@ -134,7 +130,7 @@ export function Settings() {
         </SectionTitle>
         <Card>
           <p className="text-[13px] text-muted">
-            Nothing here is hardcoded. Change a time and the planner and emails follow it.
+            Change a block and your timetable follows it — in the app and in the morning mail.
           </p>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {TIME_FIELDS.map((f) => (

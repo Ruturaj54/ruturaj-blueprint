@@ -13,7 +13,7 @@ import type { TrackId } from '@/engine/types';
  * All advanced-phase tracks with search and a per-track progress read.
  *
  * Stays visible while the gate is shut — seeing what is coming is motivating —
- * but ticking is disabled so Month 1 cannot be skipped by working ahead here.
+ * but ticking is disabled so the foundation cannot be skipped by working ahead here.
  */
 export function TrackBoard({ locked }: { locked: boolean }) {
   const [query, setQuery] = useState('');

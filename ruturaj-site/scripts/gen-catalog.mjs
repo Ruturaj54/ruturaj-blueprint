@@ -33,6 +33,7 @@ const mod = await import(pathToFileURL(tmp).href);
 
 const catalog = {
   generatedAt: new Date().toISOString(),
+  sequentialTiers: [...mod.SEQUENTIAL_TIERS],
   tasks: mod.ALL_TASKS.map((t) => ({
     id: t.id,
     title: t.title,

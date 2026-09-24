@@ -153,7 +153,7 @@ export function Work() {
           <EmptyState
             icon={<Building2 size={22} />}
             title="Nothing logged yet"
-            body="Add one line every Friday. In four months that is a resume section you did not have to reconstruct from memory."
+            body="Add one line every Friday. By March that is a resume section you did not have to reconstruct from memory."
           />
         ) : (
           <div className="space-y-3">

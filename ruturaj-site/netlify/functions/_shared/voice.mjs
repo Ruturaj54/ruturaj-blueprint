@@ -25,7 +25,7 @@ export function morningSubject(d) {
   }
 
   const generic = [
-    `Ruturaj — today decides the next 4 months.`,
+    `Ruturaj — today decides the next five months.`,
     `Ruturaj — ${d.daysLeft} days. What are you doing with them?`,
     `Your future SDE interview starts today.`,
     `Ruturaj — Day ${d.day}. Execution, not intake.`,
@@ -65,7 +65,7 @@ export function morningChallenge(d) {
   if (d.gate.open && d.dsa.weakest) {
     return `${d.dsa.weakest} is still your thinnest pattern. Strength is built where it is uncomfortable, not where it is easy.`;
   }
-  return `Four months is enough for serious progress — if you stop negotiating with your own schedule.`;
+  return `Five months is enough for serious progress — if you stop negotiating with your own schedule.`;
 }
 
 /** Genuine progress deserves naming. §21 explicitly asks for this. */

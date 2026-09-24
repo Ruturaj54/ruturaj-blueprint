@@ -7,6 +7,17 @@ import type {
 
 export const STATE_VERSION = 2;
 
+/**
+ * Bumped whenever stored progress must be discarded rather than migrated.
+ *
+ * Epoch 3 (24 Sep 2026): the Foundation Gate was rebuilt from Ruturaj's actual
+ * syllabi with new milestone ids, and the progress recorded so far was test
+ * clicks — including 24 gate milestones he never completed. Any state from an
+ * older epoch is reset to a clean Day 1 on load, on every device, and the
+ * scheduled mail ignores it too. Settings survive; progress does not.
+ */
+export const DATA_EPOCH = 3;
+
 export interface RunLog {
   id: string;
   date: string;
@@ -26,6 +37,8 @@ export interface DayLog {
   /** 0–100, computed at day close. */
   score?: number;
   blockers?: string;
+  /** Set when the end-of-day recap was sent on demand, so the scheduled one skips. */
+  recapSentAt?: string;
 }
 
 export interface WorkAchievement {
@@ -134,6 +147,8 @@ export interface WeeklyReview {
 
 export interface AppState {
   version: number;
+  /** See DATA_EPOCH. State from an older epoch is discarded on load. */
+  dataEpoch: number;
   updatedAt: string;
   /** milestoneId -> completed */
   foundation: Record<string, boolean>;
@@ -170,7 +185,7 @@ export const DEFAULT_SETTINGS: Settings = {
   sleepTarget: '02:00',
   timezone: 'Asia/Kolkata',
   morningEmailTime: '07:00',
-  eveningEmailTime: '22:00',
+  eveningEmailTime: '02:30',
   emailEnabled: true,
   deepWorkMinutes: 50,
   dsaTargetPerDay: 3,
@@ -180,7 +195,11 @@ export const DEFAULT_SETTINGS: Settings = {
 export function defaultState(): AppState {
   return {
     version: STATE_VERSION,
-    updatedAt: new Date().toISOString(),
+    dataEpoch: DATA_EPOCH,
+    // "Never written". A fresh device must lose to any real copy on the server;
+    // stamping it with the current time made empty state look newer than real
+    // progress, so the next push could overwrite it.
+    updatedAt: new Date(0).toISOString(),
     foundation: {},
     tasks: {},
     days: {},
@@ -222,6 +241,7 @@ export function parseState(raw: unknown): AppState {
 
   return {
     version: typeof raw.version === 'number' ? raw.version : STATE_VERSION,
+    dataEpoch: typeof raw.dataEpoch === 'number' ? raw.dataEpoch : 0,
     updatedAt:
       typeof raw.updatedAt === 'string' ? raw.updatedAt : base.updatedAt,
     foundation: rec<boolean>(raw.foundation),
@@ -259,3 +279,21 @@ export const PRIORITY_LABEL: Record<Priority, string> = {
   P2: 'Useful',
   P3: 'Optional',
 };
+
+/** True when stored progress predates the current epoch and must be discarded. */
+export function isStaleEpoch(state: AppState): boolean {
+  return state.dataEpoch < DATA_EPOCH;
+}
+
+/**
+ * A clean Day 1 that keeps the schedule and targets. Resetting progress should
+ * never throw away the timings he configured.
+ */
+export function freshKeepingSettings(from: AppState): AppState {
+  const fresh = defaultState();
+  fresh.settings = { ...DEFAULT_SETTINGS, ...from.settings };
+  // Email times were fixed for his real schedule in this epoch; carry the new
+  // default rather than an old value that pointed at the wrong hour.
+  fresh.settings.eveningEmailTime = DEFAULT_SETTINGS.eveningEmailTime;
+  return fresh;
+}

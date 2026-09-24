@@ -53,7 +53,7 @@ export function scheduleHtml(d) {
             </td>
             <td style="padding:2px 0 8px 8px;font:400 14px/1.45 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.fg};">
               ${esc(i.title)}
-              <span style="display:block;margin-top:2px;font-size:11px;color:${C.faint};">${esc(i.context)} &middot; ${formatHM(i.minutes)}</span>
+              <span style="display:block;margin-top:2px;font-size:11px;color:${C.faint};">${esc(i.context)} &middot; ${i.partial && i.totalMinutes ? `${formatHM(i.minutes)} of ${formatHM(i.totalMinutes)}` : formatHM(i.minutes)}${i.carried ? ` &middot; <span style="color:${C.accent};">carried over</span>` : ''}</span>
             </td>
           </tr>`,
         )
@@ -70,7 +70,31 @@ export function scheduleHtml(d) {
           ${s.note ? `<tr><td style="padding:0 13px 11px;font:400 11px/1.45 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.faint};">${esc(s.note)}</td></tr>` : ''}
         </table>`;
     })
+    .join('') + overflowHtml(d.schedule.overflow);
+}
+
+/**
+ * What does not fit today. Rendered, never dropped: the previous version showed
+ * only the blocks, so a mission too long for any single block vanished from
+ * the mail with no explanation.
+ */
+function overflowHtml(overflow) {
+  if (!overflow?.length) return '';
+  const esc = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const rows = overflow
+    .map(
+      (i) =>
+        `<p style="margin:0 0 5px;font:400 13px/1.45 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.fg};">&rarr;&nbsp; ${esc(i.title)} <span style="color:${C.faint};">&mdash; ${formatHM(i.minutes)} left</span></p>`,
+    )
     .join('');
+  return `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;border:1px solid rgba(251,191,36,.28);border-radius:10px;">
+      <tr><td style="padding:11px 13px;">
+        <p style="margin:0 0 7px;font:600 13px/1.2 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.accent};">Continues tomorrow</p>
+        ${rows}
+        <p style="margin:6px 0 0;font:400 11px/1.45 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.faint};">Today's blocks are full. This moves to the top of tomorrow's plan rather than coming out of your sleep.</p>
+      </td></tr>
+    </table>`;
 }
 
 /** Named wins from the real day-over-day delta, not a stock compliment. */

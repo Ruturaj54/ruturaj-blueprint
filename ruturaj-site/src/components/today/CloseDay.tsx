@@ -61,6 +61,14 @@ export function CloseDay() {
         method: 'POST',
         headers: { 'x-blueprint-key': key },
       });
+      if (res.ok) {
+        // The scheduled end-of-day mail checks this and skips, so closing the
+        // day early does not earn a second copy at 02:30.
+        update((draft) => {
+          const d = draft.days[today];
+          if (d) d.recapSentAt = new Date().toISOString();
+        });
+      }
       setMailState(res.ok ? 'sent' : 'failed');
     } catch {
       setMailState('failed');

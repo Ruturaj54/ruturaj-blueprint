@@ -8,10 +8,15 @@ import { getStore } from '@netlify/blobs';
 import catalog from './catalog.json' with { type: 'json' };
 import { buildSchedule } from './schedule.mjs';
 import { buildPraise } from './praise.mjs';
+import { nextFoundation, nextTasks, titleFor, stillOpen, gateCounts } from './plan.mjs';
 
 export const MISSION_START = '2026-09-23';
 export const MISSION_END = '2027-03-02';
 export const TOTAL_DAYS = 161;
+/** Must match DATA_EPOCH in src/lib/schema.ts. */
+export const DATA_EPOCH = 3;
+/** Must match DAY_START_HOUR in src/engine/dates.ts. */
+const DAY_START_HOUR = 4;
 const DAY_MS = 86_400_000;
 
 const PHASES = [
@@ -24,19 +29,22 @@ const PHASES = [
 const parse = (iso) => new Date(`${iso}T12:00:00`);
 
 const fmt = (d) =>
-  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
 
-/** Today in IST, regardless of where the function actually runs. */
-export function istToday() {
-  const now = new Date();
-  const ist = new Date(now.getTime() + (330 + now.getTimezoneOffset()) * 60_000);
-  return fmt(ist);
+/**
+ * Today's mission date in IST, with the day rolling over at 04:00 rather than
+ * midnight. The deep-work block runs to 02:00, and the end-of-day mail sends at
+ * 02:30 — both belong to the day that is ending, not the next one.
+ */
+export function istToday(now = new Date()) {
+  const istMs = now.getTime() + 330 * 60_000 - DAY_START_HOUR * 3_600_000;
+  return fmt(new Date(istMs));
 }
 
 export const addDays = (iso, delta) => {
   const d = parse(iso);
   d.setDate(d.getDate() + delta);
-  return fmt(d);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 };
 
 export function dayForDate(iso) {
@@ -59,73 +67,22 @@ export async function readState() {
 }
 
 /**
- * Mirrors the client planner: Apna College (tier 1), then Five Minute
- * Engineering (tier 2), then PPA/LB/LSP/DSA (tier 3). A tier is only left
- * behind once it has no mandatory work remaining.
+ * Progress from an older epoch was discarded on every device. Until the app is
+ * next opened the blob may still hold it, so the mail ignores it too — only
+ * the schedule settings carry across.
  */
-function nextFoundation(state, count) {
-  const out = [];
-  const open = (m) => !state.foundation?.[m.id];
-
-  for (const tier of [1, 2, 3]) {
-    for (const subject of catalog.foundation.filter((s) => s.tier === tier)) {
-      if (out.length >= count) return out;
-      const next = subject.milestones.find((m) => open(m) && m.mandatory);
-      if (next && !out.some((o) => o.id === next.id)) {
-        out.push({ id: next.id, title: next.title, context: subject.name, minutes: next.estMinutes, proof: next.proof });
-      }
-    }
-    if (out.length > 0) return out;
-  }
-
-  for (const subject of catalog.foundation) {
-    if (out.length >= count) return out;
-    const next = subject.milestones.find(open);
-    if (next && !out.some((o) => o.id === next.id)) {
-      out.push({ id: next.id, title: next.title, context: subject.name, minutes: next.estMinutes, proof: next.proof });
-    }
-  }
-  return out;
+function currentEpoch(state) {
+  if (!state) return null;
+  if ((state.dataEpoch ?? 0) >= DATA_EPOCH) return state;
+  return { settings: state.settings ?? {}, dataEpoch: DATA_EPOCH };
 }
 
-/** Mirrors the client priority engine closely enough to agree on the top few. */
-function nextTasks(state, count, phaseId = 'm2') {
-  const PRIORITY_BONUS = { P0: 45, P1: 25, P2: 8, P3: 0 };
-  const PHASE_ORDER = { m1: 1, m2: 2, m3: 3, m4: 4 };
-  const done = (id) => state.tasks?.[id]?.status === 'done';
-  const tooEarly = (t) =>
-    PHASE_ORDER[t.earliestPhase ?? 'm2'] > PHASE_ORDER[phaseId] ? -70 : 0;
-
-  return catalog.tasks
-    .filter((t) => !done(t.id) && state.tasks?.[t.id]?.status !== 'skipped')
-    .filter((t) => (t.prereqs ?? []).every(done))
-    .map((t) => ({
-      id: t.id,
-      title: t.title,
-      context: t.track,
-      minutes: t.estMinutes,
-      proof: t.proof,
-      score:
-        t.careerValue * 8 +
-        (PRIORITY_BONUS[t.priority] ?? 0) +
-        (state.tasks?.[t.id]?.status === 'in_progress' ? 18 : 0) +
-        tooEarly(t) -
-        Math.round(t.estMinutes / 20),
-    }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, count);
-}
-
-function dsaSummary(state) {
+function dsaSummary(state, today) {
   const attempts = state.dsa ?? [];
-  const today = istToday();
   const solved = attempts.filter((a) => a.outcome === 'solved').length;
-  const seen = new Set(attempts.map((a) => a.pattern));
 
-  // Mirrors the client weakness engine: coverage gap and inaccuracy, both
-  // scaled by how often the pattern shows up in interviews. Staleness is left
-  // out here — it moves the ranking far less than the other two and would mean
-  // duplicating the date walk for every pattern on every send.
+  // Mirrors the client weakness engine: coverage gap and inaccuracy, scaled by
+  // how often the pattern shows up in interviews.
   const weakest = [...catalog.patterns]
     .map((p) => {
       const mine = attempts.filter((a) => a.pattern === p.id);
@@ -148,15 +105,12 @@ function dsaSummary(state) {
   const target = state.settings?.dsaTargetPerDay ?? 3;
   const weakestName = weakest?.name ?? null;
   return {
-    headline: weakestName
-      ? `${weakestName} — ${target} problems`
-      : `${target} problems, pattern-tagged`,
+    headline: weakestName ? `${weakestName} — ${target} problems` : `${target} problems, pattern-tagged`,
     total: attempts.length,
     solvedClean: solved,
     accuracy: attempts.length ? Math.round((solved / attempts.length) * 100) : 0,
     todayCount: attempts.filter((a) => a.date === today).length,
-    patternsTouched: seen.size,
-    weakest: weakest?.name ?? null,
+    weakest: weakestName,
     streak,
     target,
   };
@@ -168,60 +122,40 @@ function dayLog(state, date) {
   const planned = log.planned ?? [];
   const completed = log.completed ?? [];
   const plannedSet = new Set(planned);
-  // Only planned work scores. Everything else is credited as extra, because
-  // `completed` accumulates all day while `planned` is a snapshot — the naive
-  // ratio produced scores like 800%.
+  // Only planned work scores; everything else is credited as extra. `completed`
+  // accumulates all day while `planned` is a snapshot — the naive ratio read 800%.
   const hit = completed.filter((id) => plannedSet.has(id)).length;
-  const extras = completed.filter((id) => !plannedSet.has(id)).length;
   return {
     date,
     planned: planned.length,
     completed: hit,
-    extras,
+    extras: completed.filter((id) => !plannedSet.has(id)).length,
     score: planned.length ? Math.min(100, Math.round((hit / planned.length) * 100)) : null,
-    missed: planned.filter((id) => !completed.includes(id)).map(titleFor),
+    missed: stillOpen(state, date),
     done: completed.map(titleFor),
     notes: log.notes ?? null,
+    recapSent: Boolean(log.recapSentAt),
   };
-}
-
-export function titleFor(id) {
-  const task = catalog.tasks.find((t) => t.id === id);
-  if (task) return task.title;
-  for (const s of catalog.foundation) {
-    const m = s.milestones.find((x) => x.id === id);
-    if (m) return m.title;
-  }
-  // The id is in an old day log but no longer in the catalog — the syllabus was
-  // rewritten under it. A raw id in an email reads like a bug, so say what
-  // actually happened instead.
-  return 'a retired item (syllabus has since changed)';
 }
 
 /**
  * The full digest. Returns a usable object even when no state exists yet, so a
  * first-run email is still correct rather than broken.
  */
-export function buildDigest(state) {
+export function buildDigest(rawState, now = new Date()) {
+  const state = currentEpoch(rawState);
   const s = state ?? {};
-  const today = istToday();
+  const today = istToday(now);
   const rawDay = dayForDate(today);
   const day = Math.min(TOTAL_DAYS, Math.max(1, rawDay));
   const phase = phaseForDay(day);
 
-  const mandatoryTotal = catalog.foundation.reduce(
-    (n, x) => n + x.milestones.filter((m) => m.mandatory).length,
-    0,
-  );
-  const mandatoryDone = catalog.foundation.reduce(
-    (n, x) => n + x.milestones.filter((m) => m.mandatory && s.foundation?.[m.id]).length,
-    0,
-  );
+  const { total, done } = gateCounts(s);
   const gateOpen = Boolean(s.foundationUnlockedAt);
+  const missions = gateOpen ? nextTasks(s, today, addDays, phase.id) : nextFoundation(s, today, addDays);
+  const dsa = dsaSummary(s, today);
 
-  const missions = gateOpen ? nextTasks(s, 3, phase.id) : nextFoundation(s, 3);
-
-  const runsToday = (s.runs ?? []).filter((r) => r.date === today);
+  const mandatoryToday = missions.filter((m) => m.mandatory).length;
   const focusToday = (s.deepWork ?? [])
     .filter((d) => d.date === today)
     .reduce((n, d) => n + d.actualMinutes, 0);
@@ -236,35 +170,21 @@ export function buildDigest(state) {
     gate: {
       open: gateOpen,
       overridden: s.foundationOverride === true,
-      done: mandatoryDone,
-      total: mandatoryTotal,
-      pct: Math.round((mandatoryDone / mandatoryTotal) * 100),
+      done,
+      total,
+      pct: Math.round((done / total) * 100),
     },
     missions,
-    dsa: dsaSummary(s),
+    carriedCount: missions.filter((m) => m.carriedFrom).length,
+    dsa,
     yesterday: dayLog(s, addDays(today, -1)),
     todayLog: dayLog(s, today),
-    schedule: buildSchedule(s.settings, missions, dsaSummary(s)),
+    schedule: buildSchedule(s.settings, missions, dsa),
     // What today's plan is worth: the gate moves by this much if it all lands.
-    gateAfterToday: (() => {
-      const total = catalog.foundation.reduce(
-        (n, x) => n + x.milestones.filter((m) => m.mandatory).length,
-        0,
-      );
-      const doneNow = catalog.foundation.reduce(
-        (n, x) => n + x.milestones.filter((m) => m.mandatory && s.foundation?.[m.id]).length,
-        0,
-      );
-      const mandatoryToday = missions.filter((m) =>
-        catalog.foundation.some((x) =>
-          x.milestones.some((y) => y.id === m.id && y.mandatory),
-        ),
-      ).length;
-      return Math.round(((doneNow + mandatoryToday) / total) * 100);
-    })(),
+    gateAfterToday: gateOpen ? null : Math.round(((done + mandatoryToday) / total) * 100),
     praise: buildPraise(s, today, addDays),
     dayClosed: Boolean(s.days?.[today]?.closedAt),
-    runsToday: runsToday.map((r) => `${r.slot} ${r.km}km`),
+    runsToday: (s.runs ?? []).filter((r) => r.date === today).map((r) => `${r.slot} ${r.km}km`),
     focusToday,
     workCount: (s.work ?? []).length,
     applications: (s.applications ?? []).length,

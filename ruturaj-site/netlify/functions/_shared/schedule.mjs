@@ -21,6 +21,8 @@ export function formatHM(minutes) {
 }
 
 const LOW_FOCUS = ['watch', 'notes'];
+/** Must match MIN_PIECE_MINUTES in src/engine/schedule.ts. */
+const MIN_PIECE_MINUTES = 30;
 const DEFAULTS = {
   officeStart: '10:30',
   officeEnd: '18:00',
@@ -84,18 +86,30 @@ export function buildSchedule(settings, missions, dsa) {
   block2.items.push({ title: dsa?.headline ?? 'DSA', context: 'DSA', minutes: dsaMinutes });
   block2.used += dsaMinutes;
 
+  // A long module spills from one block into the next instead of being
+  // refused. Only what fits nowhere today continues tomorrow — the old version
+  // refused anything longer than a single block, and those missions silently
+  // disappeared from the mail.
   const overflow = [];
   for (const m of missions) {
-    const item = { title: m.title, context: m.context, minutes: m.minutes || 60 };
-    const course = LOW_FOCUS.includes(m.proof);
-    const order = course ? [office, block1, block2] : [block2, block1];
-    const target = order.find((slot) => slot.used + item.minutes <= slot.capacity);
-    if (target) {
-      target.items.push(item);
-      target.used += item.minutes;
-    } else {
-      overflow.push(item);
+    const total = m.minutes || 60;
+    const base = { title: m.title, context: m.context, carried: Boolean(m.carriedFrom) };
+    const order = LOW_FOCUS.includes(m.proof) ? [office, block1, block2] : [block2, block1];
+    let remaining = total;
+    const pieces = [];
+    for (const slot of order) {
+      if (remaining <= 0) break;
+      const take = Math.min(slot.capacity - slot.used, remaining);
+      if (take <= 0 || (take < MIN_PIECE_MINUTES && take < remaining)) continue;
+      pieces.push({ slot, minutes: take });
+      slot.used += take;
+      remaining -= take;
     }
+    const partial = pieces.length > 1 || remaining > 0;
+    for (const { slot, minutes } of pieces) {
+      slot.items.push({ ...base, minutes, totalMinutes: total, partial });
+    }
+    if (remaining > 0) overflow.push({ ...base, minutes: remaining, totalMinutes: total, partial: true });
   }
 
   return { slots: [office, block1, run, block2], overflow };

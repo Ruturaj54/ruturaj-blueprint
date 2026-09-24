@@ -7,7 +7,7 @@ import type { Task } from '@/engine/types';
  * bootcamp with the highest interview leverage for an AI Engineer — and the
  * parts that only make sense once models, retrieval and serving are already
  * understood. Putting them in phase 2/3 rather than the foundation is what
- * keeps Month 1 finishable.
+ * keeps the foundation finishable.
  */
 export const MLOPS_TASKS: Task[] = [
   {

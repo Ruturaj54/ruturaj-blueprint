@@ -1,6 +1,6 @@
 import type { AppState } from '@/lib/schema';
 import { addDays, todayISO } from './dates';
-import { dayScore, executionStreak } from './planner';
+import { dayScore, executionStreak, plannedHits } from './scoring';
 import { dsaStreak } from './dsa';
 
 /**
@@ -55,7 +55,8 @@ function statsFor(state: AppState, date: string): DayStats {
     focus: state.deepWork
       .filter((d) => d.date === date)
       .reduce((n, d) => n + d.actualMinutes, 0),
-    completed: log?.completed.length ?? 0,
+    // Planned work closed. The raw tick count produced "cleared 24 of 3".
+    completed: plannedHits(state, date),
     planned: log?.planned.length ?? 0,
     score: dayScore(state, date),
   };
@@ -190,7 +191,7 @@ export function buildPraise(state: AppState, date: string = todayISO()): DayPrai
     body = 'Yesterday this was at zero. Today it is not. That restart is the single hardest move in a long plan, and you made it without anyone watching.';
   } else if (wins.some((w) => w.kind === 'best')) {
     headline = 'Best day so far';
-    body = 'Not a good day by your standards — the best one yet. Note what was different about today, because that is the thing worth repeating.';
+    body = 'Not just a good day — the best one yet. Note what was different about today, because that is the thing worth repeating.';
   } else if (execStreak >= 7) {
     headline = `${execStreak} days holding the line`;
     body = 'A week of this is no longer motivation, it is a working system. Protect it.';

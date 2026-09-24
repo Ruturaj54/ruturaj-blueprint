@@ -14,16 +14,24 @@ import type { DailyPlan } from './planner';
  *   Block 1 (evening) — course work: lectures, notes, light implementation.
  *   Block 2 (night)   — deep work: implementation, projects, DSA.
  *
- * Capacity is real. When a block fills, the remainder is reported as overflow
- * rather than silently pretending it fits.
+ * Capacity is real. A long module spills from one block into the next rather
+ * than being refused, and only what fits nowhere today is reported as
+ * continuing tomorrow — it is never silently dropped.
  */
 
 export interface SlotItem {
   id: string;
   title: string;
   context: string;
+  /** Minutes placed in this block. */
   minutes: number;
   kind: 'course' | 'build' | 'dsa';
+  /** Full length of the mission, when it is split across blocks or days. */
+  totalMinutes?: number;
+  /** True when this is one piece of a longer mission. */
+  partial?: boolean;
+  /** Carried over unfinished from an earlier day. */
+  carried?: boolean;
 }
 
 export interface Slot {
@@ -41,7 +49,7 @@ export interface DaySchedule {
   slots: Slot[];
   totalPlanned: number;
   totalCapacity: number;
-  /** Work that did not fit anywhere today. */
+  /** Work that does not fit in today's blocks and continues tomorrow. */
   overflow: SlotItem[];
 }
 
@@ -127,6 +135,7 @@ export function buildSchedule(state: AppState, plan: DailyPlan): DaySchedule {
           context: m.subject.name,
           minutes: m.milestone.estMinutes,
           kind: LOW_FOCUS.includes(m.milestone.proof) ? 'course' : 'build',
+          carried: Boolean(m.carriedFrom),
         }
       : {
           id: m.scored.task.id,
@@ -134,24 +143,11 @@ export function buildSchedule(state: AppState, plan: DailyPlan): DaySchedule {
           context: m.scored.task.track,
           minutes: m.scored.task.estMinutes,
           kind: LOW_FOCUS.includes(m.scored.task.proof) ? 'course' : 'build',
+          carried: Boolean(m.carriedFrom),
         },
   );
 
-  const fits = (slot: Slot, item: SlotItem) => slot.used + item.minutes <= slot.capacity;
-  const place = (slot: Slot, item: SlotItem) => {
-    slot.items.push(item);
-    slot.used += item.minutes;
-  };
-
-  const overflow: SlotItem[] = [];
-  for (const item of pending) {
-    // Course work prefers office time, then block 1, then the night block.
-    const order =
-      item.kind === 'course' ? [office, block1, block2] : [block2, block1];
-    const target = order.find((slot) => fits(slot, item));
-    if (target) place(target, item);
-    else overflow.push(item);
-  }
+  const overflow = placeAll(pending, { office, block1, block2 });
 
   const slots = [office, block1, run, block2];
   return {
@@ -160,6 +156,47 @@ export function buildSchedule(state: AppState, plan: DailyPlan): DaySchedule {
     totalCapacity: slots.filter((x) => x.id !== 'run').reduce((n, x) => n + x.capacity, 0),
     overflow,
   };
+}
+
+/** A sliver shorter than this is not a plan, so a long mission skips it. */
+const MIN_PIECE_MINUTES = 30;
+
+/**
+ * Places each mission into its preferred blocks, splitting it across blocks
+ * when one is not enough. Watching and reading prefer office spare time;
+ * building needs the long evening and night runs and never goes to the office.
+ * Returns whatever is left over, which continues tomorrow.
+ */
+function placeAll(
+  pending: SlotItem[],
+  { office, block1, block2 }: { office: Slot; block1: Slot; block2: Slot },
+): SlotItem[] {
+  const overflow: SlotItem[] = [];
+
+  for (const item of pending) {
+    const order = item.kind === 'course' ? [office, block1, block2] : [block2, block1];
+    let remaining = item.minutes;
+    const pieces: Array<{ slot: Slot; minutes: number }> = [];
+
+    for (const slot of order) {
+      if (remaining <= 0) break;
+      const take = Math.min(slot.capacity - slot.used, remaining);
+      if (take <= 0 || (take < MIN_PIECE_MINUTES && take < remaining)) continue;
+      pieces.push({ slot, minutes: take });
+      slot.used += take;
+      remaining -= take;
+    }
+
+    const split = pieces.length > 1 || remaining > 0;
+    for (const { slot, minutes } of pieces) {
+      slot.items.push({ ...item, minutes, totalMinutes: item.minutes, partial: split });
+    }
+    if (remaining > 0) {
+      overflow.push({ ...item, minutes: remaining, totalMinutes: item.minutes, partial: true });
+    }
+  }
+
+  return overflow;
 }
 
 export function formatRange(slot: Slot): string {

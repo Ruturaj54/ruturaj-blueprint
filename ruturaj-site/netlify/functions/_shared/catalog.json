@@ -1,5 +1,9 @@
 {
-  "generatedAt": "2026-09-22T20:29:04.197Z",
+  "generatedAt": "2026-09-24T07:38:14.277Z",
+  "sequentialTiers": [
+    1,
+    2
+  ],
   "tasks": [
     {
       "id": "ai-embed-1",
@@ -1726,299 +1730,262 @@
   ],
   "foundation": [
     {
-      "id": "f-python",
+      "id": "ap-python",
       "name": "Python",
-      "source": "Apna Prime 4–9",
+      "source": "Apna Prime · modules 3–9",
       "tier": 1,
       "milestones": [
         {
-          "id": "f-python-1",
-          "title": "Fundamentals Parts 1–2 (4–5) — syntax, types, operators",
+          "id": "ap-03",
+          "title": "Course Introduction (3)",
           "mandatory": true,
-          "estMinutes": 150,
+          "estMinutes": 30,
           "proof": "watch"
         },
         {
-          "id": "f-python-2",
-          "title": "Fundamentals Parts 3–4 (6–7) — collections, functions, modules",
-          "mandatory": true,
-          "estMinutes": 150,
-          "proof": "watch"
-        },
-        {
-          "id": "f-python-3",
-          "title": "Fundamentals Part 5 (8) + Installation (9)",
+          "id": "ap-04",
+          "title": "Python Fundamentals Part 1 (4)",
           "mandatory": true,
           "estMinutes": 90,
           "proof": "watch"
         },
         {
-          "id": "f-python-4",
-          "title": "Comprehensions, generators, decorators, context managers from memory",
-          "mandatory": true,
-          "estMinutes": 120,
-          "proof": "implement"
-        },
-        {
-          "id": "f-python-5",
-          "title": "venv, pip, project layout, pytest basics",
+          "id": "ap-05",
+          "title": "Python Fundamentals Part 2 (5)",
           "mandatory": true,
           "estMinutes": 90,
-          "proof": "implement"
+          "proof": "watch"
         },
         {
-          "id": "f-python-6",
-          "title": "Checkpoint: 10 idiomatic-Python questions answered cold",
+          "id": "ap-06",
+          "title": "Python Fundamentals Part 3 (6)",
           "mandatory": true,
-          "estMinutes": 60,
-          "proof": "checkpoint"
+          "estMinutes": 90,
+          "proof": "watch"
         },
         {
-          "id": "f-python-7",
-          "title": "asyncio — event loop, await, gather (needed for FastAPI later)",
-          "mandatory": false,
+          "id": "ap-07",
+          "title": "Python Fundamentals Part 4 (7)",
+          "mandatory": true,
           "estMinutes": 90,
-          "proof": "notes"
+          "proof": "watch"
+        },
+        {
+          "id": "ap-08",
+          "title": "Python Fundamentals Part 5 (8)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "watch"
+        },
+        {
+          "id": "ap-09",
+          "title": "Installation (9)",
+          "mandatory": true,
+          "estMinutes": 30,
+          "proof": "watch"
         }
       ]
     },
     {
-      "id": "f-data",
-      "name": "Data Stack",
-      "source": "Apna Prime 10–21",
+      "id": "ap-data",
+      "name": "Data — NumPy, Pandas, SQL, Visualisation",
+      "source": "Apna Prime · modules 10–21",
       "tier": 1,
       "milestones": [
         {
-          "id": "f-data-1",
-          "title": "Phase 2 intro (10) + NumPy (11)",
+          "id": "ap-10",
+          "title": "Phase 2: Data (10)",
           "mandatory": true,
-          "estMinutes": 150,
+          "estMinutes": 30,
+          "proof": "watch"
+        },
+        {
+          "id": "ap-11",
+          "title": "NumPy (Numerical Python) (11)",
+          "mandatory": true,
+          "estMinutes": 90,
           "proof": "implement"
         },
         {
-          "id": "f-data-2",
-          "title": "Pandas Parts 1–2 (12–13) — real manipulation, not toy frames",
+          "id": "ap-12",
+          "title": "Pandas Part 1 (12)",
           "mandatory": true,
-          "estMinutes": 180,
+          "estMinutes": 90,
           "proof": "implement"
         },
         {
-          "id": "f-data-3",
-          "title": "Data Collection (14) + continuation (17)",
+          "id": "ap-13",
+          "title": "Pandas Part 2 (13)",
           "mandatory": true,
-          "estMinutes": 120,
+          "estMinutes": 90,
           "proof": "implement"
         },
         {
-          "id": "f-data-4",
-          "title": "SQL Parts 1–2 (15–16) — joins, aggregates, subqueries",
+          "id": "ap-14",
+          "title": "Data Collection (14)",
           "mandatory": true,
-          "estMinutes": 180,
+          "estMinutes": 90,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-15",
+          "title": "SQL Part 1 (15)",
+          "mandatory": true,
+          "estMinutes": 90,
           "proof": "exercise"
         },
         {
-          "id": "f-data-5",
-          "title": "Web scraping activity (19)",
+          "id": "ap-16",
+          "title": "SQL Part 2 (16)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "exercise"
+        },
+        {
+          "id": "ap-17",
+          "title": "Data Collection (continuation) (17)",
+          "mandatory": true,
+          "estMinutes": 60,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-19",
+          "title": "Web Scraping (Activity) (19)",
           "mandatory": true,
           "estMinutes": 90,
           "proof": "implement"
         },
         {
-          "id": "f-data-6",
-          "title": "Data visualisation Parts 1–2 (20–21)",
+          "id": "ap-20",
+          "title": "Data Visualization Part 1 (20)",
           "mandatory": true,
-          "estMinutes": 150,
+          "estMinutes": 90,
           "proof": "implement"
         },
         {
-          "id": "f-data-7",
-          "title": "Checkpoint: clean a messy dataset and defend every choice",
+          "id": "ap-21",
+          "title": "Data Visualization Part 2 (21)",
           "mandatory": true,
-          "estMinutes": 60,
-          "proof": "checkpoint"
+          "estMinutes": 90,
+          "proof": "implement"
         }
       ]
     },
     {
-      "id": "f-math",
+      "id": "ap-math",
       "name": "Math for AI",
-      "source": "Apna Prime 22–24 · 5ME Stats & Linear Algebra",
+      "source": "Apna Prime · modules 22–24",
       "tier": 1,
       "milestones": [
         {
-          "id": "f-math-1",
-          "title": "Probability (22) — distributions, Bayes, expectation",
+          "id": "ap-22",
+          "title": "Math for AI — Probability (22)",
           "mandatory": true,
-          "estMinutes": 120,
+          "estMinutes": 90,
           "proof": "notes"
         },
         {
-          "id": "f-math-2",
-          "title": "Linear Algebra (23) — vectors, matrices, dot products, eigen intuition",
+          "id": "ap-23",
+          "title": "Math for AI — Linear Algebra (23)",
           "mandatory": true,
-          "estMinutes": 120,
+          "estMinutes": 90,
           "proof": "notes"
         },
         {
-          "id": "f-math-3",
-          "title": "Calculus (24) — derivatives, chain rule, gradients",
+          "id": "ap-24",
+          "title": "Math for AI — Calculus (24)",
           "mandatory": true,
-          "estMinutes": 120,
+          "estMinutes": 90,
           "proof": "notes"
-        },
-        {
-          "id": "f-math-4",
-          "title": "Checkpoint: explain one gradient-descent step in your own words",
-          "mandatory": true,
-          "estMinutes": 45,
-          "proof": "checkpoint"
         }
       ]
     },
     {
-      "id": "f-ml",
+      "id": "ap-ml",
       "name": "Machine Learning",
-      "source": "Apna Prime 25–36",
+      "source": "Apna Prime · modules 25–36",
       "tier": 1,
       "milestones": [
         {
-          "id": "f-ml-1",
-          "title": "Starting with ML (25) + Supervised Parts 1–2 (26–27)",
+          "id": "ap-25",
+          "title": "Starting with Machine Learning (25)",
           "mandatory": true,
-          "estMinutes": 210,
+          "estMinutes": 60,
           "proof": "watch"
         },
         {
-          "id": "f-ml-2",
-          "title": "Supervised Part 3 (28) + Scratch Implementations (29)",
-          "mandatory": true,
-          "estMinutes": 180,
-          "proof": "implement"
-        },
-        {
-          "id": "f-ml-3",
-          "title": "CreditWise Loan System (30) — minor project shipped",
-          "mandatory": true,
-          "estMinutes": 240,
-          "proof": "project"
-        },
-        {
-          "id": "f-ml-4",
-          "title": "Supervised Parts 4–6 (31–33)",
-          "mandatory": true,
-          "estMinutes": 240,
-          "proof": "watch"
-        },
-        {
-          "id": "f-ml-5",
-          "title": "Evaluation — precision/recall/F1, ROC-AUC, and when each misleads",
+          "id": "ap-26",
+          "title": "Supervised ML Part 1 (26)",
           "mandatory": true,
           "estMinutes": 90,
-          "proof": "notes"
+          "proof": "implement"
         },
         {
-          "id": "f-ml-6",
-          "title": "Bias/variance, overfitting, regularisation, cross-validation",
+          "id": "ap-27",
+          "title": "Supervised ML Part 2 (27)",
           "mandatory": true,
           "estMinutes": 90,
-          "proof": "notes"
-        },
-        {
-          "id": "f-ml-7",
-          "title": "Unsupervised Parts 1–2 (34–35)",
-          "mandatory": true,
-          "estMinutes": 180,
-          "proof": "watch"
-        },
-        {
-          "id": "f-ml-8",
-          "title": "SmartCart Clustering System (36) — minor project shipped",
-          "mandatory": true,
-          "estMinutes": 210,
-          "proof": "project"
-        }
-      ]
-    },
-    {
-      "id": "f-dl",
-      "name": "Deep Learning",
-      "source": "Apna Prime 39–55, 60",
-      "tier": 1,
-      "milestones": [
-        {
-          "id": "f-dl-1",
-          "title": "Parts 1–3 (39–41) — perceptron, activations, forward pass",
-          "mandatory": true,
-          "estMinutes": 270,
-          "proof": "watch"
-        },
-        {
-          "id": "f-dl-2",
-          "title": "Backpropagation derived and implemented in NumPy",
-          "mandatory": true,
-          "estMinutes": 180,
           "proof": "implement"
         },
         {
-          "id": "f-dl-3",
-          "title": "Parts 4–6 (42–44) — optimisers, regularisation, tuning",
+          "id": "ap-28",
+          "title": "Supervised ML Part 3 (28)",
           "mandatory": true,
-          "estMinutes": 270,
-          "proof": "watch"
+          "estMinutes": 90,
+          "proof": "implement"
         },
         {
-          "id": "f-dl-4",
-          "title": "Parts 7–8 (49–50) — CNN architecture",
+          "id": "ap-29",
+          "title": "Scratch Implementations (29)",
+          "mandatory": true,
+          "estMinutes": 120,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-30",
+          "title": "CreditWise Loan System — minor project (30)",
           "mandatory": true,
           "estMinutes": 180,
-          "proof": "watch"
-        },
-        {
-          "id": "f-dl-5",
-          "title": "Text Summarizer (51) — minor project shipped",
-          "mandatory": true,
-          "estMinutes": 210,
           "proof": "project"
         },
         {
-          "id": "f-dl-6",
-          "title": "Parts 9–11 (54–55, 60) — sequence models and TensorFlow",
+          "id": "ap-31",
+          "title": "Supervised ML Part 4 (31)",
           "mandatory": true,
-          "estMinutes": 270,
+          "estMinutes": 90,
           "proof": "implement"
         },
         {
-          "id": "f-dl-7",
-          "title": "Reinforcement Learning Parts 1–3 (45–47)",
-          "mandatory": false,
-          "estMinutes": 240,
-          "proof": "watch"
-        }
-      ]
-    },
-    {
-      "id": "f-apps",
-      "name": "AI Apps & APIs",
-      "source": "Apna Prime 56, 59, 61",
-      "tier": 1,
-      "milestones": [
-        {
-          "id": "f-apps-1",
-          "title": "OpenAI APIs (56) — calls, streaming, tool calling",
+          "id": "ap-32",
+          "title": "Supervised ML Part 5 (32)",
           "mandatory": true,
-          "estMinutes": 150,
+          "estMinutes": 90,
           "proof": "implement"
         },
         {
-          "id": "f-apps-2",
-          "title": "Working with Flask (59) — serve a model behind an endpoint",
+          "id": "ap-33",
+          "title": "Supervised ML Part 6 (33)",
           "mandatory": true,
-          "estMinutes": 150,
+          "estMinutes": 90,
           "proof": "implement"
         },
         {
-          "id": "f-apps-3",
-          "title": "Agentic AI (61) — course module, compared against your own loop",
+          "id": "ap-34",
+          "title": "Unsupervised ML Part 1 (34)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-35",
+          "title": "Unsupervised ML Part 2 (35)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-36",
+          "title": "SmartCart Clustering System — minor project (36)",
           "mandatory": true,
           "estMinutes": 180,
           "proof": "project"
@@ -2026,344 +1993,654 @@
       ]
     },
     {
-      "id": "f-tools",
+      "id": "ap-tools",
       "name": "Terminal & Git",
-      "source": "Apna Prime 37–38",
+      "source": "Apna Prime · modules 37–38",
       "tier": 1,
       "milestones": [
         {
-          "id": "f-tools-1",
-          "title": "Terminal (37) — confirm nothing is missing",
+          "id": "ap-37",
+          "title": "Terminal (37)",
           "mandatory": true,
           "estMinutes": 60,
           "proof": "watch"
         },
         {
-          "id": "f-tools-2",
-          "title": "Git & GitHub (38) — branches, rebase vs merge, clean history",
+          "id": "ap-38",
+          "title": "Git & GitHub (38)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "implement"
+        }
+      ]
+    },
+    {
+      "id": "ap-dl",
+      "name": "Deep Learning",
+      "source": "Apna Prime · modules 39–55, 60",
+      "tier": 1,
+      "milestones": [
+        {
+          "id": "ap-39",
+          "title": "Deep Learning Part 1 (39)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "watch"
+        },
+        {
+          "id": "ap-40",
+          "title": "Deep Learning Part 2 (40)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "watch"
+        },
+        {
+          "id": "ap-41",
+          "title": "Deep Learning Part 3 (41)",
           "mandatory": true,
           "estMinutes": 90,
           "proof": "implement"
         },
         {
-          "id": "f-tools-3",
-          "title": "GitHub profile and READMEs presentable to a recruiter",
+          "id": "ap-42",
+          "title": "Deep Learning Part 4 (42)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-43",
+          "title": "Deep Learning Part 5 (43)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-44",
+          "title": "Deep Learning Part 6 (44)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-45",
+          "title": "Reinforcement Learning Part 1 (45)",
+          "mandatory": false,
+          "estMinutes": 90,
+          "proof": "watch"
+        },
+        {
+          "id": "ap-46",
+          "title": "Reinforcement Learning Part 2 (46)",
+          "mandatory": false,
+          "estMinutes": 90,
+          "proof": "watch"
+        },
+        {
+          "id": "ap-47",
+          "title": "Reinforcement Learning Part 3 (47)",
+          "mandatory": false,
+          "estMinutes": 90,
+          "proof": "watch"
+        },
+        {
+          "id": "ap-49",
+          "title": "Deep Learning Part 7 (49)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-50",
+          "title": "Deep Learning Part 8 (50)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-51",
+          "title": "Text Summarizer — minor project (51)",
+          "mandatory": true,
+          "estMinutes": 180,
+          "proof": "project"
+        },
+        {
+          "id": "ap-54",
+          "title": "Deep Learning Part 9 (54)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-55",
+          "title": "Deep Learning Part 10 (55)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-60",
+          "title": "Deep Learning Part 11 (60)",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "implement"
+        }
+      ]
+    },
+    {
+      "id": "ap-apps",
+      "name": "OpenAI APIs, Flask & Agentic AI",
+      "source": "Apna Prime · modules 56, 59, 61",
+      "tier": 1,
+      "milestones": [
+        {
+          "id": "ap-56",
+          "title": "OpenAI APIs (56)",
           "mandatory": true,
           "estMinutes": 120,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-59",
+          "title": "Working with Flask (59)",
+          "mandatory": true,
+          "estMinutes": 120,
+          "proof": "implement"
+        },
+        {
+          "id": "ap-61",
+          "title": "Agentic AI (61)",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "implement"
+        }
+      ]
+    },
+    {
+      "id": "ap-projects",
+      "name": "AI Projects Module",
+      "source": "Apna Prime · AI Projects Module",
+      "tier": 1,
+      "milestones": [
+        {
+          "id": "ap-p1a",
+          "title": "Intelligent AI Attendance — Face & Voice (Phase 1)",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "project"
+        },
+        {
+          "id": "ap-p1b",
+          "title": "Intelligent AI Attendance (Phase 2)",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "project"
+        },
+        {
+          "id": "ap-p2a",
+          "title": "Neural Style Transfer with AdaIN (Phase 1)",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "project"
+        },
+        {
+          "id": "ap-p2b",
+          "title": "Neural Style Transfer with AdaIN (Phase 2)",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "project"
+        },
+        {
+          "id": "ap-p3a",
+          "title": "Real-time AI Gym Trainer (Phase 1)",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "project"
+        },
+        {
+          "id": "ap-p3b",
+          "title": "Real-time AI Gym Trainer (Phase 2)",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "project"
+        },
+        {
+          "id": "ap-p4a",
+          "title": "AI Resume ATS System (Phase 1)",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "project"
+        },
+        {
+          "id": "ap-p4b",
+          "title": "AI Resume ATS System (Phase 2)",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "project"
+        },
+        {
+          "id": "ap-cicd",
+          "title": "CI/CD — Complete Tutorial",
+          "mandatory": false,
+          "estMinutes": 120,
+          "proof": "watch"
+        },
+        {
+          "id": "ap-k8s",
+          "title": "Kubernetes",
+          "mandatory": false,
+          "estMinutes": 120,
+          "proof": "watch"
+        }
+      ]
+    },
+    {
+      "id": "fm-nlp",
+      "name": "Natural Language Processing",
+      "source": "5ME · NLP",
+      "tier": 2,
+      "milestones": [
+        {
+          "id": "fm-nlp-1",
+          "title": "NLP intro, NLTK/spaCy, core concepts, regex, text preprocessing",
+          "mandatory": true,
+          "estMinutes": 120,
+          "proof": "notes"
+        },
+        {
+          "id": "fm-nlp-2",
+          "title": "Tokenization (BPE, WordPiece), stemming vs lemmatization, POS, NER",
+          "mandatory": true,
+          "estMinutes": 120,
+          "proof": "implement"
+        },
+        {
+          "id": "fm-nlp-3",
+          "title": "Bag of Words, TF-IDF, Word2Vec, similarity metrics",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "implement"
+        },
+        {
+          "id": "fm-nlp-4",
+          "title": "Topic modelling, classical text classifiers, BLEU/ROUGE, deployment",
+          "mandatory": false,
+          "estMinutes": 150,
+          "proof": "watch"
+        }
+      ]
+    },
+    {
+      "id": "fm-transformers",
+      "name": "Transformers",
+      "source": "5ME · Transformers",
+      "tier": 2,
+      "milestones": [
+        {
+          "id": "fm-tf-1",
+          "title": "History — RNN/LSTM, Seq2Seq, BERT, GPT, instruction tuning",
+          "mandatory": true,
+          "estMinutes": 120,
+          "proof": "notes"
+        },
+        {
+          "id": "fm-tf-2",
+          "title": "\"Attention Is All You Need\" — encoder/decoder, BERT vs GPT vs T5",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "notes"
+        },
+        {
+          "id": "fm-tf-3",
+          "title": "Attention mechanism — Q/K/V, self-attention, multi-head, masked",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "notes"
+        },
+        {
+          "id": "fm-tf-4",
+          "title": "Build a Nano LLM — tokenizer, transformer blocks in PyTorch, training loop",
+          "mandatory": true,
+          "estMinutes": 240,
           "proof": "project"
         }
       ]
     },
     {
-      "id": "f-5me-core",
-      "name": "LLM Internals",
-      "source": "5ME — Transformers · Prompt Engineering",
+      "id": "fm-prompt",
+      "name": "Prompt Engineering",
+      "source": "5ME · Prompt Engineering",
       "tier": 2,
       "milestones": [
         {
-          "id": "f-5me-1",
-          "title": "Transformer evolution — RNN, LSTM, Seq2Seq, attention",
+          "id": "fm-pe-1",
+          "title": "Prompt anatomy, system/user/assistant roles, core principles",
           "mandatory": true,
           "estMinutes": 120,
           "proof": "notes"
         },
         {
-          "id": "f-5me-2",
-          "title": "\"Attention Is All You Need\" — read the paper, note what it solved",
+          "id": "fm-pe-2",
+          "title": "Zero/one/few-shot, role and persona, task and constraint prompting, output control",
           "mandatory": true,
           "estMinutes": 150,
-          "proof": "notes"
-        },
-        {
-          "id": "f-5me-3",
-          "title": "Transformer architecture — self-attention, heads, positional encoding",
-          "mandatory": true,
-          "estMinutes": 150,
-          "proof": "notes"
-        },
-        {
-          "id": "f-5me-4",
-          "title": "BERT vs GPT lineage, instruction tuning, the LLM era",
-          "mandatory": true,
-          "estMinutes": 90,
-          "proof": "notes"
-        },
-        {
-          "id": "f-5me-5",
-          "title": "Prompt anatomy — instruction, context, input, output format",
-          "mandatory": true,
-          "estMinutes": 90,
           "proof": "implement"
         },
         {
-          "id": "f-5me-6",
-          "title": "System/user/assistant roles and structured outputs",
+          "id": "fm-pe-3",
+          "title": "CoT, self-consistency, ToT, ReAct, prompt chaining, templates, evaluating prompts",
           "mandatory": true,
-          "estMinutes": 90,
+          "estMinutes": 150,
           "proof": "implement"
-        },
-        {
-          "id": "f-5me-7",
-          "title": "Prompting across models — GPT, Claude, Gemini, Llama/Mistral",
-          "mandatory": false,
-          "estMinutes": 90,
-          "proof": "exercise"
-        },
-        {
-          "id": "f-5me-8",
-          "title": "Checkpoint: explain one LLM request end to end, token in to token out",
-          "mandatory": true,
-          "estMinutes": 60,
-          "proof": "checkpoint"
         }
       ]
     },
     {
-      "id": "f-5me-rag",
-      "name": "VectorDB, LangChain & Agents",
-      "source": "5ME — VectorDB · LangChain · Agentic AI",
+      "id": "fm-rag",
+      "name": "RAG — VectorDB & LlamaIndex",
+      "source": "5ME · VectorDB",
       "tier": 2,
       "milestones": [
         {
-          "id": "f-rag-1",
-          "title": "Vectors, dimensionality, embedding models (OpenAI, SentenceTransformers)",
+          "id": "fm-vdb-1",
+          "title": "Vectors, embedding models, similarity metrics, RDBMS vs VectorDB",
           "mandatory": true,
           "estMinutes": 120,
           "proof": "notes"
         },
         {
-          "id": "f-rag-2",
-          "title": "VectorDB landscape — ChromaDB, FAISS, Pinecone, Weaviate",
-          "mandatory": true,
-          "estMinutes": 90,
-          "proof": "notes"
-        },
-        {
-          "id": "f-rag-3",
-          "title": "ChromaDB or FAISS running locally with real documents",
+          "id": "fm-vdb-2",
+          "title": "ChromaDB and FAISS hands-on — index, persist, query your own PDFs",
           "mandatory": true,
           "estMinutes": 150,
           "proof": "implement"
         },
         {
-          "id": "f-rag-4",
-          "title": "Chunking strategies — and why chunk size changes the answer",
+          "id": "fm-vdb-3",
+          "title": "Pinecone and LlamaIndex — indexes, query engines, chunk size and overlap",
           "mandatory": true,
-          "estMinutes": 120,
+          "estMinutes": 150,
           "proof": "implement"
         },
         {
-          "id": "f-rag-5",
-          "title": "Retrieval evaluation — measured hit-rate on a real question set",
+          "id": "fm-vdb-4",
+          "title": "RAG — chunking, advanced RAG, reranking, faithfulness and context recall",
           "mandatory": true,
           "estMinutes": 180,
-          "proof": "exercise"
-        },
-        {
-          "id": "f-rag-6",
-          "title": "LangChain core — models, prompts, chains, memory, retrievers",
-          "mandatory": true,
-          "estMinutes": 210,
-          "proof": "implement"
-        },
-        {
-          "id": "f-rag-7",
-          "title": "LangChain vs direct API calls — know when not to use it",
-          "mandatory": true,
-          "estMinutes": 60,
-          "proof": "notes"
-        },
-        {
-          "id": "f-rag-8",
-          "title": "Agent components — perception, reasoning, tools, memory",
-          "mandatory": true,
-          "estMinutes": 120,
-          "proof": "notes"
-        },
-        {
-          "id": "f-rag-9",
-          "title": "Agent loop built from scratch, no framework",
-          "mandatory": true,
-          "estMinutes": 210,
-          "proof": "implement"
-        },
-        {
-          "id": "f-rag-10",
-          "title": "LangGraph / CrewAI / AutoGen — enough to compare them",
-          "mandatory": false,
-          "estMinutes": 120,
-          "proof": "notes"
+          "proof": "project"
         }
       ]
     },
     {
-      "id": "f-ppa",
-      "name": "PPA · C · C++",
-      "source": "PPA notes + revision",
+      "id": "fm-langchain",
+      "name": "LangChain",
+      "source": "5ME · LangChain",
+      "tier": 2,
+      "milestones": [
+        {
+          "id": "fm-lc-1",
+          "title": "Setup, architecture, LLM vs chat models, output parsers",
+          "mandatory": true,
+          "estMinutes": 120,
+          "proof": "implement"
+        },
+        {
+          "id": "fm-lc-2",
+          "title": "Chains and memory types",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "implement"
+        },
+        {
+          "id": "fm-lc-3",
+          "title": "Loaders, splitters, embeddings, vector stores, retrievers, a basic RAG pipeline",
+          "mandatory": true,
+          "estMinutes": 180,
+          "proof": "project"
+        },
+        {
+          "id": "fm-lc-4",
+          "title": "Agents, tools and LCEL",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "implement"
+        }
+      ]
+    },
+    {
+      "id": "fm-agents",
+      "name": "Agentic AI",
+      "source": "5ME · Agentic AI",
+      "tier": 2,
+      "milestones": [
+        {
+          "id": "fm-ag-1",
+          "title": "Landscape, agent types, perception, reasoning, ReAct, planning",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "notes"
+        },
+        {
+          "id": "fm-ag-2",
+          "title": "Tool use, prompting for agents, memory, RAG for agents",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "implement"
+        },
+        {
+          "id": "fm-ag-3",
+          "title": "File, code-execution and data-analysis agents",
+          "mandatory": true,
+          "estMinutes": 150,
+          "proof": "implement"
+        },
+        {
+          "id": "fm-ag-4",
+          "title": "Multi-agent systems — CrewAI, LangGraph, AutoGen, MCP",
+          "mandatory": true,
+          "estMinutes": 180,
+          "proof": "project"
+        }
+      ]
+    },
+    {
+      "id": "cs-c",
+      "name": "PPA — C",
+      "source": "PPA course revision",
       "tier": 3,
       "milestones": [
         {
-          "id": "f-ppa-1",
-          "title": "PPA — problem-solving patterns and logic drills revised",
-          "mandatory": true,
-          "estMinutes": 180,
-          "proof": "exercise"
-        },
-        {
-          "id": "f-ppa-2",
-          "title": "C — pointers, memory, arrays vs pointers recalled cold",
+          "id": "c-1",
+          "title": "Pointers, memory (stack vs heap), malloc/free",
           "mandatory": true,
           "estMinutes": 120,
           "proof": "exercise"
         },
         {
-          "id": "f-ppa-3",
-          "title": "C — structs, unions, function pointers, file I/O",
+          "id": "c-2",
+          "title": "Arrays, strings, structs",
           "mandatory": true,
-          "estMinutes": 120,
+          "estMinutes": 90,
+          "proof": "exercise"
+        },
+        {
+          "id": "c-3",
+          "title": "File I/O, function pointers, recursion",
+          "mandatory": true,
+          "estMinutes": 90,
           "proof": "implement"
         },
         {
-          "id": "f-ppa-4",
-          "title": "C — five classic programs from scratch, no reference",
+          "id": "c-4",
+          "title": "Five programs from scratch — reverse string, linked list, sort",
           "mandatory": true,
           "estMinutes": 150,
           "proof": "exercise"
+        }
+      ]
+    },
+    {
+      "id": "cs-cpp",
+      "name": "PPA — C++",
+      "source": "PPA course revision",
+      "tier": 3,
+      "milestones": [
+        {
+          "id": "cpp-1",
+          "title": "Classes, objects, constructors, destructors, copy semantics",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "notes"
         },
         {
-          "id": "f-ppa-5",
-          "title": "C++ — OOP, virtual functions, vtables",
+          "id": "cpp-2",
+          "title": "Inheritance, polymorphism, virtual functions, abstract classes",
           "mandatory": true,
           "estMinutes": 120,
           "proof": "notes"
         },
         {
-          "id": "f-ppa-6",
-          "title": "C++ — STL fluency: vector, map, set, priority_queue",
+          "id": "cpp-3",
+          "title": "STL — vector, map, set, queue, stack, priority_queue",
           "mandatory": true,
-          "estMinutes": 150,
+          "estMinutes": 120,
           "proof": "exercise"
         },
         {
-          "id": "f-ppa-7",
-          "title": "C++ — smart pointers, RAII, move semantics",
-          "mandatory": false,
-          "estMinutes": 120,
+          "id": "cpp-4",
+          "title": "Smart pointers and move semantics (unique_ptr, shared_ptr)",
+          "mandatory": true,
+          "estMinutes": 90,
           "proof": "notes"
         }
       ]
     },
     {
-      "id": "f-lsp",
+      "id": "cs-lb",
+      "name": "Logic Building (LB)",
+      "source": "LB problem set",
+      "tier": 3,
+      "milestones": [
+        {
+          "id": "lb-1",
+          "title": "Level 1 — patterns, factorial/Fibonacci/GCD, prime, palindrome, digits (15 problems)",
+          "mandatory": true,
+          "estMinutes": 180,
+          "proof": "exercise"
+        },
+        {
+          "id": "lb-2",
+          "title": "Level 2 — arrays: rotate, sorting, two-pointer, sliding window (20 problems)",
+          "mandatory": true,
+          "estMinutes": 240,
+          "proof": "exercise"
+        },
+        {
+          "id": "lb-3",
+          "title": "Level 3 — strings: anagram, palindrome, prefix, roman, parentheses (15 problems)",
+          "mandatory": true,
+          "estMinutes": 180,
+          "proof": "exercise"
+        },
+        {
+          "id": "lb-4",
+          "title": "Level 4 — recursion: power, Hanoi, subsets, permutations, merge/quick sort (15 problems)",
+          "mandatory": true,
+          "estMinutes": 240,
+          "proof": "exercise"
+        }
+      ]
+    },
+    {
+      "id": "cs-dsa",
+      "name": "DSA Basics",
+      "source": "LB Level 5 — DS problems",
+      "tier": 3,
+      "milestones": [
+        {
+          "id": "dsa-1",
+          "title": "Linked list — reverse, detect cycle",
+          "mandatory": true,
+          "estMinutes": 120,
+          "proof": "exercise"
+        },
+        {
+          "id": "dsa-2",
+          "title": "Stack using array, queue using stack",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "implement"
+        },
+        {
+          "id": "dsa-3",
+          "title": "Binary tree — BFS, DFS, height",
+          "mandatory": true,
+          "estMinutes": 120,
+          "proof": "exercise"
+        },
+        {
+          "id": "dsa-4",
+          "title": "HashMap problems — two-sum, anagram groups",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "exercise"
+        },
+        {
+          "id": "dsa-5",
+          "title": "Basic DP — Fibonacci table, climbing stairs",
+          "mandatory": true,
+          "estMinutes": 90,
+          "proof": "exercise"
+        }
+      ]
+    },
+    {
+      "id": "cs-lsp",
       "name": "Linux System Programming",
-      "source": "LSP notes",
+      "source": "LSP course",
       "tier": 3,
       "milestones": [
         {
-          "id": "f-lsp-1",
+          "id": "lsp-1",
           "title": "Processes — fork/exec/wait, process lifecycle",
           "mandatory": true,
           "estMinutes": 150,
           "proof": "implement"
         },
         {
-          "id": "f-lsp-2",
+          "id": "lsp-2",
           "title": "File descriptors, I/O, pipes, redirection",
           "mandatory": true,
           "estMinutes": 120,
           "proof": "implement"
         },
         {
-          "id": "f-lsp-3",
+          "id": "lsp-3",
           "title": "Threads and synchronisation — mutex, condition variables, races",
           "mandatory": true,
           "estMinutes": 180,
           "proof": "implement"
         },
         {
-          "id": "f-lsp-4",
+          "id": "lsp-4",
           "title": "IPC — shared memory, message queues, semaphores",
           "mandatory": true,
           "estMinutes": 120,
           "proof": "notes"
         },
         {
-          "id": "f-lsp-5",
+          "id": "lsp-5",
           "title": "Sockets — a working TCP client and server",
           "mandatory": true,
           "estMinutes": 180,
           "proof": "project"
         },
         {
-          "id": "f-lsp-6",
+          "id": "lsp-6",
           "title": "Signals and the memory layout of a running process",
           "mandatory": false,
           "estMinutes": 90,
           "proof": "notes"
-        }
-      ]
-    },
-    {
-      "id": "f-dsa",
-      "name": "DSA Basics",
-      "source": "LB notes · NeetCode",
-      "tier": 3,
-      "milestones": [
-        {
-          "id": "f-dsa-1",
-          "title": "LB — logic-building drills cleared",
-          "mandatory": true,
-          "estMinutes": 240,
-          "proof": "exercise"
-        },
-        {
-          "id": "f-dsa-2",
-          "title": "Big-O and space complexity fluent, including recursion stacks",
-          "mandatory": true,
-          "estMinutes": 90,
-          "proof": "notes"
-        },
-        {
-          "id": "f-dsa-3",
-          "title": "Arrays, strings, hashing — pattern recognised, not memorised",
-          "mandatory": true,
-          "estMinutes": 300,
-          "proof": "exercise"
-        },
-        {
-          "id": "f-dsa-4",
-          "title": "Two pointers and sliding window",
-          "mandatory": true,
-          "estMinutes": 240,
-          "proof": "exercise"
-        },
-        {
-          "id": "f-dsa-5",
-          "title": "Binary search, including binary-search-on-the-answer",
-          "mandatory": true,
-          "estMinutes": 240,
-          "proof": "exercise"
-        },
-        {
-          "id": "f-dsa-6",
-          "title": "Stack, queue, linked list implemented from scratch",
-          "mandatory": true,
-          "estMinutes": 240,
-          "proof": "implement"
-        },
-        {
-          "id": "f-dsa-7",
-          "title": "Recursion and backtracking basics",
-          "mandatory": true,
-          "estMinutes": 240,
-          "proof": "exercise"
-        },
-        {
-          "id": "f-dsa-8",
-          "title": "75 problems logged with pattern tags and solve times",
-          "mandatory": true,
-          "estMinutes": 120,
-          "proof": "checkpoint"
         }
       ]
     }

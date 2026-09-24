@@ -38,10 +38,13 @@ export function buildMorning(d) {
     section(
       "Today's mission",
       `${paragraph(
-        d.gate.open
-          ? 'Advanced Mode is open. These are the highest-value items the priority engine can see right now.'
-          : `Foundation Gate: ${d.gate.done} of ${d.gate.total} mandatory milestones. Nothing new gets added until it closes.`,
-      )}<div style="height:12px"></div>${numberedList(d.missions)}`,
+        (d.carriedCount > 0
+          ? `${d.carriedCount} ${d.carriedCount === 1 ? 'item was' : 'items were'} planned earlier and not finished — ${d.carriedCount === 1 ? 'it comes' : 'they come'} first. `
+          : '') +
+          (d.gate.open
+            ? 'Advanced Mode is open. These are the highest-value items the priority engine can see right now.'
+            : `Foundation Gate: ${d.gate.done} of ${d.gate.total} mandatory milestones.`),
+      )}<div style="height:12px"></div>${numberedList(d.missions.map(withCarry))}`,
     ),
 
     section('Your day', scheduleHtml(d)),
@@ -101,17 +104,23 @@ export function buildMorning(d) {
     line(`"${q.line}"`),
     line(''),
     line("TODAY'S MISSION"),
-    ...d.missions.map((m, i) => line(`  ${i + 1}. ${m.title}${m.context ? ` (${m.context})` : ''}`)),
+    ...d.missions.map((m, i) =>
+      line(`  ${i + 1}. ${m.title}${m.context ? ` (${m.context})` : ''}${m.carriedFrom ? ' — carried over' : ''}`),
+    ),
     line(''),
     line('YOUR DAY'),
     ...d.schedule.slots
       .filter((s) => s.items.length > 0 || s.id === 'run')
       .flatMap((s) => [
         line(`  ${s.start}-${s.end}  ${s.label}`),
-        ...s.items.map((i) => line(`      - ${i.title} (${formatHM(i.minutes)})`)),
+        ...s.items.map((i) =>
+          line(
+            `      - ${i.title} (${i.partial && i.totalMinutes ? `${formatHM(i.minutes)} of ${formatHM(i.totalMinutes)}` : formatHM(i.minutes)})${i.carried ? ' — carried over' : ''}`,
+          ),
+        ),
       ]),
     d.schedule.overflow.length
-      ? line(`  DOES NOT FIT TODAY: ${d.schedule.overflow.map((i) => i.title).join(' · ')}`)
+      ? line(`  CONTINUES TOMORROW: ${d.schedule.overflow.map((i) => `${i.title} (${formatHM(i.minutes)} left)`).join(' · ')}`)
       : '',
     line(''),
     line(`DSA TARGET: ${d.dsa.target} problems${d.dsa.weakest ? ` — start with ${d.dsa.weakest}` : ''}`),
@@ -138,6 +147,11 @@ export function buildMorning(d) {
   };
 }
 
+/** Tags carried-over missions so the numbered list shows why they are first. */
+function withCarry(m) {
+  return m.carriedFrom ? { ...m, context: `${m.context} · carried over` } : m;
+}
+
 /* ---------- evening ------------------------------------------------------- */
 
 export function buildEvening(d) {
@@ -146,6 +160,7 @@ export function buildEvening(d) {
   const tomorrow = tomorrowMission(d);
   const praise = recognition(d);
 
+  // Sent at 02:30, after the night block, so the day being reported is complete.
   const questions = [
     `Did you complete today's DSA? (${d.dsa.todayCount} of ${d.dsa.target} logged)`,
     `Did you complete today's AI learning?`,
@@ -222,6 +237,13 @@ export function buildEvening(d) {
     praise ? section('Worth naming', callout(praise, C.success)) : '',
     recovery ? section('Recovery plan', callout(recovery, C.danger)) : '',
 
+    t && t.missed.length
+      ? section(
+          'Carries to tomorrow',
+          `${paragraph('Nothing you planned is dropped. These open items go to the top of tomorrow, before anything new.')}<div style="height:10px"></div>${numberedList(t.missed.map((title) => ({ title })))}`,
+        )
+      : '',
+
     section("Tomorrow's mission", callout(tomorrow, C.accent)),
   ].join('');
 
@@ -231,7 +253,7 @@ export function buildEvening(d) {
     t && t.score !== null
       ? line(`PLANNED VS ACTUAL: ${t.completed}/${t.planned} of your plan — ${t.score}%${(t.extras ?? 0) > 0 ? ` (plus ${t.extras} extra)` : ''}`)
       : line('PLANNED VS ACTUAL: today was never started in the app.'),
-    t && t.missed.length ? line(`  Still open: ${t.missed.join(' · ')}`) : '',
+    t && t.missed.length ? line(`  Carries to tomorrow: ${t.missed.join(' · ')}`) : '',
     line(`  Focused minutes: ${d.focusToday}`),
     ...(t?.done ?? []).slice(0, 8).map((x) => line(`  + ${x}`)),
     line(''),

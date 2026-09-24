@@ -1,4 +1,14 @@
-import { parseState, defaultState, type AppState } from './schema';
+import {
+  parseState,
+  defaultState,
+  isStaleEpoch,
+  freshKeepingSettings,
+  DATA_EPOCH,
+  type AppState,
+} from './schema';
+import { getPassphrase } from './passphrase';
+
+export { getPassphrase, setPassphrase, clearPassphrase } from './passphrase';
 
 /**
  * The only place the app touches persistence.
@@ -11,7 +21,6 @@ import { parseState, defaultState, type AppState } from './schema';
  */
 
 const LOCAL_KEY = 'ruturaj_blueprint_v2_state';
-const PASSPHRASE_KEY = 'ruturaj_blueprint_pass';
 const SYNC_URL = '/.netlify/functions/sync';
 const PUSH_DEBOUNCE_MS = 1500;
 
@@ -39,43 +48,29 @@ let state: AppState = defaultState();
 let loaded = false;
 let status: SyncStatus = 'idle';
 let pushTimer: ReturnType<typeof setTimeout> | null = null;
+let initialPull: Promise<void> = Promise.resolve();
 
 const listeners = new Set<Listener>();
 const statusListeners = new Set<StatusListener>();
 
-/* ---------- passphrase ---------------------------------------------------- */
-
-export function getPassphrase(): string | null {
-  try {
-    return localStorage.getItem(PASSPHRASE_KEY);
-  } catch {
-    return null;
-  }
-}
-
-export function setPassphrase(value: string): void {
-  try {
-    localStorage.setItem(PASSPHRASE_KEY, value);
-  } catch {
-    /* private mode — the app still works, it just will not sync */
-  }
-}
-
-export function clearPassphrase(): void {
-  try {
-    localStorage.removeItem(PASSPHRASE_KEY);
-  } catch {
-    /* nothing useful to do */
-  }
-}
-
 /* ---------- local --------------------------------------------------------- */
+
+/** Set when load discarded pre-epoch progress, so init can persist the reset. */
+let resetOnLoad = false;
 
 function readLocal(): AppState {
   try {
     const raw = localStorage.getItem(LOCAL_KEY);
     if (!raw) return defaultState();
-    return parseState(JSON.parse(raw));
+    const parsed = parseState(JSON.parse(raw));
+    if (isStaleEpoch(parsed)) {
+      // Progress from before the current epoch is discarded, not migrated.
+      // The reset keeps the "never written" timestamp so a real current-epoch
+      // copy from another device still wins the next pull.
+      resetOnLoad = true;
+      return freshKeepingSettings(parsed);
+    }
+    return parsed;
   } catch {
     // Corrupt or unreadable storage must not brick the app.
     return defaultState();
@@ -161,6 +156,14 @@ export async function pullRemote(): Promise<void> {
       return;
     }
     const remote = parseState(await res.json());
+    if (isStaleEpoch(remote)) {
+      // The server still holds pre-reset progress. Never adopt it — overwrite
+      // it, so the scheduled mail stops reporting milestones that were never
+      // actually done.
+      if (!isStaleEpoch(state)) await pushRemote();
+      else setStatus('synced');
+      return;
+    }
     if (remote.updatedAt > state.updatedAt) {
       state = remote;
       writeLocal(state);
@@ -178,9 +181,21 @@ export function init(): AppState {
   if (!loaded) {
     state = readLocal();
     loaded = true;
-    void pullRemote();
+    if (resetOnLoad) writeLocal(state);
+    initialPull = pullRemote();
   }
   return state;
+}
+
+/**
+ * Resolves once the first pull from the server has settled. Anything that
+ * writes automatically on load must wait for this: a write stamps "now", and
+ * on a fresh device that would make an empty state look newer than real
+ * progress on the server and overwrite it.
+ */
+export function whenSynced(): Promise<void> {
+  if (!loaded) init();
+  return initialPull;
 }
 
 export function getState(): AppState {
@@ -206,6 +221,9 @@ export function update(mutate: (draft: AppState) => void): AppState {
 /** Replaces all state — used by import. Pushes immediately, not debounced. */
 export function replaceState(raw: unknown): AppState {
   state = parseState(raw);
+  // An import is deliberate, so it is adopted as current rather than being
+  // silently discarded by the epoch check on the next load.
+  state.dataEpoch = DATA_EPOCH;
   state.updatedAt = new Date().toISOString();
   writeLocal(state);
   emit();
@@ -234,7 +252,11 @@ export async function resetAll(): Promise<{ localCleared: boolean; remoteCleared
     pushTimer = null;
   }
 
-  state = defaultState();
+  // Keep the schedule and targets — the Settings screen promises that — and
+  // stamp the reset as the newest write so no other device can sync old
+  // progress back over it.
+  state = freshKeepingSettings(state);
+  state.updatedAt = new Date().toISOString();
   let localCleared = true;
   try {
     localStorage.removeItem(LOCAL_KEY);

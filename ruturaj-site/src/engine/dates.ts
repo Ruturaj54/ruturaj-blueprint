@@ -24,9 +24,17 @@ export function formatISO(d: Date): string {
   return `${y}-${m}-${day}`;
 }
 
-/** Today's local calendar date — not UTC. */
+/**
+ * Hour at which a new mission day begins. Not midnight: the deep-work block
+ * runs 22:00–02:00, so a DSA problem solved at 01:15 belongs to the day it was
+ * planned in, not the next one. With a midnight boundary, half of every night
+ * block landed on the wrong day and the end-of-day mail could never see it.
+ */
+export const DAY_START_HOUR = 4;
+
+/** Today's mission date — local time, with the day rolling over at 04:00. */
 export function todayISO(): string {
-  return formatISO(new Date());
+  return formatISO(new Date(Date.now() - DAY_START_HOUR * 3_600_000));
 }
 
 /** Calendar date for mission day `n` (1-indexed). */

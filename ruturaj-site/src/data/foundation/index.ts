@@ -1,24 +1,31 @@
 import type { FoundationSubject, FoundationTier } from '@/engine/types';
-import { COURSE_SUBJECTS } from './courses';
+import { APNA_SUBJECTS } from './apna';
+import { FIVEME_SUBJECTS } from './fiveme';
 import { CORE_SUBJECTS } from './core';
 
 /**
- * Ordered by Ruturaj's stated priority: Apna College first, then Five Minute
- * Engineering, then his own PPA/LB/LSP/DSA practice. The planner walks this
- * order; the Roadmap screen displays it.
+ * The Foundation Gate, in Ruturaj's stated order: Apna College first, then Five
+ * Minute Engineering, then his own PPA/LB/DSA/LSP practice. Built only from the
+ * syllabi he supplied — no invented checkpoints.
  */
 export const FOUNDATION_SUBJECTS: readonly FoundationSubject[] = [
-  ...COURSE_SUBJECTS.filter((s) => s.tier === 1),
-  ...CORE_SUBJECTS.filter((s) => s.tier === 1),
-  ...COURSE_SUBJECTS.filter((s) => s.tier === 2),
-  ...CORE_SUBJECTS.filter((s) => s.tier === 3),
+  ...APNA_SUBJECTS,
+  ...FIVEME_SUBJECTS,
+  ...CORE_SUBJECTS,
 ];
 
 export const TIER_LABEL: Record<FoundationTier, string> = {
-  1: 'Apna College — first priority',
-  2: 'Five Minute Engineering',
-  3: 'PPA · LB · LSP · DSA practice',
+  1: 'Apna College Prime AI/ML — first priority',
+  2: 'Five Minute Engineering — AI engineering',
+  3: 'PPA · LB · DSA · LSP practice',
 };
+
+/**
+ * Tiers 1 and 2 are courses with a real order — module 12 assumes module 11 —
+ * so the planner walks them in sequence. Tier 3 is independent practice, so it
+ * mixes subjects instead of finishing C before touching LSP.
+ */
+export const SEQUENTIAL_TIERS: ReadonlySet<FoundationTier> = new Set([1, 2]);
 
 export function subjectsInTier(tier: FoundationTier): FoundationSubject[] {
   return FOUNDATION_SUBJECTS.filter((s) => s.tier === tier);
@@ -46,4 +53,4 @@ export function subjectById(id: string): FoundationSubject | undefined {
   return FOUNDATION_SUBJECTS.find((s) => s.id === id);
 }
 
-export { COURSE_SUBJECTS, CORE_SUBJECTS };
+export { APNA_SUBJECTS, FIVEME_SUBJECTS, CORE_SUBJECTS };

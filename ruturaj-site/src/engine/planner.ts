@@ -1,29 +1,36 @@
 import type { AppState } from '@/lib/schema';
 import { dayContext, type DayContext } from './mission';
 import { gateStatus } from './foundation';
-import { nextUp, type ScoredTask } from './priority';
+import { rankTasks, type ScoredTask } from './priority';
 import { weakPatternIds, patternStats } from './dsa';
-import { FOUNDATION_SUBJECTS } from '@/data/foundation';
-import { currentDay, todayISO, addDays } from './dates';
-import type { FoundationMilestone, FoundationSubject } from './types';
+import { isBehindSchedule } from './scoring';
+import { FOUNDATION_SUBJECTS, SEQUENTIAL_TIERS } from '@/data/foundation';
+import { currentDay, addDays } from './dates';
+import type { FoundationMilestone, FoundationSubject, FoundationTier } from './types';
+
+export { dayScore, dayExtras, plannedHits, executionStreak, isBehindSchedule } from './scoring';
 
 /**
  * Turns state into "what should Ruturaj do today".
  *
- * Before the Foundation Gate opens this walks the eight foundation subjects in
- * order; after it opens the priority engine takes over. Either way the answer
- * is at most three things, because a list of thirty is the same as no list.
+ * Before the Foundation Gate opens this walks his courses in order; after it
+ * opens the priority engine takes over. Either way the answer is three things,
+ * and anything planned on an earlier day but not finished comes first — missed
+ * work carries forward instead of silently dropping off the list.
  */
 
 export interface FoundationMission {
   kind: 'foundation';
   subject: FoundationSubject;
   milestone: FoundationMilestone;
+  /** Date this was originally planned on, when it is carried over unfinished. */
+  carriedFrom?: string;
 }
 
 export interface TaskMission {
   kind: 'task';
   scored: ScoredTask;
+  carriedFrom?: string;
 }
 
 export type Mission = FoundationMission | TaskMission;
@@ -44,43 +51,106 @@ export interface DailyPlan {
   completedToday: string[];
   plannedIds: string[];
   estimatedMinutes: number;
+  /** How many of today's missions are carried over from an earlier day. */
+  carriedCount: number;
+}
+
+const MISSIONS_PER_DAY = 3;
+/** How far back an unfinished plan still counts as carried over. */
+const CARRY_LOOKBACK_DAYS = 7;
+
+function isDone(state: AppState, id: string): boolean {
+  const task = state.tasks[id]?.status;
+  return Boolean(state.foundation[id]) || task === 'done' || task === 'skipped';
 }
 
 /**
- * Walks the subjects in Ruturaj's stated priority order — Apna College, then
- * Five Minute Engineering, then his own PPA/LB/LSP/DSA practice.
- *
- * Within a tier it round-robins so one subject cannot starve the rest, and it
- * only drops to the next tier once the current one has no mandatory work left.
- * Optional milestones are picked up last, across all tiers — that is the
- * "can be mixed" case: nothing sits idle if the priority tier is exhausted.
+ * Items planned on an earlier day and still open, mapped to the most recent
+ * date they were planned for. This is what makes missed work reappear first.
  */
-function nextFoundationMissions(state: AppState, count: number): FoundationMission[] {
-  const out: FoundationMission[] = [];
-  const open = (m: { id: string }) => !state.foundation[m.id];
-
-  for (const tier of [1, 2, 3] as const) {
-    const subjects = FOUNDATION_SUBJECTS.filter((s) => s.tier === tier);
-    for (const subject of subjects) {
-      if (out.length >= count) return out;
-      const next = subject.milestones.find((m) => open(m) && m.mandatory);
-      if (next && !out.some((o) => o.milestone.id === next.id)) {
-        out.push({ kind: 'foundation', subject, milestone: next });
-      }
-    }
-    // Only move to the next tier once this one has nothing mandatory left.
-    if (out.length > 0) return out;
-  }
-
-  // Everything mandatory is done — fall back to optional work, any tier.
-  for (const subject of FOUNDATION_SUBJECTS) {
-    if (out.length >= count) return out;
-    const next = subject.milestones.find(open);
-    if (next && !out.some((o) => o.milestone.id === next.id)) {
-      out.push({ kind: 'foundation', subject, milestone: next });
+export function carriedOver(state: AppState, date: string): Map<string, string> {
+  const out = new Map<string, string>();
+  for (let i = 1; i <= CARRY_LOOKBACK_DAYS; i += 1) {
+    const d = addDays(date, -i);
+    const log = state.days[d];
+    if (!log) continue;
+    for (const id of log.planned) {
+      if (!out.has(id) && !isDone(state, id)) out.set(id, d);
     }
   }
   return out;
+}
+
+type Slot = { subject: FoundationSubject; milestone: FoundationMilestone };
+
+/**
+ * Open mandatory milestones for one tier. Courses (tiers 1–2) come back in
+ * module order — module 12 assumes module 11. Practice (tier 3) is
+ * interleaved across subjects so C, C++, LB, DSA and LSP all move together.
+ */
+function openInTier(state: AppState, tier: FoundationTier): Slot[] {
+  const subjects = FOUNDATION_SUBJECTS.filter((s) => s.tier === tier);
+  const queues = subjects.map((subject) =>
+    subject.milestones
+      .filter((m) => m.mandatory && !state.foundation[m.id])
+      .map((milestone) => ({ subject, milestone })),
+  );
+  if (SEQUENTIAL_TIERS.has(tier)) return queues.flat();
+
+  const out: Slot[] = [];
+  const longest = Math.max(0, ...queues.map((q) => q.length));
+  for (let i = 0; i < longest; i += 1) {
+    for (const q of queues) {
+      const slot = q[i];
+      if (slot) out.push(slot);
+    }
+  }
+  return out;
+}
+
+function nextFoundationMissions(state: AppState, date: string): FoundationMission[] {
+  const carried = carriedOver(state, date);
+  const out: FoundationMission[] = [];
+  const seen = new Set<string>();
+  const take = ({ subject, milestone }: Slot) => {
+    if (out.length >= MISSIONS_PER_DAY || seen.has(milestone.id)) return;
+    seen.add(milestone.id);
+    out.push({ kind: 'foundation', subject, milestone, carriedFrom: carried.get(milestone.id) });
+  };
+
+  const everything: Slot[] = FOUNDATION_SUBJECTS.flatMap((subject) =>
+    subject.milestones.map((milestone) => ({ subject, milestone })),
+  );
+
+  // 1. Unfinished work from earlier days, in course order.
+  for (const s of everything) {
+    if (carried.has(s.milestone.id) && !state.foundation[s.milestone.id]) take(s);
+  }
+  // 2. Next in priority order. Flattening the tiers means a nearly finished
+  //    tier tops up from the next one instead of leaving the day half empty —
+  //    the "can be mixed" case.
+  for (const tier of [1, 2, 3] as const) openInTier(state, tier).forEach(take);
+  // 3. Every mandatory milestone is done: optional work, any tier.
+  for (const s of everything) if (!state.foundation[s.milestone.id]) take(s);
+
+  return out;
+}
+
+function nextTaskMissions(state: AppState, ctx: DayContext): TaskMission[] {
+  const carried = carriedOver(state, ctx.date);
+  const ranked = rankTasks({
+    state,
+    phase: ctx.phase,
+    weakPatterns: weakPatternIds(state),
+    behindSchedule: isBehindSchedule(state),
+  });
+  const ordered = [
+    ...ranked.filter((s) => carried.has(s.task.id)),
+    ...ranked.filter((s) => !carried.has(s.task.id)),
+  ];
+  return ordered
+    .slice(0, MISSIONS_PER_DAY)
+    .map((scored) => ({ kind: 'task', scored, carriedFrom: carried.get(scored.task.id) }));
 }
 
 function buildDsaMission(state: AppState, ctx: DayContext): DsaMission {
@@ -116,34 +186,14 @@ function buildDsaMission(state: AppState, ctx: DayContext): DsaMission {
 
 export function buildPlan(state: AppState, day: number = currentDay()): DailyPlan {
   const ctx = dayContext(day);
-  const gate = gateStatus(state);
-  const gateOpen = gate.unlocked;
-  const date = ctx.date;
+  const gateOpen = gateStatus(state).unlocked;
 
-  let missions: Mission[];
-  if (!gateOpen) {
-    missions = nextFoundationMissions(state, 3);
-  } else {
-    missions = nextUp(
-      {
-        state,
-        phase: ctx.phase,
-        weakPatterns: weakPatternIds(state),
-        behindSchedule: isBehindSchedule(state),
-      },
-      3,
-    ).map((scored) => ({ kind: 'task', scored }));
-  }
+  const missions: Mission[] = gateOpen
+    ? nextTaskMissions(state, ctx)
+    : nextFoundationMissions(state, ctx.date);
 
-  const log = state.days[date];
   const plannedIds = missions.map((m) =>
     m.kind === 'foundation' ? m.milestone.id : m.scored.task.id,
-  );
-
-  const estimatedMinutes = missions.reduce(
-    (sum, m) =>
-      sum + (m.kind === 'task' ? m.scored.task.estMinutes : m.milestone.estMinutes),
-    0,
   );
 
   return {
@@ -151,79 +201,13 @@ export function buildPlan(state: AppState, day: number = currentDay()): DailyPla
     gateOpen,
     missions,
     dsa: buildDsaMission(state, ctx),
-    completedToday: log?.completed ?? [],
+    completedToday: state.days[ctx.date]?.completed ?? [],
     plannedIds,
-    estimatedMinutes,
+    estimatedMinutes: missions.reduce(
+      (sum, m) =>
+        sum + (m.kind === 'task' ? m.scored.task.estMinutes : m.milestone.estMinutes),
+      0,
+    ),
+    carriedCount: missions.filter((m) => m.carriedFrom).length,
   };
-}
-
-/**
- * Behind schedule = fewer than half the planned items closed across the last
- * seven logged days. Drives automatic shedding of P2/P3 work.
- */
-export function isBehindSchedule(state: AppState): boolean {
-  const today = todayISO();
-  let planned = 0;
-  let completed = 0;
-  for (let i = 1; i <= 7; i += 1) {
-    const log = state.days[addDays(today, -i)];
-    if (!log) continue;
-    planned += log.planned.length;
-    completed += log.completed.length;
-  }
-  if (planned < 5) return false; // too little history to judge
-  return completed / planned < 0.5;
-}
-
-/**
- * Daily score, 0–100: how much of the PLAN got done.
- *
- * Measured as planned-items-completed over planned, not total-completed over
- * planned. `planned` is a three-item snapshot taken at "Start today" while
- * `completed` accumulates every tick all day, so the naive ratio produced
- * scores like 800% — which is meaningless and quietly destroys the point of
- * having a score at all.
- *
- * Work done beyond the plan is real and is credited by `dayExtras`, separately,
- * rather than by inflating a percentage past 100.
- */
-export function dayScore(state: AppState, date: string): number | undefined {
-  const log = state.days[date];
-  if (!log || log.planned.length === 0) return undefined;
-  const planned = new Set(log.planned);
-  const hit = log.completed.filter((id) => planned.has(id)).length;
-  return Math.min(100, Math.round((hit / log.planned.length) * 100));
-}
-
-/** Items closed today that were not in the plan — genuine bonus work. */
-export function dayExtras(state: AppState, date: string): number {
-  const log = state.days[date];
-  if (!log) return 0;
-  const planned = new Set(log.planned);
-  return log.completed.filter((id) => !planned.has(id)).length;
-}
-
-/** Planned items actually closed, for "3 of 3" style display. */
-export function plannedHits(state: AppState, date: string): number {
-  const log = state.days[date];
-  if (!log) return 0;
-  const planned = new Set(log.planned);
-  return log.completed.filter((id) => planned.has(id)).length;
-}
-
-/** Consecutive days scoring 50 or better, counting back from yesterday. */
-export function executionStreak(state: AppState): number {
-  let streak = 0;
-  const today = todayISO();
-  for (let i = 0; i < 365; i += 1) {
-    const date = addDays(today, -i);
-    const score = dayScore(state, date);
-    if (score === undefined) {
-      if (i === 0) continue; // today may not be scored yet
-      break;
-    }
-    if (score < 50) break;
-    streak += 1;
-  }
-  return streak;
 }

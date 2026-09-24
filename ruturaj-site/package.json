@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "gen:catalog": "node scripts/gen-catalog.mjs",
-    "verify": "node scripts/verify-engine.mjs"
+    "verify": "node scripts/verify-engine.mjs",
+    "test:mail": "node scripts/test-mail.mjs"
   },
   "dependencies": {
     "@netlify/blobs": "^8.1.0",

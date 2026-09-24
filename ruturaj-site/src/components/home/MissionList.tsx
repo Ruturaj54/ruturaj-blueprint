@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { ChevronDown, Code2, Info } from 'lucide-react';
+import { ChevronDown, Code2, Info, CornerDownRight } from 'lucide-react';
 import { Card, PriorityPill, Chip, TaskCheckbox } from '@/components/ui/primitives';
 import { useAppState, useUpdateState } from '@/hooks/useAppState';
 import { spring } from '@/lib/motion';
-import { todayISO } from '@/engine/dates';
+import { todayISO, formatShort } from '@/engine/dates';
+import { formatHM } from '@/engine/schedule';
 import type { DailyPlan } from '@/engine/planner';
 import type { ScoreReason } from '@/engine/priority';
 
@@ -68,7 +69,8 @@ export function MissionList({ plan }: { plan: DailyPlan }) {
               title={m.milestone.title}
               meta={
                 <>
-                  <Chip>{m.subject.name}</Chip>
+                  {m.carriedFrom && <CarriedChip from={m.carriedFrom} />}
+                  <Chip>{formatHM(m.milestone.estMinutes)}</Chip>
                   <Chip>{m.subject.source}</Chip>
                   <Chip tone={m.milestone.mandatory ? 'accent' : 'default'}>
                     {m.milestone.mandatory ? 'Gates the unlock' : 'Optional'}
@@ -91,7 +93,8 @@ export function MissionList({ plan }: { plan: DailyPlan }) {
             priority={<PriorityPill priority={task.priority} />}
             meta={
               <>
-                <Chip>{task.estMinutes} min</Chip>
+                {m.carriedFrom && <CarriedChip from={m.carriedFrom} />}
+                <Chip>{formatHM(task.estMinutes)}</Chip>
                 {task.source && <Chip>{task.source}</Chip>}
                 {task.interviewCritical && <Chip tone="accent">Interview-critical</Chip>}
                 {task.portfolioCritical && <Chip tone="info">Portfolio</Chip>}
@@ -236,5 +239,15 @@ function MissionCard({
         </>
       )}
     </Card>
+  );
+}
+
+/** Marks work planned on an earlier day and not yet finished. */
+function CarriedChip({ from }: { from: string }) {
+  return (
+    <Chip tone="accent">
+      <CornerDownRight size={11} />
+      Carried from {formatShort(from)}
+    </Chip>
   );
 }

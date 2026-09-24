@@ -6,6 +6,14 @@ import { Card, SectionTitle, Button, Chip } from '@/components/ui/primitives';
 import { listContainer } from '@/lib/motion';
 import * as storage from '@/lib/storage';
 
+/**
+ * The actual send times. Fixed in the function code (Netlify cron is static),
+ * so they are shown as facts here rather than as settings that would not
+ * change anything.
+ */
+const MORNING_SEND = '07:00';
+const END_OF_DAY_SEND = '02:30';
+
 /** §40 — email configuration and a real send test. */
 export function Email() {
   const state = useAppState();
@@ -68,28 +76,24 @@ export function Email() {
         <div className="grid gap-3 sm:grid-cols-2">
           <Card>
             <p className="text-[14px] font-medium">Morning mission</p>
-            <p className="tnum mt-1 font-mono text-[22px] text-accent">
-              {state.settings.morningEmailTime}
-            </p>
+            <p className="tnum mt-1 font-mono text-[22px] text-accent">{MORNING_SEND}</p>
             <p className="mt-2 text-[13px] text-muted">
-              Today&rsquo;s three missions, the DSA target aimed at your weakest pattern, and one
-              challenge drawn from yesterday&rsquo;s result.
+              Today&rsquo;s three missions with anything unfinished from yesterday first, your
+              timetable, the DSA target aimed at your weakest pattern, and one challenge.
             </p>
           </Card>
           <Card>
-            <p className="text-[14px] font-medium">Evening accountability</p>
-            <p className="tnum mt-1 font-mono text-[22px] text-accent">
-              {state.settings.eveningEmailTime}
-            </p>
+            <p className="text-[14px] font-medium">End-of-day recap</p>
+            <p className="tnum mt-1 font-mono text-[22px] text-accent">{END_OF_DAY_SEND}</p>
             <p className="mt-2 text-[13px] text-muted">
-              Planned vs actual, the day score, the honesty questions, a recovery plan and
-              tomorrow&rsquo;s single mission.
+              Sent after your night block, so it sees the whole day: what you closed, what you did
+              well, and what carries to tomorrow. Skipped if you already sent the recap yourself.
             </p>
           </Card>
         </div>
         <p className="mt-2 px-1 text-[12px] text-faint">
-          Times are set in Settings. The cron schedule itself is fixed in netlify.toml at 07:00 and
-          22:00 IST — change both if you move them far.
+          Both times are IST and fixed in the mail functions. Your day runs until 04:00, so anything
+          logged during the night block counts toward the day you planned it on.
         </p>
       </section>
 

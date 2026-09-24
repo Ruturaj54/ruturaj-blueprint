@@ -1,4 +1,4 @@
-import { Clock, Briefcase, BookOpen, Footprints, Moon, TriangleAlert } from 'lucide-react';
+import { Clock, Briefcase, BookOpen, Footprints, Moon, ArrowRight, CornerDownRight } from 'lucide-react';
 import { Card, SectionTitle, Chip, ProgressBar } from '@/components/ui/primitives';
 import { cn } from '@/lib/cn';
 import { useAppState } from '@/hooks/useAppState';
@@ -41,19 +41,20 @@ export function DayTimetable({ plan }: { plan: DailyPlan }) {
       </div>
 
       {schedule.overflow.length > 0 && (
-        <Card className="mt-2.5 border-danger/25">
+        <Card className="mt-2.5 border-accent/25">
           <div className="flex items-start gap-2">
-            <TriangleAlert size={15} className="mt-0.5 shrink-0 text-danger" />
-            <div>
-              <p className="text-[13px]">
-                {schedule.overflow.length} item
-                {schedule.overflow.length > 1 ? 's do' : ' does'} not fit in today&rsquo;s blocks.
-              </p>
-              <p className="mt-1 text-[12px] text-muted">
-                {schedule.overflow.map((i) => i.title).join(' · ')}
-              </p>
+            <ArrowRight size={15} className="mt-0.5 shrink-0 text-accent" />
+            <div className="min-w-0">
+              <p className="text-[13px]">Continues tomorrow</p>
+              {schedule.overflow.map((i) => (
+                <p key={i.id} className="mt-1 text-[12px] text-muted">
+                  {i.title}{' '}
+                  <span className="tnum text-faint">— {formatHM(i.minutes)} left</span>
+                </p>
+              ))}
               <p className="mt-1.5 text-[12px] text-faint">
-                Carry it to tomorrow rather than stealing it from sleep.
+                Today&rsquo;s blocks are full. It moves to the top of tomorrow&rsquo;s plan rather than
+                coming out of your sleep.
               </p>
             </div>
           </div>
@@ -90,7 +91,11 @@ function SlotCard({ slot, completed }: { slot: Slot; completed: Set<string> }) {
         )}
       </div>
 
-      {!isRest && <ProgressBar value={pct} tone={pct > 100 ? 'danger' : 'accent'} className="mx-3.5 mb-1" />}
+      {/* w-auto, not the default w-full: with a horizontal margin, w-full is
+          100% + 28px and the bar pokes 13px out of the card at full capacity. */}
+      {!isRest && (
+        <ProgressBar value={pct} tone={pct > 100 ? 'danger' : 'accent'} className="mx-3.5 mb-1 w-auto" />
+      )}
 
       {slot.items.length > 0 && (
         <div className="space-y-2 border-t border-line px-3.5 py-3">
@@ -114,8 +119,18 @@ function SlotCard({ slot, completed }: { slot: Slot; completed: Set<string> }) {
                     {item.title}
                   </p>
                   <div className="mt-1 flex flex-wrap gap-1.5">
-                    <Chip>{formatHM(item.minutes)}</Chip>
+                    <Chip>
+                      {item.partial && item.totalMinutes
+                        ? `${formatHM(item.minutes)} of ${formatHM(item.totalMinutes)}`
+                        : formatHM(item.minutes)}
+                    </Chip>
                     <Chip tone={item.kind === 'dsa' ? 'info' : 'default'}>{item.context}</Chip>
+                    {item.carried && (
+                      <Chip tone="accent">
+                        <CornerDownRight size={11} />
+                        Carried over
+                      </Chip>
+                    )}
                   </div>
                 </div>
               </div>

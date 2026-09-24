@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import { useRoute } from '@/lib/router';
 import { Shell } from '@/components/Shell';
 import { PraiseModal } from '@/components/PraiseModal';
+import { useDaySnapshot } from '@/hooks/useDaySnapshot';
 import { pageVariants } from '@/lib/motion';
 import { Home } from '@/screens/Home';
 import { Roadmap } from '@/screens/Roadmap';
@@ -38,6 +39,7 @@ function screenFor(route: string, navigate: (id: string) => void): ReactElement 
 
 export function App() {
   const [route, navigate] = useRoute();
+  useDaySnapshot();
 
   return (
     <Shell route={route} navigate={navigate}>
