@@ -1,7 +1,7 @@
 # Ruturaj Blueprint
 
 A 161-day career execution and accountability system.
-**Day 1 = 23 Sep 2026 · Day 161 = 2 Mar 2027.** A mission day runs from 04:00 to 04:00,
+**Day 1 = 24 Sep 2026 · Day 161 = 3 Mar 2027.** A mission day runs from 04:00 to 04:00,
 so the 22:00–02:00 night block counts toward the day it was planned on.
 
 Static React SPA on Netlify, four serverless functions, no database server.

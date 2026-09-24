@@ -14,14 +14,15 @@ const truthy = (label, value) => check(label, Boolean(value), true);
 
 // IST wall-clock helper: build a Date for a given IST time.
 const ist = (iso, hhmm) => new Date(`${iso}T${hhmm}:00+05:30`);
-const DAY2 = '2026-09-24';
-const morning = ist(DAY2, '07:00');
+// 24 Sep is Day 1 of the mission; 23 Sep below is simply "yesterday".
+const TODAY = '2026-09-24';
+const morning = ist(TODAY, '07:00');
 
 console.log('\n=== 1. Day boundary: the night block belongs to the day it was planned on ===');
-check('07:00 IST on 24 Sep is 24 Sep', istToday(ist(DAY2, '07:00')), DAY2);
-check('23:30 IST on 24 Sep is 24 Sep', istToday(ist(DAY2, '23:30')), DAY2);
-check('01:15 IST on 25 Sep still counts as 24 Sep', istToday(ist('2026-09-25', '01:15')), DAY2);
-check('02:30 IST end-of-day send reports 24 Sep', istToday(ist('2026-09-25', '02:30')), DAY2);
+check('07:00 IST on 24 Sep is 24 Sep', istToday(ist(TODAY, '07:00')), TODAY);
+check('23:30 IST on 24 Sep is 24 Sep', istToday(ist(TODAY, '23:30')), TODAY);
+check('01:15 IST on 25 Sep still counts as 24 Sep', istToday(ist('2026-09-25', '01:15')), TODAY);
+check('02:30 IST end-of-day send reports 24 Sep', istToday(ist('2026-09-25', '02:30')), TODAY);
 check('04:00 IST on 25 Sep is 25 Sep', istToday(ist('2026-09-25', '04:00')), '2026-09-25');
 
 console.log('\n=== 2. His actual blob: old epoch with 24 gate ticks he never did ===');
@@ -63,11 +64,11 @@ console.log('\n=== 4. End-of-day mail lists what carries to tomorrow ===');
 const endState = {
   dataEpoch: 3,
   foundation: { 'ap-03': true },
-  days: { [DAY2]: { planned: ['ap-03', 'ap-04', 'ap-05'], completed: ['ap-03'] } },
+  days: { [TODAY]: { planned: ['ap-03', 'ap-04', 'ap-05'], completed: ['ap-03'] } },
   settings: { dsaTargetPerDay: 3 },
 };
 const d3 = buildDigest(endState, ist('2026-09-25', '02:30'));
-check('02:30 digest reports the day that is ending', d3.today, DAY2);
+check('02:30 digest reports the day that is ending', d3.today, TODAY);
 check('open items listed for tomorrow', d3.todayLog.missed.length, 2);
 const eve = buildEvening(d3);
 truthy('HTML has a "Carries to tomorrow" section', eve.html.includes('Carries to tomorrow'));
@@ -77,7 +78,7 @@ console.log('\n=== 5. Score never exceeds 100 (the 800% bug, everywhere) ===');
 const inflated = {
   dataEpoch: 3,
   foundation: { 'ap-03': true, 'ap-04': true },
-  days: { [DAY2]: { planned: ['ap-03', 'ap-04', 'ap-05'], completed: ['ap-03', 'ap-04', ...Array.from({ length: 22 }, (_, i) => `ap-x${i}`)] } },
+  days: { [TODAY]: { planned: ['ap-03', 'ap-04', 'ap-05'], completed: ['ap-03', 'ap-04', ...Array.from({ length: 22 }, (_, i) => `ap-x${i}`)] } },
   settings: {},
 };
 const d4 = buildDigest(inflated, ist('2026-09-25', '02:30'));

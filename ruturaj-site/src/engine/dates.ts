@@ -7,8 +7,8 @@
  * that made the old app's day counter drift.
  */
 
-export const MISSION_START = '2026-09-23';
-export const MISSION_END = '2027-03-02';
+export const MISSION_START = '2026-09-24';
+export const MISSION_END = '2027-03-03';
 export const TOTAL_DAYS = 161;
 
 const MS_PER_DAY = 86_400_000;

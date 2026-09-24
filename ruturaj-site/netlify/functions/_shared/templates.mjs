@@ -99,7 +99,7 @@ export function buildMorning(d) {
 
   const text = [
     line(`GOOD MORNING RUTURAJ — Day ${d.day} of 161`),
-    line(`${d.phase.label} ${d.phase.title} · ${d.daysLeft} days to 2 Mar 2027`),
+    line(`${d.phase.label} ${d.phase.title} · ${d.daysLeft} days to 3 Mar 2027`),
     line(''),
     line(`"${q.line}"`),
     line(''),

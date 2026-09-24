@@ -1,7 +1,7 @@
 # Ruturaj Blueprint — engineering rules
 
 Personal career-execution OS for Ruturaj Dharne. Static SPA on Netlify free tier.
-**Mission: 161 days, Day 1 = 2026-09-23, Day 161 = 2027-03-02.** A mission day
+**Mission: 161 days, Day 1 = 2026-09-24, Day 161 = 2027-03-03.** A mission day
 runs 04:00→04:00 (`DAY_START_HOUR`), so the 22:00–02:00 night block belongs to
 the day it was planned on.
 
