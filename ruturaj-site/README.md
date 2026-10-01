@@ -1,8 +1,16 @@
 # Ruturaj Blueprint
 
 A 161-day career execution and accountability system.
-**Day 1 = 24 Sep 2026 · Day 161 = 3 Mar 2027.** A mission day runs from 04:00 to 04:00,
-so the 22:00–02:00 night block counts toward the day it was planned on.
+**Day 1 = 1 Oct 2026 · Day 161 = 10 Mar 2027.** A mission day runs from 04:00 to 04:00,
+so the 22:00–01:00 night block counts toward the day it was planned on.
+
+| Day | Shape |
+|---|---|
+| Weekday | 07:00 wake · run to 08:15 · office 10:00–17:30 (2h spare study) · course 18:00–20:00 · run 20:00–21:15 · night block 22:00–01:00 · sleep |
+| Saturday | 08:30 wake · long run · 3h deep block · DSA · ride to the hills 16:00–20:30 · light revision |
+| Sunday | 08:30 wake · recovery · clear the carry-over · timed DSA set · ride · weekly review at 20:30 |
+
+Course order: **Course 1 Apna College → Course 2 Five Minute Engineering → practice**.
 
 Static React SPA on Netlify, four serverless functions, no database server.
 
@@ -33,7 +41,9 @@ npm run dev
 | `npm run dev` | Vite dev server on :5173 |
 | `npm run build` | Generates the catalog, typechecks, then builds to `dist/` |
 | `npm run typecheck` | `tsc --noEmit` |
-| `npm run verify` | Re-runs the 31 day-math boundary checks |
+| `npm run verify` | Re-runs the day-math boundary checks |
+| `npm run test:mail` | Mail pipeline assertions — timetable, weekends, course order, health |
+| `node scripts/preview-emails.mjs` | Renders all six mails to `scripts/preview-*.html` (gitignored) |
 | `npm run gen:catalog` | Regenerates `netlify/functions/_shared/catalog.json` |
 
 ---
@@ -66,7 +76,11 @@ IST is UTC+5:30, so the cron times above are the IST times minus 5h30.
 Shared code lives in `netlify/functions/_shared/`:
 
 - `digest.mjs` — reads the state blob and computes everything an email needs
-- `templates.mjs` — the two mail layouts
+- `templates.mjs` — the morning and end-of-day mails, shaped per weekday / Saturday / Sunday
+- `coach.mjs` — "Ruturaj, do this", the course plan, health, avoid-and-growing, ride and review blocks
+- `schedule.mjs` — the full-day timetable (mirrors `src/engine/schedule.ts`)
+- `health.mjs`, `growth.mjs` — health tracking and real since-Day-1 totals
+- `plaintext.mjs` — the text versions
 - `voice.mjs` — subject lines, challenges and recovery plans, chosen from data
 - `mail.mjs` — transport (one retry) and the HTML shell
 - `catalog.json` — **generated**, do not edit by hand
@@ -104,7 +118,7 @@ See `../CLAUDE.md` for coding rules and `../design.md` for the design system.
 
 ```bash
 npm run verify                      # day-math boundaries
-node scripts/preview-emails.mjs     # renders both mails from a fixture
+node scripts/preview-emails.mjs     # renders all six mails from a fixture
 ```
 
 `preview-emails.mjs` writes `scripts/preview-*.html` (gitignored) and prints

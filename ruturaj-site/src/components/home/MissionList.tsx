@@ -8,6 +8,8 @@ import { todayISO, formatShort } from '@/engine/dates';
 import { formatHM } from '@/engine/schedule';
 import type { DailyPlan } from '@/engine/planner';
 import type { ScoreReason } from '@/engine/priority';
+import type { Coach } from '@/engine/types';
+import { coachFor, TIER_SHORT } from '@/data/foundation';
 
 /**
  * The three missions plus the DSA block. Each card can expand to show why the
@@ -70,13 +72,13 @@ export function MissionList({ plan }: { plan: DailyPlan }) {
               meta={
                 <>
                   {m.carriedFrom && <CarriedChip from={m.carriedFrom} />}
+                  <Chip tone="accent">{TIER_SHORT[m.subject.tier]}</Chip>
                   <Chip>{formatHM(m.milestone.estMinutes)}</Chip>
                   <Chip>{m.subject.source}</Chip>
-                  <Chip tone={m.milestone.mandatory ? 'accent' : 'default'}>
-                    {m.milestone.mandatory ? 'Gates the unlock' : 'Optional'}
-                  </Chip>
+                  {!m.milestone.mandatory && <Chip>Optional</Chip>}
                 </>
               }
+              coach={coachFor(m.subject.id)}
               checked={isDone(m.milestone.id)}
               onToggle={(v) => toggle(m.milestone.id, v)}
             />
@@ -136,6 +138,7 @@ function MissionCard({
   rationale,
   reasons,
   score,
+  coach,
   checked,
   onToggle,
 }: {
@@ -147,12 +150,13 @@ function MissionCard({
   rationale?: string;
   reasons?: ScoreReason[];
   score?: number;
+  coach?: Coach;
   checked: boolean;
   onToggle: (next: boolean) => void;
 }) {
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
-  const hasDetail = Boolean(rationale || reasons?.length);
+  const hasDetail = Boolean(rationale || reasons?.length || coach);
 
   return (
     <Card className="p-0">
@@ -180,7 +184,7 @@ function MissionCard({
             className="flex min-h-[40px] w-full items-center gap-1.5 border-t border-line px-4 text-[12px] text-muted transition-colors hover:text-fg"
           >
             <Info size={13} />
-            Why this
+            {coach ? 'Ruturaj, do this — how and why' : 'Why this'}
             <motion.span
               animate={{ rotate: open ? 180 : 0 }}
               transition={reduce ? { duration: 0 } : spring}
@@ -199,6 +203,14 @@ function MissionCard({
                 className="overflow-hidden"
               >
                 <div className="space-y-3 border-t border-line px-4 py-3">
+                  {coach && (
+                    <>
+                      <p className="text-[14px] font-medium leading-relaxed text-fg">{coach.doThis}</p>
+                      <Detail title="Why it helps — evidence" body={coach.why} />
+                      <Detail title="Go harder" body={coach.harder} />
+                      <Detail title="Proof by tonight" body={coach.proof} />
+                    </>
+                  )}
                   {rationale && (
                     <div>
                       <p className="text-[11px] uppercase tracking-[0.12em] text-faint">
@@ -239,6 +251,15 @@ function MissionCard({
         </>
       )}
     </Card>
+  );
+}
+
+function Detail({ title, body }: { title: string; body: string }) {
+  return (
+    <div>
+      <p className="text-[11px] uppercase tracking-[0.12em] text-faint">{title}</p>
+      <p className="mt-1 text-[13px] leading-relaxed text-muted">{body}</p>
+    </div>
   );
 }
 

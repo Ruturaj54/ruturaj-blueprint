@@ -2,7 +2,7 @@ import { TOTAL_DAYS, clampDay, dateForDay, weekOfDay, isSunday } from './dates';
 import type { MissionPhase } from './types';
 
 /**
- * The 161-day mission: 21 Sep 2026 → 28 Feb 2027. Exactly 23 weeks.
+ * The 161-day mission: 1 Oct 2026 → 10 Mar 2027. Exactly 23 weeks.
  *
  * Extended from the original 15 Jan target because the course load is real:
  * the Five Minute Engineering bootcamp alone is a 7–8 month syllabus, and the

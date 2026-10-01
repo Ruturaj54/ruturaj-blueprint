@@ -14,8 +14,12 @@ const C = {
   faint: '#6B6B75',
   accent: '#FBBF24',
   success: '#34D399',
+  info: '#38BDF8',
   danger: '#FB7185',
 };
+
+/** One font stack everywhere — Gmail ignores web fonts. */
+export const FONT = '-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif';
 
 /** Where the mail sends him. Overridable so a rename does not need a code change. */
 export const SITE_URL = process.env.SITE_URL || 'https://winner-ruturaj.netlify.app';
@@ -63,8 +67,54 @@ export async function sendMail({ subject, html, text }) {
   return { ok: false, error: String(lastErr?.message ?? lastErr) };
 }
 
-const esc = (s) =>
+export const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/** "#RRGGBB" at an opacity, as rgba — 8-digit hex is not safe in every client. */
+export function alpha(hex, a) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+}
+
+/** A thin progress bar. Tables, not flex — Outlook and Gmail both render it. */
+export function bar(pct, tone = C.accent, height = 6) {
+  const w = Math.max(0, Math.min(100, Math.round(pct)));
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:rgba(255,255,255,.07);border-radius:99px;"><tr>
+    ${w > 0 ? `<td width="${w}%" style="height:${height}px;background:${tone};border-radius:99px;font-size:0;line-height:0;">&nbsp;</td>` : ''}
+    ${w < 100 ? `<td style="height:${height}px;font-size:0;line-height:0;">&nbsp;</td>` : ''}
+  </tr></table>`;
+}
+
+/** Small rounded label. */
+export function pill(text, tone = C.muted) {
+  return `<span style="display:inline-block;padding:2px 8px;border:1px solid ${alpha(tone, 0.35)};border-radius:99px;font:500 11px/1.5 ${FONT};color:${tone};white-space:nowrap;">${esc(text)}</span>`;
+}
+
+/** A bordered card with an optional tinted edge. */
+export function card(inner, tone = null) {
+  const edge = tone
+    ? `border:1px solid ${alpha(tone, 0.28)};background:${alpha(tone, 0.06)};`
+    : `border:1px solid ${C.line};`;
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="${edge}border-radius:12px;"><tr><td style="padding:14px 15px;">${inner}</td></tr></table>`;
+}
+
+/** Bulleted lines with a coloured dot. Items are { text, sub? }. */
+export function bullets(items, tone = C.accent) {
+  return items
+    .map(
+      (it) => `
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:7px;"><tr>
+        <td width="14" valign="top" style="padding-top:8px;"><div style="width:6px;height:6px;border-radius:50%;background:${tone};"></div></td>
+        <td style="font:400 14px/1.5 ${FONT};color:${C.fg};">${esc(it.text)}${it.sub ? `<span style="display:block;margin-top:2px;font-size:12px;color:${C.faint};">${esc(it.sub)}</span>` : ''}</td>
+      </tr></table>`,
+    )
+    .join('');
+}
+
+/** A small uppercase label inside a section. */
+export function label(text, tone = C.faint) {
+  return `<p style="margin:0 0 7px;font:600 10px/1 ${FONT};letter-spacing:.14em;text-transform:uppercase;color:${tone};">${esc(text)}</p>`;
+}
 
 export function section(title, inner) {
   return `
@@ -121,9 +171,10 @@ export function paragraph(text) {
 }
 
 /** Wraps sections in the dark shell with the day header and footer. */
-export function layout({ kicker, day, daysLeft, phase, body }) {
+export function layout({ kicker, day, daysLeft, phase, dateLine = '', body }) {
   return `<!doctype html>
-<html><body style="margin:0;padding:0;background:${C.bg};">
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"></head>
+<body style="margin:0;padding:0;background:${C.bg};">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.bg};padding:24px 12px;">
     <tr><td align="center">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:${C.surface};border:1px solid ${C.line};border-radius:16px;overflow:hidden;">
@@ -131,7 +182,9 @@ export function layout({ kicker, day, daysLeft, phase, body }) {
         <tr><td style="padding:26px 24px 0;">
           <p style="margin:0 0 6px;font:600 11px/1 -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:${C.accent};">${esc(kicker)}</p>
           <p style="margin:0;font:700 38px/1 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.fg};">Day ${day}<span style="font-size:16px;font-weight:400;color:${C.faint};"> / 161</span></p>
-          <p style="margin:8px 0 0;font:400 13px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.muted};">${esc(phase)} &middot; ${daysLeft} days to 3 Mar 2027</p>
+          <p style="margin:8px 0 0;font:400 13px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.muted};">${dateLine ? `${esc(dateLine)} &middot; ` : ''}${esc(phase)}</p>
+          <p style="margin:2px 0 12px;font:400 12px/1.5 ${FONT};color:${C.faint};">${daysLeft} days to 10 Mar 2027 &middot; ${Math.round((day / 161) * 100)}% of the mission behind you</p>
+          ${bar((day / 161) * 100, C.accent, 4)}
         </td></tr>
 
         ${body}
@@ -145,6 +198,7 @@ export function layout({ kicker, day, daysLeft, phase, body }) {
             <a href="${SITE_URL}/#/home" style="color:${C.muted};text-decoration:none;">Home</a> &middot;
             <a href="${SITE_URL}/#/dsa" style="color:${C.muted};text-decoration:none;">DSA</a> &middot;
             <a href="${SITE_URL}/#/ai" style="color:${C.muted};text-decoration:none;">AI</a> &middot;
+            <a href="${SITE_URL}/#/health" style="color:${C.muted};text-decoration:none;">Health</a> &middot;
             <a href="${SITE_URL}/#/analytics" style="color:${C.muted};text-decoration:none;">Analytics</a>
           </p>
         </td></tr>
@@ -152,7 +206,7 @@ export function layout({ kicker, day, daysLeft, phase, body }) {
         <tr><td style="padding:24px;">
           <div style="border-top:1px solid ${C.line};padding-top:14px;">
             <p style="margin:0;font:400 11px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:${C.faint};">
-              Ruturaj Blueprint &middot; 161-day mission &middot; AI Engineer / SDE
+              Ruturaj Blueprint &middot; 161-day mission, 1 Oct 2026 &rarr; 10 Mar 2027 &middot; AI Engineer / SDE
             </p>
           </div>
         </td></tr>

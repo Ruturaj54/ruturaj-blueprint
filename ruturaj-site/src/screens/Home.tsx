@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Flame, Lock, Unlock, Footprints, Building2 } from 'lucide-react';
+import { ArrowRight, Flame, Footprints, Building2 } from 'lucide-react';
 import { useAppState, useUpdateState } from '@/hooks/useAppState';
 import { listContainer } from '@/lib/motion';
 import { Card, SectionTitle, Button, ProgressBar, Chip } from '@/components/ui/primitives';
 import { ProgressRing } from '@/components/ui/ProgressRing';
 import { MissionList } from '@/components/home/MissionList';
+import { NowCard } from '@/components/home/NowCard';
+import { CoursePlan } from '@/components/home/CoursePlan';
+import { CoachCard } from '@/components/home/CoachCard';
 import { buildPlan, executionStreak } from '@/engine/planner';
-import { gateStatus } from '@/engine/foundation';
 import { interviewReadiness, trackReadiness } from '@/engine/readiness';
 import { dsaTotals, dsaStreak } from '@/engine/dsa';
 import { currentDay, todayISO, formatLong, TOTAL_DAYS } from '@/engine/dates';
@@ -17,7 +19,6 @@ export function Home({ navigate }: { navigate: (id: string) => void }) {
 
   const day = currentDay();
   const plan = buildPlan(state, day);
-  const gate = gateStatus(state);
   const readiness = interviewReadiness(state);
   const totals = dsaTotals(state);
   const aiTrack = trackReadiness(state, 'ai');
@@ -57,7 +58,7 @@ export function Home({ navigate }: { navigate: (id: string) => void }) {
 
           <div className="min-w-0 flex-1 text-center sm:text-left">
             <p className="font-display text-[11px] uppercase tracking-[0.18em] text-accent">
-              161-day mission
+              161-day mission · 1 Oct → 10 Mar
             </p>
             <h1 className="mt-1.5 font-display text-[26px] font-bold leading-tight sm:text-[30px]">
               Become interview-ready for top-tier SDE and AI Engineer roles.
@@ -73,7 +74,11 @@ export function Home({ navigate }: { navigate: (id: string) => void }) {
         </div>
       </Card>
 
+      {/* ---- right now ---- */}
+      <NowCard plan={plan} onOpen={() => navigate('today')} />
+
       {/* ---- today's missions ---- */}
+      <CoachCard plan={plan} />
       <section>
         <SectionTitle
           action={
@@ -96,43 +101,8 @@ export function Home({ navigate }: { navigate: (id: string) => void }) {
         </Button>
       </section>
 
-      {/* ---- foundation gate ---- */}
-      <section>
-        <SectionTitle>Foundation gate</SectionTitle>
-        <Card>
-          <button onClick={() => navigate('roadmap')} className="w-full text-left">
-            <div className="flex items-start justify-between gap-4">
-              <div className="min-w-0">
-                <div className="flex items-center gap-2">
-                  {gate.unlocked ? (
-                    <Unlock size={15} className="text-success" />
-                  ) : (
-                    <Lock size={15} className="text-accent" />
-                  )}
-                  <p className="text-[15px] font-medium">
-                    {gate.unlocked ? 'Advanced Mode unlocked' : 'Phase 1 — finish what you started'}
-                  </p>
-                </div>
-                <p className="mt-1.5 text-[13px] text-muted">
-                  {gate.unlocked
-                    ? gate.overridden
-                      ? 'Unlocked by manual override, not by completion.'
-                      : 'Earned. Every mandatory milestone cleared.'
-                    : `${gate.mandatoryTotal - gate.mandatoryDone} mandatory milestones left across ${gate.blockingSubjects.length} subjects.`}
-                </p>
-              </div>
-              <span className="tnum shrink-0 font-display text-[26px] font-bold text-accent">
-                {gate.pct}%
-              </span>
-            </div>
-            <ProgressBar
-              value={gate.pct}
-              tone={gate.unlocked ? 'success' : 'accent'}
-              className="mt-3"
-            />
-          </button>
-        </Card>
-      </section>
+      {/* ---- the plan, in course order ---- */}
+      <CoursePlan onOpen={() => navigate('roadmap')} />
 
       {/* ---- progress strip ---- */}
       <section>

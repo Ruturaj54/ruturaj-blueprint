@@ -4,7 +4,8 @@ import { ChevronDown } from 'lucide-react';
 import { useAppState, useUpdateState } from '@/hooks/useAppState';
 import { Card, ProgressBar, Chip, TaskCheckbox } from '@/components/ui/primitives';
 import { cn } from '@/lib/cn';
-import { FOUNDATION_SUBJECTS } from '@/data/foundation';
+import { FOUNDATION_SUBJECTS, coachFor } from '@/data/foundation';
+import { spring } from '@/lib/motion';
 import { allSubjectProgress } from '@/engine/foundation';
 import type { FoundationStatus } from '@/engine/types';
 
@@ -25,6 +26,7 @@ export function SubjectCard({ subjectId }: { subjectId: string }) {
   if (!subject) return null;
   const p = allSubjectProgress(state).find((x) => x.subject.id === subjectId)!;
   const meta = STATUS_META[p.status];
+  const coach = coachFor(subject.id);
 
   const toggle = (id: string, next: boolean) => {
     update((draft) => {
@@ -35,7 +37,13 @@ export function SubjectCard({ subjectId }: { subjectId: string }) {
 
   return (
     <Card className="p-0">
-      <button onClick={() => setOpen((v) => !v)} className="w-full p-4 text-left">
+      <motion.button
+        onClick={() => setOpen((v) => !v)}
+        whileTap={reduce ? undefined : { scale: 0.99 }}
+        transition={spring}
+        aria-expanded={open}
+        className="w-full p-4 text-left"
+      >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
@@ -60,7 +68,7 @@ export function SubjectCard({ subjectId }: { subjectId: string }) {
             </span>
             <motion.span
               animate={{ rotate: open ? 180 : 0 }}
-              transition={reduce ? { duration: 0 } : undefined}
+              transition={reduce ? { duration: 0 } : spring}
               className="text-faint"
             >
               <ChevronDown size={16} />
@@ -72,7 +80,7 @@ export function SubjectCard({ subjectId }: { subjectId: string }) {
           tone={p.status === 'verified' ? 'success' : 'accent'}
           className="mt-3"
         />
-      </button>
+      </motion.button>
 
       <AnimatePresence initial={false}>
         {open && (
@@ -80,11 +88,29 @@ export function SubjectCard({ subjectId }: { subjectId: string }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={reduce ? { duration: 0 } : { duration: 0.22 }}
+            transition={reduce ? { duration: 0 } : spring}
             className="overflow-hidden"
           >
             <div className="border-t border-line px-2 pb-2">
               <p className="px-2 py-3 text-[13px] text-muted">{subject.blurb}</p>
+              {coach && (
+                <div className="mx-2 mb-2 rounded-[12px] border border-accent/20 bg-accent/[0.04] p-3">
+                  <p className="text-[11px] uppercase tracking-[0.12em] text-accent">Ruturaj, do this</p>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-fg">{coach.doThis}</p>
+                  <p className="mt-2 text-[12px] leading-relaxed text-muted">
+                    <span className="text-faint">Evidence: </span>
+                    {coach.why}
+                  </p>
+                  <p className="mt-1.5 text-[12px] leading-relaxed text-muted">
+                    <span className="text-faint">Go harder: </span>
+                    {coach.harder}
+                  </p>
+                  <p className="mt-1.5 text-[12px] leading-relaxed text-muted">
+                    <span className="text-faint">Proof: </span>
+                    {coach.proof}
+                  </p>
+                </div>
+              )}
               {subject.milestones.map((m) => (
                 <TaskCheckbox
                   key={m.id}

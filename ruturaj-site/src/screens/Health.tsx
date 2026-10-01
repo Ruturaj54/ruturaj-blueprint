@@ -5,7 +5,10 @@ import { Card, SectionTitle } from '@/components/ui/primitives';
 import { listContainer } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 import { todayISO, formatShort, addDays } from '@/engine/dates';
-import { SupplementSection, LabSection } from '@/components/health/Trackers';
+import { SupplementSection } from '@/components/health/Supplements';
+import { LabSection } from '@/components/health/Labs';
+import { HealthFocus } from '@/components/health/HealthFocus';
+import { WeightLog } from '@/components/health/WeightLog';
 
 const inputCls =
   'w-full rounded-[10px] border border-line bg-bg px-3 py-2.5 text-[14px] text-fg outline-none placeholder:text-faint focus:border-line2';
@@ -13,9 +16,9 @@ const inputCls =
 /**
  * §18 — health support.
  *
- * Tracking only. The app records what a doctor directed and what Ruturaj chose
- * himself, and keeps those visually distinct. It never interprets a lab value,
- * never suggests a dose, and never infers a deficiency.
+ * Tracks and informs. Three kinds of statement are kept visibly apart: his own
+ * tracking, general evidence, and what a doctor directed. It never interprets a
+ * lab value, never suggests a dose, and never infers a deficiency.
  */
 export function Health() {
   const state = useAppState();
@@ -33,16 +36,21 @@ export function Health() {
         <div className="flex items-start gap-2.5">
           <Info size={16} className="mt-0.5 shrink-0 text-info" />
           <div>
-            <p className="text-[14px] font-medium">This section tracks. It does not advise.</p>
+            <p className="text-[14px] font-medium">Tracks and informs. Never diagnoses, never doses.</p>
             <p className="mt-1.5 text-[13px] text-muted">
-              Nothing here interprets a lab value, suggests a dose or infers a deficiency. Record
-              what your doctor directed, record what you actually took, and take the numbers back to
-              your doctor. Anything you added yourself is labelled as such so the distinction stays
-              visible.
+              Three things stay separate here: <span className="text-info">your tracking</span>,{' '}
+              <span className="text-fg">general evidence</span>, and what your doctor{' '}
+              <span className="text-success">directed</span>. Take the numbers back to your doctor
+              — their plan comes first. Everything you enter stays in your private synced store.
             </p>
           </div>
         </div>
       </Card>
+
+      <HealthFocus />
+      <WeightLog />
+      <SupplementSection />
+      <LabSection />
 
       {/* ---- running ---- */}
       <section>
@@ -140,8 +148,6 @@ export function Health() {
         </Card>
       </section>
 
-      <SupplementSection />
-      <LabSection />
     </motion.div>
   );
 }

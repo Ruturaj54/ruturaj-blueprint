@@ -19,6 +19,8 @@
   --color-success: #34d399;
   --color-info: #38bdf8;
   --color-danger: #fb7185;
+  /* Skin and hair care in the timetable — distinct from study, work and runs. */
+  --color-care: #c4b5fd;
 
   --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;

@@ -78,16 +78,19 @@ export function Email() {
             <p className="text-[14px] font-medium">Morning mission</p>
             <p className="tnum mt-1 font-mono text-[22px] text-accent">{MORNING_SEND}</p>
             <p className="mt-2 text-[13px] text-muted">
-              Today&rsquo;s three missions with anything unfinished from yesterday first, your
-              timetable, the DSA target aimed at your weakest pattern, and one challenge.
+              &ldquo;Ruturaj, do this today&rdquo; with why it helps, the three missions in course
+              order, your whole day hour by hour, health, what to avoid, how far you have come, and
+              the plan. Saturday leads with study-then-ride; Sunday with the week&rsquo;s numbers
+              and the review.
             </p>
           </Card>
           <Card>
             <p className="text-[14px] font-medium">End-of-day recap</p>
             <p className="tnum mt-1 font-mono text-[22px] text-accent">{END_OF_DAY_SEND}</p>
             <p className="mt-2 text-[13px] text-muted">
-              Sent after your night block, so it sees the whole day: what you closed, what you did
-              well, and what carries to tomorrow. Skipped if you already sent the recap yourself.
+              Sent after your night block, so it sees the whole day: what you closed, daily care,
+              what you did well, and what carries to tomorrow. Sunday&rsquo;s closes the week.
+              Skipped if you already sent the recap yourself.
             </p>
           </Card>
         </div>

@@ -38,6 +38,9 @@ const asMission = (subject, m, carried) => ({
   minutes: m.estMinutes,
   proof: m.proof,
   mandatory: m.mandatory,
+  tier: subject.tier,
+  subjectId: subject.id,
+  coach: catalog.coach?.[subject.id] ?? null,
   carriedFrom: carried.get(m.id) ?? null,
 });
 
@@ -137,4 +140,39 @@ export function gateCounts(state) {
     }
   }
   return { total, done };
+}
+
+const TIER_LABEL = {
+  1: 'Course 1 · Apna College Prime AI/ML',
+  2: 'Course 2 · Five Minute Engineering',
+  3: 'Practice · PPA · LB · DSA · LSP',
+};
+
+/**
+ * The overall plan in course order, with a forecast finish day for each tier
+ * at three missions a day from today. Mirrors src/engine/courses.ts.
+ */
+export function courseProgress(state, day) {
+  let cumulative = 0;
+  let unfinishedSeen = 0;
+  return [1, 2, 3].map((tier) => {
+    const milestones = catalog.foundation
+      .filter((s) => s.tier === tier)
+      .flatMap((s) => s.milestones.filter((m) => m.mandatory));
+    const total = milestones.length;
+    const done = milestones.filter((m) => state.foundation?.[m.id]).length;
+    const left = total - done;
+    cumulative += left;
+    const status = left === 0 ? 'done' : ['active', 'next'][unfinishedSeen] ?? 'queued';
+    if (left > 0) unfinishedSeen += 1;
+    return {
+      tier,
+      label: TIER_LABEL[tier],
+      total,
+      done,
+      pct: total === 0 ? 100 : Math.round((done / total) * 100),
+      status,
+      etaDay: left === 0 ? null : day + Math.ceil(cumulative / MISSIONS_PER_DAY) - 1,
+    };
+  });
 }

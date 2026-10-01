@@ -11,5 +11,15 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    rollupOptions: {
+      output: {
+        // Libraries change far less often than the app. A separate chunk means
+        // a deploy only re-downloads the app code on his phone, not React too.
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          motion: ['framer-motion'],
+        },
+      },
+    },
   },
 });

@@ -1,9 +1,11 @@
 # Ruturaj Blueprint — engineering rules
 
 Personal career-execution OS for Ruturaj Dharne. Static SPA on Netlify free tier.
-**Mission: 161 days, Day 1 = 2026-09-24, Day 161 = 2027-03-03.** A mission day
-runs 04:00→04:00 (`DAY_START_HOUR`), so the 22:00–02:00 night block belongs to
-the day it was planned on.
+**Mission: 161 days, Day 1 = 2026-10-01, Day 161 = 2027-03-10.** A mission day
+runs 04:00→04:00 (`DAY_START_HOUR`), so the 22:00–01:00 night block belongs to
+the day it was planned on. The timetable is his real day (`src/data/routine.ts`):
+weekdays are hard study, Saturday and Sunday trade some study for an evening
+ride and have their own mails.
 
 ## Stack — do not add to this without a reason
 Vite · React 18 · TypeScript (strict) · Tailwind v4 (CSS-first tokens) ·
@@ -39,9 +41,14 @@ No database server. No SSR. No Next.js. Push to `main` = live.
    `schedule.mjs` and `digest.mjs` mirror `src/engine/`. Change one, change the
    other, and re-run `node scripts/preview-emails.mjs`.
 10. **Resetting stored progress means bumping `DATA_EPOCH`** in both
-    `src/lib/schema.ts` and `_shared/digest.mjs`. Never clear it by hand.
+    `src/lib/schema.ts` and `_shared/digest.mjs`. Never clear it by hand. An
+    epoch change resets study progress only — labs, directed items, the work
+    log and applications are real records and carry across.
 11. **Deploys cost credits** (15 each, ~20/month on the free plan). Verify
     locally and push once per session — never after every small fix.
+12. **The repository is public. No personal health data in source.** Which
+    conditions he tracks, lab values and what he takes live only in the private
+    synced store. `src/data/health.ts` is a generic library; keep it generic.
 
 ## Syllabus rules
 
@@ -58,6 +65,10 @@ Do not add invented checkpoints to it.
   `Metric needed`.
 - Health features track and inform. They never diagnose or prescribe a dose.
   Always distinguish: personal tracking / general evidence / doctor-directed.
+- Course order is fixed: Course 1 is Apna College, Course 2 is Five Minute
+  Engineering, then the practice tier. Every foundation subject has a coaching
+  card in `src/data/foundation/coach.ts` (do this / why / go harder / proof);
+  `gen-catalog` fails the build if one is missing.
 - When the roadmap prioritises a skill, state the evidence separately from the
   recommendation. No "everyone uses it" reasoning.
 

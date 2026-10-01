@@ -1,11 +1,12 @@
 import {
-  parseState,
   defaultState,
   isStaleEpoch,
+  freshForNewEpoch,
   freshKeepingSettings,
   DATA_EPOCH,
   type AppState,
 } from './schema';
+import { parseState } from './parse';
 import { getPassphrase } from './passphrase';
 
 export { getPassphrase, setPassphrase, clearPassphrase } from './passphrase';
@@ -68,7 +69,7 @@ function readLocal(): AppState {
       // The reset keeps the "never written" timestamp so a real current-epoch
       // copy from another device still wins the next pull.
       resetOnLoad = true;
-      return freshKeepingSettings(parsed);
+      return freshForNewEpoch(parsed);
     }
     return parsed;
   } catch {
@@ -157,11 +158,16 @@ export async function pullRemote(): Promise<void> {
     }
     const remote = parseState(await res.json());
     if (isStaleEpoch(remote)) {
-      // The server still holds pre-reset progress. Never adopt it — overwrite
-      // it, so the scheduled mail stops reporting milestones that were never
-      // actually done.
-      if (!isStaleEpoch(state)) await pushRemote();
-      else setStatus('synced');
+      // Pre-reset progress on the server is overwritten, never adopted. A device
+      // with no writes this epoch first takes the real-life records (labs,
+      // directed items, work log, applications) so it cannot wipe them.
+      if (state.updatedAt === new Date(0).toISOString()) {
+        state = freshForNewEpoch(remote);
+        state.updatedAt = new Date().toISOString();
+        writeLocal(state);
+        emit();
+      }
+      await pushRemote();
       return;
     }
     if (remote.updatedAt > state.updatedAt) {

@@ -146,7 +146,7 @@ export function Roadmap() {
             <div key={tier} className="mb-5">
               <div className="mb-2 flex items-baseline justify-between gap-3 px-1">
                 <p className="text-[11px] uppercase tracking-[0.12em] text-accent">
-                  {tier}. {TIER_LABEL[tier]}
+                  {TIER_LABEL[tier]}
                 </p>
                 <span className="tnum text-[11px] text-faint">~{hours}h</span>
               </div>

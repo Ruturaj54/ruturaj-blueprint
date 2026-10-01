@@ -6,15 +6,19 @@
 
 import { getStore } from '@netlify/blobs';
 import catalog from './catalog.json' with { type: 'json' };
-import { buildSchedule } from './schedule.mjs';
+import { buildSchedule, dayTypeOf } from './schedule.mjs';
 import { buildPraise } from './praise.mjs';
-import { nextFoundation, nextTasks, titleFor, stillOpen, gateCounts } from './plan.mjs';
+import { nextFoundation, nextTasks, titleFor, stillOpen, gateCounts, courseProgress } from './plan.mjs';
+import { healthDigest } from './health.mjs';
+import { growthSince, weekSummary } from './growth.mjs';
 
-export const MISSION_START = '2026-09-24';
-export const MISSION_END = '2027-03-03';
+export const MISSION_START = '2026-10-01';
+export const MISSION_END = '2027-03-10';
 export const TOTAL_DAYS = 161;
 /** Must match DATA_EPOCH in src/lib/schema.ts. */
-export const DATA_EPOCH = 3;
+export const DATA_EPOCH = 4;
+/** Must match PREFERENCE_KEYS in src/lib/schema.ts. */
+const PREFERENCE_KEYS = ['emailEnabled', 'dsaTargetPerDay', 'deepWorkMinutes', 'interviewMode'];
 /** Must match DAY_START_HOUR in src/engine/dates.ts. */
 const DAY_START_HOUR = 4;
 const DAY_MS = 86_400_000;
@@ -33,7 +37,7 @@ const fmt = (d) =>
 
 /**
  * Today's mission date in IST, with the day rolling over at 04:00 rather than
- * midnight. The deep-work block runs to 02:00, and the end-of-day mail sends at
+ * midnight. The deep-work block runs to 01:00, and the end-of-day mail sends at
  * 02:30 — both belong to the day that is ending, not the next one.
  */
 export function istToday(now = new Date()) {
@@ -68,13 +72,30 @@ export async function readState() {
 
 /**
  * Progress from an older epoch was discarded on every device. Until the app is
- * next opened the blob may still hold it, so the mail ignores it too — only
- * the schedule settings carry across.
+ * next opened the blob may still hold it, so the mail ignores it too. What
+ * carries across matches freshForNewEpoch in src/lib/schema.ts: preferences
+ * and real-life records, never the old timetable or the old progress.
  */
 function currentEpoch(state) {
   if (!state) return null;
   if ((state.dataEpoch ?? 0) >= DATA_EPOCH) return state;
-  return { settings: state.settings ?? {}, dataEpoch: DATA_EPOCH };
+  const settings = Object.fromEntries(
+    PREFERENCE_KEYS.filter((k) => k in (state.settings ?? {})).map((k) => [k, state.settings[k]]),
+  );
+  const h = state.health ?? {};
+  return {
+    dataEpoch: DATA_EPOCH,
+    settings,
+    health: {
+      supplements: h.supplements ?? [],
+      labs: h.labs ?? [],
+      nextTestDate: h.nextTestDate,
+      focus: h.focus ?? [],
+      weight: h.weight ?? {},
+    },
+    work: state.work ?? [],
+    applications: state.applications ?? [],
+  };
 }
 
 function dsaSummary(state, today) {
@@ -102,10 +123,16 @@ function dsaSummary(state, today) {
     cursor = addDays(cursor, -1);
   }
 
-  const target = state.settings?.dsaTargetPerDay ?? 3;
+  // Sunday is the weekly timed set, exactly as the client planner has it.
+  const sunday = new Date(`${today}T12:00:00`).getDay() === 0;
+  const target = sunday ? 3 : state.settings?.dsaTargetPerDay ?? 3;
   const weakestName = weakest?.name ?? null;
   return {
-    headline: weakestName ? `${weakestName} — ${target} problems` : `${target} problems, pattern-tagged`,
+    headline: sunday
+      ? 'Weekly timed set'
+      : weakestName
+        ? `${weakestName} — ${target} problems`
+        : `${target} problems, pattern-tagged`,
     total: attempts.length,
     solvedClean: solved,
     accuracy: attempts.length ? Math.round((solved / attempts.length) * 100) : 0,
@@ -156,6 +183,7 @@ export function buildDigest(rawState, now = new Date()) {
   const dsa = dsaSummary(s, today);
 
   const mandatoryToday = missions.filter((m) => m.mandatory).length;
+  const dayType = dayTypeOf(today);
   const focusToday = (s.deepWork ?? [])
     .filter((d) => d.date === today)
     .reduce((n, d) => n + d.actualMinutes, 0);
@@ -179,7 +207,19 @@ export function buildDigest(rawState, now = new Date()) {
     dsa,
     yesterday: dayLog(s, addDays(today, -1)),
     todayLog: dayLog(s, today),
-    schedule: buildSchedule(s.settings, missions, dsa),
+    dayType,
+    weekday: new Date(`${today}T12:00:00`).toLocaleDateString('en-IN', { weekday: 'long' }),
+    dateLabel: new Date(`${today}T12:00:00`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }),
+    week: Math.ceil(day / 7),
+    schedule: buildSchedule(s.settings, missions, dsa, dayType),
+    courses: courseProgress(s, day).map((c) => ({
+      ...c,
+      etaDate: c.etaDay !== null && c.etaDay <= TOTAL_DAYS ? addDays(MISSION_START, c.etaDay - 1) : null,
+    })),
+    phases: PHASES.map((p) => ({ ...p, startDate: addDays(MISSION_START, p.startDay - 1) })),
+    health: healthDigest(s, today, day, addDays),
+    growth: growthSince(s, MISSION_START, today),
+    weekStats: weekSummary(s, today, addDays, MISSION_START),
     // What today's plan is worth: the gate moves by this much if it all lands.
     gateAfterToday: gateOpen ? null : Math.round(((done + mandatoryToday) / total) * 100),
     praise: buildPraise(s, today, addDays),

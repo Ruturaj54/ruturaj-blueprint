@@ -2,7 +2,7 @@
 //
 // Moved from 22:00. That was the exact minute the night block starts, so the
 // "end of day" mail reported on a day that was only half over — it said
-// "DSA 0 of 3" every night because DSA happens 22:00–02:00. At 02:30 the day is
+// "DSA 0 of 3" every night because DSA happens in the night block. At 02:30 the day is
 // genuinely finished; the 04:00 day boundary means it still reports on that
 // day rather than the one just starting.
 //

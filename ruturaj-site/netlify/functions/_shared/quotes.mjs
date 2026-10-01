@@ -50,10 +50,14 @@ const EVENING = {
     'You moved. Not as far as planned, but the direction was right.',
     'Most days are like this one. The plan survives if you do not let two become five.',
   ],
-  bad: [
-    'One bad day costs nothing. Two in a row starts a pattern, and patterns are what actually end plans.',
-    'Today did not happen. Tomorrow starts with the smallest item on the list, not the biggest.',
+  low: [
+    'One rough day costs nothing. Two in a row starts a pattern, and patterns are what actually end plans.',
     'You know exactly what went wrong today. Fix that one thing tomorrow, not everything.',
+    'Something moved today, even if less than planned. Tomorrow starts with what is still open.',
+  ],
+  none: [
+    'Today did not happen. Tomorrow starts with the smallest item on the list, not the biggest.',
+    'One empty day costs nothing. Two in a row starts a pattern — break it in the first block tomorrow.',
   ],
 };
 
@@ -64,6 +68,7 @@ export function morningQuote(day, phaseId) {
 }
 
 export function eveningQuote(score) {
-  const pool = score === null || score === undefined ? EVENING.bad : score >= 70 ? EVENING.good : score >= 40 ? EVENING.mixed : EVENING.bad;
+  // "Did not happen" only when nothing did — a 33% day is not an empty day.
+  const pool = !score ? EVENING.none : score >= 70 ? EVENING.good : score >= 40 ? EVENING.mixed : EVENING.low;
   return pool[new Date().getDate() % pool.length];
 }

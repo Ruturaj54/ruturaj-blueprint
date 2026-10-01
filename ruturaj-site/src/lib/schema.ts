@@ -11,12 +11,16 @@ export const STATE_VERSION = 2;
  * Bumped whenever stored progress must be discarded rather than migrated.
  *
  * Epoch 3 (24 Sep 2026): the Foundation Gate was rebuilt from Ruturaj's actual
- * syllabi with new milestone ids, and the progress recorded so far was test
- * clicks — including 24 gate milestones he never completed. Any state from an
- * older epoch is reset to a clean Day 1 on load, on every device, and the
- * scheduled mail ignores it too. Settings survive; progress does not.
+ * syllabi and the progress so far was test clicks.
+ *
+ * Epoch 4 (1 Oct 2026): the fresh start he asked for — 1 October is Day 1 —
+ * together with his real daily routine (07:00 wake, 10:00–17:30 office,
+ * 22:00–01:00 night block). Study progress resets. Real-life records do not:
+ * labs, supplements, work achievements and job applications carry across, and
+ * so do his preferences. The schedule itself takes the new defaults, because
+ * the old ones described a day he no longer lives.
  */
-export const DATA_EPOCH = 3;
+export const DATA_EPOCH = 4;
 
 export interface RunLog {
   id: string;
@@ -93,6 +97,8 @@ export interface Supplement {
   dose: string;
   /** Who directed it. The app never prescribes. */
   directedBy: 'doctor' | 'self';
+  /** Where it sits in the day, so the timetable can remind at the right slot. */
+  timing?: 'morning' | 'night';
   startedOn?: string;
   active: boolean;
 }
@@ -105,12 +111,21 @@ export interface HealthState {
   sleep: Record<string, number>;
   /** ISO date -> supplement ids taken. */
   adherence: Record<string, string[]>;
+  /**
+   * Health focus areas he switched on (ids from src/data/health.ts). Lives in
+   * the private synced store, never in source — the repository is public.
+   */
+  focus: string[];
+  /** ISO date -> body weight in kg, as he measured it. */
+  weight: Record<string, number>;
 }
 
 export interface Settings {
   /** 24h "HH:MM" IST. Schedule is configurable, never hardcoded. */
   wakeTime: string;
   morningRunTime: string;
+  morningRunEnd: string;
+  /** Leaving home to getting back, so the commute is part of the block. */
   officeStart: string;
   officeEnd: string;
   /** Spare capacity at work, used for course/reading only — never instead of the job. */
@@ -119,6 +134,7 @@ export interface Settings {
   studyBlock1Start: string;
   studyBlock1End: string;
   eveningRunTime: string;
+  eveningRunEnd: string;
   /** Night block: deep work, DSA and project building. */
   studyBlock2Start: string;
   studyBlock2End: string;
@@ -160,6 +176,8 @@ export interface AppState {
   days: Record<string, DayLog>;
   /** ISO dates whose praise card has already been shown, so it appears once. */
   praiseSeen: Record<string, boolean>;
+  /** ISO date -> daily care habit ids ticked (src/data/health.ts). */
+  habits: Record<string, string[]>;
   dsa: DsaAttempt[];
   deepWork: DeepWorkSession[];
   runs: RunLog[];
@@ -170,19 +188,26 @@ export interface AppState {
   weeklyReviews: Record<string, WeeklyReview>;
 }
 
+/**
+ * His weekday as he described it on 1 Oct 2026: up at 07:00, run until 08:15,
+ * office 10:00–17:30 including the commute, course 18:00–20:00, run
+ * 20:00–21:15, dinner, night block 22:00–01:00, six hours of sleep.
+ */
 export const DEFAULT_SETTINGS: Settings = {
   wakeTime: '07:00',
-  morningRunTime: '07:00',
-  officeStart: '10:30',
-  officeEnd: '18:00',
+  morningRunTime: '07:15',
+  morningRunEnd: '08:15',
+  officeStart: '10:00',
+  officeEnd: '17:30',
   officeStudyHours: 2,
   studyBlock1Start: '18:00',
   studyBlock1End: '20:00',
-  eveningRunTime: '20:30',
+  eveningRunTime: '20:00',
+  eveningRunEnd: '21:15',
   studyBlock2Start: '22:00',
-  studyBlock2End: '02:00',
+  studyBlock2End: '01:00',
   deepWorkStart: '22:00',
-  sleepTarget: '02:00',
+  sleepTarget: '01:00',
   timezone: 'Asia/Kolkata',
   morningEmailTime: '07:00',
   eveningEmailTime: '02:30',
@@ -204,72 +229,15 @@ export function defaultState(): AppState {
     tasks: {},
     days: {},
     praiseSeen: {},
+    habits: {},
     dsa: [],
     deepWork: [],
     runs: [],
     work: [],
     applications: [],
-    health: { supplements: [], labs: [], sleep: {}, adherence: {} },
+    health: { supplements: [], labs: [], sleep: {}, adherence: {}, focus: [], weight: {} },
     settings: { ...DEFAULT_SETTINGS },
     weeklyReviews: {},
-  };
-}
-
-/* ---------- runtime guards ---------------------------------------------- */
-/* Hand-rolled rather than a schema library: the shapes are simple, this ships
-   zero extra bytes to the browser, and a corrupt blob must degrade to defaults
-   rather than throw into the render tree. */
-
-const isObj = (v: unknown): v is Record<string, unknown> =>
-  typeof v === 'object' && v !== null && !Array.isArray(v);
-
-const arr = <T>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
-
-const rec = <T>(v: unknown): Record<string, T> =>
-  isObj(v) ? (v as Record<string, T>) : {};
-
-/**
- * Coerces anything into a valid AppState. Unknown fields are dropped, missing
- * fields fall back to defaults, and a wrong-typed field never propagates.
- */
-export function parseState(raw: unknown): AppState {
-  const base = defaultState();
-  if (!isObj(raw)) return base;
-
-  const health = isObj(raw.health) ? raw.health : {};
-  const settings = isObj(raw.settings) ? raw.settings : {};
-
-  return {
-    version: typeof raw.version === 'number' ? raw.version : STATE_VERSION,
-    dataEpoch: typeof raw.dataEpoch === 'number' ? raw.dataEpoch : 0,
-    updatedAt:
-      typeof raw.updatedAt === 'string' ? raw.updatedAt : base.updatedAt,
-    foundation: rec<boolean>(raw.foundation),
-    foundationUnlockedAt:
-      typeof raw.foundationUnlockedAt === 'string'
-        ? raw.foundationUnlockedAt
-        : undefined,
-    foundationOverride: raw.foundationOverride === true,
-    tasks: rec<TaskState>(raw.tasks),
-    days: rec<DayLog>(raw.days),
-    praiseSeen: rec<boolean>(raw.praiseSeen),
-    dsa: arr<DsaAttempt>(raw.dsa),
-    deepWork: arr<DeepWorkSession>(raw.deepWork),
-    runs: arr<RunLog>(raw.runs),
-    work: arr<WorkAchievement>(raw.work),
-    applications: arr<Application>(raw.applications),
-    health: {
-      supplements: arr<Supplement>(health.supplements),
-      labs: arr<LabValue>(health.labs),
-      nextTestDate:
-        typeof health.nextTestDate === 'string'
-          ? health.nextTestDate
-          : undefined,
-      sleep: rec<number>(health.sleep),
-      adherence: rec<string[]>(health.adherence),
-    },
-    settings: { ...DEFAULT_SETTINGS, ...(settings as Partial<Settings>) },
-    weeklyReviews: rec<WeeklyReview>(raw.weeklyReviews),
   };
 }
 
@@ -286,14 +254,37 @@ export function isStaleEpoch(state: AppState): boolean {
 }
 
 /**
- * A clean Day 1 that keeps the schedule and targets. Resetting progress should
- * never throw away the timings he configured.
+ * Preferences that survive an epoch change. Everything else in Settings is the
+ * timetable, which an epoch change resets to his current routine.
+ * Must match PREFERENCE_KEYS in netlify/functions/_shared/digest.mjs.
+ */
+export const PREFERENCE_KEYS = ['emailEnabled', 'dsaTargetPerDay', 'deepWorkMinutes', 'interviewMode'] as const;
+
+/**
+ * A clean Day 1 for a new epoch. Study progress goes; real-life records
+ * (labs, supplements, work achievements, applications) and preferences stay.
+ */
+export function freshForNewEpoch(from: AppState): AppState {
+  const fresh = defaultState();
+  for (const key of PREFERENCE_KEYS) {
+    (fresh.settings as unknown as Record<string, unknown>)[key] = from.settings[key];
+  }
+  fresh.health.supplements = from.health.supplements;
+  fresh.health.labs = from.health.labs;
+  fresh.health.nextTestDate = from.health.nextTestDate;
+  fresh.health.focus = from.health.focus;
+  fresh.health.weight = from.health.weight;
+  fresh.work = from.work;
+  fresh.applications = from.applications;
+  return fresh;
+}
+
+/**
+ * The manual reset in Settings. Same as an epoch change, except his current
+ * timetable is kept exactly — the screen promises that.
  */
 export function freshKeepingSettings(from: AppState): AppState {
-  const fresh = defaultState();
+  const fresh = freshForNewEpoch(from);
   fresh.settings = { ...DEFAULT_SETTINGS, ...from.settings };
-  // Email times were fixed for his real schedule in this epoch; carry the new
-  // default rather than an old value that pointed at the wrong hour.
-  fresh.settings.eveningEmailTime = DEFAULT_SETTINGS.eveningEmailTime;
   return fresh;
 }

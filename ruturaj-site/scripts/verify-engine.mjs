@@ -1,6 +1,6 @@
-// Boundary verification for the 117-day mission engine.
+// Boundary verification for the 161-day mission engine (1 Oct 2026 to 10 Mar 2027).
 // Mirrors src/engine logic in plain JS so it runs with no build step.
-const MISSION_START = '2026-09-24';
+const MISSION_START = '2026-10-01';
 const TOTAL_DAYS = 161;
 const MS = 86400000;
 const parse = (s) => new Date(`${s}T12:00:00`);
@@ -25,7 +25,7 @@ const check = (label, actual, expected) => {
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${label.padEnd(44)} ${actual}${ok ? '' : `   (expected ${expected})`}`);
 };
 
-console.log('\n=== PHASE TILING (no gaps, no overlaps, covers 1..117) ===');
+console.log('\n=== PHASE TILING (no gaps, no overlaps, covers 1..161) ===');
 let covered = 0;
 for (let i = 0; i < PHASES.length; i++) {
   const p = PHASES[i];
@@ -47,8 +47,8 @@ for (const [day, expected] of bounds) {
 
 console.log('\n=== BOUNDARY DAYS → DATE ===');
 const dates = [
-  [1, '2026-09-24'], [42, '2026-11-04'], [43, '2026-11-05'], [91, '2026-12-23'],
-  [92, '2026-12-24'], [133, '2027-02-03'], [134, '2027-02-04'], [161, '2027-03-03'],
+  [1, '2026-10-01'], [42, '2026-11-11'], [43, '2026-11-12'], [91, '2026-12-30'],
+  [92, '2026-12-31'], [133, '2027-02-10'], [134, '2027-02-11'], [161, '2027-03-10'],
 ];
 for (const [day, expected] of dates) check(`day ${String(day).padStart(3)} → date`, dateForDay(day), expected);
 
@@ -65,6 +65,9 @@ console.log('\n=== DAY 1 SANITY ===');
 check('Day 1 is a Thursday', parse(dateForDay(1)).getDay(), 4);
 check('Day 161 is a Wednesday', parse(dateForDay(161)).getDay(), 3);
 check('days remaining on day 1', TOTAL_DAYS - 1, 160);
+check('day 3 (3 Oct) is a Saturday', parse(dateForDay(3)).getDay(), 6);
+check('day 4 (4 Oct) is a Sunday', parse(dateForDay(4)).getDay(), 0);
+check('30 Sep 2026 is before the mission', dayForDate('2026-09-30'), 0);
 
 console.log(`\n${fail === 0 ? 'ALL CHECKS PASSED' : `${fail} CHECK(S) FAILED`}\n`);
 process.exit(fail === 0 ? 0 : 1);

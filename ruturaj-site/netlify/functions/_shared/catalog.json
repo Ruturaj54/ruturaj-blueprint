@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-24T08:11:59.999Z",
+  "generatedAt": "2026-10-01T03:57:54.703Z",
   "sequentialTiers": [
     1,
     2
@@ -2759,6 +2759,585 @@
       "name": "Tries",
       "weight": 6,
       "targetProblems": 4
+    }
+  ],
+  "coach": {
+    "ap-python": {
+      "doThis": "Run these parts at 1.5x and type every example into one notebook per part. Push it to a public apna-ai-ml repo the same night.",
+      "why": "You already write Python at work, so the lectures alone add little. What they can add is speed — and a public commit trail is proof a recruiter can actually open.",
+      "harder": "After each part, solve two small problems in Python from memory: comprehensions, generators, *args/**kwargs, a decorator.",
+      "proof": "Notebook committed · two problems solved without looking anything up"
+    },
+    "ap-data": {
+      "doThis": "Pick one public dataset (Kaggle is fine — never company data) and use it in every module instead of the toy examples.",
+      "why": "SQL and Pandas come up in most AI-engineer screens, and GROUP BY, joins and window functions are where candidates stall.",
+      "harder": "For every Pandas operation, write the SQL that does the same thing. Close SQL Part 2 with ten LeetCode SQL 50 problems.",
+      "proof": "One notebook analysing one dataset end to end · ten SQL problems logged"
+    },
+    "ap-math": {
+      "doThis": "One page of notes per module: the formula, and one line on where it shows up in ML. Nothing more.",
+      "why": "Interviews ask you to explain gradient descent, softmax and dot-product attention in words, not to derive proofs. Intuition is the bar.",
+      "harder": "Implement gradient descent for linear regression in plain NumPy — no sklearn — and plot the loss going down.",
+      "proof": "Three one-page sheets · a NumPy gradient-descent notebook"
+    },
+    "ap-ml": {
+      "doThis": "For every algorithm, fit it with sklearn, then write the short version yourself — module 29 shows how. Treat CreditWise and SmartCart as portfolio projects, not exercises.",
+      "why": "Bias–variance, overfitting and precision-versus-recall are standard ML-round questions, and the two minor projects are your first AI lines on a resume.",
+      "harder": "Give each minor project a README: problem, data, metric, result, what you would do next. Serve one behind a FastAPI endpoint.",
+      "proof": "Two project repos with READMEs · one model behind an endpoint"
+    },
+    "ap-tools": {
+      "doThis": "Clear this in one sitting — you use Git every day. Put the saved time into the next ML module.",
+      "why": "This is review for you. The only gaps worth closing are rebase, cherry-pick and resolving conflicts without fear.",
+      "harder": "Write a GitHub profile README that links your course repos. It is the first thing a recruiter clicks.",
+      "proof": "Profile README live"
+    },
+    "ap-dl": {
+      "doThis": "Write the training loop yourself every time — forward, loss, backward, step. Never run the course cell as-is.",
+      "why": "This is the largest block of Course 1 and the base for transformers in Course 2. Interview depth here is backprop, overfitting and choosing an architecture.",
+      "harder": "For the Text Summarizer, compare two approaches and report ROUGE for both. A number you measured beats an adjective.",
+      "proof": "Your own training-loop notebook · Text Summarizer repo with a metric"
+    },
+    "ap-apps": {
+      "doThis": "Build every example as an API, not a notebook. Start from your Flask background, then rewrite one in FastAPI.",
+      "why": "AI-engineer roles hire for shipping LLM features behind an API — structured output, retries, cost and latency. This is the most job-shaped module in Course 1.",
+      "harder": "Log token count and latency for every call, and add a retry with backoff. Mention both in the README.",
+      "proof": "One deployed LLM endpoint with a README"
+    },
+    "ap-projects": {
+      "doThis": "Finish all four, then polish one — the AI Resume ATS — into your flagship: deployed, README with screenshots, a two-minute demo video.",
+      "why": "One shipped project you can explain carries more weight in an interview than a list of courses, and the ATS project is the closest to AI-engineer work.",
+      "harder": "Write a five-minute explanation for each: problem, design, tradeoffs, what broke, what you would change. Say it out loud once.",
+      "proof": "Four repos · one deployed flagship · a written walkthrough for each"
+    },
+    "fm-nlp": {
+      "doThis": "Implement tokenisation, TF-IDF and cosine similarity by hand once, then switch to the libraries.",
+      "why": "Similarity search is the base of every RAG system later in this course. Doing it by hand once makes the libraries legible.",
+      "harder": "Build a tiny search over your own notes with TF-IDF, then swap in embeddings and compare results on the same ten queries.",
+      "proof": "A notebook comparing TF-IDF and embedding search side by side"
+    },
+    "fm-transformers": {
+      "doThis": "Read the actual paper alongside the videos, and build the Nano LLM yourself — every line typed.",
+      "why": "\"Explain self-attention\" and \"why multi-head\" are among the most common AI-engineer theory questions. Having built it is what makes the answer fluent.",
+      "harder": "Draw Q/K/V attention on paper from memory, then explain it out loud in two minutes.",
+      "proof": "A Nano LLM repo that trains and generates · a one-page attention sheet"
+    },
+    "fm-prompt": {
+      "doThis": "Keep every prompt in a versioned file next to the input and the output it produced.",
+      "why": "Prompting is judged as engineering now — reproducible, evaluated, versioned. That is the gap between a demo and a product.",
+      "harder": "Write a ten-case evaluation set for one prompt and score two versions of it.",
+      "proof": "A prompts folder with versions · an eval score comparing two of them"
+    },
+    "fm-rag": {
+      "doThis": "Build RAG over a real document set — the public 3GPP specs from your own domain are ideal — and measure retrieval, not just answers.",
+      "why": "RAG is a staple of AI system-design rounds, and interviewers push on chunking, retrieval quality and hallucination — exactly where demos stay vague.",
+      "harder": "Try three chunk sizes and report recall@5 for each. Add a reranker and show the difference.",
+      "proof": "A RAG repo with a results table · faithfulness checked on 20 questions"
+    },
+    "fm-langchain": {
+      "doThis": "Build one small pipeline twice — once with LangChain, once with direct API calls — and note what each costs you.",
+      "why": "Teams want someone who can use a framework and also knows when not to. Having done both is the honest answer.",
+      "harder": "Write LCEL chains with structured output and a fallback when parsing fails.",
+      "proof": "Two implementations of one pipeline · a short comparison in the README"
+    },
+    "fm-agents": {
+      "doThis": "Build one agent that does real work: read a log file, find the errors, write a summary. Tools first, then memory, then multiple agents.",
+      "why": "Agents and MCP are where AI-engineer work is moving. A working agent with clear tool boundaries is a strong portfolio piece — and log triage is your daily job.",
+      "harder": "Add guardrails — a step limit, tool-input validation, a cost cap — and log every tool call.",
+      "proof": "An agent repo with a demo run and its tool-call log"
+    },
+    "cs-c": {
+      "doThis": "Write every program from a blank file, compile with -Wall -Wextra, and run it under valgrind.",
+      "why": "C is your working language at Parallel Wireless, and pointer and memory questions are where systems interviews start.",
+      "harder": "Implement your own strlen, memcpy and a dynamic array that grows.",
+      "proof": "Programs in a repo · valgrind clean"
+    },
+    "cs-cpp": {
+      "doThis": "Move your DSA solutions to C++ and the STL now — that is where fluency comes from.",
+      "why": "STL fluency saves minutes in every timed round, and the rule of three/five and virtual dispatch are standard C++ questions.",
+      "harder": "Implement a minimal unique_ptr and a vector with move semantics.",
+      "proof": "An STL cheat sheet written from memory · both implementations"
+    },
+    "cs-lb": {
+      "doThis": "Three to five problems a day, smallest first. Write the approach in one line before you write code.",
+      "why": "Logic building is the reflex DSA rounds test: turning a problem into steps, fast.",
+      "harder": "Time every problem. Anything over 20 minutes goes on the Sunday re-solve list.",
+      "proof": "Problems logged with time and pattern"
+    },
+    "cs-dsa": {
+      "doThis": "Log every problem in the DSA tab with its pattern, and re-solve one older problem cold each week.",
+      "why": "DSA is the highest-weight item in SDE loops at Amazon, Google and Microsoft, and recognising the pattern transfers further than raw problem count.",
+      "harder": "Explain each solution out loud as if to an interviewer: brute force, then optimised, then complexity.",
+      "proof": "Every pattern with at least three clean solves"
+    },
+    "cs-lsp": {
+      "doThis": "Write each system-call program yourself and trace it with strace.",
+      "why": "You work on telecom systems. Processes, threads, IPC and sockets set you apart from AI candidates who only know Python.",
+      "harder": "Build a multi-threaded TCP server that handles concurrent clients and shuts down cleanly.",
+      "proof": "A TCP server repo · strace notes"
+    }
+  },
+  "routines": {
+    "weekday": [
+      {
+        "id": "wake",
+        "start": "wakeTime",
+        "end": "morningRunTime",
+        "label": "Wake up · water · no phone",
+        "kind": "care",
+        "note": "A glass of water before anything else. The first ten minutes decide whether the day is yours or your feed’s."
+      },
+      {
+        "id": "am-move",
+        "start": "morningRunTime",
+        "end": "morningRunEnd",
+        "label": "Run or home workout",
+        "kind": "move",
+        "note": "Outdoors when you can — it is also your daylight. After a short night, go easy rather than skip."
+      },
+      {
+        "id": "am-care",
+        "start": "morningRunEnd",
+        "end": "morningRunEnd+30",
+        "label": "Shower · skin care (AM)",
+        "kind": "care",
+        "note": "Cleanse, moisturise, sunscreen. Tied to the shower so it never needs remembering."
+      },
+      {
+        "id": "breakfast",
+        "start": "morningRunEnd+30",
+        "end": "morningRunEnd+60",
+        "label": "Breakfast — protein first",
+        "kind": "meal",
+        "note": "Eggs, paneer, dal, curd or sprouts before anything sweet. Morning items your doctor directed go here."
+      },
+      {
+        "id": "prep",
+        "start": "morningRunEnd+60",
+        "end": "officeStart",
+        "label": "Recall yesterday’s notes · get ready",
+        "kind": "routine",
+        "note": "Twenty minutes: write what you remember from yesterday’s module, then check. Recall beats re-watching."
+      },
+      {
+        "id": "office",
+        "start": "officeStart",
+        "end": "officeEnd",
+        "label": "Office · commute both ways",
+        "kind": "work",
+        "study": "office",
+        "note": "The job comes first — deliver it well, the resume lines come from here. Spare time: watching and reading only."
+      },
+      {
+        "id": "home",
+        "start": "officeEnd",
+        "end": "studyBlock1Start",
+        "label": "Home · change · light snack",
+        "kind": "meal",
+        "note": "Fruit, roasted chana, buttermilk or nuts — not biscuits and sweet chai. This is where the evening sugar habit starts."
+      },
+      {
+        "id": "block1",
+        "start": "studyBlock1Start",
+        "end": "studyBlock1End",
+        "label": "Block 1 — Course",
+        "kind": "study",
+        "study": "course",
+        "note": "Apna College first, Five Minute Engineering second. Code along — if you did not type it, you did not learn it."
+      },
+      {
+        "id": "pm-move",
+        "start": "eveningRunTime",
+        "end": "eveningRunEnd",
+        "label": "Evening run",
+        "kind": "move",
+        "note": "Protected. Fitness and recovery, not slack to raid when the day runs late."
+      },
+      {
+        "id": "pm-care",
+        "start": "eveningRunEnd",
+        "end": "eveningRunEnd+15",
+        "label": "Shower · skin + hair care (PM)",
+        "kind": "care",
+        "note": "Night skin routine, and your hair-care routine exactly as directed."
+      },
+      {
+        "id": "dinner",
+        "start": "eveningRunEnd+15",
+        "end": "studyBlock2Start",
+        "label": "Dinner — light, then the kitchen closes",
+        "kind": "meal",
+        "note": "Protein and vegetables, a smaller portion of rice or roti. Nothing to eat during the night block."
+      },
+      {
+        "id": "block2",
+        "start": "studyBlock2Start",
+        "end": "studyBlock2End",
+        "label": "Block 2 — DSA + deep work",
+        "kind": "study",
+        "study": "deep",
+        "note": "DSA first while you are sharpest, then build. Phone in another room."
+      },
+      {
+        "id": "sleep",
+        "start": "sleepTarget",
+        "end": "wakeTime",
+        "label": "Sleep",
+        "kind": "sleep",
+        "note": "Screens off. Six hours is the floor, not the goal — the weekend pays it back."
+      }
+    ],
+    "saturday": [
+      {
+        "id": "sat-wake",
+        "start": "08:30",
+        "end": "08:45",
+        "label": "Wake slow · water",
+        "kind": "care",
+        "note": "Sleep in — five short nights are behind you. Still no phone for the first ten minutes."
+      },
+      {
+        "id": "sat-move",
+        "start": "08:45",
+        "end": "09:45",
+        "label": "Long easy run",
+        "kind": "move",
+        "note": "Slower and longer than a weekday, at a pace where you could still talk. This builds the aerobic base."
+      },
+      {
+        "id": "sat-care",
+        "start": "09:45",
+        "end": "10:15",
+        "label": "Shower · skin care (AM)",
+        "kind": "care",
+        "note": "Sunscreen matters more today — you will be on the bike later."
+      },
+      {
+        "id": "sat-breakfast",
+        "start": "10:15",
+        "end": "10:45",
+        "label": "Breakfast — protein first",
+        "kind": "meal",
+        "note": "A proper meal before the long block. Morning items your doctor directed go here."
+      },
+      {
+        "id": "sat-deep",
+        "start": "10:45",
+        "end": "13:45",
+        "label": "Deep block — the week’s hardest item",
+        "kind": "study",
+        "study": "deep",
+        "note": "Three uninterrupted hours, the longest block of your week. Spend it on whatever needs the most focus."
+      },
+      {
+        "id": "sat-lunch",
+        "start": "13:45",
+        "end": "14:45",
+        "label": "Lunch · rest",
+        "kind": "meal",
+        "note": "Eat, walk ten minutes, lie down for twenty if you need it."
+      },
+      {
+        "id": "sat-dsa",
+        "start": "14:45",
+        "end": "16:00",
+        "label": "DSA — problems + one re-solve",
+        "kind": "study",
+        "study": "dsa",
+        "note": "Re-solve one problem from earlier in the week, cold. Retention is the metric."
+      },
+      {
+        "id": "ride",
+        "start": "16:00",
+        "end": "20:30",
+        "label": "Ride — Classic 350 to the hills",
+        "kind": "ride",
+        "note": "Small happiness, fully earned. Full gear, fuel before the ghat, down before it is fully dark. Stops: tender coconut, chaas, unsweetened chai."
+      },
+      {
+        "id": "sat-dinner",
+        "start": "20:30",
+        "end": "21:15",
+        "label": "Dinner",
+        "kind": "meal",
+        "note": "Eating out is fine: tandoor or grilled over fried, no dessert, no cold drinks."
+      },
+      {
+        "id": "sat-pm-care",
+        "start": "21:15",
+        "end": "21:30",
+        "label": "Shower · skin + hair care (PM)",
+        "kind": "care",
+        "note": "Wash off the road. Night routine, hair care exactly as directed."
+      },
+      {
+        "id": "sat-light",
+        "start": "21:30",
+        "end": "22:30",
+        "label": "Light block — revise the week",
+        "kind": "study",
+        "study": "light",
+        "note": "Recall-first revision of the week’s modules. Watching and reading only — you have ridden for four hours."
+      },
+      {
+        "id": "sat-free",
+        "start": "22:30",
+        "end": "23:30",
+        "label": "Free time",
+        "kind": "routine",
+        "note": "Guilt-free. A film, family, friends — the week was hard and this hour is yours."
+      },
+      {
+        "id": "sat-sleep",
+        "start": "23:30",
+        "end": "08:30",
+        "label": "Sleep",
+        "kind": "sleep",
+        "note": "A full night. This is where the week’s short sleep gets paid back."
+      }
+    ],
+    "sunday": [
+      {
+        "id": "sun-wake",
+        "start": "08:30",
+        "end": "08:45",
+        "label": "Wake slow · water",
+        "kind": "care",
+        "note": "Another full night behind you. Water first, phone later."
+      },
+      {
+        "id": "sun-move",
+        "start": "08:45",
+        "end": "09:30",
+        "label": "Walk or mobility — recovery",
+        "kind": "move",
+        "note": "Legs rest today. A brisk walk or twenty minutes of stretching keeps the habit without the load."
+      },
+      {
+        "id": "sun-care",
+        "start": "09:30",
+        "end": "10:00",
+        "label": "Shower · skin care (AM)",
+        "kind": "care",
+        "note": "Sunscreen — another ride today."
+      },
+      {
+        "id": "sun-breakfast",
+        "start": "10:00",
+        "end": "10:30",
+        "label": "Breakfast — protein first",
+        "kind": "meal",
+        "note": "Morning items your doctor directed go here."
+      },
+      {
+        "id": "sun-deep",
+        "start": "10:30",
+        "end": "13:00",
+        "label": "Deep block — clear the carry-over",
+        "kind": "study",
+        "study": "deep",
+        "note": "Anything still open from the week goes first, so Monday starts clean."
+      },
+      {
+        "id": "sun-lunch",
+        "start": "13:00",
+        "end": "14:00",
+        "label": "Lunch · rest",
+        "kind": "meal",
+        "note": "Home food if you can. Cook extra for Monday."
+      },
+      {
+        "id": "sun-dsa",
+        "start": "14:00",
+        "end": "15:15",
+        "label": "Weekly timed DSA set",
+        "kind": "study",
+        "study": "dsa",
+        "note": "Three problems under time, no hints. Log the solve times — that is the number interviews measure."
+      },
+      {
+        "id": "sun-ride",
+        "start": "15:30",
+        "end": "19:30",
+        "label": "Ride — short trip, back early",
+        "kind": "ride",
+        "note": "Back by 19:30. Sunday night resets the week; it should not be spent recovering from the ride."
+      },
+      {
+        "id": "sun-dinner",
+        "start": "19:30",
+        "end": "20:30",
+        "label": "Dinner",
+        "kind": "meal",
+        "note": "Light and early. Kitchen closes after this."
+      },
+      {
+        "id": "sun-review",
+        "start": "20:30",
+        "end": "21:30",
+        "label": "Weekly review · plan the week",
+        "kind": "study",
+        "study": "review",
+        "note": "Analytics → weekly review. Name one thing that slipped and the one change that fixes it."
+      },
+      {
+        "id": "sun-prep",
+        "start": "21:30",
+        "end": "22:00",
+        "label": "Prep Monday — bag, clothes, office snacks",
+        "kind": "routine",
+        "note": "Pack nuts, fruit or chana for the office so the 4 pm craving already has an answer."
+      },
+      {
+        "id": "sun-pm-care",
+        "start": "22:00",
+        "end": "22:15",
+        "label": "Skin + hair care (PM)",
+        "kind": "care",
+        "note": "Night routine, hair care exactly as directed."
+      },
+      {
+        "id": "sun-light",
+        "start": "22:15",
+        "end": "23:15",
+        "label": "Light block — preview Monday’s module",
+        "kind": "study",
+        "study": "light",
+        "note": "Skim the first module of the week so Monday’s block starts warm."
+      },
+      {
+        "id": "sun-sleep",
+        "start": "23:30",
+        "end": "wakeTime",
+        "label": "Sleep — Monday starts at wake-up",
+        "kind": "sleep",
+        "note": "Earlier tonight so Monday morning is not a fight."
+      }
+    ]
+  },
+  "healthFocus": [
+    {
+      "id": "weight",
+      "label": "Weight loss",
+      "track": "Weekly weigh-in — same morning, same scale, before breakfast.",
+      "evidence": "Weight loss comes from a sustained calorie deficit. Protein and fibre help with fullness, and short sleep tends to push appetite up.",
+      "do": [
+        "Protein at every meal — eggs, paneer, dal, curd, chicken or fish.",
+        "Half the plate vegetables before the rice or roti.",
+        "Weigh in once a week, not every day."
+      ],
+      "avoid": [
+        "Eating during the night block — it is the easiest 300 calories of the day.",
+        "Liquid calories: juice, sweet lassi, cold drinks, sugary chai.",
+        "Treating a good workout as a reason to eat freely."
+      ]
+    },
+    {
+      "id": "low-sugar",
+      "label": "Low sugar",
+      "track": "Tick \"No added sugar\" on Today, every day you manage it.",
+      "evidence": "Added sugar is energy with almost no fullness, and cutting sugary drinks is one of the most consistent findings in diet research.",
+      "do": [
+        "Chai and coffee without sugar — or step down half a spoon a week.",
+        "Whole fruit instead of juice.",
+        "Read the label on biscuits, granola and \"healthy\" bars."
+      ],
+      "avoid": [
+        "Office celebration sweets — one piece, not three.",
+        "Cold drinks, at the office or on a ride. Tender coconut or chaas instead.",
+        "Dessert after dinner."
+      ]
+    },
+    {
+      "id": "triglycerides",
+      "label": "Triglycerides",
+      "track": "Log each lipid panel in Labs, exactly as the report prints it.",
+      "evidence": "Triglycerides respond strongly to lifestyle: less added sugar, fewer refined carbohydrates, little or no alcohol, and regular aerobic exercise are the standard first steps. Whether anything more is needed is your doctor’s call.",
+      "do": [
+        "Keep both daily runs — aerobic exercise is the main lever.",
+        "Swap white rice and maida for whole grains where you can.",
+        "Fish or other omega-3-rich foods a couple of times a week, if you eat them."
+      ],
+      "avoid": [
+        "Alcohol — it raises triglycerides directly.",
+        "Fried snacks and maida — samosa, vada pav, cream biscuits.",
+        "A big plate of rice late at night."
+      ]
+    },
+    {
+      "id": "hdl",
+      "label": "HDL (good cholesterol)",
+      "track": "Log HDL with each lipid panel in Labs.",
+      "evidence": "Regular aerobic exercise, losing excess weight, not smoking, and replacing trans fats with unsaturated fats are all associated with better HDL.",
+      "do": [
+        "Aerobic exercise most days — your runs count.",
+        "Unsaturated fats: nuts, seeds, groundnut or mustard oil in normal amounts.",
+        "Keep the weight trend moving down."
+      ],
+      "avoid": [
+        "Trans fats: vanaspati, reused frying oil, bakery puffs.",
+        "Smoking or vaping.",
+        "Sitting for hours — stand up once an hour at the office."
+      ]
+    },
+    {
+      "id": "b12",
+      "label": "Vitamin B12",
+      "track": "Tick your doctor-directed item on Today; log each level in Labs.",
+      "evidence": "B12 comes mainly from animal foods — dairy, eggs, fish and meat — so a mostly vegetarian diet makes low levels more likely. Correcting it is your doctor’s plan, and retests show whether it is working.",
+      "do": [
+        "Take exactly what your doctor directed, at the same time every day.",
+        "Dairy and eggs daily, if you eat them.",
+        "Retest when your doctor says, and log the result here."
+      ],
+      "avoid": [
+        "Skipping doses on busy days — consistency is the whole point.",
+        "Changing the dose on your own.",
+        "Writing off tiredness as \"just the schedule\" — tell your doctor."
+      ]
+    },
+    {
+      "id": "vitamin-d",
+      "label": "Vitamin D",
+      "track": "Tick your doctor-directed item on Today; log each level in Labs.",
+      "evidence": "The body makes vitamin D from sunlight on the skin, and an indoor office day provides very little. Supplements are taken as your doctor directs, often with a meal.",
+      "do": [
+        "Take exactly what your doctor directed — ask whether it should go with a meal.",
+        "Run outdoors in the morning rather than on a treadmill.",
+        "Retest when your doctor says, and log the result here."
+      ],
+      "avoid": [
+        "Skipping doses on weekends.",
+        "Taking extra on your own — vitamin D builds up in the body.",
+        "Spending every daylight hour indoors — step out for ten minutes at lunch."
+      ]
+    }
+  ],
+  "habits": [
+    {
+      "id": "skin-am",
+      "label": "Skin care — morning",
+      "when": "morning"
+    },
+    {
+      "id": "no-sugar",
+      "label": "No added sugar today",
+      "when": "day"
+    },
+    {
+      "id": "skin-pm",
+      "label": "Skin care — night",
+      "when": "night"
+    },
+    {
+      "id": "hair",
+      "label": "Hair-care routine",
+      "when": "night"
+    },
+    {
+      "id": "kitchen-closed",
+      "label": "Nothing eaten after dinner",
+      "when": "night"
     }
   ]
 }

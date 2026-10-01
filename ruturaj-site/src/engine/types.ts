@@ -115,6 +115,19 @@ export interface FoundationMilestone {
  */
 export type FoundationTier = 1 | 2 | 3;
 
+/**
+ * "Ruturaj, do this — it will help you." The recommendation and the evidence
+ * stay separate, and proof names the artefact that makes "done" checkable.
+ */
+export interface Coach {
+  doThis: string;
+  /** Evidence, stated apart from the recommendation. */
+  why: string;
+  /** How to go further than the course asks. */
+  harder: string;
+  proof: string;
+}
+
 export interface FoundationSubject {
   id: string;
   name: string;

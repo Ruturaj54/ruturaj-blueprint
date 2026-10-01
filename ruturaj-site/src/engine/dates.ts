@@ -7,8 +7,8 @@
  * that made the old app's day counter drift.
  */
 
-export const MISSION_START = '2026-09-24';
-export const MISSION_END = '2027-03-03';
+export const MISSION_START = '2026-10-01';
+export const MISSION_END = '2027-03-10';
 export const TOTAL_DAYS = 161;
 
 const MS_PER_DAY = 86_400_000;
@@ -26,7 +26,7 @@ export function formatISO(d: Date): string {
 
 /**
  * Hour at which a new mission day begins. Not midnight: the deep-work block
- * runs 22:00–02:00, so a DSA problem solved at 01:15 belongs to the day it was
+ * runs 22:00–01:00, so a DSA problem solved at 01:15 belongs to the day it was
  * planned in, not the next one. With a midnight boundary, half of every night
  * block landed on the wrong day and the end-of-day mail could never see it.
  */

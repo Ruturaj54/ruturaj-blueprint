@@ -6,3 +6,6 @@
 export { ALL_TASKS } from './tasks';
 export { FOUNDATION_SUBJECTS, SEQUENTIAL_TIERS } from './foundation';
 export { DSA_PATTERNS } from './tasks/dsa';
+export { COACH } from './foundation/coach';
+export { ROUTINES } from './routine';
+export { HEALTH_FOCUS, DAILY_HABITS } from './health';

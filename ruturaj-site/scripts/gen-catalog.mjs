@@ -66,6 +66,12 @@ const catalog = {
     weight: p.weight,
     targetProblems: p.targetProblems,
   })),
+  // The mail coaches, schedules and reports health from the same text the app
+  // shows, so all three come from the TypeScript source rather than a copy.
+  coach: mod.COACH,
+  routines: mod.ROUTINES,
+  healthFocus: mod.HEALTH_FOCUS,
+  habits: mod.DAILY_HABITS,
 };
 
 await mkdir(dirname(out), { recursive: true });
@@ -76,7 +82,10 @@ const mandatory = catalog.foundation.reduce(
   (n, s) => n + s.milestones.filter((m) => m.mandatory).length,
   0,
 );
+const uncoached = catalog.foundation.filter((s) => !catalog.coach[s.id]).map((s) => s.id);
+if (uncoached.length) throw new Error(`subjects with no coaching card: ${uncoached.join(', ')}`);
 console.log(
   `catalog.json — ${catalog.tasks.length} tasks, ${catalog.foundation.length} subjects ` +
-    `(${mandatory} mandatory milestones), ${catalog.patterns.length} DSA patterns`,
+    `(${mandatory} mandatory milestones), ${catalog.patterns.length} DSA patterns, ` +
+    `${Object.keys(catalog.routines).length} day templates, ${catalog.healthFocus.length} health cards`,
 );

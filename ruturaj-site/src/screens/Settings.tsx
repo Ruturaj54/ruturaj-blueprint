@@ -15,24 +15,30 @@ const inputCls =
 type TimeKey =
   | 'wakeTime'
   | 'morningRunTime'
+  | 'morningRunEnd'
   | 'officeStart'
   | 'officeEnd'
   | 'eveningRunTime'
+  | 'eveningRunEnd'
   | 'studyBlock1Start'
   | 'studyBlock1End'
   | 'studyBlock2Start'
-  | 'studyBlock2End';
+  | 'studyBlock2End'
+  | 'sleepTarget';
 
 const TIME_FIELDS: Array<{ key: TimeKey; label: string }> = [
   { key: 'wakeTime', label: 'Wake up' },
-  { key: 'morningRunTime', label: 'Morning run' },
-  { key: 'officeStart', label: 'Office start' },
-  { key: 'officeEnd', label: 'Office end' },
-  { key: 'studyBlock1Start', label: 'Study block 1 start' },
-  { key: 'studyBlock1End', label: 'Study block 1 end' },
-  { key: 'eveningRunTime', label: 'Evening run' },
+  { key: 'morningRunTime', label: 'Morning run starts' },
+  { key: 'morningRunEnd', label: 'Morning run ends' },
+  { key: 'officeStart', label: 'Leave for office' },
+  { key: 'officeEnd', label: 'Home from office' },
+  { key: 'studyBlock1Start', label: 'Course block start' },
+  { key: 'studyBlock1End', label: 'Course block end' },
+  { key: 'eveningRunTime', label: 'Evening run starts' },
+  { key: 'eveningRunEnd', label: 'Evening run ends' },
   { key: 'studyBlock2Start', label: 'Night block start' },
   { key: 'studyBlock2End', label: 'Night block end' },
+  { key: 'sleepTarget', label: 'Sleep' },
 ];
 
 export function Settings() {
@@ -130,7 +136,8 @@ export function Settings() {
         </SectionTitle>
         <Card>
           <p className="text-[13px] text-muted">
-            Change a block and your timetable follows it — in the app and in the morning mail.
+            Your weekday. Change a time and the whole timetable follows it — skin care, meals and
+            all — in the app and in the morning mail. Saturday and Sunday have their own fixed plan.
           </p>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {TIME_FIELDS.map((f) => (

@@ -5,6 +5,10 @@ import { Card, SectionTitle, ProgressBar, Chip, EmptyState } from '@/components/
 import { listContainer } from '@/lib/motion';
 import { MissionList } from '@/components/home/MissionList';
 import { DayTimetable } from '@/components/today/DayTimetable';
+import { DailyCare } from '@/components/today/DailyCare';
+import { CoachCard } from '@/components/home/CoachCard';
+import { dayTypeOf } from '@/engine/schedule';
+import { DAY_TYPE_LABEL } from '@/data/routine';
 import { DeepWork } from '@/components/today/DeepWork';
 import { QuickLog } from '@/components/today/QuickLog';
 import { CloseDay } from '@/components/today/CloseDay';
@@ -53,6 +57,7 @@ export function Today() {
               <CalendarDays size={15} />
               <p className="text-[12px] uppercase tracking-[0.12em]">{formatLong(today)}</p>
             </div>
+            <p className="mt-1 text-[12px] text-accent">{DAY_TYPE_LABEL[dayTypeOf(plan.ctx.date)]}</p>
             <p className="mt-2 font-display text-[24px] font-bold">
               Day {plan.ctx.day}
               <span className="ml-2 text-[14px] font-normal text-muted">
@@ -89,6 +94,9 @@ export function Today() {
       {/* ---- timetable: what, and when ---- */}
       <DayTimetable plan={plan} />
 
+      {/* ---- skin, hair, sugar, directed items ---- */}
+      <DailyCare />
+
       {/* ---- planned vs actual ---- */}
       {log && log.planned.length > 0 && (
         <section>
@@ -121,6 +129,7 @@ export function Today() {
       )}
 
       {/* ---- missions ---- */}
+      <CoachCard plan={plan} />
       <section>
         <SectionTitle
           action={

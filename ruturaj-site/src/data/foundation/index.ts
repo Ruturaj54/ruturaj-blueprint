@@ -15,9 +15,16 @@ export const FOUNDATION_SUBJECTS: readonly FoundationSubject[] = [
 ];
 
 export const TIER_LABEL: Record<FoundationTier, string> = {
-  1: 'Apna College Prime AI/ML — first priority',
-  2: 'Five Minute Engineering — AI engineering',
-  3: 'PPA · LB · DSA · LSP practice',
+  1: 'Course 1 · Apna College Prime AI/ML',
+  2: 'Course 2 · Five Minute Engineering',
+  3: 'Practice · PPA · LB · DSA · LSP',
+};
+
+/** Short names for chips and the mail. */
+export const TIER_SHORT: Record<FoundationTier, string> = {
+  1: 'Course 1 · Apna',
+  2: 'Course 2 · 5ME',
+  3: 'Practice',
 };
 
 /**
@@ -54,3 +61,4 @@ export function subjectById(id: string): FoundationSubject | undefined {
 }
 
 export { APNA_SUBJECTS, FIVEME_SUBJECTS, CORE_SUBJECTS };
+export { COACH, coachFor } from './coach';

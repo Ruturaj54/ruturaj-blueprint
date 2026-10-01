@@ -1,42 +1,109 @@
-import { Clock, Briefcase, BookOpen, Footprints, Moon, ArrowRight, CornerDownRight } from 'lucide-react';
-import { Card, SectionTitle, Chip, ProgressBar } from '@/components/ui/primitives';
+import { useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { Clock, ArrowRight } from 'lucide-react';
+import { Card, SectionTitle } from '@/components/ui/primitives';
 import { cn } from '@/lib/cn';
+import { spring } from '@/lib/motion';
 import { useAppState } from '@/hooks/useAppState';
-import { buildSchedule, formatRange, formatHM, type Slot } from '@/engine/schedule';
+import { useClock } from '@/hooks/useClock';
+import { buildSchedule, dayTypeOf, slotAt, dayClock, formatHM } from '@/engine/schedule';
+import { DAY_TYPE_LABEL, type DayType } from '@/data/routine';
 import type { DailyPlan } from '@/engine/planner';
+import { TimelineRow, type RowTime } from './TimelineRow';
 
-const SLOT_ICON = {
-  office: Briefcase,
-  block1: BookOpen,
-  run: Footprints,
-  block2: Moon,
-} as const;
+const VIEWS: Array<{ id: DayType; label: string }> = [
+  { id: 'weekday', label: 'Weekday' },
+  { id: 'saturday', label: 'Saturday' },
+  { id: 'sunday', label: 'Sunday' },
+];
 
-/** The day as a timetable — what to do, and when. */
+/**
+ * The whole day as a timetable — every entry with its time, today's work
+ * inside the study blocks, and a marker on whatever is happening now. The
+ * other day types can be previewed, so Friday night can see Saturday's plan.
+ */
 export function DayTimetable({ plan }: { plan: DailyPlan }) {
   const state = useAppState();
-  const schedule = buildSchedule(state, plan);
-  const today = state.days[plan.ctx.date];
-  const completed = new Set(today?.completed ?? []);
+  const reduce = useReducedMotion();
+  const todayType = dayTypeOf(plan.ctx.date);
+  const [view, setView] = useState<DayType>(todayType);
+  const clock = useClock();
+
+  const schedule = buildSchedule(state, plan, view);
+  const slots = schedule.slots;
+  const completed = new Set(state.days[plan.ctx.date]?.completed ?? []);
+
+  const live = view === todayType;
+  const now = live ? slotAt(slots, clock) : null;
+  // Before the first entry (say 05:00) the day has not begun: nothing is past.
+  const started = live && dayClock(clock) >= dayClock(slots[0]?.start ?? '00:00');
+  const timeOf = (i: number): RowTime => {
+    if (!live) return 'future';
+    if (now && slots[i] === now) return 'now';
+    if (!started) return 'future';
+    const s = slots[i]!;
+    let end = dayClock(s.end);
+    if (end <= dayClock(s.start)) end += 1440;
+    return end <= dayClock(clock) ? 'past' : 'future';
+  };
 
   return (
     <section>
       <SectionTitle
         action={
           <span className="tnum text-[11px] text-faint">
-            {formatHM(schedule.totalPlanned)} of {formatHM(schedule.totalCapacity)}
+            {formatHM(schedule.totalPlanned)} of {formatHM(schedule.totalCapacity)} study
           </span>
         }
       >
         <span className="inline-flex items-center gap-1.5">
           <Clock size={13} />
-          Today&rsquo;s schedule
+          {live ? 'Today, hour by hour' : DAY_TYPE_LABEL[view]}
         </span>
       </SectionTitle>
 
-      <div className="space-y-2.5">
-        {schedule.slots.map((slot) => (
-          <SlotCard key={slot.id} slot={slot} completed={completed} />
+      <div role="tablist" aria-label="Day type" className="mb-3 flex rounded-[12px] border border-line bg-surface p-1">
+        {VIEWS.map((v) => {
+          const active = v.id === view;
+          return (
+            <button
+              key={v.id}
+              role="tab"
+              aria-selected={active}
+              onClick={() => setView(v.id)}
+              className={cn('relative min-h-[36px] flex-1 rounded-[9px] text-[12px] transition-colors', active ? 'text-black' : 'text-muted hover:text-fg')}
+            >
+              {active && (
+                <motion.span
+                  layoutId="day-view"
+                  transition={reduce ? { duration: 0 } : spring}
+                  className="absolute inset-0 rounded-[9px] bg-accent"
+                />
+              )}
+              <span className="relative font-medium">
+                {v.label}
+                {v.id === todayType && <span className={cn('ml-1', active ? 'text-black/60' : 'text-accent')}>· today</span>}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {!live && (
+        <p className="mb-3 text-[12px] text-muted">
+          Preview — today&rsquo;s missions placed into the {view} timetable.
+        </p>
+      )}
+
+      <div>
+        {slots.map((slot, i) => (
+          <TimelineRow
+            key={`${view}-${slot.id}`}
+            slot={slot}
+            time={timeOf(i)}
+            completed={completed}
+            last={i === slots.length - 1}
+          />
         ))}
       </div>
 
@@ -48,100 +115,16 @@ export function DayTimetable({ plan }: { plan: DailyPlan }) {
               <p className="text-[13px]">Continues tomorrow</p>
               {schedule.overflow.map((i) => (
                 <p key={i.id} className="mt-1 text-[12px] text-muted">
-                  {i.title}{' '}
-                  <span className="tnum text-faint">— {formatHM(i.minutes)} left</span>
+                  {i.title} <span className="tnum text-faint">— {formatHM(i.minutes)} left</span>
                 </p>
               ))}
               <p className="mt-1.5 text-[12px] text-faint">
-                Today&rsquo;s blocks are full. It moves to the top of tomorrow&rsquo;s plan rather than
-                coming out of your sleep.
+                Today&rsquo;s blocks are full. It moves to the top of tomorrow&rsquo;s plan rather than coming out of your sleep.
               </p>
             </div>
           </div>
         </Card>
       )}
     </section>
-  );
-}
-
-function SlotCard({ slot, completed }: { slot: Slot; completed: Set<string> }) {
-  const Icon = SLOT_ICON[slot.id];
-  const isRest = slot.id === 'run';
-  const pct = slot.capacity === 0 ? 0 : (slot.used / slot.capacity) * 100;
-
-  return (
-    <Card className={cn('p-0', isRest && 'opacity-80')}>
-      <div className="flex items-center gap-3 p-3.5">
-        <span
-          className={cn(
-            'grid size-[34px] shrink-0 place-items-center rounded-[9px] border',
-            isRest ? 'border-success/30 bg-success/10 text-success' : 'border-line text-muted',
-          )}
-        >
-          <Icon size={16} />
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="text-[14px] font-medium">{slot.label}</p>
-          <p className="tnum text-[12px] text-muted">{formatRange(slot)}</p>
-        </div>
-        {!isRest && (
-          <span className="tnum shrink-0 font-mono text-[12px] text-faint">
-            {formatHM(slot.used)} / {formatHM(slot.capacity)}
-          </span>
-        )}
-      </div>
-
-      {/* w-auto, not the default w-full: with a horizontal margin, w-full is
-          100% + 28px and the bar pokes 13px out of the card at full capacity. */}
-      {!isRest && (
-        <ProgressBar value={pct} tone={pct > 100 ? 'danger' : 'accent'} className="mx-3.5 mb-1 w-auto" />
-      )}
-
-      {slot.items.length > 0 && (
-        <div className="space-y-2 border-t border-line px-3.5 py-3">
-          {slot.items.map((item) => {
-            const done = completed.has(item.id);
-            return (
-              <div key={item.id} className="flex items-start gap-2.5">
-                <span
-                  className={cn(
-                    'mt-[7px] size-[6px] shrink-0 rounded-full',
-                    done ? 'bg-success' : item.kind === 'dsa' ? 'bg-info' : 'bg-accent',
-                  )}
-                />
-                <div className="min-w-0 flex-1">
-                  <p
-                    className={cn(
-                      'text-[13px] leading-snug',
-                      done ? 'text-faint line-through' : 'text-fg',
-                    )}
-                  >
-                    {item.title}
-                  </p>
-                  <div className="mt-1 flex flex-wrap gap-1.5">
-                    <Chip>
-                      {item.partial && item.totalMinutes
-                        ? `${formatHM(item.minutes)} of ${formatHM(item.totalMinutes)}`
-                        : formatHM(item.minutes)}
-                    </Chip>
-                    <Chip tone={item.kind === 'dsa' ? 'info' : 'default'}>{item.context}</Chip>
-                    {item.carried && (
-                      <Chip tone="accent">
-                        <CornerDownRight size={11} />
-                        Carried over
-                      </Chip>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {slot.note && (
-        <p className="border-t border-line px-3.5 py-2.5 text-[12px] text-faint">{slot.note}</p>
-      )}
-    </Card>
   );
 }
