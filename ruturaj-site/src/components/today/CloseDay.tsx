@@ -90,7 +90,7 @@ export function CloseDay() {
           <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
             <p className="tnum text-[12px] text-faint">
               Closed at {istClock(new Date(log?.closedAt ?? Date.now()))} IST.
-              {state.settings.emailEnabled && ` The evening recap mails itself at ${state.settings.eveningEmailTime}.`}
+              {state.settings.emailEnabled && ` Tomorrow’s ${state.settings.morningEmailTime} mail reads this.`}
             </p>
             <Button variant="ghost" onClick={reopen}>
               Reopen day
