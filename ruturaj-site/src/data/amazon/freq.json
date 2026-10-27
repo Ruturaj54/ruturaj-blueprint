@@ -1,0 +1,1733 @@
+[
+  {
+    "rank": 1,
+    "slug": "two-sum",
+    "name": "Two Sum",
+    "n": 1,
+    "d": "E",
+    "f3": 100,
+    "f30": 100,
+    "keys": [
+      "two-sum"
+    ],
+    "days": [
+      1
+    ]
+  },
+  {
+    "rank": 2,
+    "slug": "maximum-coins-from-k-consecutive-bags",
+    "name": "Maximum Coins From K Consecutive Bags",
+    "n": 3413,
+    "d": "M",
+    "f3": 93.1,
+    "f30": 100,
+    "keys": [
+      "maximum-coins-from-k-consecutive-bags"
+    ],
+    "days": [
+      12
+    ]
+  },
+  {
+    "rank": 3,
+    "slug": "longest-substring-without-repeating-characters",
+    "name": "Longest Substring Without Repeating Characters",
+    "n": 3,
+    "d": "M",
+    "f3": 79.8,
+    "f30": 89.7,
+    "keys": [
+      "longest-substring-without-repeating-characters"
+    ],
+    "days": [
+      3
+    ]
+  },
+  {
+    "rank": 4,
+    "slug": "trapping-rain-water",
+    "name": "Trapping Rain Water",
+    "n": 42,
+    "d": "H",
+    "f3": 79.8,
+    "f30": 79.3,
+    "keys": [
+      "trapping-rain-water"
+    ],
+    "days": [
+      25
+    ]
+  },
+  {
+    "rank": 5,
+    "slug": "group-anagrams",
+    "name": "Group Anagrams",
+    "n": 49,
+    "d": "M",
+    "f3": 73.4,
+    "f30": 72,
+    "keys": [
+      "group-anagrams"
+    ],
+    "days": [
+      6
+    ]
+  },
+  {
+    "rank": 6,
+    "slug": "merge-intervals",
+    "name": "Merge Intervals",
+    "n": 56,
+    "d": "M",
+    "f3": 72.4,
+    "f30": 61.7,
+    "keys": [
+      "merge-intervals"
+    ],
+    "days": [
+      17
+    ]
+  },
+  {
+    "rank": 7,
+    "slug": "lru-cache",
+    "name": "LRU Cache",
+    "n": 146,
+    "d": "M",
+    "f3": 72.4,
+    "f30": 67.4,
+    "keys": [
+      "lru-cache",
+      "lru-cache--2",
+      "lru-cache--3"
+    ],
+    "days": [
+      14,
+      21,
+      24
+    ]
+  },
+  {
+    "rank": 8,
+    "slug": "median-of-two-sorted-arrays",
+    "name": "Median of Two Sorted Arrays",
+    "n": 4,
+    "d": "H",
+    "f3": 71.5,
+    "f30": 61.7,
+    "keys": [
+      "median-of-two-sorted-arrays"
+    ],
+    "days": [
+      25
+    ]
+  },
+  {
+    "rank": 9,
+    "slug": "longest-palindromic-substring",
+    "name": "Longest Palindromic Substring",
+    "n": 5,
+    "d": "M",
+    "f3": 71.5,
+    "f30": 54.4,
+    "keys": [
+      "longest-palindromic-substring"
+    ],
+    "days": [
+      18
+    ]
+  },
+  {
+    "rank": 10,
+    "slug": "container-with-most-water",
+    "name": "Container With Most Water",
+    "n": 11,
+    "d": "M",
+    "f3": 71.5,
+    "f30": 67.4,
+    "keys": [
+      "container-with-most-water"
+    ],
+    "days": [
+      8
+    ]
+  },
+  {
+    "rank": 11,
+    "slug": "best-time-to-buy-and-sell-stock",
+    "name": "Best Time to Buy and Sell Stock",
+    "n": 121,
+    "d": "E",
+    "f3": 71.5,
+    "f30": 79.3,
+    "keys": [
+      "best-time-to-buy-and-sell-stock"
+    ],
+    "days": [
+      1
+    ]
+  },
+  {
+    "rank": 12,
+    "slug": "move-zeroes",
+    "name": "Move Zeroes",
+    "n": 283,
+    "d": "E",
+    "f3": 71.5,
+    "f30": 72,
+    "keys": [
+      "move-zeroes"
+    ],
+    "days": [
+      2
+    ]
+  },
+  {
+    "rank": 13,
+    "slug": "top-k-frequent-elements",
+    "name": "Top K Frequent Elements",
+    "n": 347,
+    "d": "M",
+    "f3": 71.5,
+    "f30": 44.3,
+    "keys": [
+      "top-k-frequent-elements"
+    ],
+    "days": [
+      6
+    ]
+  },
+  {
+    "rank": 14,
+    "slug": "koko-eating-bananas",
+    "name": "Koko Eating Bananas",
+    "n": 875,
+    "d": "M",
+    "f3": 71.5,
+    "f30": 54.4,
+    "keys": [
+      "koko-eating-bananas"
+    ],
+    "days": [
+      9
+    ]
+  },
+  {
+    "rank": 15,
+    "slug": "add-two-numbers",
+    "name": "Add Two Numbers",
+    "n": 2,
+    "d": "M",
+    "f3": 69.3,
+    "f30": 67.4,
+    "keys": [
+      "add-two-numbers"
+    ],
+    "days": [
+      11
+    ]
+  },
+  {
+    "rank": 16,
+    "slug": "longest-common-prefix",
+    "name": "Longest Common Prefix",
+    "n": 14,
+    "d": "E",
+    "f3": 69.3,
+    "f30": 61.7,
+    "keys": [
+      "longest-common-prefix"
+    ],
+    "days": [
+      1
+    ]
+  },
+  {
+    "rank": 17,
+    "slug": "3sum",
+    "name": "3Sum",
+    "n": 15,
+    "d": "M",
+    "f3": 69.3,
+    "f30": 54.4,
+    "keys": [
+      "3sum"
+    ],
+    "days": [
+      8
+    ]
+  },
+  {
+    "rank": 18,
+    "slug": "maximum-subarray",
+    "name": "Maximum Subarray",
+    "n": 53,
+    "d": "M",
+    "f3": 69.3,
+    "f30": 54.4,
+    "keys": [
+      "maximum-subarray"
+    ],
+    "days": [
+      8
+    ]
+  },
+  {
+    "rank": 19,
+    "slug": "number-of-islands",
+    "name": "Number of Islands",
+    "n": 200,
+    "d": "M",
+    "f3": 69.3,
+    "f30": 79.3,
+    "keys": [
+      "number-of-islands"
+    ],
+    "days": [
+      7
+    ]
+  },
+  {
+    "rank": 20,
+    "slug": "subarray-sum-equals-k",
+    "name": "Subarray Sum Equals K",
+    "n": 560,
+    "d": "M",
+    "f3": 69.3,
+    "f30": 72,
+    "keys": [
+      "subarray-sum-equals-k"
+    ],
+    "days": [
+      8
+    ]
+  },
+  {
+    "rank": 21,
+    "slug": "rotting-oranges",
+    "name": "Rotting Oranges",
+    "n": 994,
+    "d": "M",
+    "f3": 69.3,
+    "f30": 44.3,
+    "keys": [
+      "rotting-oranges"
+    ],
+    "days": [
+      15
+    ]
+  },
+  {
+    "rank": 22,
+    "slug": "lowest-common-ancestor-of-a-binary-tree",
+    "name": "Lowest Common Ancestor of a Binary Tree",
+    "n": 236,
+    "d": "M",
+    "f3": 68.2,
+    "f30": 75.9,
+    "keys": [
+      "lowest-common-ancestor-of-a-binary-tree"
+    ],
+    "days": [
+      21
+    ]
+  },
+  {
+    "rank": 23,
+    "slug": "reorganize-string",
+    "name": "Reorganize String",
+    "n": 767,
+    "d": "M",
+    "f3": 68.2,
+    "f30": 54.4,
+    "keys": [
+      "reorganize-string"
+    ],
+    "days": [
+      6
+    ]
+  },
+  {
+    "rank": 24,
+    "slug": "valid-parentheses",
+    "name": "Valid Parentheses",
+    "n": 20,
+    "d": "E",
+    "f3": 65.7,
+    "f30": 67.4,
+    "keys": [
+      "valid-parentheses"
+    ],
+    "days": [
+      5
+    ]
+  },
+  {
+    "rank": 25,
+    "slug": "generate-parentheses",
+    "name": "Generate Parentheses",
+    "n": 22,
+    "d": "M",
+    "f3": 65.7,
+    "f30": 72,
+    "keys": [
+      "generate-parentheses"
+    ],
+    "days": [
+      4
+    ]
+  },
+  {
+    "rank": 26,
+    "slug": "course-schedule",
+    "name": "Course Schedule",
+    "n": 207,
+    "d": "M",
+    "f3": 64.3,
+    "f30": null,
+    "keys": [
+      "course-schedule"
+    ],
+    "days": [
+      15
+    ]
+  },
+  {
+    "rank": 27,
+    "slug": "product-of-array-except-self",
+    "name": "Product of Array Except Self",
+    "n": 238,
+    "d": "M",
+    "f3": 62.8,
+    "f30": 61.7,
+    "keys": [
+      "product-of-array-except-self"
+    ],
+    "days": [
+      8
+    ]
+  },
+  {
+    "rank": 28,
+    "slug": "palindrome-number",
+    "name": "Palindrome Number",
+    "n": 9,
+    "d": "E",
+    "f3": 61.2,
+    "f30": 44.3,
+    "xkey": "x-palindrome-number"
+  },
+  {
+    "rank": 29,
+    "slug": "valid-sudoku",
+    "name": "Valid Sudoku",
+    "n": 36,
+    "d": "M",
+    "f3": 61.2,
+    "f30": 75.9,
+    "keys": [
+      "valid-sudoku"
+    ],
+    "days": [
+      1
+    ]
+  },
+  {
+    "rank": 30,
+    "slug": "longest-consecutive-sequence",
+    "name": "Longest Consecutive Sequence",
+    "n": 128,
+    "d": "M",
+    "f3": 61.2,
+    "f30": 54.4,
+    "keys": [
+      "longest-consecutive-sequence"
+    ],
+    "days": [
+      6
+    ]
+  },
+  {
+    "rank": 31,
+    "slug": "search-in-rotated-sorted-array",
+    "name": "Search in Rotated Sorted Array",
+    "n": 33,
+    "d": "M",
+    "f3": 59.5,
+    "f30": 54.4,
+    "keys": [
+      "search-in-rotated-sorted-array"
+    ],
+    "days": [
+      9
+    ]
+  },
+  {
+    "rank": 32,
+    "slug": "sqrtx",
+    "name": "Sqrt(x)",
+    "n": 69,
+    "d": "E",
+    "f3": 59.5,
+    "f30": 54.4,
+    "keys": [
+      "sqrtx"
+    ],
+    "days": [
+      3
+    ]
+  },
+  {
+    "rank": 33,
+    "slug": "copy-list-with-random-pointer",
+    "name": "Copy List with Random Pointer",
+    "n": 138,
+    "d": "M",
+    "f3": 59.5,
+    "f30": 54.4,
+    "keys": [
+      "copy-list-with-random-pointer"
+    ],
+    "days": [
+      11
+    ]
+  },
+  {
+    "rank": 34,
+    "slug": "majority-element",
+    "name": "Majority Element",
+    "n": 169,
+    "d": "E",
+    "f3": 59.5,
+    "f30": null,
+    "keys": [
+      "majority-element"
+    ],
+    "days": [
+      1
+    ]
+  },
+  {
+    "rank": 35,
+    "slug": "valid-anagram",
+    "name": "Valid Anagram",
+    "n": 242,
+    "d": "E",
+    "f3": 59.5,
+    "f30": 61.7,
+    "keys": [
+      "valid-anagram"
+    ],
+    "days": [
+      1
+    ]
+  },
+  {
+    "rank": 36,
+    "slug": "reverse-integer",
+    "name": "Reverse Integer",
+    "n": 7,
+    "d": "M",
+    "f3": 59.5,
+    "f30": 54.4,
+    "xkey": "x-reverse-integer"
+  },
+  {
+    "rank": 37,
+    "slug": "capacity-to-ship-packages-within-d-days",
+    "name": "Capacity To Ship Packages Within D Days",
+    "n": 1011,
+    "d": "M",
+    "f3": 59.5,
+    "f30": 44.3,
+    "keys": [
+      "capacity-to-ship-packages-within-d-days"
+    ],
+    "days": [
+      9
+    ]
+  },
+  {
+    "rank": 38,
+    "slug": "task-scheduler",
+    "name": "Task Scheduler",
+    "n": 621,
+    "d": "M",
+    "f3": 59.5,
+    "f30": 61.7,
+    "keys": [
+      "task-scheduler"
+    ],
+    "days": [
+      17
+    ]
+  },
+  {
+    "rank": 39,
+    "slug": "merge-k-sorted-lists",
+    "name": "Merge k Sorted Lists",
+    "n": 23,
+    "d": "H",
+    "f3": 57.7,
+    "f30": 44.3,
+    "keys": [
+      "merge-k-sorted-lists"
+    ],
+    "days": [
+      11
+    ]
+  },
+  {
+    "rank": 40,
+    "slug": "remove-duplicates-from-sorted-array",
+    "name": "Remove Duplicates from Sorted Array",
+    "n": 26,
+    "d": "E",
+    "f3": 57.7,
+    "f30": 44.3,
+    "keys": [
+      "remove-duplicates-from-sorted-array"
+    ],
+    "days": [
+      2
+    ]
+  },
+  {
+    "rank": 41,
+    "slug": "fruit-into-baskets",
+    "name": "Fruit Into Baskets",
+    "n": 904,
+    "d": "M",
+    "f3": 57.7,
+    "f30": null,
+    "keys": [
+      "fruit-into-baskets"
+    ],
+    "days": [
+      12
+    ]
+  },
+  {
+    "rank": 42,
+    "slug": "asteroid-collision",
+    "name": "Asteroid Collision",
+    "n": 735,
+    "d": "M",
+    "f3": 57.7,
+    "f30": null,
+    "keys": [
+      "asteroid-collision"
+    ],
+    "days": [
+      5
+    ]
+  },
+  {
+    "rank": 43,
+    "slug": "linked-list-cycle",
+    "name": "Linked List Cycle",
+    "n": 141,
+    "d": "E",
+    "f3": 57.7,
+    "f30": 61.7,
+    "keys": [
+      "linked-list-cycle"
+    ],
+    "days": [
+      5
+    ]
+  },
+  {
+    "rank": 44,
+    "slug": "climbing-stairs",
+    "name": "Climbing Stairs",
+    "n": 70,
+    "d": "E",
+    "f3": 55.7,
+    "f30": null,
+    "keys": [
+      "climbing-stairs"
+    ],
+    "days": [
+      7
+    ]
+  },
+  {
+    "rank": 45,
+    "slug": "sliding-window-maximum",
+    "name": "Sliding Window Maximum",
+    "n": 239,
+    "d": "H",
+    "f3": 55.7,
+    "f30": null,
+    "keys": [
+      "sliding-window-maximum"
+    ],
+    "days": [
+      20
+    ]
+  },
+  {
+    "rank": 46,
+    "slug": "find-median-from-data-stream",
+    "name": "Find Median from Data Stream",
+    "n": 295,
+    "d": "H",
+    "f3": 55.7,
+    "f30": 54.4,
+    "keys": [
+      "find-median-from-data-stream"
+    ],
+    "days": [
+      14
+    ]
+  },
+  {
+    "rank": 47,
+    "slug": "single-element-in-a-sorted-array",
+    "name": "Single Element in a Sorted Array",
+    "n": 540,
+    "d": "M",
+    "f3": 55.7,
+    "f30": 54.4,
+    "keys": [
+      "single-element-in-a-sorted-array"
+    ],
+    "days": [
+      21
+    ]
+  },
+  {
+    "rank": 48,
+    "slug": "max-consecutive-ones-iii",
+    "name": "Max Consecutive Ones III",
+    "n": 1004,
+    "d": "M",
+    "f3": 55.7,
+    "f30": 67.4,
+    "keys": [
+      "max-consecutive-ones-iii"
+    ],
+    "days": [
+      3
+    ]
+  },
+  {
+    "rank": 49,
+    "slug": "next-permutation",
+    "name": "Next Permutation",
+    "n": 31,
+    "d": "M",
+    "f3": 55.7,
+    "f30": null,
+    "keys": [
+      "next-permutation"
+    ],
+    "days": [
+      8
+    ]
+  },
+  {
+    "rank": 50,
+    "slug": "split-array-largest-sum",
+    "name": "Split Array Largest Sum",
+    "n": 410,
+    "d": "H",
+    "f3": 55.7,
+    "f30": 61.7,
+    "keys": [
+      "split-array-largest-sum"
+    ],
+    "days": [
+      9
+    ]
+  },
+  {
+    "rank": 51,
+    "slug": "roman-to-integer",
+    "name": "Roman to Integer",
+    "n": 13,
+    "d": "E",
+    "f3": 55.7,
+    "f30": null,
+    "xkey": "x-roman-to-integer"
+  },
+  {
+    "rank": 52,
+    "slug": "merge-sorted-array",
+    "name": "Merge Sorted Array",
+    "n": 88,
+    "d": "E",
+    "f3": 55.7,
+    "f30": null,
+    "keys": [
+      "merge-sorted-array"
+    ],
+    "days": [
+      2
+    ]
+  },
+  {
+    "rank": 53,
+    "slug": "subsets",
+    "name": "Subsets",
+    "n": 78,
+    "d": "M",
+    "f3": 53.4,
+    "f30": null,
+    "keys": [
+      "subsets"
+    ],
+    "days": [
+      19
+    ]
+  },
+  {
+    "rank": 54,
+    "slug": "house-robber",
+    "name": "House Robber",
+    "n": 198,
+    "d": "M",
+    "f3": 53.4,
+    "f30": 67.4,
+    "keys": [
+      "house-robber"
+    ],
+    "days": [
+      7
+    ]
+  },
+  {
+    "rank": 55,
+    "slug": "concatenation-of-array",
+    "name": "Concatenation of Array",
+    "n": 1929,
+    "d": "E",
+    "f3": 53.4,
+    "f30": 54.4,
+    "xkey": "x-concatenation-of-array"
+  },
+  {
+    "rank": 56,
+    "slug": "minimum-operations-to-make-array-non-decreasing",
+    "name": "Minimum Operations to Make Array Non Decreasing",
+    "n": 3914,
+    "d": "M",
+    "f3": 53.4,
+    "f30": null,
+    "xkey": "x-minimum-operations-to-make-array-non-decreasing",
+    "contest": true
+  },
+  {
+    "rank": 57,
+    "slug": "binary-tree-maximum-path-sum",
+    "name": "Binary Tree Maximum Path Sum",
+    "n": 124,
+    "d": "H",
+    "f3": 53.4,
+    "f30": null,
+    "keys": [
+      "binary-tree-maximum-path-sum"
+    ],
+    "days": [
+      13
+    ]
+  },
+  {
+    "rank": 58,
+    "slug": "remove-k-digits",
+    "name": "Remove K Digits",
+    "n": 402,
+    "d": "M",
+    "f3": 53.4,
+    "f30": 54.4,
+    "keys": [
+      "remove-k-digits"
+    ],
+    "days": [
+      10
+    ]
+  },
+  {
+    "rank": 59,
+    "slug": "separate-black-and-white-balls",
+    "name": "Separate Black and White Balls",
+    "n": 2938,
+    "d": "M",
+    "f3": 53.4,
+    "f30": 54.4,
+    "keys": [
+      "separate-black-and-white-balls"
+    ],
+    "days": [
+      23
+    ]
+  },
+  {
+    "rank": 60,
+    "slug": "word-ladder",
+    "name": "Word Ladder",
+    "n": 127,
+    "d": "H",
+    "f3": 50.9,
+    "f30": null,
+    "keys": [
+      "word-ladder"
+    ],
+    "days": [
+      16
+    ]
+  },
+  {
+    "rank": 61,
+    "slug": "kth-largest-element-in-an-array",
+    "name": "Kth Largest Element in an Array",
+    "n": 215,
+    "d": "M",
+    "f3": 50.9,
+    "f30": null,
+    "keys": [
+      "kth-largest-element-in-an-array"
+    ],
+    "days": [
+      14
+    ]
+  },
+  {
+    "rank": 62,
+    "slug": "meeting-rooms-ii",
+    "name": "Meeting Rooms II",
+    "n": 253,
+    "d": "M",
+    "f3": 50.9,
+    "f30": null,
+    "keys": [
+      "meeting-rooms-ii"
+    ],
+    "days": [
+      17
+    ]
+  },
+  {
+    "rank": 63,
+    "slug": "daily-temperatures",
+    "name": "Daily Temperatures",
+    "n": 739,
+    "d": "M",
+    "f3": 50.9,
+    "f30": null,
+    "keys": [
+      "daily-temperatures"
+    ],
+    "days": [
+      10
+    ]
+  },
+  {
+    "rank": 64,
+    "slug": "minimum-window-substring",
+    "name": "Minimum Window Substring",
+    "n": 76,
+    "d": "H",
+    "f3": 50.9,
+    "f30": null,
+    "keys": [
+      "minimum-window-substring",
+      "minimum-window-substring--2"
+    ],
+    "days": [
+      12,
+      26
+    ]
+  },
+  {
+    "rank": 65,
+    "slug": "find-first-and-last-position-of-element-in-sorted-array",
+    "name": "Find First and Last Position of Element in Sorted Array",
+    "n": 34,
+    "d": "M",
+    "f3": 50.9,
+    "f30": 44.3,
+    "keys": [
+      "find-first-and-last-position-of-element-in-sorted-array"
+    ],
+    "days": [
+      3
+    ]
+  },
+  {
+    "rank": 66,
+    "slug": "find-the-index-of-the-first-occurrence-in-a-string",
+    "name": "Find the Index of the First Occurrence in a String",
+    "n": 28,
+    "d": "E",
+    "f3": 50.9,
+    "f30": null,
+    "xkey": "x-find-the-index-of-the-first-occurrence-in-a-string"
+  },
+  {
+    "rank": 67,
+    "slug": "longest-valid-parentheses",
+    "name": "Longest Valid Parentheses",
+    "n": 32,
+    "d": "H",
+    "f3": 50.9,
+    "f30": 67.4,
+    "keys": [
+      "longest-valid-parentheses"
+    ],
+    "days": [
+      10
+    ]
+  },
+  {
+    "rank": 68,
+    "slug": "interleaving-string",
+    "name": "Interleaving String",
+    "n": 97,
+    "d": "M",
+    "f3": 50.9,
+    "f30": 54.4,
+    "keys": [
+      "interleaving-string"
+    ],
+    "days": [
+      18
+    ]
+  },
+  {
+    "rank": 69,
+    "slug": "binary-search",
+    "name": "Binary Search",
+    "n": 704,
+    "d": "E",
+    "f3": 50.9,
+    "f30": 67.4,
+    "keys": [
+      "binary-search"
+    ],
+    "days": [
+      3
+    ]
+  },
+  {
+    "rank": 70,
+    "slug": "maximum-average-subarray-i",
+    "name": "Maximum Average Subarray I",
+    "n": 643,
+    "d": "E",
+    "f3": 50.9,
+    "f30": null,
+    "keys": [
+      "maximum-average-subarray-i"
+    ],
+    "days": [
+      3
+    ]
+  },
+  {
+    "rank": 71,
+    "slug": "4sum",
+    "name": "4Sum",
+    "n": 18,
+    "d": "M",
+    "f3": 48.1,
+    "f30": 44.3,
+    "keys": [
+      "4sum"
+    ],
+    "days": [
+      22
+    ]
+  },
+  {
+    "rank": 72,
+    "slug": "merge-two-sorted-lists",
+    "name": "Merge Two Sorted Lists",
+    "n": 21,
+    "d": "E",
+    "f3": 48.1,
+    "f30": 44.3,
+    "keys": [
+      "merge-two-sorted-lists"
+    ],
+    "days": [
+      5
+    ]
+  },
+  {
+    "rank": 73,
+    "slug": "rotate-image",
+    "name": "Rotate Image",
+    "n": 48,
+    "d": "M",
+    "f3": 48.1,
+    "f30": null,
+    "keys": [
+      "rotate-image"
+    ],
+    "days": [
+      20
+    ]
+  },
+  {
+    "rank": 74,
+    "slug": "pascals-triangle",
+    "name": "Pascal's Triangle",
+    "n": 118,
+    "d": "E",
+    "f3": 48.1,
+    "f30": null,
+    "keys": [
+      "pascals-triangle"
+    ],
+    "days": [
+      7
+    ]
+  },
+  {
+    "rank": 75,
+    "slug": "next-greater-element-ii",
+    "name": "Next Greater Element II",
+    "n": 503,
+    "d": "M",
+    "f3": 48.1,
+    "f30": null,
+    "keys": [
+      "next-greater-element-ii"
+    ],
+    "days": [
+      22
+    ]
+  },
+  {
+    "rank": 76,
+    "slug": "contains-duplicate",
+    "name": "Contains Duplicate",
+    "n": 217,
+    "d": "E",
+    "f3": 48.1,
+    "f30": null,
+    "keys": [
+      "contains-duplicate"
+    ],
+    "days": [
+      1
+    ]
+  },
+  {
+    "rank": 77,
+    "slug": "search-insert-position",
+    "name": "Search Insert Position",
+    "n": 35,
+    "d": "E",
+    "f3": 48.1,
+    "f30": null,
+    "keys": [
+      "search-insert-position"
+    ],
+    "days": [
+      3
+    ]
+  },
+  {
+    "rank": 78,
+    "slug": "next-greater-element-i",
+    "name": "Next Greater Element I",
+    "n": 496,
+    "d": "E",
+    "f3": 48.1,
+    "f30": null,
+    "keys": [
+      "next-greater-element-i"
+    ],
+    "days": [
+      22
+    ]
+  },
+  {
+    "rank": 79,
+    "slug": "search-a-2d-matrix-ii",
+    "name": "Search a 2D Matrix II",
+    "n": 240,
+    "d": "M",
+    "f3": 48.1,
+    "f30": 44.3,
+    "keys": [
+      "search-a-2d-matrix-ii"
+    ],
+    "days": [
+      3
+    ]
+  },
+  {
+    "rank": 80,
+    "slug": "valid-palindrome",
+    "name": "Valid Palindrome",
+    "n": 125,
+    "d": "E",
+    "f3": 48.1,
+    "f30": null,
+    "keys": [
+      "valid-palindrome"
+    ],
+    "days": [
+      2
+    ]
+  },
+  {
+    "rank": 81,
+    "slug": "coin-change",
+    "name": "Coin Change",
+    "n": 322,
+    "d": "M",
+    "f3": 48.1,
+    "f30": 61.7,
+    "keys": [
+      "coin-change"
+    ],
+    "days": [
+      18
+    ]
+  },
+  {
+    "rank": 82,
+    "slug": "course-schedule-ii",
+    "name": "Course Schedule II",
+    "n": 210,
+    "d": "M",
+    "f3": 48.1,
+    "f30": 54.4,
+    "keys": [
+      "course-schedule-ii"
+    ],
+    "days": [
+      15
+    ]
+  },
+  {
+    "rank": 83,
+    "slug": "find-minimum-in-rotated-sorted-array",
+    "name": "Find Minimum in Rotated Sorted Array",
+    "n": 153,
+    "d": "M",
+    "f3": 48.1,
+    "f30": null,
+    "keys": [
+      "find-minimum-in-rotated-sorted-array"
+    ],
+    "days": [
+      9
+    ]
+  },
+  {
+    "rank": 84,
+    "slug": "range-sum-query-immutable",
+    "name": "Range Sum Query - Immutable",
+    "n": 303,
+    "d": "E",
+    "f3": 48.1,
+    "f30": 44.3,
+    "xkey": "x-range-sum-query-immutable"
+  },
+  {
+    "rank": 85,
+    "slug": "maximum-bitwise-and-after-increment-operations",
+    "name": "Maximum Bitwise AND After Increment Operations",
+    "n": 3806,
+    "d": "H",
+    "f3": 48.1,
+    "f30": 75.9,
+    "xkey": "x-maximum-bitwise-and-after-increment-operations",
+    "contest": true
+  },
+  {
+    "rank": 86,
+    "slug": "maximum-nesting-depth-of-two-valid-parentheses-strings",
+    "name": "Maximum Nesting Depth of Two Valid Parentheses Strings",
+    "n": 1111,
+    "d": "M",
+    "f3": 48.1,
+    "f30": 61.7,
+    "xkey": "x-maximum-nesting-depth-of-two-valid-parentheses-strings"
+  },
+  {
+    "rank": 87,
+    "slug": "letter-combinations-of-a-phone-number",
+    "name": "Letter Combinations of a Phone Number",
+    "n": 17,
+    "d": "M",
+    "f3": 44.9,
+    "f30": null,
+    "keys": [
+      "letter-combinations-of-a-phone-number"
+    ],
+    "days": [
+      19
+    ]
+  },
+  {
+    "rank": 88,
+    "slug": "largest-rectangle-in-histogram",
+    "name": "Largest Rectangle in Histogram",
+    "n": 84,
+    "d": "H",
+    "f3": 44.9,
+    "f30": 44.3,
+    "keys": [
+      "largest-rectangle-in-histogram",
+      "largest-rectangle-in-histogram--2"
+    ],
+    "days": [
+      10,
+      26
+    ]
+  },
+  {
+    "rank": 89,
+    "slug": "single-number",
+    "name": "Single Number",
+    "n": 136,
+    "d": "E",
+    "f3": 44.9,
+    "f30": 44.3,
+    "keys": [
+      "single-number"
+    ],
+    "days": [
+      27
+    ]
+  },
+  {
+    "rank": 90,
+    "slug": "find-the-duplicate-number",
+    "name": "Find the Duplicate Number",
+    "n": 287,
+    "d": "M",
+    "f3": 44.9,
+    "f30": null,
+    "keys": [
+      "find-the-duplicate-number"
+    ],
+    "days": [
+      11
+    ]
+  },
+  {
+    "rank": 91,
+    "slug": "n-queens",
+    "name": "N-Queens",
+    "n": 51,
+    "d": "H",
+    "f3": 44.9,
+    "f30": 44.3,
+    "keys": [
+      "n-queens"
+    ],
+    "days": [
+      26
+    ]
+  },
+  {
+    "rank": 92,
+    "slug": "permutations",
+    "name": "Permutations",
+    "n": 46,
+    "d": "M",
+    "f3": 44.9,
+    "f30": 44.3,
+    "keys": [
+      "permutations"
+    ],
+    "days": [
+      19
+    ]
+  },
+  {
+    "rank": 93,
+    "slug": "word-break",
+    "name": "Word Break",
+    "n": 139,
+    "d": "M",
+    "f3": 44.9,
+    "f30": 44.3,
+    "keys": [
+      "word-break"
+    ],
+    "days": [
+      18
+    ]
+  },
+  {
+    "rank": 94,
+    "slug": "integer-to-roman",
+    "name": "Integer to Roman",
+    "n": 12,
+    "d": "M",
+    "f3": 44.9,
+    "f30": 44.3,
+    "xkey": "x-integer-to-roman"
+  },
+  {
+    "rank": 95,
+    "slug": "validate-binary-search-tree",
+    "name": "Validate Binary Search Tree",
+    "n": 98,
+    "d": "M",
+    "f3": 44.9,
+    "f30": null,
+    "keys": [
+      "validate-binary-search-tree"
+    ],
+    "days": [
+      13
+    ]
+  },
+  {
+    "rank": 96,
+    "slug": "string-to-integer-atoi",
+    "name": "String to Integer (atoi)",
+    "n": 8,
+    "d": "M",
+    "f3": 44.9,
+    "f30": 44.3,
+    "keys": [
+      "string-to-integer-atoi"
+    ],
+    "days": [
+      27
+    ]
+  },
+  {
+    "rank": 97,
+    "slug": "evaluate-division",
+    "name": "Evaluate Division",
+    "n": 399,
+    "d": "M",
+    "f3": 44.9,
+    "f30": 44.3,
+    "keys": [
+      "evaluate-division"
+    ],
+    "days": [
+      15
+    ]
+  },
+  {
+    "rank": 98,
+    "slug": "reverse-nodes-in-k-group",
+    "name": "Reverse Nodes in k-Group",
+    "n": 25,
+    "d": "H",
+    "f3": 44.9,
+    "f30": null,
+    "keys": [
+      "reverse-nodes-in-k-group"
+    ],
+    "days": [
+      23
+    ]
+  },
+  {
+    "rank": 99,
+    "slug": "two-sum-ii-input-array-is-sorted",
+    "name": "Two Sum II - Input Array Is Sorted",
+    "n": 167,
+    "d": "M",
+    "f3": 44.9,
+    "f30": null,
+    "keys": [
+      "two-sum-ii-input-array-is-sorted"
+    ],
+    "days": [
+      2
+    ]
+  },
+  {
+    "rank": 100,
+    "slug": "k-closest-points-to-origin",
+    "name": "K Closest Points to Origin",
+    "n": 973,
+    "d": "M",
+    "f3": 44.9,
+    "f30": null,
+    "keys": [
+      "k-closest-points-to-origin"
+    ],
+    "days": [
+      23
+    ]
+  },
+  {
+    "rank": 101,
+    "slug": "maximum-white-tiles-covered-by-a-carpet",
+    "name": "Maximum White Tiles Covered by a Carpet",
+    "n": 2271,
+    "d": "M",
+    "f3": 44.9,
+    "f30": 44.3,
+    "keys": [
+      "maximum-white-tiles-covered-by-a-carpet"
+    ],
+    "days": [
+      24
+    ]
+  },
+  {
+    "rank": 102,
+    "slug": "divide-two-integers",
+    "name": "Divide Two Integers",
+    "n": 29,
+    "d": "M",
+    "f3": 44.9,
+    "f30": 54.4,
+    "keys": [
+      "divide-two-integers"
+    ],
+    "days": [
+      27
+    ]
+  },
+  {
+    "rank": 103,
+    "slug": "contiguous-array",
+    "name": "Contiguous Array",
+    "n": 525,
+    "d": "M",
+    "f3": 44.9,
+    "f30": 44.3,
+    "keys": [
+      "contiguous-array"
+    ],
+    "days": [
+      8
+    ]
+  },
+  {
+    "rank": 104,
+    "slug": "insert-delete-getrandom-o1",
+    "name": "Insert Delete GetRandom O(1)",
+    "n": 380,
+    "d": "M",
+    "f3": 44.9,
+    "f30": null,
+    "keys": [
+      "insert-delete-getrandom-o1"
+    ],
+    "days": [
+      14
+    ]
+  },
+  {
+    "rank": 105,
+    "slug": "candy",
+    "name": "Candy",
+    "n": 135,
+    "d": "H",
+    "f3": 44.9,
+    "f30": null,
+    "keys": [
+      "candy"
+    ],
+    "days": [
+      17
+    ]
+  },
+  {
+    "rank": 106,
+    "slug": "length-of-last-word",
+    "name": "Length of Last Word",
+    "n": 58,
+    "d": "E",
+    "f3": 44.9,
+    "f30": 54.4,
+    "xkey": "x-length-of-last-word"
+  },
+  {
+    "rank": 107,
+    "slug": "lexicographically-smallest-permutation-greater-than-target",
+    "name": "Lexicographically Smallest Permutation Greater Than Target",
+    "n": 3720,
+    "d": "M",
+    "f3": 44.9,
+    "f30": null,
+    "xkey": "x-lexicographically-smallest-permutation-greater-than-target",
+    "contest": true
+  },
+  {
+    "rank": 108,
+    "slug": "jump-game-ii",
+    "name": "Jump Game II",
+    "n": 45,
+    "d": "M",
+    "f3": 41,
+    "f30": null,
+    "keys": [
+      "jump-game-ii"
+    ],
+    "days": [
+      17
+    ]
+  },
+  {
+    "rank": 109,
+    "slug": "spiral-matrix",
+    "name": "Spiral Matrix",
+    "n": 54,
+    "d": "M",
+    "f3": 41,
+    "f30": 44.3,
+    "keys": [
+      "spiral-matrix"
+    ],
+    "days": [
+      20
+    ]
+  },
+  {
+    "rank": 110,
+    "slug": "zigzag-conversion",
+    "name": "Zigzag Conversion",
+    "n": 6,
+    "d": "M",
+    "f3": 41,
+    "f30": null,
+    "xkey": "x-zigzag-conversion"
+  },
+  {
+    "rank": 111,
+    "slug": "odd-even-linked-list",
+    "name": "Odd Even Linked List",
+    "n": 328,
+    "d": "M",
+    "f3": 41,
+    "f30": null,
+    "keys": [
+      "odd-even-linked-list"
+    ],
+    "days": [
+      5
+    ]
+  },
+  {
+    "rank": 112,
+    "slug": "min-stack",
+    "name": "Min Stack",
+    "n": 155,
+    "d": "M",
+    "f3": 41,
+    "f30": null,
+    "keys": [
+      "min-stack"
+    ],
+    "days": [
+      10
+    ]
+  },
+  {
+    "rank": 113,
+    "slug": "largest-number",
+    "name": "Largest Number",
+    "n": 179,
+    "d": "M",
+    "f3": 41,
+    "f30": null,
+    "keys": [
+      "largest-number"
+    ],
+    "days": [
+      23
+    ]
+  },
+  {
+    "rank": 114,
+    "slug": "remove-element",
+    "name": "Remove Element",
+    "n": 27,
+    "d": "E",
+    "f3": 41,
+    "f30": null,
+    "xkey": "x-remove-element"
+  },
+  {
+    "rank": 115,
+    "slug": "permutation-in-string",
+    "name": "Permutation in String",
+    "n": 567,
+    "d": "M",
+    "f3": 41,
+    "f30": null,
+    "keys": [
+      "permutation-in-string"
+    ],
+    "days": [
+      12
+    ]
+  },
+  {
+    "rank": 116,
+    "slug": "reverse-string",
+    "name": "Reverse String",
+    "n": 344,
+    "d": "E",
+    "f3": 41,
+    "f30": 44.3,
+    "xkey": "x-reverse-string"
+  },
+  {
+    "rank": 117,
+    "slug": "reorder-list",
+    "name": "Reorder List",
+    "n": 143,
+    "d": "M",
+    "f3": 41,
+    "f30": null,
+    "keys": [
+      "reorder-list"
+    ],
+    "days": [
+      11
+    ]
+  },
+  {
+    "rank": 118,
+    "slug": "best-time-to-buy-and-sell-stock-ii",
+    "name": "Best Time to Buy and Sell Stock II",
+    "n": 122,
+    "d": "M",
+    "f3": 41,
+    "f30": 54.4,
+    "keys": [
+      "best-time-to-buy-and-sell-stock-ii"
+    ],
+    "days": [
+      7
+    ]
+  },
+  {
+    "rank": 119,
+    "slug": "valid-palindrome-ii",
+    "name": "Valid Palindrome II",
+    "n": 680,
+    "d": "E",
+    "f3": 41,
+    "f30": null,
+    "xkey": "x-valid-palindrome-ii"
+  },
+  {
+    "rank": 120,
+    "slug": "reverse-linked-list",
+    "name": "Reverse Linked List",
+    "n": 206,
+    "d": "E",
+    "f3": 41,
+    "f30": null,
+    "keys": [
+      "reverse-linked-list"
+    ],
+    "days": [
+      5
+    ]
+  }
+]

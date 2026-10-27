@@ -1,0 +1,67 @@
+[
+  {
+    "id": "rd-rag",
+    "t": "RAG failure-triage service",
+    "q": "How logs and docs are chunked and embedded; which vector database and why; how a failure is labelled infra or product defect; how you measured “20%+ better debuggability”; what happens when it is wrong."
+  },
+  {
+    "id": "rd-tcx",
+    "t": "TC Executor",
+    "q": "How generated Pytest cases are checked before they run; prompt design; handling wrong or made-up tests; how runs are scheduled on private, develop and release branches (useful for the “schedule processes” design question)."
+  },
+  {
+    "id": "rd-config",
+    "t": "Config automation",
+    "q": "How the two-PR data-model change became a one-file edit; what gets generated; how the REST API publish is validated and rolled back."
+  },
+  {
+    "id": "rd-ci",
+    "t": "Core-Stacks Jenkins CI",
+    "q": "What made it unstable; what you changed; how you measured the failure rate; how the Groovy pipeline is structured."
+  },
+  {
+    "id": "rd-eventlog",
+    "t": "EventLogging race fix",
+    "q": "Why the fast reader dropped data; the fix and why you chose it; how you proved it worked; the Coverity and Clang findings. A 2026 Bar Raiser asked: “How did you know multithreading would solve it?”"
+  },
+  {
+    "id": "rd-flaky",
+    "t": "Flaky test infrastructure",
+    "q": "How you traced silent SCP/SSH failures and cron race conditions."
+  },
+  {
+    "id": "rd-crv",
+    "t": "CRV",
+    "q": "Django REST + React architecture, SSO, data model, coverage alerts, Docker setup."
+  },
+  {
+    "id": "rd-k8s",
+    "t": "Kubernetes KPI pod and ELK pipelines",
+    "q": "Log volume, how KPI failures are detected, the upload to the SMO cloud."
+  },
+  {
+    "id": "rd-voice",
+    "t": "AI Voice Caller",
+    "q": "Multi-tenant isolation; the streaming STT → LLM → TTS latency budget; how tenant documents feed the RAG knowledge base."
+  },
+  {
+    "id": "rd-realestate",
+    "t": "Real Estate Listing Portal",
+    "q": "The 48-table PostgreSQL schema, scoped RBAC, Redis workers, and how WhatsApp messages become leads."
+  },
+  {
+    "id": "rd-vision",
+    "t": "Real Vision AI",
+    "q": "Why YOLOv8; latency on edge NPU/GPU; handling many camera feeds; how the LLM search over recorded events works."
+  },
+  {
+    "id": "rd-systems",
+    "t": "Systems projects",
+    "q": "Virtual File System internals (incore inode table, file table, UAREA) and your Java projects."
+  },
+  {
+    "id": "rd-skills",
+    "t": "Skills your resume claims",
+    "q": "2-minute answers on Java collections and multithreading, JVM memory and GC, OS processes, threads and deadlocks, SQL joins and indexes, REST, Docker and Kubernetes basics."
+  }
+]

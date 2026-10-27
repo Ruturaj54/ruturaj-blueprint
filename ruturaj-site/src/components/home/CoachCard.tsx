@@ -14,7 +14,7 @@ export function CoachCard({ plan }: { plan: DailyPlan }) {
   if (!coach) return null;
 
   return (
-    <Card className="border-accent/25 bg-accent/[0.04]">
+    <Card tone="accent">
       <div className="flex items-center gap-2">
         <Lightbulb size={14} className="text-accent" />
         <p className="text-[11px] uppercase tracking-[0.14em] text-accent">Ruturaj, do this today</p>

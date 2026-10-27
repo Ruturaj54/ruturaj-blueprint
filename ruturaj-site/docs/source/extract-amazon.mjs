@@ -1,0 +1,24 @@
+// Extracts the DATA object from the Amazon tracker HTML into JSON files.
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { resolve } from 'node:path';
+const [html, outDir] = process.argv.slice(2);
+const src = readFileSync(html, 'utf8');
+const start = src.indexOf('const DATA = ');
+const end = src.indexOf(';\n\n  /* ================= helpers', start);
+if (start < 0 || end < 0) throw new Error('DATA block not found');
+const json = src.slice(start + 'const DATA = '.length, end);
+const data = JSON.parse(json);
+mkdirSync(outDir, { recursive: true });
+const w = (name, obj) => writeFileSync(resolve(outDir, name), JSON.stringify(obj, null, 2) + '\n', 'utf8');
+w('plan.json', { start: data.start, phases: data.phases, days: data.days });
+w('bank.json', data.bank);
+w('freq.json', data.freq);
+w('lp.json', data.lp);
+w('resume.json', data.rd);
+w('genai.json', data.ga);
+w('dayof.json', data.dayof);
+w('sources.json', data.src);
+w('coverage.json', data.cov);
+const items = data.days.reduce((n, d) => n + d.items.length + d.night.length, 0);
+const lc = new Set(data.days.flatMap((d) => [...d.items, ...d.night]).filter((i) => i.t === 'lc').map((i) => i.slug)).size;
+console.log({ days: data.days.length, items, uniqueProblems: lc, bankGroups: data.bank.length, freq: data.freq.length, lp: data.lp.length, rd: data.rd.length, ga: data.ga.length, dayof: data.dayof.length, sources: Object.keys(data.src).length });

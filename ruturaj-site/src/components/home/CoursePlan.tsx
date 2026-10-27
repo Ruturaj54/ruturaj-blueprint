@@ -4,7 +4,7 @@ import { Card, SectionTitle, ProgressBar, Chip } from '@/components/ui/primitive
 import { useAppState } from '@/hooks/useAppState';
 import { spring } from '@/lib/motion';
 import { cn } from '@/lib/cn';
-import { courseProgress, GATE_DEADLINE_DAY, type CourseStatus } from '@/engine/courses';
+import { courseProgress, gateDeadlineDay, type CourseStatus } from '@/engine/courses';
 import { gateStatus } from '@/engine/foundation';
 import { dateForDay, formatShort } from '@/engine/dates';
 
@@ -26,7 +26,7 @@ export function CoursePlan({ onOpen }: { onOpen: () => void }) {
   const courses = courseProgress(state);
   const gate = gateStatus(state);
   const finish = courses.at(-1)?.etaDay ?? null;
-  const margin = finish === null ? null : GATE_DEADLINE_DAY - finish;
+  const margin = finish === null ? null : gateDeadlineDay() - finish;
 
   return (
     <section>
@@ -84,8 +84,8 @@ export function CoursePlan({ onOpen }: { onOpen: () => void }) {
                 : margin === null
                   ? 'Every mandatory module is done — clear the gate on the roadmap.'
                   : margin >= 0
-                    ? `At this pace the gate closes on Day ${finish} — ${margin} day${margin === 1 ? '' : 's'} inside the ${formatShort(dateForDay(GATE_DEADLINE_DAY))} deadline.`
-                    : `At three a day the gate closes ${-margin} day${margin === -1 ? '' : 's'} after the ${formatShort(dateForDay(GATE_DEADLINE_DAY))} deadline. Close a fourth module on weekends.`}
+                    ? `At this pace the gate closes on Day ${finish} — ${margin} day${margin === 1 ? '' : 's'} inside the ${formatShort(dateForDay(gateDeadlineDay()))} deadline.`
+                    : `At three a day the gate closes ${-margin} day${margin === -1 ? '' : 's'} after the ${formatShort(dateForDay(gateDeadlineDay()))} deadline. Close a fourth module on weekends.`}
             </p>
             <ArrowRight size={14} className="mt-1 shrink-0 text-faint" />
           </div>

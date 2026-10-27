@@ -26,7 +26,7 @@ export const BACKEND_TASKS: Task[] = [
     interviewCritical: true,
     portfolioCritical: false,
     optional: false,
-    rationale: 'The GIL question is close to guaranteed in any Python-heavy loop.',
+    rationale: 'Expect a GIL question in a Python-heavy loop.',
   }),
   mk({
     id: 'be-py-2',
@@ -67,7 +67,7 @@ export const BACKEND_TASKS: Task[] = [
     interviewCritical: true,
     portfolioCritical: false,
     optional: false,
-    rationale: 'The most common real cause of slow Django endpoints, and a standard follow-up question.',
+    rationale: 'A frequent cause of slow Django endpoints, and a natural follow-up question.',
   }),
   mk({
     id: 'be-fastapi-1',
@@ -143,7 +143,7 @@ export const BACKEND_TASKS: Task[] = [
     interviewCritical: false,
     portfolioCritical: true,
     optional: false,
-    rationale: 'The most common gap flagged in senior-level code review. Cheap to close.',
+    rationale: 'A gap code review keeps flagging. Cheap to close.',
   }),
   mk({
     id: 'be-docker-1',

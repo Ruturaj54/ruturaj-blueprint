@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { ChevronDown, Code2, Info, CornerDownRight } from 'lucide-react';
-import { Card, PriorityPill, Chip, TaskCheckbox } from '@/components/ui/primitives';
+import { Card, PriorityPill, Chip } from '@/components/ui/primitives';
+import { TaskCheckbox } from '@/components/ui/controls';
 import { useAppState, useUpdateState } from '@/hooks/useAppState';
 import { spring } from '@/lib/motion';
 import { todayISO, formatShort } from '@/engine/dates';
@@ -179,9 +180,12 @@ function MissionCard({
 
       {hasDetail && (
         <>
-          <button
+          <motion.button
+            type="button"
+            whileTap={reduce ? undefined : { scale: 0.99 }}
+            transition={spring}
             onClick={() => setOpen((v) => !v)}
-            className="flex min-h-[40px] w-full items-center gap-1.5 border-t border-line px-4 text-[12px] text-muted transition-colors hover:text-fg"
+            className="flex min-h-[44px] w-full items-center gap-1.5 border-t border-line px-4 text-[12px] text-muted transition-colors hover:text-fg"
           >
             <Info size={13} />
             {coach ? 'Ruturaj, do this — how and why' : 'Why this'}
@@ -192,7 +196,7 @@ function MissionCard({
             >
               <ChevronDown size={14} />
             </motion.span>
-          </button>
+          </motion.button>
           <AnimatePresence initial={false}>
             {open && (
               <motion.div

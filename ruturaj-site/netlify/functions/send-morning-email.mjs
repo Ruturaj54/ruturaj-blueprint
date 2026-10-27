@@ -1,30 +1,22 @@
-// Scheduled — 07:00 IST = 01:30 UTC daily.
-// §19: the morning mission mail, built from real stored progress.
+// Scheduled: ticks every 15 minutes from 00:00 to 03:45 UTC (05:30–09:15 IST).
+// Each tick asks runScheduled whether the morning mail is due; the send log in
+// Blobs guarantees at most one morning mail per mission day, and a tick that
+// fails is retried by the next one inside the window.
 
-import { readState, buildDigest } from './_shared/digest.mjs';
-import { buildMorning } from './_shared/templates.mjs';
+import { getStore } from '@netlify/blobs';
+import { runScheduled } from './_shared/scheduled.mjs';
+import { readState, STORE } from './_shared/digest.mjs';
 import { sendMail } from './_shared/mail.mjs';
 
 export default async function handler() {
-  const state = await readState();
-  const digest = buildDigest(state);
-
-  if (digest.beforeStart) {
-    console.log('morning mail skipped — mission has not started yet');
-    return new Response('skipped: before mission start', { status: 200 });
+  let status;
+  try {
+    status = await runScheduled({ type: 'morning', now: new Date(), store: getStore(STORE), readState, send: sendMail });
+  } catch (err) {
+    status = `failed: morning — ${err?.message ?? err}`;
   }
-  if (state?.settings?.emailEnabled === false) {
-    console.log('morning mail skipped — disabled in settings');
-    return new Response('skipped: disabled', { status: 200 });
-  }
-  if (!digest.hasState) {
-    console.warn('morning mail: no state blob yet — sending with defaults');
-  }
-
-  const result = await sendMail(buildMorning(digest));
-  return new Response(result.ok ? 'sent' : `failed: ${result.error}`, {
-    status: result.ok ? 200 : 500,
-  });
+  console.log(`send-morning-email: ${status}`);
+  return new Response(status, { status: status.startsWith('failed') ? 500 : 200 });
 }
 
-export const config = { schedule: '30 1 * * *' };
+export const config = { schedule: '0,15,30,45 0-3 * * *' };

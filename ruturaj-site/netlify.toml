@@ -3,8 +3,23 @@
   publish = "dist"
   functions = "netlify/functions"
 
+# The functions import the generated ESM engine bundle (_shared/engine.mjs)
+# and nodemailer; esbuild bundles both into each function.
 [functions]
   node_bundler = "esbuild"
+
+# The two routine mails are scheduled in code: `export const config =
+# { schedule }` in send-morning-email.mjs and send-evening-email.mjs.
+
+# Baseline response headers. No CSP yet: the mail preview renders in a srcdoc
+# iframe with inline styles, and a policy that breaks it is worse than none.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
 # SPA fallback — every route is served by the single React entry point.
 [[redirects]]

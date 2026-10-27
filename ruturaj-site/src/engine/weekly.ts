@@ -142,7 +142,7 @@ export function buildWeeklyReview(state: AppState, anchor = todayISO()): WeeklyR
     },
     health: {
       runs: weekRuns.length,
-      km: Number(weekRuns.reduce((n, r) => n + r.km, 0).toFixed(1)),
+      km: Number(weekRuns.reduce((n, r) => n + (r.km ?? 0), 0).toFixed(1)),
       avgSleep: sleepValues.length
         ? Number((sleepValues.reduce((a, b) => a + b, 0) / sleepValues.length).toFixed(1))
         : null,

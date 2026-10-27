@@ -1,232 +1,149 @@
-// Turns the stored state blob into everything an email needs to say.
-//
-// This is why the progress store exists: scheduled functions run server-side
-// with no access to the browser, so without it the morning mail could only ever
-// send a date-derived counter and a rotating quote.
+// Turns the stored state blob into everything the two mails say, through the
+// same engine the app runs (engine.mjs is generated from src/engine). The
+// mail and the screen cannot disagree about today's plan.
 
 import { getStore } from '@netlify/blobs';
-import catalog from './catalog.json' with { type: 'json' };
-import { buildSchedule, dayTypeOf } from './schedule.mjs';
-import { buildPraise } from './praise.mjs';
-import { nextFoundation, nextTasks, titleFor, stillOpen, gateCounts, courseProgress } from './plan.mjs';
-import { healthDigest } from './health.mjs';
-import { growthSince, weekSummary } from './growth.mjs';
+import * as E from './engine.mjs';
+import {
+  itemViews,
+  titleForId,
+  exerciseCard,
+  timetableRows,
+  overflowNote,
+  tonightRows,
+  nextMoveFor,
+  objectiveFor,
+  paceLine,
+  outcomesFor,
+  eveningLineFor,
+} from './digest-copy.mjs';
 
-export const MISSION_START = '2026-10-01';
-export const MISSION_END = '2027-03-10';
-export const TOTAL_DAYS = 161;
-/** Must match DATA_EPOCH in src/lib/schema.ts. */
-export const DATA_EPOCH = 4;
-/** Must match PREFERENCE_KEYS in src/lib/schema.ts. */
-const PREFERENCE_KEYS = ['emailEnabled', 'dsaTargetPerDay', 'deepWorkMinutes', 'interviewMode'];
-/** Must match DAY_START_HOUR in src/engine/dates.ts. */
-const DAY_START_HOUR = 4;
-const DAY_MS = 86_400_000;
-
-const PHASES = [
-  { id: 'm1', label: 'P1', title: 'Foundation Gate', startDay: 1, endDay: 42 },
-  { id: 'm2', label: 'P2', title: 'SDE Fundamentals + AI Engineering', startDay: 43, endDay: 91 },
-  { id: 'm3', label: 'P3', title: 'Interview-Level Preparation', startDay: 92, endDay: 133 },
-  { id: 'm4', label: 'P4', title: 'Interview Execution', startDay: 134, endDay: TOTAL_DAYS },
-];
-
-const parse = (iso) => new Date(`${iso}T12:00:00`);
-
-const fmt = (d) =>
-  `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
+export const STORE = 'blueprint';
+export const STATE_KEY = 'state';
 
 /**
- * Today's mission date in IST, with the day rolling over at 04:00 rather than
- * midnight. The deep-work block runs to 01:00, and the end-of-day mail sends at
- * 02:30 — both belong to the day that is ending, not the next one.
+ * The raw state blob, or null on a genuine first run. A read failure throws:
+ * treating it as an empty blob once sent a "Day 1 is waiting" mail and blocked
+ * the real one for the day, so callers skip the tick and retry instead.
  */
-export function istToday(now = new Date()) {
-  const istMs = now.getTime() + 330 * 60_000 - DAY_START_HOUR * 3_600_000;
-  return fmt(new Date(istMs));
-}
-
-export const addDays = (iso, delta) => {
-  const d = parse(iso);
-  d.setDate(d.getDate() + delta);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-};
-
-export function dayForDate(iso) {
-  return Math.round((parse(iso) - parse(MISSION_START)) / DAY_MS) + 1;
-}
-
-export function phaseForDay(n) {
-  return PHASES.find((p) => n >= p.startDay && n <= p.endDay) ?? PHASES[0];
-}
-
 export async function readState() {
-  try {
-    const store = getStore('blueprint');
-    const data = await store.get('state', { type: 'json' });
-    return data ?? null;
-  } catch (err) {
-    console.error('digest: could not read state blob:', err);
-    return null;
-  }
+  const store = getStore(STORE);
+  const data = await store.get(STATE_KEY, { type: 'json' });
+  return data ?? null;
+}
+
+/** "Day 9 · Binary search" -> "Binary search"; the roadmap focus is returned as is. */
+const topicOf = (focus) => focus.replace(/^Day \d+ · /, '');
+
+function leadTitle(work) {
+  const m = work.general?.missions[0];
+  if (!m) return work.general?.dsa.headline ?? 'Roadmap';
+  return m.kind === 'foundation' ? `${m.subject.name} · ${m.milestone.title}` : m.scored.task.title;
+}
+
+function workoutLabel(logged) {
+  if (!logged) return null;
+  const kind = logged.kind === 'run' ? 'Run' : logged.kind === 'walk' ? 'Walk' : logged.kind.charAt(0).toUpperCase() + logged.kind.slice(1);
+  return `${kind} · ${logged.minutes} min${logged.km ? ` · ${logged.km} km` : ''}`;
 }
 
 /**
- * Progress from an older epoch was discarded on every device. Until the app is
- * next opened the blob may still hold it, so the mail ignores it too. What
- * carries across matches freshForNewEpoch in src/lib/schema.ts: preferences
- * and real-life records, never the old timetable or the old progress.
+ * The full digest for `now`. Always returns a usable object: an empty blob
+ * means "Day 1 is waiting", never a broken mail.
  */
-function currentEpoch(state) {
-  if (!state) return null;
-  if ((state.dataEpoch ?? 0) >= DATA_EPOCH) return state;
-  const settings = Object.fromEntries(
-    PREFERENCE_KEYS.filter((k) => k in (state.settings ?? {})).map((k) => [k, state.settings[k]]),
-  );
-  const h = state.health ?? {};
-  return {
-    dataEpoch: DATA_EPOCH,
-    settings,
-    health: {
-      supplements: h.supplements ?? [],
-      labs: h.labs ?? [],
-      nextTestDate: h.nextTestDate,
-      focus: h.focus ?? [],
-      weight: h.weight ?? {},
-    },
-    work: state.work ?? [],
-    applications: state.applications ?? [],
-  };
-}
+export function buildDigest(raw, now = new Date()) {
+  const state = E.parseState(raw);
+  E.configureMission(state.program.phase === 'general' ? state.program.generalStartedOn : null);
 
-function dsaSummary(state, today) {
-  const attempts = state.dsa ?? [];
-  const solved = attempts.filter((a) => a.outcome === 'solved').length;
+  const today = E.todayISO(now);
+  const info = E.programInfo(state, today);
+  const work = E.todayWork(state, today);
+  const dayType = E.dayTypeOf(today);
+  const exerciseSlot = E.exerciseSlotFor(state, today);
+  const schedule = E.buildSchedule(state.settings, work.items, dayType, exerciseSlot);
+  const session = E.sessionFor(state, today);
+  const plan = work.amazon ?? null;
+  const settings = state.settings;
 
-  // Mirrors the client weakness engine: coverage gap and inaccuracy, scaled by
-  // how often the pattern shows up in interviews.
-  const weakest = [...catalog.patterns]
-    .map((p) => {
-      const mine = attempts.filter((a) => a.pattern === p.id);
-      const unique = new Set(mine.map((a) => a.problem.toLowerCase().trim())).size;
-      const clean = mine.filter((a) => a.outcome === 'solved').length;
-      const accuracy = mine.length === 0 ? 1 : clean / mine.length;
-      const gap = 1 - Math.min(1, unique / p.targetProblems);
-      return { name: p.name, score: (gap * 35 + (1 - accuracy) * 45) * (p.weight / 10) };
-    })
-    .sort((a, b) => b.score - a.score)[0];
+  const log = state.days[today] ?? null;
+  const completed = new Set(log?.completed ?? []);
+  const items = itemViews(work, completed);
+  const open = items.filter((i) => !i.done);
+  const dayLog = log
+    ? {
+        planned: log.planned.length,
+        hits: E.plannedHits(state, today),
+        extras: E.dayExtras(state, today),
+        score: E.dayScore(state, today) ?? null,
+      }
+    : null;
 
-  let streak = 0;
-  const days = new Set(attempts.map((a) => a.date));
-  let cursor = days.has(today) ? today : addDays(today, -1);
-  while (days.has(cursor)) {
-    streak += 1;
-    cursor = addDays(cursor, -1);
-  }
+  // Ticks from the day log first, then Amazon logs the app did not tick (a
+  // re-solve keeps its original doneOn, so it only ever appears once).
+  const doneToday = [
+    ...[...completed].map((id) => titleForId(id, items)),
+    ...E.amazonLoggedOn(state, today)
+      .filter((i) => !completed.has(i.key) && !completed.has(`rev:${i.key}`))
+      .map((i) => i.title),
+  ].filter((t, i, all) => all.indexOf(t) === i);
 
-  // Sunday is the weekly timed set, exactly as the client planner has it.
-  const sunday = new Date(`${today}T12:00:00`).getDay() === 0;
-  const target = sunday ? 3 : state.settings?.dsaTargetPerDay ?? 3;
-  const weakestName = weakest?.name ?? null;
-  return {
-    headline: sunday
-      ? 'Weekly timed set'
-      : weakestName
-        ? `${weakestName} — ${target} problems`
-        : `${target} problems, pattern-tagged`,
-    total: attempts.length,
-    solvedClean: solved,
-    accuracy: attempts.length ? Math.round((solved / attempts.length) * 100) : 0,
-    todayCount: attempts.filter((a) => a.date === today).length,
-    weakest: weakestName,
-    streak,
-    target,
-  };
-}
+  const timetable = timetableRows(schedule);
+  const tonight = tonightRows(schedule, settings.eveningEmailTime);
+  const interview =
+    plan && plan.daysToInterview !== null && state.amazon.interviewDate
+      ? { date: state.amazon.interviewDate, daysTo: plan.daysToInterview }
+      : null;
 
-function dayLog(state, date) {
-  const log = state.days?.[date];
-  if (!log) return null;
-  const planned = log.planned ?? [];
-  const completed = log.completed ?? [];
-  const plannedSet = new Set(planned);
-  // Only planned work scores; everything else is credited as extra. `completed`
-  // accumulates all day while `planned` is a snapshot — the naive ratio read 800%.
-  const hit = completed.filter((id) => plannedSet.has(id)).length;
-  return {
-    date,
-    planned: planned.length,
-    completed: hit,
-    extras: completed.filter((id) => !plannedSet.has(id)).length,
-    score: planned.length ? Math.min(100, Math.round((hit / planned.length) * 100)) : null,
-    missed: stillOpen(state, date),
-    done: completed.map(titleFor),
-    notes: log.notes ?? null,
-    recapSent: Boolean(log.recapSentAt),
-  };
-}
-
-/**
- * The full digest. Returns a usable object even when no state exists yet, so a
- * first-run email is still correct rather than broken.
- */
-export function buildDigest(rawState, now = new Date()) {
-  const state = currentEpoch(rawState);
-  const s = state ?? {};
-  const today = istToday(now);
-  const rawDay = dayForDate(today);
-  const day = Math.min(TOTAL_DAYS, Math.max(1, rawDay));
-  const phase = phaseForDay(day);
-
-  const { total, done } = gateCounts(s);
-  const gateOpen = Boolean(s.foundationUnlockedAt);
-  const missions = gateOpen ? nextTasks(s, today, addDays, phase.id) : nextFoundation(s, today, addDays);
-  const dsa = dsaSummary(s, today);
-
-  const mandatoryToday = missions.filter((m) => m.mandatory).length;
-  const dayType = dayTypeOf(today);
-  const focusToday = (s.deepWork ?? [])
-    .filter((d) => d.date === today)
-    .reduce((n, d) => n + d.actualMinutes, 0);
-
-  return {
-    hasState: Boolean(state),
+  const d = {
     today,
-    day,
-    daysLeft: Math.max(0, TOTAL_DAYS - day),
-    beforeStart: rawDay < 1,
-    phase,
-    gate: {
-      open: gateOpen,
-      overridden: s.foundationOverride === true,
-      done,
-      total,
-      pct: Math.round((done / total) * 100),
-    },
-    missions,
-    carriedCount: missions.filter((m) => m.carriedFrom).length,
-    dsa,
-    yesterday: dayLog(s, addDays(today, -1)),
-    todayLog: dayLog(s, today),
+    clock: E.istClock(now),
+    weekday: E.formatWeekday(today),
+    dateLabel: E.formatShort(today),
+    longDate: E.formatLong(today),
     dayType,
-    weekday: new Date(`${today}T12:00:00`).toLocaleDateString('en-IN', { weekday: 'long' }),
-    dateLabel: new Date(`${today}T12:00:00`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }),
-    week: Math.ceil(day / 7),
-    schedule: buildSchedule(s.settings, missions, dsa, dayType),
-    courses: courseProgress(s, day).map((c) => ({
-      ...c,
-      etaDate: c.etaDay !== null && c.etaDay <= TOTAL_DAYS ? addDays(MISSION_START, c.etaDay - 1) : null,
-    })),
-    phases: PHASES.map((p) => ({ ...p, startDate: addDays(MISSION_START, p.startDay - 1) })),
-    health: healthDigest(s, today, day, addDays),
-    growth: growthSince(s, MISSION_START, today),
-    weekStats: weekSummary(s, today, addDays, MISSION_START),
-    // What today's plan is worth: the gate moves by this much if it all lands.
-    gateAfterToday: gateOpen ? null : Math.round(((done + mandatoryToday) / total) * 100),
-    praise: buildPraise(s, today, addDays),
-    dayClosed: Boolean(s.days?.[today]?.closedAt),
-    runsToday: (s.runs ?? []).filter((r) => r.date === today).map((r) => `${r.slot} ${r.km}km`),
-    focusToday,
-    workCount: (s.work ?? []).length,
-    applications: (s.applications ?? []).length,
+    dayTypeLabel: E.DAY_TYPE_LABEL[dayType],
+    phase: work.phase,
+    started: info.started,
+    day: info.day,
+    amazon: info.amazon,
+    general: info.general,
+    daysToTarget: info.daysToTarget,
+    targetDate: E.TARGET_DATE,
+    mode: plan ? plan.mode : 'general',
+    interview,
+    stage: state.amazon.stage,
+    focus: work.focus,
+    topic: topicOf(work.focus),
+    leadTitle: work.phase === 'general' ? leadTitle(work) : topicOf(work.focus),
+    curriculumDay: plan?.planned.find((p) => !p.revision)?.item.day ?? null,
+    minutes: work.minutes,
+    items,
+    open,
+    plan,
+    generalPlan: work.general ?? null,
+    schedule,
+    timetable,
+    overflow: overflowNote(schedule),
+    tonight,
+    nextMove: nextMoveFor(open, tonight, settings.eveningEmailTime, dayLog),
+    freeAt: tonight.find((r) => r.kind === 'free')?.start ?? null,
+    exercise: exerciseCard(session, schedule),
+    workout: workoutLabel(session.logged),
+    dayLog,
+    doneToday,
+    quote: E.quoteForDay(info.started ? info.day : 1),
+    summary: work.phase === 'general' ? null : E.amazonSummary(state, today),
+    settings: {
+      morningEmailTime: settings.morningEmailTime,
+      eveningEmailTime: settings.eveningEmailTime,
+      studyBlock3Enabled: settings.studyBlock3Enabled,
+      exerciseSlot: settings.exerciseSlot,
+      emailEnabled: settings.emailEnabled,
+    },
   };
+  d.objective = objectiveFor(d);
+  d.pace = paceLine(plan);
+  d.outcomes = outcomesFor(d);
+  d.evening = eveningLineFor(dayLog, info.day);
+  return d;
 }

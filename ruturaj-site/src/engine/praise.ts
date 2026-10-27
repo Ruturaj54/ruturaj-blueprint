@@ -51,7 +51,7 @@ function statsFor(state: AppState, date: string): DayStats {
     dsa: attempts.length,
     clean: attempts.filter((a) => a.outcome === 'solved').length,
     runs: runs.length,
-    km: Number(runs.reduce((n, r) => n + r.km, 0).toFixed(1)),
+    km: Number(runs.reduce((n, r) => n + (r.km ?? 0), 0).toFixed(1)),
     focus: state.deepWork
       .filter((d) => d.date === date)
       .reduce((n, d) => n + d.actualMinutes, 0),

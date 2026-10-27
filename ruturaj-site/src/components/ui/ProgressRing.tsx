@@ -1,13 +1,10 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
-/**
- * The day-progress ring on Home. Draws itself on mount so the number lands
- * with weight rather than simply appearing.
- */
+/** A progress ring that draws itself on mount, so the number lands with weight. */
 export function ProgressRing({
   value,
-  size = 168,
+  size = 150,
   stroke = 8,
   tone = 'var(--color-accent)',
   children,
@@ -26,25 +23,9 @@ export function ProgressRing({
   const offset = circumference - (clamped / 100) * circumference;
 
   return (
-    <div
-      className="relative grid shrink-0 place-items-center"
-      style={{ width: size, height: size }}
-    >
-      <svg
-        width={size}
-        height={size}
-        className="-rotate-90"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke="rgba(255,255,255,0.07)"
-          strokeWidth={stroke}
-        />
+    <div className="relative grid shrink-0 place-items-center" style={{ width: size, height: size }}>
+      <svg width={size} height={size} className="-rotate-90" aria-hidden="true" focusable="false">
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="var(--color-line)" strokeWidth={stroke} />
         <motion.circle
           cx={size / 2}
           cy={size / 2}
@@ -56,16 +37,10 @@ export function ProgressRing({
           strokeDasharray={circumference}
           initial={{ strokeDashoffset: reduce ? offset : circumference }}
           animate={{ strokeDashoffset: offset }}
-          transition={{
-            duration: reduce ? 0 : 1.1,
-            ease: [0.16, 1, 0.3, 1],
-            delay: reduce ? 0 : 0.15,
-          }}
+          transition={{ duration: reduce ? 0 : 1.1, ease: [0.16, 1, 0.3, 1], delay: reduce ? 0 : 0.15 }}
         />
       </svg>
-      <div className="absolute inset-0 grid place-items-center text-center">
-        {children}
-      </div>
+      <div className="absolute inset-0 grid place-items-center text-center">{children}</div>
     </div>
   );
 }

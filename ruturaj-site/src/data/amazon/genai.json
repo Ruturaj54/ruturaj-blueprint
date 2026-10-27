@@ -1,0 +1,107 @@
+[
+  {
+    "id": "ga-workflow",
+    "q": "How do you use GenAI in your daily work?",
+    "s": "",
+    "src": [
+      "lc8546875",
+      "tuf",
+      "lc7621408",
+      "rd1"
+    ]
+  },
+  {
+    "id": "ga-best",
+    "q": "How do you make the best use of LLMs?",
+    "s": "",
+    "src": [
+      "lc7724048"
+    ]
+  },
+  {
+    "id": "ga-usecases",
+    "q": "Which GenAI use cases did you find in your projects?",
+    "s": "",
+    "src": [
+      "rd1"
+    ]
+  },
+  {
+    "id": "ga-verify",
+    "q": "How do you check GenAI output, and AI-written code, before you trust it?",
+    "s": "",
+    "src": [
+      "lc7724048",
+      "lc8014509",
+      "rd1"
+    ]
+  },
+  {
+    "id": "ga-models",
+    "q": "Which models do you prefer, and why?",
+    "s": "",
+    "src": [
+      "rd1"
+    ]
+  },
+  {
+    "id": "ga-tasks",
+    "q": "How do you decide which tasks to give to GenAI?",
+    "s": "",
+    "src": [
+      "rd1"
+    ]
+  },
+  {
+    "id": "ga-measure",
+    "q": "How do you measure a model’s performance?",
+    "s": "",
+    "src": [
+      "rd1"
+    ]
+  },
+  {
+    "id": "ga-agents",
+    "q": "Tell me about agents and AI workflows you have built.",
+    "s": "TC Executor and the RAG triage service",
+    "src": [
+      "lc8542365",
+      "rd1"
+    ]
+  },
+  {
+    "id": "ga-tips",
+    "q": "What are your tips for using LLMs efficiently?",
+    "s": "",
+    "src": [
+      "lc7724048",
+      "rd1"
+    ]
+  },
+  {
+    "id": "ga-incident",
+    "q": "Scenario: a production incident must be fixed within one hour, and you may use AI tools. Walk through triage, logs and monitoring, what you ask the AI, and how you avoid relying on it too much.",
+    "s": "Your RAG failure-triage service is a strong example here",
+    "src": [
+      "lc8029194"
+    ]
+  },
+  {
+    "id": "ga-arch",
+    "q": "Walk through your GenAI project’s architecture in 30 minutes, including where it shows Invent and Simplify and Frugality.",
+    "s": "TC Executor or the RAG service",
+    "src": [
+      "lc7981646"
+    ]
+  },
+  {
+    "id": "ga-br",
+    "q": "Bar Raiser rehearsal: a friend grills you for 45 minutes on one project: why this approach, the alternatives, how you knew it worked, the critical feedback, what changed.",
+    "s": "Expect 3–5 LP questions with follow-ups on your exact contribution, metrics and trade-offs",
+    "src": [
+      "lc8542365",
+      "lc7724048",
+      "lc6393977"
+    ]
+  }
+]

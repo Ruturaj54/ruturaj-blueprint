@@ -1,186 +1,139 @@
+import type { DsaAttempt, DeepWorkSession, TaskState, Priority } from '@/engine/types';
 import type {
-  DsaAttempt,
-  DeepWorkSession,
-  TaskState,
-  Priority,
-} from '@/engine/types';
+  WorkoutLog,
+  DayLog,
+  WorkAchievement,
+  Application,
+  HealthState,
+  WeeklyReview,
+} from './records';
 
-export const STATE_VERSION = 2;
+export type {
+  WorkoutKind,
+  WorkoutLog,
+  DayLog,
+  WorkAchievement,
+  ApplicationStage,
+  Application,
+  LabValue,
+  Supplement,
+  HealthState,
+  WeeklyReview,
+} from './records';
+
+export const STATE_VERSION = 3;
 
 /**
- * Bumped whenever stored progress must be discarded rather than migrated.
- *
- * Epoch 3 (24 Sep 2026): the Foundation Gate was rebuilt from Ruturaj's actual
- * syllabi and the progress so far was test clicks.
- *
- * Epoch 4 (1 Oct 2026): the fresh start he asked for — 1 October is Day 1 —
- * together with his real daily routine (07:00 wake, 10:00–17:30 office,
- * 22:00–01:00 night block). Study progress resets. Real-life records do not:
- * labs, supplements, work achievements and job applications carry across, and
- * so do his preferences. The schedule itself takes the new defaults, because
- * the old ones described a day he no longer lives.
+ * Bumped only when stored progress must be discarded rather than migrated.
+ * The 25 Oct 2026 restart deliberately did NOT bump it: Day 1 moved and the
+ * timetable changed, but course ticks, DSA attempts, runs, work and
+ * applications are real history and stay. See SETTINGS_VERSION.
  */
 export const DATA_EPOCH = 4;
 
-export interface RunLog {
-  id: string;
-  date: string;
-  slot: 'morning' | 'evening';
-  km: number;
-  minutes: number;
-}
+/** Timetable keys were renamed on 25 Oct 2026; older settings take new defaults. */
+export const SETTINGS_VERSION = 2;
 
-export interface DayLog {
-  /** Set when the night check-in is done. Presence means the day is reviewed. */
-  closedAt?: string;
-  /** Task ids planned for this date, captured when the day was started. */
-  planned: string[];
-  /** Task ids actually completed. */
-  completed: string[];
-  notes?: string;
-  /** 0–100, computed at day close. */
-  score?: number;
-  blockers?: string;
-  /** Set when the end-of-day recap was sent on demand, so the scheduled one skips. */
-  recapSentAt?: string;
-}
+/* ---------- program: Day 1, phases ---------------------------------------- */
 
-export interface WorkAchievement {
-  id: string;
-  date: string;
-  raw: string;
-  /** Resume-grade rewrite. Never invents a number. */
-  statement?: string;
-  /** True when the statement needs a number Ruturaj has not supplied. */
-  metricNeeded: boolean;
-  tags: string[];
-}
+export type ProgramPhase = 'amazon' | 'general';
 
-export type ApplicationStage =
-  | 'saved'
-  | 'applied'
-  | 'oa'
-  | 'recruiter'
-  | 'interview'
-  | 'final'
-  | 'offer'
-  | 'rejected';
-
-export interface Application {
-  id: string;
-  company: string;
-  role: string;
-  jobId?: string;
-  location?: string;
-  compensation?: string;
-  appliedOn?: string;
-  referral?: string;
-  stage: ApplicationStage;
-  recruiter?: string;
-  gaps?: string;
-  notes?: string;
-}
-
-export interface LabValue {
-  id: string;
-  date: string;
-  marker: string;
-  value: string;
-  unit?: string;
-  /** Verbatim from the report. Never inferred by the app. */
-  referenceRange?: string;
-}
-
-export interface Supplement {
-  id: string;
-  name: string;
-  dose: string;
-  /** Who directed it. The app never prescribes. */
-  directedBy: 'doctor' | 'self';
-  /** Where it sits in the day, so the timetable can remind at the right slot. */
-  timing?: 'morning' | 'night';
+export interface Program {
+  /** Day 1, set by the explicit "Start Day 1" action. Absent = not started. */
   startedOn?: string;
-  active: boolean;
+  phase: ProgramPhase;
+  /** Intensive Amazon window in days, plus any extensions. */
+  amazonWindowDays: number;
+  amazonExtendedDays: number;
+  amazonCompletedOn?: string;
+  /** Day 1 of the general roadmap; set when the Amazon phase is marked complete. */
+  generalStartedOn?: string;
 }
 
-export interface HealthState {
-  supplements: Supplement[];
-  labs: LabValue[];
-  nextTestDate?: string;
-  /** ISO date -> hours slept. */
-  sleep: Record<string, number>;
-  /** ISO date -> supplement ids taken. */
-  adherence: Record<string, string[]>;
-  /**
-   * Health focus areas he switched on (ids from src/data/health.ts). Lives in
-   * the private synced store, never in source — the repository is public.
-   */
-  focus: string[];
-  /** ISO date -> body weight in kg, as he measured it. */
-  weight: Record<string, number>;
+/* ---------- Amazon SDE-1 ---------------------------------------------------- */
+
+export type AmazonStage = 'awaiting_invite' | 'interview_scheduled' | 'interview_done';
+export type AmazonOutcome = 'independent' | 'hint' | 'reviewed';
+
+export interface AmazonItemLog {
+  doneOn: string;
+  outcome?: AmazonOutcome;
+  minutes?: number;
+  note?: string;
+  /** Next cold re-solve date, from the spaced-revision rules. */
+  revisitOn?: string;
+  revisits: number;
+  /** What each re-solve overwrote, newest last, so a mis-tap can be reverted. */
+  history?: Array<{ on: string; outcome?: AmazonOutcome; revisitOn?: string }>;
+}
+
+export interface AmazonState {
+  stage: AmazonStage;
+  /** Online assessment date, as he reported it. */
+  oaDate: string;
+  interviewDate?: string;
+  interviewNote?: string;
+  /** Curriculum item key -> log. Only a logged outcome counts; opening does not. */
+  items: Record<string, AmazonItemLog>;
+  /** Frequency-list extras (xkey) -> date ticked. */
+  extras: Record<string, string>;
+  /** Topic coverage ids he marked solid, so their basics drop to optional. */
+  solidTopics: string[];
 }
 
 export interface Settings {
-  /** 24h "HH:MM" IST. Schedule is configurable, never hardcoded. */
+  settingsVersion: number;
+  name: string;
+  /* weekday timetable, 24h "HH:MM" IST */
   wakeTime: string;
-  morningRunTime: string;
-  morningRunEnd: string;
-  /** Leaving home to getting back, so the commute is part of the block. */
+  exerciseStart: string;
+  exerciseEnd: string;
+  /** Leaving home to getting back. */
   officeStart: string;
   officeEnd: string;
-  /** Spare capacity at work, used for course/reading only — never instead of the job. */
+  /** Spare light study at the office; 0 by default. */
   officeStudyHours: number;
-  /** Evening block: course and learning. */
   studyBlock1Start: string;
   studyBlock1End: string;
-  eveningRunTime: string;
-  eveningRunEnd: string;
-  /** Night block: deep work, DSA and project building. */
   studyBlock2Start: string;
   studyBlock2End: string;
-  deepWorkStart: string;
-  sleepTarget: string;
+  /** The short walk runs from studyBlock2End to walkEnd. */
+  walkEnd: string;
+  studyBlock3End: string;
+  studyBlock3Enabled: boolean;
+  /* weekend */
+  weekendWakeTime: string;
+  weekendSleepTime: string;
+  /* exercise */
+  exerciseSlot: 'morning' | 'evening';
+  /* email */
   timezone: string;
   morningEmailTime: string;
   eveningEmailTime: string;
   emailEnabled: boolean;
+  /* study */
   deepWorkMinutes: number;
-  /** Daily DSA target, used by the planner and the evening email. */
   dsaTargetPerDay: number;
-  interviewMode: boolean;
-}
-
-export interface WeeklyReview {
-  weekStart: string;
-  generatedAt: string;
-  plannedMinutes: number;
-  actualMinutes: number;
-  completionPct: number;
-  topPriorities: string[];
-  workItems: string[];
-  note?: string;
 }
 
 export interface AppState {
   version: number;
-  /** See DATA_EPOCH. State from an older epoch is discarded on load. */
   dataEpoch: number;
   updatedAt: string;
-  /** milestoneId -> completed */
+  program: Program;
+  amazon: AmazonState;
   foundation: Record<string, boolean>;
-  /** Set when the Foundation Gate is cleared. Presence unlocks Advanced Mode. */
   foundationUnlockedAt?: string;
-  /** True when the gate was forced rather than earned. Shown in the UI. */
   foundationOverride?: boolean;
   tasks: Record<string, TaskState>;
   days: Record<string, DayLog>;
-  /** ISO dates whose praise card has already been shown, so it appears once. */
   praiseSeen: Record<string, boolean>;
-  /** ISO date -> daily care habit ids ticked (src/data/health.ts). */
   habits: Record<string, string[]>;
   dsa: DsaAttempt[];
   deepWork: DeepWorkSession[];
-  runs: RunLog[];
+  runs: WorkoutLog[];
+  /** ISO date -> exercise slot override for that day. */
+  exerciseOverrides: Record<string, 'morning' | 'evening' | 'rest'>;
   work: WorkAchievement[];
   applications: Application[];
   health: HealthState;
@@ -189,42 +142,59 @@ export interface AppState {
 }
 
 /**
- * His weekday as he described it on 1 Oct 2026: up at 07:00, run until 08:15,
- * office 10:00–17:30 including the commute, course 18:00–20:00, run
- * 20:00–21:15, dinner, night block 22:00–01:00, six hours of sleep.
+ * His day as described on 25 Oct 2026: home at 17:00, study 18:00–20:00,
+ * dinner and recovery to 21:00, deep study 21:00–23:00, a short walk, then an
+ * optional final block to 01:00. Six hours of sleep from 01:00 to 07:00.
  */
 export const DEFAULT_SETTINGS: Settings = {
+  settingsVersion: SETTINGS_VERSION,
+  name: 'Ruturaj',
   wakeTime: '07:00',
-  morningRunTime: '07:15',
-  morningRunEnd: '08:15',
-  officeStart: '10:00',
-  officeEnd: '17:30',
-  officeStudyHours: 2,
+  exerciseStart: '07:10',
+  exerciseEnd: '08:00',
+  officeStart: '08:45',
+  officeEnd: '17:00',
+  officeStudyHours: 0,
   studyBlock1Start: '18:00',
   studyBlock1End: '20:00',
-  eveningRunTime: '20:00',
-  eveningRunEnd: '21:15',
-  studyBlock2Start: '22:00',
-  studyBlock2End: '01:00',
-  deepWorkStart: '22:00',
-  sleepTarget: '01:00',
+  studyBlock2Start: '21:00',
+  studyBlock2End: '23:00',
+  walkEnd: '23:30',
+  studyBlock3End: '01:00',
+  studyBlock3Enabled: true,
+  weekendWakeTime: '08:00',
+  weekendSleepTime: '23:30',
+  exerciseSlot: 'morning',
   timezone: 'Asia/Kolkata',
-  morningEmailTime: '07:00',
-  eveningEmailTime: '02:30',
+  morningEmailTime: '06:00',
+  eveningEmailTime: '17:00',
   emailEnabled: true,
   deepWorkMinutes: 50,
   dsaTargetPerDay: 3,
-  interviewMode: false,
+};
+
+export const DEFAULT_PROGRAM: Program = {
+  phase: 'amazon',
+  amazonWindowDays: 14,
+  amazonExtendedDays: 0,
+};
+
+export const DEFAULT_AMAZON: AmazonState = {
+  stage: 'awaiting_invite',
+  oaDate: '2026-10-19',
+  items: {},
+  extras: {},
+  solidTopics: [],
 };
 
 export function defaultState(): AppState {
   return {
     version: STATE_VERSION,
     dataEpoch: DATA_EPOCH,
-    // "Never written". A fresh device must lose to any real copy on the server;
-    // stamping it with the current time made empty state look newer than real
-    // progress, so the next push could overwrite it.
+    // "Never written": a fresh device must lose to any real copy on the server.
     updatedAt: new Date(0).toISOString(),
+    program: { ...DEFAULT_PROGRAM },
+    amazon: { ...DEFAULT_AMAZON, items: {}, extras: {}, solidTopics: [] },
     foundation: {},
     tasks: {},
     days: {},
@@ -233,6 +203,7 @@ export function defaultState(): AppState {
     dsa: [],
     deepWork: [],
     runs: [],
+    exerciseOverrides: {},
     work: [],
     applications: [],
     health: { supplements: [], labs: [], sleep: {}, adherence: {}, focus: [], weight: {} },
@@ -242,28 +213,20 @@ export function defaultState(): AppState {
 }
 
 export const PRIORITY_LABEL: Record<Priority, string> = {
-  P0: 'Critical',
+  P0: 'Must do',
   P1: 'High value',
   P2: 'Useful',
   P3: 'Optional',
 };
 
-/** True when stored progress predates the current epoch and must be discarded. */
 export function isStaleEpoch(state: AppState): boolean {
   return state.dataEpoch < DATA_EPOCH;
 }
 
-/**
- * Preferences that survive an epoch change. Everything else in Settings is the
- * timetable, which an epoch change resets to his current routine.
- * Must match PREFERENCE_KEYS in netlify/functions/_shared/digest.mjs.
- */
-export const PREFERENCE_KEYS = ['emailEnabled', 'dsaTargetPerDay', 'deepWorkMinutes', 'interviewMode'] as const;
+/** Preferences that survive a timetable migration or an epoch change. */
+export const PREFERENCE_KEYS = ['emailEnabled', 'dsaTargetPerDay', 'deepWorkMinutes', 'name'] as const;
 
-/**
- * A clean Day 1 for a new epoch. Study progress goes; real-life records
- * (labs, supplements, work achievements, applications) and preferences stay.
- */
+/** A clean start for a new epoch: progress goes, real-life records and preferences stay. */
 export function freshForNewEpoch(from: AppState): AppState {
   const fresh = defaultState();
   for (const key of PREFERENCE_KEYS) {
@@ -279,10 +242,7 @@ export function freshForNewEpoch(from: AppState): AppState {
   return fresh;
 }
 
-/**
- * The manual reset in Settings. Same as an epoch change, except his current
- * timetable is kept exactly — the screen promises that.
- */
+/** The manual reset in Settings: same as an epoch change, but the timetable is kept. */
 export function freshKeepingSettings(from: AppState): AppState {
   const fresh = freshForNewEpoch(from);
   fresh.settings = { ...DEFAULT_SETTINGS, ...from.settings };

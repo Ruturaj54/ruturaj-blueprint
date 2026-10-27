@@ -89,7 +89,7 @@ export const AI_TASKS: Task[] = [
     portfolioCritical: true,
     optional: false,
     rationale:
-      'The highest-leverage item in this track. Most candidates cannot answer how they knew their RAG system was good. A measured number is the whole differentiator.',
+      'The highest-leverage item in this track. Being able to say how you knew your RAG system was good is the differentiator, and a measured number is what makes that answer land.',
   },
   {
     id: 'ai-eval-2',

@@ -1,0 +1,315 @@
+[
+  {
+    "id": "lp-deadline",
+    "q": "A hard deadline, including one where requirements changed: the result, your manager’s feedback, what you changed",
+    "s": "A real release or CI crunch at Parallel Wireless (your example)",
+    "p": [
+      "Deliver Results",
+      "Ownership"
+    ],
+    "src": [
+      "lc7724048",
+      "lc8542365",
+      "roundz"
+    ],
+    "note": "Asked by two interviewers in one loop"
+  },
+  {
+    "id": "lp-missed",
+    "q": "A missed deadline: how you told stakeholders and what you would do differently",
+    "s": "Your example",
+    "p": [
+      "Earn Trust",
+      "Ownership"
+    ],
+    "src": [
+      "lc6393977",
+      "lc7724048",
+      "lc6738470"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-beyond",
+    "q": "Going beyond your role, or taking on something significant outside it",
+    "s": "The RAG triage service or TC Executor, if it started as your initiative; or debugging flaky test infrastructure",
+    "p": [
+      "Ownership"
+    ],
+    "src": [
+      "lc6393977",
+      "lc7035289",
+      "roundz"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-challenge",
+    "q": "Your most challenging project, or something hard you built",
+    "s": "The EventLogging producer-consumer race, where a fast reader outran a slow writer and dropped data",
+    "p": [
+      "Dive Deep",
+      "Insist on the Highest Standards"
+    ],
+    "src": [
+      "lc6393977",
+      "lc7035289"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-divedeep",
+    "q": "Diving deep into a problem (expect many follow-ups)",
+    "s": "Tracing flaky runs to silent SCP/SSH failures and cron race conditions",
+    "p": [
+      "Dive Deep"
+    ],
+    "src": [
+      "lc7724048",
+      "lc8014509",
+      "lc6393977",
+      "lc6738470"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-convince",
+    "q": "Convincing someone of your approach, or persuading a colleague who disagreed",
+    "s": "Getting QA and dev teams to adopt TC Executor",
+    "p": [
+      "Earn Trust",
+      "Have Backbone; Disagree and Commit"
+    ],
+    "src": [
+      "lc7724048",
+      "lc8014509",
+      "lc6738470"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-conflict",
+    "q": "A conflict, or disagreeing with a team decision, and how you resolved it",
+    "s": "Reviewing PRs as maintainer for teams in Pune, Bengaluru and Israel",
+    "p": [
+      "Have Backbone; Disagree and Commit"
+    ],
+    "src": [
+      "roundz"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-manager",
+    "q": "Disagreeing with your manager",
+    "s": "Your example",
+    "p": [
+      "Have Backbone; Disagree and Commit"
+    ],
+    "src": [
+      "roundz"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-feedback",
+    "q": "Critical feedback from your manager, and what changed afterwards",
+    "s": "Your example",
+    "p": [
+      "Learn and Be Curious",
+      "Earn Trust"
+    ],
+    "src": [
+      "lc6393977",
+      "lc6738470",
+      "lc8542365"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-right",
+    "q": "How you knew your approach would actually work (data, tests, metrics)",
+    "s": "The RAG service’s 20%+ debuggability gain, or CI failure-rate data",
+    "p": [
+      "Are Right, A Lot",
+      "Dive Deep"
+    ],
+    "src": [
+      "lc6393977",
+      "lc8542365"
+    ],
+    "note": "A Bar Raiser asked: “How did you know multithreading would solve it?”"
+  },
+  {
+    "id": "lp-stuck",
+    "q": "When you were stuck: how you decided what to do next",
+    "s": "Your example",
+    "p": [
+      "Bias for Action",
+      "Dive Deep"
+    ],
+    "src": [
+      "lc6393977"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-data",
+    "q": "A data-driven or intuition-based decision",
+    "s": "CRV’s daily coverage reports driving new tests for low-coverage modules",
+    "p": [
+      "Are Right, A Lot",
+      "Dive Deep"
+    ],
+    "src": [],
+    "note": ""
+  },
+  {
+    "id": "lp-simplify",
+    "q": "Simplifying a process",
+    "s": "Turning a recurring two-PR data-model change into a single-file edit",
+    "p": [
+      "Invent and Simplify"
+    ],
+    "src": [],
+    "note": ""
+  },
+  {
+    "id": "lp-ownership",
+    "q": "Owning something end to end and delivering",
+    "s": "Taking Core-Stacks CI from unstable to a very low failure rate (Star Award)",
+    "p": [
+      "Ownership",
+      "Deliver Results"
+    ],
+    "src": [
+      "lc8542365",
+      "lc6738470"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-customer",
+    "q": "Customer obsession",
+    "s": "The RAG triage service giving engineers same-day bug closure",
+    "p": [
+      "Customer Obsession"
+    ],
+    "src": [],
+    "note": ""
+  },
+  {
+    "id": "lp-helping",
+    "q": "Helping a teammate, or handing over responsibilities",
+    "s": "Your example",
+    "p": [
+      "Ownership",
+      "Earn Trust"
+    ],
+    "src": [
+      "lc6738470",
+      "lc6393977"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-mentor",
+    "q": "Mentoring someone",
+    "s": "Your example (a new joiner or intern you guided through CI or code review)",
+    "p": [
+      "Hire and Develop the Best"
+    ],
+    "src": [
+      "roundz"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-failure",
+    "q": "A failure or a blunder, and what you learned",
+    "s": "Your example",
+    "p": [
+      "Learn and Be Curious"
+    ],
+    "src": [
+      "gfg2022",
+      "roundz"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-sme",
+    "q": "Becoming the expert on something so you could build a feature you needed",
+    "s": "Learning embeddings, vector databases and RAG to build the triage service",
+    "p": [
+      "Learn and Be Curious",
+      "Dive Deep"
+    ],
+    "src": [
+      "lc6738470"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-frugal",
+    "q": "Innovation and frugality in your GenAI project",
+    "s": "TC Executor or the RAG service: what you built with the tools and infrastructure you already had",
+    "p": [
+      "Invent and Simplify",
+      "Frugality"
+    ],
+    "src": [
+      "lc7981646"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-redo",
+    "q": "A feature you built in a week or two that later had to be redone",
+    "s": "Your example",
+    "p": [
+      "Insist on the Highest Standards",
+      "Bias for Action"
+    ],
+    "src": [
+      "lc6738470"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-ambiguity",
+    "q": "Handling ambiguity: a vague, one-line requirement",
+    "s": "Your example (TC Executor’s early scope, if it fits)",
+    "p": [
+      "Bias for Action",
+      "Ownership"
+    ],
+    "src": [
+      "roundz"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-weakness",
+    "q": "Something you are not good at, how you are improving it, and how you learn a new technology",
+    "s": "Your example, plus how you picked up LLM and RAG tooling",
+    "p": [
+      "Learn and Be Curious"
+    ],
+    "src": [
+      "lc7035289",
+      "lc6393977"
+    ],
+    "note": ""
+  },
+  {
+    "id": "lp-why",
+    "q": "Why Amazon, and why leave your current job?",
+    "s": "Your own answer, tied to the FinOps FP&amp;A team",
+    "p": [],
+    "src": [
+      "gfg2022"
+    ],
+    "note": ""
+  }
+]

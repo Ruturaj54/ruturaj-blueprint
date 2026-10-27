@@ -1,0 +1,3186 @@
+{
+  "start": [
+    2026,
+    9,
+    22
+  ],
+  "phases": [
+    {
+      "n": 1,
+      "name": "Basics",
+      "range": "Days 1–7 · 22–28 Oct",
+      "desc": "Learn each pattern’s template on easy problems, so the harder versions later feel familiar."
+    },
+    {
+      "n": 2,
+      "name": "Core patterns",
+      "range": "Days 8–19 · 29 Oct – 9 Nov",
+      "desc": "The must-do medium problems for every pattern Amazon tests, with a 40-minute timer each."
+    },
+    {
+      "n": 3,
+      "name": "Asked questions and mocks",
+      "range": "Days 20–28 · 10–18 Nov",
+      "desc": "The problems, or their closest matches, from real SDE-1 rounds, plus hard practice and full mocks. <b>If your interview call comes early, jump straight here</b> and fit the rest into the days before the interview."
+    }
+  ],
+  "days": [
+    {
+      "n": 1,
+      "phase": 1,
+      "title": "Complexity, arrays and hashing",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "You cleared the OA with every test case passing. Bring that same focus for 28 more days.",
+      "items": [
+        {
+          "t": "task",
+          "k": "Learn",
+          "text": "Big-O basics: loops, nested loops, recursion, and how to work out space complexity",
+          "key": "d1-bigo"
+        },
+        {
+          "t": "lc",
+          "slug": "two-sum",
+          "name": "Two Sum",
+          "d": "E",
+          "a": 1,
+          "src": [
+            "rd1",
+            "freq"
+          ],
+          "key": "two-sum",
+          "n": 1,
+          "f3": 100,
+          "f30": 100
+        },
+        {
+          "t": "lc",
+          "slug": "contains-duplicate",
+          "name": "Contains Duplicate",
+          "d": "E",
+          "key": "contains-duplicate",
+          "n": 217,
+          "f3": 48.1
+        },
+        {
+          "t": "lc",
+          "slug": "valid-anagram",
+          "name": "Valid Anagram",
+          "d": "E",
+          "key": "valid-anagram",
+          "n": 242,
+          "f3": 59.5,
+          "f30": 61.7
+        },
+        {
+          "t": "lc",
+          "slug": "best-time-to-buy-and-sell-stock",
+          "name": "Best Time to Buy and Sell Stock",
+          "d": "E",
+          "key": "best-time-to-buy-and-sell-stock",
+          "n": 121,
+          "f3": 71.5,
+          "f30": 79.3
+        },
+        {
+          "t": "lc",
+          "slug": "majority-element",
+          "name": "Majority Element",
+          "d": "E",
+          "key": "majority-element",
+          "n": 169,
+          "f3": 59.5
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "Write your <b>hard deadline</b> story, including how you handled changing requirements",
+          "src": [
+            "lc7724048",
+            "lc8542365"
+          ],
+          "key": "d1-lp"
+        },
+        {
+          "t": "task",
+          "k": "Notes",
+          "text": "Start the mistakes notebook: pattern, key idea, the bug",
+          "key": "d1-notebook"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "longest-common-prefix",
+          "name": "Longest Common Prefix",
+          "d": "E",
+          "key": "longest-common-prefix",
+          "n": 14,
+          "f3": 69.3,
+          "f30": 61.7
+        },
+        {
+          "t": "lc",
+          "slug": "valid-sudoku",
+          "name": "Valid Sudoku",
+          "d": "M",
+          "key": "valid-sudoku",
+          "n": 36,
+          "f3": 61.2,
+          "f30": 75.9
+        },
+        {
+          "t": "lc",
+          "slug": "first-unique-character-in-a-string",
+          "name": "First Unique Character in a String",
+          "d": "E",
+          "key": "first-unique-character-in-a-string",
+          "n": 387,
+          "f3": 36.4
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "phase": 1,
+      "title": "Two pointers and prefix sums",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Two pointers, one goal. Showing up again tomorrow is the whole trick.",
+      "items": [
+        {
+          "t": "task",
+          "k": "Learn",
+          "text": "Watch the two pointers and prefix sums concept video (videsiqna.in or NeetCode), then solve without hints",
+          "key": "d2-learn"
+        },
+        {
+          "t": "lc",
+          "slug": "valid-palindrome",
+          "name": "Valid Palindrome",
+          "d": "E",
+          "key": "valid-palindrome",
+          "n": 125,
+          "f3": 48.1
+        },
+        {
+          "t": "lc",
+          "slug": "merge-sorted-array",
+          "name": "Merge Sorted Array",
+          "d": "E",
+          "key": "merge-sorted-array",
+          "n": 88,
+          "f3": 55.7
+        },
+        {
+          "t": "lc",
+          "slug": "move-zeroes",
+          "name": "Move Zeroes",
+          "d": "E",
+          "a": 2,
+          "src": [
+            "gfg2022",
+            "freq"
+          ],
+          "key": "move-zeroes",
+          "n": 283,
+          "f3": 71.5,
+          "f30": 72
+        },
+        {
+          "t": "lc",
+          "slug": "two-sum-ii-input-array-is-sorted",
+          "name": "Two Sum II",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "rd1"
+          ],
+          "note": "Then your own version: the largest pair sum ≤ X (the asked ladder)",
+          "key": "two-sum-ii-input-array-is-sorted",
+          "n": 167,
+          "f3": 44.9
+        },
+        {
+          "t": "lc",
+          "slug": "running-sum-of-1d-array",
+          "name": "Running Sum of 1d Array",
+          "d": "E",
+          "key": "running-sum-of-1d-array",
+          "n": 1480,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "find-pivot-index",
+          "name": "Find Pivot Index",
+          "d": "E",
+          "key": "find-pivot-index",
+          "n": 724,
+          "f3": 41
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "<b>Going beyond your responsibility</b>",
+          "src": [
+            "lc6393977",
+            "lc7035289"
+          ],
+          "key": "d2-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "remove-duplicates-from-sorted-array",
+          "name": "Remove Duplicates from Sorted Array",
+          "d": "E",
+          "key": "remove-duplicates-from-sorted-array",
+          "n": 26,
+          "f3": 57.7,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "sort-colors",
+          "name": "Sort Colors",
+          "d": "M",
+          "key": "sort-colors",
+          "n": 75,
+          "f3": 36.4
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "phase": 1,
+      "title": "Binary search and sliding window",
+      "hours": "Full day · ~11 h",
+      "weekend": true,
+      "coach": "Binary search your doubts: cut them in half every day until only the answer is left.",
+      "items": [
+        {
+          "t": "task",
+          "k": "Learn",
+          "text": "Watch the binary search and sliding window concept video (videsiqna.in or NeetCode), then solve without hints",
+          "key": "d3-learn"
+        },
+        {
+          "t": "lc",
+          "slug": "binary-search",
+          "name": "Binary Search",
+          "d": "E",
+          "key": "binary-search",
+          "n": 704,
+          "f3": 50.9,
+          "f30": 67.4
+        },
+        {
+          "t": "lc",
+          "slug": "search-insert-position",
+          "name": "Search Insert Position",
+          "d": "E",
+          "key": "search-insert-position",
+          "n": 35,
+          "f3": 48.1
+        },
+        {
+          "t": "lc",
+          "slug": "first-bad-version",
+          "name": "First Bad Version",
+          "d": "E",
+          "key": "first-bad-version",
+          "n": 278
+        },
+        {
+          "t": "lc",
+          "slug": "sqrtx",
+          "name": "Sqrt(x)",
+          "d": "E",
+          "key": "sqrtx",
+          "n": 69,
+          "f3": 59.5,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "maximum-average-subarray-i",
+          "name": "Maximum Average Subarray I",
+          "d": "E",
+          "key": "maximum-average-subarray-i",
+          "n": 643,
+          "f3": 50.9
+        },
+        {
+          "t": "lc",
+          "slug": "longest-substring-without-repeating-characters",
+          "name": "Longest Substring Without Repeating Characters",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc6393977",
+            "freq"
+          ],
+          "key": "longest-substring-without-repeating-characters",
+          "n": 3,
+          "f3": 79.8,
+          "f30": 89.7
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "A <b>missed deadline</b>: how you told stakeholders and what you would do differently",
+          "src": [
+            "lc6393977",
+            "lc6738470"
+          ],
+          "key": "d3-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "find-first-and-last-position-of-element-in-sorted-array",
+          "name": "Find First and Last Position of Element in Sorted Array",
+          "d": "M",
+          "key": "find-first-and-last-position-of-element-in-sorted-array",
+          "n": 34,
+          "f3": 50.9,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "max-consecutive-ones-iii",
+          "name": "Max Consecutive Ones III",
+          "d": "M",
+          "key": "max-consecutive-ones-iii",
+          "n": 1004,
+          "f3": 55.7,
+          "f30": 67.4
+        },
+        {
+          "t": "lc",
+          "slug": "search-a-2d-matrix-ii",
+          "name": "Search a 2D Matrix II",
+          "d": "M",
+          "key": "search-a-2d-matrix-ii",
+          "n": 240,
+          "f3": 48.1,
+          "f30": 44.3
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "phase": 1,
+      "title": "Recursion and binary trees + mock 0",
+      "hours": "Full day · ~11 h",
+      "weekend": true,
+      "coach": "First mock today. Talking through your approach feels awkward now and normal by Day 25.",
+      "items": [
+        {
+          "t": "task",
+          "k": "Learn",
+          "text": "Watch the recursion and tree traversal concept video (videsiqna.in or NeetCode), then solve without hints",
+          "key": "d5-learn"
+        },
+        {
+          "t": "lc",
+          "slug": "binary-tree-inorder-traversal",
+          "name": "Binary Tree Inorder Traversal",
+          "d": "E",
+          "note": "Recursive and iterative",
+          "key": "binary-tree-inorder-traversal",
+          "n": 94
+        },
+        {
+          "t": "lc",
+          "slug": "binary-tree-preorder-traversal",
+          "name": "Binary Tree Preorder Traversal",
+          "d": "E",
+          "note": "Recursive and iterative",
+          "key": "binary-tree-preorder-traversal",
+          "n": 144,
+          "f3": 30.5
+        },
+        {
+          "t": "lc",
+          "slug": "binary-tree-postorder-traversal",
+          "name": "Binary Tree Postorder Traversal",
+          "d": "E",
+          "note": "Recursive and iterative",
+          "key": "binary-tree-postorder-traversal",
+          "n": 145
+        },
+        {
+          "t": "lc",
+          "slug": "maximum-depth-of-binary-tree",
+          "name": "Maximum Depth of Binary Tree",
+          "d": "E",
+          "key": "maximum-depth-of-binary-tree",
+          "n": 104,
+          "f3": 30.5
+        },
+        {
+          "t": "lc",
+          "slug": "invert-binary-tree",
+          "name": "Invert Binary Tree",
+          "d": "E",
+          "key": "invert-binary-tree",
+          "n": 226
+        },
+        {
+          "t": "lc",
+          "slug": "same-tree",
+          "name": "Same Tree",
+          "d": "E",
+          "key": "same-tree",
+          "n": 100,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "symmetric-tree",
+          "name": "Symmetric Tree",
+          "d": "E",
+          "key": "symmetric-tree",
+          "n": 101,
+          "f3": 30.5
+        },
+        {
+          "t": "lc",
+          "slug": "path-sum",
+          "name": "Path Sum",
+          "d": "E",
+          "note": "Sets up the path-sum questions asked later",
+          "key": "path-sum",
+          "n": 112
+        },
+        {
+          "t": "lc",
+          "slug": "binary-tree-level-order-traversal",
+          "name": "Binary Tree Level Order Traversal",
+          "d": "M",
+          "key": "binary-tree-level-order-traversal",
+          "n": 102,
+          "f3": 36.4,
+          "f30": 44.3
+        },
+        {
+          "t": "task",
+          "k": "Mock",
+          "text": "<b>Mock 0</b> (1 hour): two easy problems, explained out loud with complexity and a dry run",
+          "key": "d5-mock"
+        },
+        {
+          "t": "task",
+          "k": "Review",
+          "text": "Re-solve every miss in your notebook from days 1–3",
+          "key": "d5-review"
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "A time you had to <b>dive deep</b> into a problem",
+          "src": [
+            "lc7724048",
+            "lc8014509"
+          ],
+          "key": "d5-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "balanced-binary-tree",
+          "name": "Balanced Binary Tree",
+          "d": "E",
+          "key": "balanced-binary-tree",
+          "n": 110,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "convert-sorted-array-to-binary-search-tree",
+          "name": "Convert Sorted Array to Binary Search Tree",
+          "d": "E",
+          "key": "convert-sorted-array-to-binary-search-tree",
+          "n": 108,
+          "f3": 36.4,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "generate-parentheses",
+          "name": "Generate Parentheses",
+          "d": "M",
+          "note": "Recursion warm-up for backtracking",
+          "key": "generate-parentheses",
+          "n": 22,
+          "f3": 65.7,
+          "f30": 72
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "phase": 1,
+      "title": "Stacks, queues and linked lists",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Every bug you log in the notebook is one you won’t repeat in the interview.",
+      "items": [
+        {
+          "t": "task",
+          "k": "Learn",
+          "text": "Watch the stack and linked list concept video (videsiqna.in or NeetCode), then solve without hints",
+          "key": "d4-learn"
+        },
+        {
+          "t": "lc",
+          "slug": "valid-parentheses",
+          "name": "Valid Parentheses",
+          "d": "E",
+          "key": "valid-parentheses",
+          "n": 20,
+          "f3": 65.7,
+          "f30": 67.4
+        },
+        {
+          "t": "lc",
+          "slug": "implement-queue-using-stacks",
+          "name": "Implement Queue using Stacks",
+          "d": "E",
+          "key": "implement-queue-using-stacks",
+          "n": 232
+        },
+        {
+          "t": "lc",
+          "slug": "reverse-linked-list",
+          "name": "Reverse Linked List",
+          "d": "E",
+          "key": "reverse-linked-list",
+          "n": 206,
+          "f3": 41
+        },
+        {
+          "t": "lc",
+          "slug": "merge-two-sorted-lists",
+          "name": "Merge Two Sorted Lists",
+          "d": "E",
+          "key": "merge-two-sorted-lists",
+          "n": 21,
+          "f3": 48.1,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "linked-list-cycle",
+          "name": "Linked List Cycle",
+          "d": "E",
+          "key": "linked-list-cycle",
+          "n": 141,
+          "f3": 57.7,
+          "f30": 61.7
+        },
+        {
+          "t": "lc",
+          "slug": "middle-of-the-linked-list",
+          "name": "Middle of the Linked List",
+          "d": "E",
+          "key": "middle-of-the-linked-list",
+          "n": 876,
+          "f3": 41
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "<b>Something challenging you built</b>",
+          "src": [
+            "lc6393977",
+            "lc7035289"
+          ],
+          "key": "d4-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "asteroid-collision",
+          "name": "Asteroid Collision",
+          "d": "M",
+          "key": "asteroid-collision",
+          "n": 735,
+          "f3": 57.7
+        },
+        {
+          "t": "lc",
+          "slug": "palindrome-linked-list",
+          "name": "Palindrome Linked List",
+          "d": "E",
+          "key": "palindrome-linked-list",
+          "n": 234,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "odd-even-linked-list",
+          "name": "Odd Even Linked List",
+          "d": "M",
+          "key": "odd-even-linked-list",
+          "n": 328,
+          "f3": 41
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "phase": 1,
+      "title": "BST, heaps and hashing",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "A heap keeps the best on top. So does consistency.",
+      "items": [
+        {
+          "t": "task",
+          "k": "Learn",
+          "text": "Watch the BST and heap concept video (videsiqna.in or NeetCode), then solve without hints",
+          "key": "d6-learn"
+        },
+        {
+          "t": "lc",
+          "slug": "search-in-a-binary-search-tree",
+          "name": "Search in a Binary Search Tree",
+          "d": "E",
+          "key": "search-in-a-binary-search-tree",
+          "n": 700
+        },
+        {
+          "t": "lc",
+          "slug": "insert-into-a-binary-search-tree",
+          "name": "Insert into a Binary Search Tree",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "roundz"
+          ],
+          "key": "insert-into-a-binary-search-tree",
+          "n": 701
+        },
+        {
+          "t": "lc",
+          "slug": "kth-largest-element-in-a-stream",
+          "name": "Kth Largest Element in a Stream",
+          "d": "E",
+          "key": "kth-largest-element-in-a-stream",
+          "n": 703,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "last-stone-weight",
+          "name": "Last Stone Weight",
+          "d": "E",
+          "key": "last-stone-weight",
+          "n": 1046
+        },
+        {
+          "t": "lc",
+          "slug": "top-k-frequent-elements",
+          "name": "Top K Frequent Elements",
+          "d": "M",
+          "key": "top-k-frequent-elements",
+          "n": 347,
+          "f3": 71.5,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "group-anagrams",
+          "name": "Group Anagrams",
+          "d": "M",
+          "key": "group-anagrams",
+          "n": 49,
+          "f3": 73.4,
+          "f30": 72
+        },
+        {
+          "t": "lc",
+          "slug": "longest-consecutive-sequence",
+          "name": "Longest Consecutive Sequence",
+          "d": "M",
+          "key": "longest-consecutive-sequence",
+          "n": 128,
+          "f3": 61.2,
+          "f30": 54.4
+        },
+        {
+          "t": "task",
+          "k": "Problem",
+          "text": "Find the households that submitted duplicate interest forms across member lists. Code the O(n·m) brute force first, then the O(n+m) hash-set version.",
+          "a": 1,
+          "src": [
+            "lc7621408"
+          ],
+          "key": "d6-dupforms"
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "<b>Convincing someone</b> of your approach, and <b>a conflict</b>",
+          "src": [
+            "lc7724048",
+            "roundz"
+          ],
+          "key": "d6-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "reorganize-string",
+          "name": "Reorganize String",
+          "d": "M",
+          "key": "reorganize-string",
+          "n": 767,
+          "f3": 68.2,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "intersection-of-two-arrays",
+          "name": "Intersection of Two Arrays",
+          "d": "E",
+          "note": "Warm-up for the duplicate-forms question",
+          "key": "intersection-of-two-arrays",
+          "n": 349,
+          "f3": 36.4
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "phase": 1,
+      "title": "Graphs, greedy and DP basics",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "One week done. Most people stop around now. You are building the habit that gets offers.",
+      "items": [
+        {
+          "t": "task",
+          "k": "Learn",
+          "text": "Watch the BFS/DFS, greedy and DP concept video (videsiqna.in or NeetCode), then solve without hints",
+          "key": "d7-learn"
+        },
+        {
+          "t": "lc",
+          "slug": "flood-fill",
+          "name": "Flood Fill",
+          "d": "E",
+          "key": "flood-fill",
+          "n": 733,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "number-of-islands",
+          "name": "Number of Islands",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc8014509",
+            "lc8029194",
+            "freq"
+          ],
+          "key": "number-of-islands",
+          "n": 200,
+          "f3": 69.3,
+          "f30": 79.3
+        },
+        {
+          "t": "lc",
+          "slug": "find-if-path-exists-in-graph",
+          "name": "Find if Path Exists in Graph",
+          "d": "E",
+          "key": "find-if-path-exists-in-graph",
+          "n": 1971,
+          "f3": 22.6,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "assign-cookies",
+          "name": "Assign Cookies",
+          "d": "E",
+          "key": "assign-cookies",
+          "n": 455
+        },
+        {
+          "t": "lc",
+          "slug": "lemonade-change",
+          "name": "Lemonade Change",
+          "d": "E",
+          "key": "lemonade-change",
+          "n": 860
+        },
+        {
+          "t": "lc",
+          "slug": "climbing-stairs",
+          "name": "Climbing Stairs",
+          "d": "E",
+          "a": 2,
+          "src": [
+            "gfg2022"
+          ],
+          "key": "climbing-stairs",
+          "n": 70,
+          "f3": 55.7
+        },
+        {
+          "t": "lc",
+          "slug": "min-cost-climbing-stairs",
+          "name": "Min Cost Climbing Stairs",
+          "d": "E",
+          "key": "min-cost-climbing-stairs",
+          "n": 746
+        },
+        {
+          "t": "lc",
+          "slug": "house-robber",
+          "name": "House Robber",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc8542365",
+            "lc8029194",
+            "lc7621408"
+          ],
+          "key": "house-robber",
+          "n": 198,
+          "f3": 53.4,
+          "f30": 67.4
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "<b>Critical feedback</b> you received and what you changed",
+          "src": [
+            "lc6393977",
+            "lc6738470",
+            "lc8542365"
+          ],
+          "key": "d7-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "pascals-triangle",
+          "name": "Pascal's Triangle",
+          "d": "E",
+          "key": "pascals-triangle",
+          "n": 118,
+          "f3": 48.1
+        },
+        {
+          "t": "lc",
+          "slug": "best-time-to-buy-and-sell-stock-ii",
+          "name": "Best Time to Buy and Sell Stock II",
+          "d": "M",
+          "key": "best-time-to-buy-and-sell-stock-ii",
+          "n": 122,
+          "f3": 41,
+          "f30": 54.4
+        }
+      ]
+    },
+    {
+      "n": 8,
+      "phase": 2,
+      "title": "Arrays and prefix sums",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Prefix sums: small totals add up. So do your nights.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "3sum",
+          "name": "3Sum",
+          "d": "M",
+          "key": "3sum",
+          "n": 15,
+          "f3": 69.3,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "container-with-most-water",
+          "name": "Container With Most Water",
+          "d": "M",
+          "key": "container-with-most-water",
+          "n": 11,
+          "f3": 71.5,
+          "f30": 67.4
+        },
+        {
+          "t": "lc",
+          "slug": "product-of-array-except-self",
+          "name": "Product of Array Except Self",
+          "d": "M",
+          "key": "product-of-array-except-self",
+          "n": 238,
+          "f3": 62.8,
+          "f30": 61.7
+        },
+        {
+          "t": "lc",
+          "slug": "subarray-sum-equals-k",
+          "name": "Subarray Sum Equals K",
+          "d": "M",
+          "key": "subarray-sum-equals-k",
+          "n": 560,
+          "f3": 69.3,
+          "f30": 72
+        },
+        {
+          "t": "lc",
+          "slug": "maximum-subarray",
+          "name": "Maximum Subarray",
+          "d": "M",
+          "note": "Kadane: the base for the circular and |a[i] − a[j]| = k versions asked in 2026",
+          "key": "maximum-subarray",
+          "n": 53,
+          "f3": 69.3,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "continuous-subarray-sum",
+          "name": "Continuous Subarray Sum",
+          "d": "M",
+          "key": "continuous-subarray-sum",
+          "n": 523,
+          "f3": 36.4
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "A <b>data-driven or intuition-based decision</b>",
+          "key": "d8-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "next-permutation",
+          "name": "Next Permutation",
+          "d": "M",
+          "key": "next-permutation",
+          "n": 31,
+          "f3": 55.7
+        },
+        {
+          "t": "lc",
+          "slug": "contiguous-array",
+          "name": "Contiguous Array",
+          "d": "M",
+          "key": "contiguous-array",
+          "n": 525,
+          "f3": 44.9,
+          "f30": 44.3
+        }
+      ]
+    },
+    {
+      "n": 9,
+      "phase": 2,
+      "title": "Binary search",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Stuck for 40 minutes? Read the solution, log it, re-solve it in 3 days. That is the system working.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "search-in-rotated-sorted-array",
+          "name": "Search in Rotated Sorted Array",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc8014509",
+            "freq"
+          ],
+          "key": "search-in-rotated-sorted-array",
+          "n": 33,
+          "f3": 59.5,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "find-minimum-in-rotated-sorted-array",
+          "name": "Find Minimum in Rotated Sorted Array",
+          "d": "M",
+          "key": "find-minimum-in-rotated-sorted-array",
+          "n": 153,
+          "f3": 48.1
+        },
+        {
+          "t": "lc",
+          "slug": "koko-eating-bananas",
+          "name": "Koko Eating Bananas",
+          "d": "M",
+          "note": "Binary search on the answer",
+          "key": "koko-eating-bananas",
+          "n": 875,
+          "f3": 71.5,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "find-peak-element",
+          "name": "Find Peak Element",
+          "d": "M",
+          "key": "find-peak-element",
+          "n": 162,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "find-k-closest-elements",
+          "name": "Find K Closest Elements",
+          "d": "M",
+          "a": 2,
+          "src": [
+            "med2022"
+          ],
+          "key": "find-k-closest-elements",
+          "n": 658,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "heaters",
+          "name": "Heaters",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc7035289"
+          ],
+          "key": "heaters",
+          "n": 475,
+          "f3": 30.5
+        },
+        {
+          "t": "task",
+          "k": "Resume",
+          "text": "2-minute walkthrough of the <b>RAG failure-triage service</b>",
+          "key": "d9-resume"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "capacity-to-ship-packages-within-d-days",
+          "name": "Capacity To Ship Packages Within D Days",
+          "d": "M",
+          "key": "capacity-to-ship-packages-within-d-days",
+          "n": 1011,
+          "f3": 59.5,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "split-array-largest-sum",
+          "name": "Split Array Largest Sum",
+          "d": "H",
+          "key": "split-array-largest-sum",
+          "n": 410,
+          "f3": 55.7,
+          "f30": 61.7
+        }
+      ]
+    },
+    {
+      "n": 10,
+      "phase": 2,
+      "title": "Stacks and string parsing",
+      "hours": "Full day · ~11 h",
+      "weekend": true,
+      "coach": "Parse Lisp was asked in a real 2026 loop. Hard problems are just stacks of easy steps.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "min-stack",
+          "name": "Min Stack",
+          "d": "M",
+          "key": "min-stack",
+          "n": 155,
+          "f3": 41
+        },
+        {
+          "t": "lc",
+          "slug": "daily-temperatures",
+          "name": "Daily Temperatures",
+          "d": "M",
+          "key": "daily-temperatures",
+          "n": 739,
+          "f3": 50.9
+        },
+        {
+          "t": "lc",
+          "slug": "evaluate-reverse-polish-notation",
+          "name": "Evaluate Reverse Polish Notation",
+          "d": "M",
+          "key": "evaluate-reverse-polish-notation",
+          "n": 150,
+          "f3": 30.5
+        },
+        {
+          "t": "lc",
+          "slug": "decode-string",
+          "name": "Decode String",
+          "d": "M",
+          "key": "decode-string",
+          "n": 394,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "basic-calculator-ii",
+          "name": "Basic Calculator II",
+          "d": "M",
+          "key": "basic-calculator-ii",
+          "n": 227,
+          "f3": 36.4,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "remove-all-adjacent-duplicates-in-string-ii",
+          "name": "Remove All Adjacent Duplicates in String II",
+          "d": "M",
+          "a": 2,
+          "src": [
+            "gfg2022"
+          ],
+          "key": "remove-all-adjacent-duplicates-in-string-ii",
+          "n": 1209,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "largest-rectangle-in-histogram",
+          "name": "Largest Rectangle in Histogram",
+          "d": "H",
+          "a": 1,
+          "src": [
+            "lc7621408"
+          ],
+          "note": "A 2026 Bar Raiser asked a problem like this one",
+          "key": "largest-rectangle-in-histogram",
+          "n": 84,
+          "f3": 44.9,
+          "f30": 44.3
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "<b>Owning something end to end</b> and delivering",
+          "src": [
+            "lc8542365",
+            "lc6738470"
+          ],
+          "key": "d11-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "remove-k-digits",
+          "name": "Remove K Digits",
+          "d": "M",
+          "key": "remove-k-digits",
+          "n": 402,
+          "f3": 53.4,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "longest-valid-parentheses",
+          "name": "Longest Valid Parentheses",
+          "d": "H",
+          "key": "longest-valid-parentheses",
+          "n": 32,
+          "f3": 50.9,
+          "f30": 67.4
+        },
+        {
+          "t": "lc",
+          "slug": "basic-calculator",
+          "name": "Basic Calculator",
+          "d": "H",
+          "key": "basic-calculator",
+          "n": 224,
+          "f3": 41
+        }
+      ]
+    },
+    {
+      "n": 11,
+      "phase": 2,
+      "title": "Linked lists + mock 1",
+      "hours": "Full day · ~11 h",
+      "weekend": true,
+      "coach": "Mock 1: the goal is not perfect code, it is clear thinking out loud.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "remove-nth-node-from-end-of-list",
+          "name": "Remove Nth Node From End of List",
+          "d": "M",
+          "key": "remove-nth-node-from-end-of-list",
+          "n": 19,
+          "f3": 30.5,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "reorder-list",
+          "name": "Reorder List",
+          "d": "M",
+          "key": "reorder-list",
+          "n": 143,
+          "f3": 41
+        },
+        {
+          "t": "lc",
+          "slug": "add-two-numbers",
+          "name": "Add Two Numbers",
+          "d": "M",
+          "key": "add-two-numbers",
+          "n": 2,
+          "f3": 69.3,
+          "f30": 67.4
+        },
+        {
+          "t": "lc",
+          "slug": "linked-list-cycle-ii",
+          "name": "Linked List Cycle II",
+          "d": "M",
+          "key": "linked-list-cycle-ii",
+          "n": 142,
+          "f3": 30.5
+        },
+        {
+          "t": "lc",
+          "slug": "copy-list-with-random-pointer",
+          "name": "Copy List with Random Pointer",
+          "d": "M",
+          "key": "copy-list-with-random-pointer",
+          "n": 138,
+          "f3": 59.5,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "merge-k-sorted-lists",
+          "name": "Merge k Sorted Lists",
+          "d": "H",
+          "key": "merge-k-sorted-lists",
+          "n": 23,
+          "f3": 57.7,
+          "f30": 44.3
+        },
+        {
+          "t": "task",
+          "k": "Mock",
+          "text": "<b>Mock 1</b> (1 hour): two unseen mediums + 2 LP questions, recorded or with a friend",
+          "key": "d12-mock"
+        },
+        {
+          "t": "task",
+          "k": "Review",
+          "text": "Re-solve every miss in your notebook from days 4–10",
+          "key": "d12-review"
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "<b>Customer obsession</b>",
+          "key": "d12-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "reverse-linked-list-ii",
+          "name": "Reverse Linked List II",
+          "d": "M",
+          "key": "reverse-linked-list-ii",
+          "n": 92,
+          "f3": 36.4,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "rotate-list",
+          "name": "Rotate List",
+          "d": "M",
+          "key": "rotate-list",
+          "n": 61,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "find-the-duplicate-number",
+          "name": "Find the Duplicate Number",
+          "d": "M",
+          "note": "Floyd’s cycle trick on an array",
+          "key": "find-the-duplicate-number",
+          "n": 287,
+          "f3": 44.9
+        }
+      ]
+    },
+    {
+      "n": 12,
+      "phase": 2,
+      "title": "Sliding window",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Shrink the window and keep only what matters. Same with distractions tonight.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "longest-repeating-character-replacement",
+          "name": "Longest Repeating Character Replacement",
+          "d": "M",
+          "key": "longest-repeating-character-replacement",
+          "n": 424,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "permutation-in-string",
+          "name": "Permutation in String",
+          "d": "M",
+          "key": "permutation-in-string",
+          "n": 567,
+          "f3": 41
+        },
+        {
+          "t": "lc",
+          "slug": "fruit-into-baskets",
+          "name": "Fruit Into Baskets",
+          "d": "M",
+          "key": "fruit-into-baskets",
+          "n": 904,
+          "f3": 57.7
+        },
+        {
+          "t": "lc",
+          "slug": "minimum-window-substring",
+          "name": "Minimum Window Substring",
+          "d": "H",
+          "key": "minimum-window-substring",
+          "n": 76,
+          "f3": 50.9
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "<b>Simplifying a process</b>",
+          "key": "d10-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "maximum-coins-from-k-consecutive-bags",
+          "name": "Maximum Coins From K Consecutive Bags",
+          "d": "M",
+          "note": "Number 2 on Amazon’s list for the last 3 months",
+          "key": "maximum-coins-from-k-consecutive-bags",
+          "n": 3413,
+          "f3": 93.1,
+          "f30": 100
+        },
+        {
+          "t": "lc",
+          "slug": "find-all-anagrams-in-a-string",
+          "name": "Find All Anagrams in a String",
+          "d": "M",
+          "key": "find-all-anagrams-in-a-string",
+          "n": 438,
+          "f3": 36.4
+        }
+      ]
+    },
+    {
+      "n": 13,
+      "phase": 2,
+      "title": "Binary trees",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Interviewers hire the person who explains clearly, not the one who types fastest.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "binary-tree-right-side-view",
+          "name": "Binary Tree Right Side View",
+          "d": "M",
+          "key": "binary-tree-right-side-view",
+          "n": 199,
+          "f3": 36.4,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "binary-tree-zigzag-level-order-traversal",
+          "name": "Binary Tree Zigzag Level Order Traversal",
+          "d": "M",
+          "a": 2,
+          "src": [
+            "gfg2022"
+          ],
+          "key": "binary-tree-zigzag-level-order-traversal",
+          "n": 103
+        },
+        {
+          "t": "lc",
+          "slug": "validate-binary-search-tree",
+          "name": "Validate Binary Search Tree",
+          "d": "M",
+          "key": "validate-binary-search-tree",
+          "n": 98,
+          "f3": 44.9
+        },
+        {
+          "t": "lc",
+          "slug": "kth-smallest-element-in-a-bst",
+          "name": "Kth Smallest Element in a BST",
+          "d": "M",
+          "key": "kth-smallest-element-in-a-bst",
+          "n": 230
+        },
+        {
+          "t": "lc",
+          "slug": "construct-binary-tree-from-preorder-and-inorder-traversal",
+          "name": "Construct Binary Tree from Preorder and Inorder Traversal",
+          "d": "M",
+          "key": "construct-binary-tree-from-preorder-and-inorder-traversal",
+          "n": 105
+        },
+        {
+          "t": "lc",
+          "slug": "diameter-of-binary-tree",
+          "name": "Diameter of Binary Tree",
+          "d": "E",
+          "key": "diameter-of-binary-tree",
+          "n": 543,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "binary-tree-maximum-path-sum",
+          "name": "Binary Tree Maximum Path Sum",
+          "d": "H",
+          "a": 2,
+          "src": [
+            "gfg2022"
+          ],
+          "key": "binary-tree-maximum-path-sum",
+          "n": 124,
+          "f3": 53.4
+        },
+        {
+          "t": "lc",
+          "slug": "maximum-width-of-binary-tree",
+          "name": "Maximum Width of Binary Tree",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc7035289"
+          ],
+          "key": "maximum-width-of-binary-tree",
+          "n": 662,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "serialize-and-deserialize-binary-tree",
+          "name": "Serialize and Deserialize Binary Tree",
+          "d": "H",
+          "key": "serialize-and-deserialize-binary-tree",
+          "n": 297,
+          "f3": 30.5
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "<b>Handing over responsibilities</b> or helping a teammate",
+          "src": [
+            "lc6393977",
+            "lc6738470"
+          ],
+          "key": "d13-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "all-nodes-distance-k-in-binary-tree",
+          "name": "All Nodes Distance K in Binary Tree",
+          "d": "M",
+          "key": "all-nodes-distance-k-in-binary-tree",
+          "n": 863,
+          "f3": 41
+        },
+        {
+          "t": "lc",
+          "slug": "house-robber-iii",
+          "name": "House Robber III",
+          "d": "M",
+          "key": "house-robber-iii",
+          "n": 337,
+          "f3": 30.5
+        }
+      ]
+    },
+    {
+      "n": 14,
+      "phase": 2,
+      "title": "Tries, heaps and design",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "LRU Cache from scratch today, from memory on Day 21, timed on Day 24. That is how “asked” becomes “easy”.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "implement-trie-prefix-tree",
+          "name": "Implement Trie (Prefix Tree)",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "roundz"
+          ],
+          "key": "implement-trie-prefix-tree",
+          "n": 208,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "design-add-and-search-words-data-structure",
+          "name": "Design Add and Search Words Data Structure",
+          "d": "M",
+          "key": "design-add-and-search-words-data-structure",
+          "n": 211,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "word-search-ii",
+          "name": "Word Search II",
+          "d": "H",
+          "a": 2,
+          "src": [
+            "med2022"
+          ],
+          "note": "Asked as a variant: count a word’s occurrences in a grid",
+          "key": "word-search-ii",
+          "n": 212,
+          "f3": 36.4,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "kth-largest-element-in-an-array",
+          "name": "Kth Largest Element in an Array",
+          "d": "M",
+          "key": "kth-largest-element-in-an-array",
+          "n": 215,
+          "f3": 50.9
+        },
+        {
+          "t": "lc",
+          "slug": "find-median-from-data-stream",
+          "name": "Find Median from Data Stream",
+          "d": "H",
+          "key": "find-median-from-data-stream",
+          "n": 295,
+          "f3": 55.7,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "lru-cache",
+          "name": "LRU Cache",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "rd1",
+            "lc7621408",
+            "freq"
+          ],
+          "note": "From scratch: hash map + doubly linked list",
+          "key": "lru-cache",
+          "n": 146,
+          "f3": 72.4,
+          "f30": 67.4
+        },
+        {
+          "t": "lc",
+          "slug": "insert-delete-getrandom-o1",
+          "name": "Insert Delete GetRandom O(1)",
+          "d": "M",
+          "key": "insert-delete-getrandom-o1",
+          "n": 380,
+          "f3": 44.9
+        },
+        {
+          "t": "lc",
+          "slug": "time-based-key-value-store",
+          "name": "Time Based Key-Value Store",
+          "d": "M",
+          "key": "time-based-key-value-store",
+          "n": 981,
+          "f3": 30.5
+        },
+        {
+          "t": "task",
+          "k": "Resume",
+          "text": "10-minute deep dive of the <b>RAG failure-triage service</b>",
+          "key": "d14-resume"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "search-suggestions-system",
+          "name": "Search Suggestions System",
+          "d": "M",
+          "key": "search-suggestions-system",
+          "n": 1268,
+          "f3": 22.6,
+          "f30": 44.3
+        }
+      ]
+    },
+    {
+      "n": 15,
+      "phase": 2,
+      "title": "Graphs I: BFS, DFS, topological sort",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Rotting Oranges came up in 3 real interviews. By tonight you will know it cold.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "max-area-of-island",
+          "name": "Max Area of Island",
+          "d": "M",
+          "key": "max-area-of-island",
+          "n": 695,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "clone-graph",
+          "name": "Clone Graph",
+          "d": "M",
+          "key": "clone-graph",
+          "n": 133,
+          "f3": 22.6,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "pacific-atlantic-water-flow",
+          "name": "Pacific Atlantic Water Flow",
+          "d": "M",
+          "key": "pacific-atlantic-water-flow",
+          "n": 417,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "course-schedule",
+          "name": "Course Schedule",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc7154883",
+            "freq"
+          ],
+          "key": "course-schedule",
+          "n": 207,
+          "f3": 64.3
+        },
+        {
+          "t": "lc",
+          "slug": "course-schedule-ii",
+          "name": "Course Schedule II",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc6393977",
+            "lc7621408"
+          ],
+          "key": "course-schedule-ii",
+          "n": 210,
+          "f3": 48.1,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "rotting-oranges",
+          "name": "Rotting Oranges",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc8542365",
+            "roundz",
+            "med2022"
+          ],
+          "note": "Reported in 3 interviews",
+          "key": "rotting-oranges",
+          "n": 994,
+          "f3": 69.3,
+          "f30": 44.3
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "A <b>failure</b> or a blunder, and what you learned from it",
+          "src": [
+            "gfg2022",
+            "roundz"
+          ],
+          "key": "d15-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "evaluate-division",
+          "name": "Evaluate Division",
+          "d": "M",
+          "key": "evaluate-division",
+          "n": 399,
+          "f3": 44.9,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "bus-routes",
+          "name": "Bus Routes",
+          "d": "H",
+          "key": "bus-routes",
+          "n": 815,
+          "f3": 36.4,
+          "f30": 54.4
+        }
+      ]
+    },
+    {
+      "n": 16,
+      "phase": 2,
+      "title": "Graphs II: shortest paths and union-find",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Your CI pipeline went from unstable to a Star Award one fix at a time. This plan works the same way.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "word-ladder",
+          "name": "Word Ladder",
+          "d": "H",
+          "a": 1,
+          "src": [
+            "lc7035289",
+            "freq"
+          ],
+          "key": "word-ladder",
+          "n": 127,
+          "f3": 50.9
+        },
+        {
+          "t": "lc",
+          "slug": "network-delay-time",
+          "name": "Network Delay Time",
+          "d": "M",
+          "note": "Dijkstra",
+          "key": "network-delay-time",
+          "n": 743
+        },
+        {
+          "t": "lc",
+          "slug": "cheapest-flights-within-k-stops",
+          "name": "Cheapest Flights Within K Stops",
+          "d": "M",
+          "key": "cheapest-flights-within-k-stops",
+          "n": 787,
+          "f3": 41
+        },
+        {
+          "t": "lc",
+          "slug": "number-of-provinces",
+          "name": "Number of Provinces",
+          "d": "M",
+          "note": "Union-find",
+          "key": "number-of-provinces",
+          "n": 547,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "redundant-connection",
+          "name": "Redundant Connection",
+          "d": "M",
+          "note": "Union-find",
+          "key": "redundant-connection",
+          "n": 684
+        },
+        {
+          "t": "lc",
+          "slug": "min-cost-to-connect-all-points",
+          "name": "Min Cost to Connect All Points",
+          "d": "M",
+          "note": "Minimum spanning tree",
+          "key": "min-cost-to-connect-all-points",
+          "n": 1584
+        },
+        {
+          "t": "task",
+          "k": "Resume",
+          "text": "Deep dives of <b>CRV</b> and the <b>Kubernetes KPI pod and ELK pipelines</b>",
+          "key": "d16-resume"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "satisfiability-of-equality-equations",
+          "name": "Satisfiability of Equality Equations",
+          "d": "M",
+          "key": "satisfiability-of-equality-equations",
+          "n": 990,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "single-threaded-cpu",
+          "name": "Single-Threaded CPU",
+          "d": "M",
+          "note": "Heap-based scheduling, useful for the “schedule processes” design question",
+          "key": "single-threaded-cpu",
+          "n": 1834,
+          "f3": 36.4
+        }
+      ]
+    },
+    {
+      "n": 17,
+      "phase": 2,
+      "title": "Greedy and intervals + mock 2",
+      "hours": "Full day · ~11 h",
+      "weekend": true,
+      "coach": "Take the best step available. Greedy works for intervals and for Saturdays.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "jump-game",
+          "name": "Jump Game",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc8029194"
+          ],
+          "key": "jump-game",
+          "n": 55,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "jump-game-ii",
+          "name": "Jump Game II",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc8029194"
+          ],
+          "key": "jump-game-ii",
+          "n": 45,
+          "f3": 41
+        },
+        {
+          "t": "lc",
+          "slug": "gas-station",
+          "name": "Gas Station",
+          "d": "M",
+          "key": "gas-station",
+          "n": 134,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "partition-labels",
+          "name": "Partition Labels",
+          "d": "M",
+          "key": "partition-labels",
+          "n": 763,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "task-scheduler",
+          "name": "Task Scheduler",
+          "d": "M",
+          "key": "task-scheduler",
+          "n": 621,
+          "f3": 59.5,
+          "f30": 61.7
+        },
+        {
+          "t": "lc",
+          "slug": "merge-intervals",
+          "name": "Merge Intervals",
+          "d": "M",
+          "key": "merge-intervals",
+          "n": 56,
+          "f3": 72.4,
+          "f30": 61.7
+        },
+        {
+          "t": "lc",
+          "slug": "non-overlapping-intervals",
+          "name": "Non-overlapping Intervals",
+          "d": "M",
+          "key": "non-overlapping-intervals",
+          "n": 435,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "meeting-rooms-ii",
+          "name": "Meeting Rooms II",
+          "d": "M",
+          "prem": true,
+          "key": "meeting-rooms-ii",
+          "n": 253,
+          "f3": 50.9
+        },
+        {
+          "t": "lc",
+          "slug": "maximum-length-of-pair-chain",
+          "name": "Maximum Length of Pair Chain",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc7621408"
+          ],
+          "key": "maximum-length-of-pair-chain",
+          "n": 646
+        },
+        {
+          "t": "task",
+          "k": "GenAI",
+          "text": "Answers to “How do you use GenAI in your workflow?” and “Which use cases?”",
+          "src": [
+            "lc8546875",
+            "rd1"
+          ],
+          "key": "d17-genai"
+        },
+        {
+          "t": "task",
+          "k": "Mock",
+          "text": "<b>Mock 2</b>, Round 1 format: a BFS or tree problem + a parsing or binary-search problem + a deadline LP question",
+          "key": "d18-mock"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "candy",
+          "name": "Candy",
+          "d": "H",
+          "key": "candy",
+          "n": 135,
+          "f3": 44.9
+        },
+        {
+          "t": "lc",
+          "slug": "car-pooling",
+          "name": "Car Pooling",
+          "d": "M",
+          "key": "car-pooling",
+          "n": 1094,
+          "f3": 36.4
+        }
+      ]
+    },
+    {
+      "n": 18,
+      "phase": 2,
+      "title": "Dynamic programming I + mock 3",
+      "hours": "Full day · ~11 h",
+      "weekend": true,
+      "coach": "DP is remembering what you already solved. So is your mistakes notebook.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "coin-change",
+          "name": "Coin Change",
+          "d": "M",
+          "key": "coin-change",
+          "n": 322,
+          "f3": 48.1,
+          "f30": 61.7
+        },
+        {
+          "t": "lc",
+          "slug": "coin-change-ii",
+          "name": "Coin Change II",
+          "d": "M",
+          "key": "coin-change-ii",
+          "n": 518
+        },
+        {
+          "t": "lc",
+          "slug": "partition-equal-subset-sum",
+          "name": "Partition Equal Subset Sum",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "rd1"
+          ],
+          "key": "partition-equal-subset-sum",
+          "n": 416,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "longest-increasing-subsequence",
+          "name": "Longest Increasing Subsequence",
+          "d": "M",
+          "key": "longest-increasing-subsequence",
+          "n": 300,
+          "f3": 30.5
+        },
+        {
+          "t": "lc",
+          "slug": "word-break",
+          "name": "Word Break",
+          "d": "M",
+          "key": "word-break",
+          "n": 139,
+          "f3": 44.9,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "decode-ways",
+          "name": "Decode Ways",
+          "d": "M",
+          "key": "decode-ways",
+          "n": 91
+        },
+        {
+          "t": "task",
+          "k": "Mock",
+          "text": "<b>Mock 3</b>, Round 2 format: binary search on the answer + 1-D DP + a project deep dive",
+          "key": "d19-mock"
+        },
+        {
+          "t": "task",
+          "k": "Review",
+          "text": "Re-solve every miss in your notebook from days 11–17",
+          "key": "d19-review"
+        },
+        {
+          "t": "task",
+          "k": "Resume",
+          "text": "Deep dives of <b>TC Executor</b>, the <b>Core-Stacks CI pipeline</b> and the <b>EventLogging fix</b>",
+          "key": "d18-resume"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "longest-palindromic-substring",
+          "name": "Longest Palindromic Substring",
+          "d": "M",
+          "note": "Number 9 on Amazon’s list for the last 3 months",
+          "key": "longest-palindromic-substring",
+          "n": 5,
+          "f3": 71.5,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "maximum-product-subarray",
+          "name": "Maximum Product Subarray",
+          "d": "M",
+          "key": "maximum-product-subarray",
+          "n": 152,
+          "f3": 41,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "interleaving-string",
+          "name": "Interleaving String",
+          "d": "M",
+          "key": "interleaving-string",
+          "n": 97,
+          "f3": 50.9,
+          "f30": 54.4
+        }
+      ]
+    },
+    {
+      "n": 19,
+      "phase": 2,
+      "title": "DP II and backtracking",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Every recursion needs a base case. Yours is showing up every day.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "unique-paths",
+          "name": "Unique Paths",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc7035289"
+          ],
+          "note": "Then the asked variant: a robot moving only right or down collects points; return the maximum total (recursion → memo → table)",
+          "key": "unique-paths",
+          "n": 62,
+          "f3": 30.5
+        },
+        {
+          "t": "lc",
+          "slug": "longest-common-subsequence",
+          "name": "Longest Common Subsequence",
+          "d": "M",
+          "key": "longest-common-subsequence",
+          "n": 1143
+        },
+        {
+          "t": "lc",
+          "slug": "edit-distance",
+          "name": "Edit Distance",
+          "d": "M",
+          "key": "edit-distance",
+          "n": 72
+        },
+        {
+          "t": "lc",
+          "slug": "best-time-to-buy-and-sell-stock-with-cooldown",
+          "name": "Best Time to Buy and Sell Stock with Cooldown",
+          "d": "M",
+          "note": "State-machine DP",
+          "key": "best-time-to-buy-and-sell-stock-with-cooldown",
+          "n": 309,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "subsets",
+          "name": "Subsets",
+          "d": "M",
+          "key": "subsets",
+          "n": 78,
+          "f3": 53.4
+        },
+        {
+          "t": "lc",
+          "slug": "permutations",
+          "name": "Permutations",
+          "d": "M",
+          "key": "permutations",
+          "n": 46,
+          "f3": 44.9,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "combination-sum",
+          "name": "Combination Sum",
+          "d": "M",
+          "key": "combination-sum",
+          "n": 39,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "word-search",
+          "name": "Word Search",
+          "d": "M",
+          "key": "word-search",
+          "n": 79,
+          "f3": 30.5,
+          "f30": 44.3
+        },
+        {
+          "t": "task",
+          "k": "GenAI",
+          "text": "Answers on checking AI output and AI-written code, preferred models, and which tasks you give to GenAI",
+          "src": [
+            "lc7724048",
+            "lc8014509",
+            "rd1"
+          ],
+          "key": "d19-genai"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "letter-combinations-of-a-phone-number",
+          "name": "Letter Combinations of a Phone Number",
+          "d": "M",
+          "key": "letter-combinations-of-a-phone-number",
+          "n": 17,
+          "f3": 44.9
+        },
+        {
+          "t": "lc",
+          "slug": "palindrome-partitioning",
+          "name": "Palindrome Partitioning",
+          "d": "M",
+          "key": "palindrome-partitioning",
+          "n": 131,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "predict-the-winner",
+          "name": "Predict the Winner",
+          "d": "M",
+          "key": "predict-the-winner",
+          "n": 486,
+          "f3": 41
+        }
+      ]
+    },
+    {
+      "n": 20,
+      "phase": 3,
+      "title": "Asked set A",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Phase 3: these are the problems from real loops. You are practising the actual interview now.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "vertical-order-traversal-of-a-binary-tree",
+          "name": "Vertical Order Traversal of a Binary Tree",
+          "d": "H",
+          "a": 1,
+          "src": [
+            "rd1"
+          ],
+          "note": "Then code the vertical sum version that was asked",
+          "key": "vertical-order-traversal-of-a-binary-tree",
+          "n": 987
+        },
+        {
+          "t": "lc",
+          "slug": "path-sum-ii",
+          "name": "Path Sum II",
+          "d": "M",
+          "key": "path-sum-ii",
+          "n": 113,
+          "f3": 30.5
+        },
+        {
+          "t": "lc",
+          "slug": "path-sum-iii",
+          "name": "Path Sum III",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc8029194"
+          ],
+          "note": "Closest match to a 2026 “tree path sum with conditions” question",
+          "key": "path-sum-iii",
+          "n": 437,
+          "f3": 30.5
+        },
+        {
+          "t": "lc",
+          "slug": "random-pick-with-weight",
+          "name": "Random Pick with Weight",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "rd1"
+          ],
+          "key": "random-pick-with-weight",
+          "n": 528,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "parse-lisp-expression",
+          "name": "Parse Lisp Expression",
+          "d": "H",
+          "a": 1,
+          "src": [
+            "lc8542365"
+          ],
+          "note": "Stack + hash maps",
+          "key": "parse-lisp-expression",
+          "n": 736
+        },
+        {
+          "t": "lc",
+          "slug": "detonate-the-maximum-bombs",
+          "name": "Detonate the Maximum Bombs",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc7724048"
+          ],
+          "note": "Follow-up asked: the directed-graph version",
+          "key": "detonate-the-maximum-bombs",
+          "n": 2101
+        },
+        {
+          "t": "lc",
+          "slug": "sliding-window-maximum",
+          "name": "Sliding Window Maximum",
+          "d": "H",
+          "a": 1,
+          "src": [
+            "lc7154883"
+          ],
+          "note": "Asked wrapped in a story",
+          "key": "sliding-window-maximum",
+          "n": 239,
+          "f3": 55.7
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "rotate-image",
+          "name": "Rotate Image",
+          "d": "M",
+          "key": "rotate-image",
+          "n": 48,
+          "f3": 48.1
+        },
+        {
+          "t": "lc",
+          "slug": "spiral-matrix",
+          "name": "Spiral Matrix",
+          "d": "M",
+          "key": "spiral-matrix",
+          "n": 54,
+          "f3": 41,
+          "f30": 44.3
+        }
+      ]
+    },
+    {
+      "n": 21,
+      "phase": 3,
+      "title": "Asked set B",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "“Work hard. Have fun. Make history.” That was Amazon’s early motto. Today is the work-hard part.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "most-profitable-path-in-a-tree",
+          "name": "Most Profitable Path in a Tree",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "rd1"
+          ],
+          "key": "most-profitable-path-in-a-tree",
+          "n": 2467,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "lowest-common-ancestor-of-a-binary-tree",
+          "name": "Lowest Common Ancestor of a Binary Tree",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc8014509",
+            "freq"
+          ],
+          "key": "lowest-common-ancestor-of-a-binary-tree",
+          "n": 236,
+          "f3": 68.2,
+          "f30": 75.9
+        },
+        {
+          "t": "lc",
+          "slug": "lowest-common-ancestor-of-a-binary-search-tree",
+          "name": "Lowest Common Ancestor of a Binary Search Tree",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc7981646",
+            "med2022"
+          ],
+          "key": "lowest-common-ancestor-of-a-binary-search-tree",
+          "n": 235,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "maximize-the-confusion-of-an-exam",
+          "name": "Maximize the Confusion of an Exam",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc8542365"
+          ],
+          "key": "maximize-the-confusion-of-an-exam",
+          "n": 2024,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "magnetic-force-between-two-balls",
+          "name": "Magnetic Force Between Two Balls",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc7724048"
+          ],
+          "note": "Asked as “Aggressive Cows”",
+          "key": "magnetic-force-between-two-balls",
+          "n": 1552,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "house-robber-ii",
+          "name": "House Robber II",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc8029194"
+          ],
+          "key": "house-robber-ii",
+          "n": 213,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "single-element-in-a-sorted-array",
+          "name": "Single Element in a Sorted Array",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc7154883",
+            "freq"
+          ],
+          "key": "single-element-in-a-sorted-array",
+          "n": 540,
+          "f3": 55.7,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "lru-cache",
+          "name": "LRU Cache",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "rd1",
+            "lc7621408",
+            "freq"
+          ],
+          "note": "Again, from memory",
+          "key": "lru-cache--2",
+          "n": 146,
+          "f3": 72.4,
+          "f30": 67.4
+        },
+        {
+          "t": "lc",
+          "slug": "lfu-cache",
+          "name": "LFU Cache",
+          "d": "H",
+          "key": "lfu-cache",
+          "n": 460,
+          "f3": 36.4,
+          "f30": 44.3
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "minimum-operations-to-reduce-x-to-zero",
+          "name": "Minimum Operations to Reduce X to Zero",
+          "d": "M",
+          "key": "minimum-operations-to-reduce-x-to-zero",
+          "n": 1658,
+          "f3": 30.5,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "count-number-of-nice-subarrays",
+          "name": "Count Number of Nice Subarrays",
+          "d": "M",
+          "key": "count-number-of-nice-subarrays",
+          "n": 1248,
+          "f3": 41
+        }
+      ]
+    },
+    {
+      "n": 22,
+      "phase": 3,
+      "title": "Asked set C",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Two weeks ago these looked hard. Notice how many feel familiar now.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "maximum-sum-circular-subarray",
+          "name": "Maximum Sum Circular Subarray",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc8014509"
+          ],
+          "key": "maximum-sum-circular-subarray",
+          "n": 918,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "maximum-good-subarray-sum",
+          "name": "Maximum Good Subarray Sum",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc8014509"
+          ],
+          "note": "Asked as: the maximum subarray sum from i to j where |a[i] − a[j]| = k",
+          "key": "maximum-good-subarray-sum",
+          "n": 3026
+        },
+        {
+          "t": "lc",
+          "slug": "next-greater-element-i",
+          "name": "Next Greater Element I",
+          "d": "E",
+          "a": 1,
+          "src": [
+            "lc7724048"
+          ],
+          "key": "next-greater-element-i",
+          "n": 496,
+          "f3": 48.1
+        },
+        {
+          "t": "lc",
+          "slug": "next-greater-element-ii",
+          "name": "Next Greater Element II",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc7724048"
+          ],
+          "key": "next-greater-element-ii",
+          "n": 503,
+          "f3": 48.1
+        },
+        {
+          "t": "lc",
+          "slug": "longest-substring-with-at-most-k-distinct-characters",
+          "name": "Longest Substring with At Most K Distinct Characters",
+          "d": "M",
+          "a": 1,
+          "prem": true,
+          "src": [
+            "lc6393977"
+          ],
+          "key": "longest-substring-with-at-most-k-distinct-characters",
+          "n": 340
+        },
+        {
+          "t": "lc",
+          "slug": "reverse-pairs",
+          "name": "Reverse Pairs",
+          "d": "H",
+          "a": 1,
+          "src": [
+            "lc6393977"
+          ],
+          "note": "Asked as “count inversions”: code the merge-sort count first",
+          "key": "reverse-pairs",
+          "n": 493,
+          "f3": 36.4
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "4sum",
+          "name": "4Sum",
+          "d": "M",
+          "key": "4sum",
+          "n": 18,
+          "f3": 48.1,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "3sum-closest",
+          "name": "3Sum Closest",
+          "d": "M",
+          "key": "3sum-closest",
+          "n": 16,
+          "f3": 36.4,
+          "f30": 44.3
+        }
+      ]
+    },
+    {
+      "n": 23,
+      "phase": 3,
+      "title": "Asked set D",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Brute force first, then better, then best. True for problems, true for you.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "best-time-to-buy-and-sell-stock-iii",
+          "name": "Best Time to Buy and Sell Stock III",
+          "d": "H",
+          "a": 1,
+          "src": [
+            "lc8542365"
+          ],
+          "key": "best-time-to-buy-and-sell-stock-iii",
+          "n": 123,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "best-time-to-buy-and-sell-stock-iv",
+          "name": "Best Time to Buy and Sell Stock IV",
+          "d": "H",
+          "a": 1,
+          "src": [
+            "lc8542365"
+          ],
+          "note": "The candidate gave the general K-transactions solution",
+          "key": "best-time-to-buy-and-sell-stock-iv",
+          "n": 188
+        },
+        {
+          "t": "task",
+          "k": "Ladder",
+          "text": "The asked ladder: Two Sum → pair sum ≤ X → buy any items with total price ≤ X (0/1 knapsack)",
+          "a": 1,
+          "src": [
+            "rd1"
+          ],
+          "key": "d23-ladder"
+        },
+        {
+          "t": "lc",
+          "slug": "reverse-nodes-in-k-group",
+          "name": "Reverse Nodes in k-Group",
+          "d": "H",
+          "key": "reverse-nodes-in-k-group",
+          "n": 25,
+          "f3": 44.9
+        },
+        {
+          "t": "lc",
+          "slug": "k-closest-points-to-origin",
+          "name": "K Closest Points to Origin",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "roundz"
+          ],
+          "key": "k-closest-points-to-origin",
+          "n": 973,
+          "f3": 44.9
+        },
+        {
+          "t": "lc",
+          "slug": "minimum-cost-to-connect-sticks",
+          "name": "Minimum Cost to Connect Sticks",
+          "d": "M",
+          "prem": true,
+          "note": "Connect ropes at minimum cost",
+          "key": "minimum-cost-to-connect-sticks",
+          "n": 1167
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "separate-black-and-white-balls",
+          "name": "Separate Black and White Balls",
+          "d": "M",
+          "key": "separate-black-and-white-balls",
+          "n": 2938,
+          "f3": 53.4,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "largest-number",
+          "name": "Largest Number",
+          "d": "M",
+          "key": "largest-number",
+          "n": 179,
+          "f3": 41
+        }
+      ]
+    },
+    {
+      "n": 24,
+      "phase": 3,
+      "title": "Implementations + Bar Raiser rehearsal",
+      "hours": "Full day · ~11 h",
+      "weekend": true,
+      "coach": "The Bar Raiser asks how you knew it would work. Your numbers answer that: 20%+ debuggability, same-day bug closure.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "insert-into-a-binary-search-tree",
+          "name": "Insert into a Binary Search Tree",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "roundz"
+          ],
+          "note": "Part of a BST from scratch: insert, delete and search",
+          "key": "insert-into-a-binary-search-tree--2",
+          "n": 701
+        },
+        {
+          "t": "lc",
+          "slug": "delete-node-in-a-bst",
+          "name": "Delete Node in a BST",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "roundz"
+          ],
+          "key": "delete-node-in-a-bst",
+          "n": 450,
+          "f3": 30.5
+        },
+        {
+          "t": "lc",
+          "slug": "implement-trie-prefix-tree",
+          "name": "Implement Trie (Prefix Tree)",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "roundz"
+          ],
+          "note": "From memory, timed",
+          "key": "implement-trie-prefix-tree--2",
+          "n": 208,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "lru-cache",
+          "name": "LRU Cache",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "rd1",
+            "lc7621408",
+            "freq"
+          ],
+          "note": "From memory, timed",
+          "key": "lru-cache--3",
+          "n": 146,
+          "f3": 72.4,
+          "f30": 67.4
+        },
+        {
+          "t": "lc",
+          "slug": "design-circular-queue",
+          "name": "Design Circular Queue",
+          "d": "M",
+          "a": 2,
+          "src": [
+            "med2022"
+          ],
+          "key": "design-circular-queue",
+          "n": 622
+        },
+        {
+          "t": "task",
+          "k": "LLD",
+          "text": "Design a <b>process or job scheduler</b>: job class, priority queue, worker threads; follow-ups on locking, deadlock and synchronisation",
+          "a": 1,
+          "src": [
+            "lc8014509",
+            "lc6738470"
+          ],
+          "key": "d24-lld"
+        },
+        {
+          "t": "task",
+          "k": "Mock",
+          "text": "Bar Raiser rehearsal: a friend grills you for 45 minutes on one project and your LP stories",
+          "src": [
+            "lc8542365",
+            "lc7724048"
+          ],
+          "key": "d26-br"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "implement-rand10-using-rand7",
+          "name": "Implement Rand10() Using Rand7()",
+          "d": "M",
+          "key": "implement-rand10-using-rand7",
+          "n": 470,
+          "f3": 30.5,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "maximum-white-tiles-covered-by-a-carpet",
+          "name": "Maximum White Tiles Covered by a Carpet",
+          "d": "M",
+          "key": "maximum-white-tiles-covered-by-a-carpet",
+          "n": 2271,
+          "f3": 44.9,
+          "f30": 44.3
+        }
+      ]
+    },
+    {
+      "n": 25,
+      "phase": 3,
+      "title": "Full mock day + hard practice",
+      "hours": "Full day · ~11 h",
+      "weekend": true,
+      "coach": "Three mocks today. Pressure now makes the real loop feel like practice.",
+      "items": [
+        {
+          "t": "task",
+          "k": "Mock",
+          "text": "<b>Mock 4</b>, Round 1 format: two DSA problems + LP questions",
+          "key": "d25-mock4"
+        },
+        {
+          "t": "task",
+          "k": "Mock",
+          "text": "<b>Mock 5</b>, Round 2 format: two DSA problems + a resume project deep dive",
+          "key": "d25-mock5"
+        },
+        {
+          "t": "task",
+          "k": "Mock",
+          "text": "<b>Mock 6</b>, hiring-manager format: one DSA ladder + GenAI questions + the one-hour production-incident scenario",
+          "src": [
+            "lc8029194"
+          ],
+          "key": "d25-mock6"
+        },
+        {
+          "t": "lc",
+          "slug": "trapping-rain-water",
+          "name": "Trapping Rain Water",
+          "d": "H",
+          "note": "Number 4 on Amazon’s list for the last 3 months",
+          "key": "trapping-rain-water",
+          "n": 42,
+          "f3": 79.8,
+          "f30": 79.3
+        },
+        {
+          "t": "lc",
+          "slug": "median-of-two-sorted-arrays",
+          "name": "Median of Two Sorted Arrays",
+          "d": "H",
+          "a": 1,
+          "src": [
+            "lc8029194",
+            "freq"
+          ],
+          "note": "A 2026 hiring-manager round asked a hard binary-search problem like this one",
+          "key": "median-of-two-sorted-arrays",
+          "n": 4,
+          "f3": 71.5,
+          "f30": 61.7
+        },
+        {
+          "t": "task",
+          "k": "Resume",
+          "text": "Rehearse the 10-minute version of every resume item",
+          "key": "d25-resume"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "first-missing-positive",
+          "name": "First Missing Positive",
+          "d": "H",
+          "key": "first-missing-positive",
+          "n": 41,
+          "f3": 30.5
+        },
+        {
+          "t": "lc",
+          "slug": "maximal-rectangle",
+          "name": "Maximal Rectangle",
+          "d": "H",
+          "key": "maximal-rectangle",
+          "n": 85,
+          "f3": 30.5
+        },
+        {
+          "t": "lc",
+          "slug": "sum-of-subarray-minimums",
+          "name": "Sum of Subarray Minimums",
+          "d": "M",
+          "key": "sum-of-subarray-minimums",
+          "n": 907,
+          "f3": 30.5
+        }
+      ]
+    },
+    {
+      "n": 26,
+      "phase": 3,
+      "title": "Hard practice and LLD",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Hard problems don’t care how you feel. Start with the brute force and keep moving.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "n-queens",
+          "name": "N-Queens",
+          "d": "H",
+          "key": "n-queens",
+          "n": 51,
+          "f3": 44.9,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "minimum-window-substring",
+          "name": "Minimum Window Substring",
+          "d": "H",
+          "note": "Re-solve without looking",
+          "key": "minimum-window-substring--2",
+          "n": 76,
+          "f3": 50.9
+        },
+        {
+          "t": "lc",
+          "slug": "largest-rectangle-in-histogram",
+          "name": "Largest Rectangle in Histogram",
+          "d": "H",
+          "a": 1,
+          "src": [
+            "lc7621408"
+          ],
+          "note": "Re-solve without looking",
+          "key": "largest-rectangle-in-histogram--2",
+          "n": 84,
+          "f3": 44.9,
+          "f30": 44.3
+        },
+        {
+          "t": "task",
+          "k": "LLD",
+          "text": "Design a <b>board game</b> (Snake and Ladder or Tic-Tac-Toe): classes for the board, players and moves",
+          "a": 1,
+          "src": [
+            "lc6813913"
+          ],
+          "key": "d26-lld1"
+        },
+        {
+          "t": "task",
+          "k": "LLD",
+          "text": "Sketch a <b>parking lot</b> and a <b>rate limiter</b>: classes and key methods, 30 minutes each",
+          "key": "d26-lld2"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "integer-to-english-words",
+          "name": "Integer to English Words",
+          "d": "H",
+          "key": "integer-to-english-words",
+          "n": 273,
+          "f3": 41,
+          "f30": 61.7
+        },
+        {
+          "t": "lc",
+          "slug": "word-break-ii",
+          "name": "Word Break II",
+          "d": "H",
+          "key": "word-break-ii",
+          "n": 140,
+          "f3": 30.5,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "smallest-range-covering-elements-from-k-lists",
+          "name": "Smallest Range Covering Elements from K Lists",
+          "d": "H",
+          "key": "smallest-range-covering-elements-from-k-lists",
+          "n": 632,
+          "f3": 30.5,
+          "f30": 44.3
+        }
+      ]
+    },
+    {
+      "n": 27,
+      "phase": 3,
+      "title": "Bits and math",
+      "hours": "Evening + night · ~7 h",
+      "weekend": false,
+      "coach": "Small bits, big result. Two days left.",
+      "items": [
+        {
+          "t": "lc",
+          "slug": "single-number",
+          "name": "Single Number",
+          "d": "E",
+          "key": "single-number",
+          "n": 136,
+          "f3": 44.9,
+          "f30": 44.3
+        },
+        {
+          "t": "lc",
+          "slug": "number-of-1-bits",
+          "name": "Number of 1 Bits",
+          "d": "E",
+          "key": "number-of-1-bits",
+          "n": 191,
+          "f3": 22.6
+        },
+        {
+          "t": "lc",
+          "slug": "counting-bits",
+          "name": "Counting Bits",
+          "d": "E",
+          "key": "counting-bits",
+          "n": 338
+        },
+        {
+          "t": "lc",
+          "slug": "powx-n",
+          "name": "Pow(x, n)",
+          "d": "M",
+          "key": "powx-n",
+          "n": 50,
+          "f3": 36.4
+        },
+        {
+          "t": "lc",
+          "slug": "count-beautiful-splits-in-an-array",
+          "name": "Count Beautiful Splits in an Array",
+          "d": "M",
+          "a": 1,
+          "src": [
+            "lc7035289"
+          ],
+          "key": "count-beautiful-splits-in-an-array",
+          "n": 3388
+        },
+        {
+          "t": "task",
+          "k": "LP",
+          "text": "Say every LP story out loud, each under 2 minutes",
+          "key": "d27-lp"
+        }
+      ],
+      "night": [
+        {
+          "t": "lc",
+          "slug": "divide-two-integers",
+          "name": "Divide Two Integers",
+          "d": "M",
+          "key": "divide-two-integers",
+          "n": 29,
+          "f3": 44.9,
+          "f30": 54.4
+        },
+        {
+          "t": "lc",
+          "slug": "string-to-integer-atoi",
+          "name": "String to Integer (atoi)",
+          "d": "M",
+          "key": "string-to-integer-atoi",
+          "n": 8,
+          "f3": 44.9,
+          "f30": 44.3
+        }
+      ]
+    },
+    {
+      "n": 28,
+      "phase": 3,
+      "title": "Final revision",
+      "hours": "Light day · ~4 h, then sleep",
+      "weekend": false,
+      "coach": "You did the work. Sleep early tonight; rested you interviews better than tired you.",
+      "items": [
+        {
+          "t": "task",
+          "k": "Review",
+          "text": "Re-solve every problem in the mistakes notebook without looking",
+          "key": "d28-review"
+        },
+        {
+          "t": "task",
+          "k": "Notes",
+          "text": "One-page revision sheet: pattern → code template → complexity",
+          "key": "d28-sheet"
+        },
+        {
+          "t": "task",
+          "k": "Review",
+          "text": "Interview-day checklist ready (near the bottom of this page)",
+          "key": "d28-checklist"
+        },
+        {
+          "t": "task",
+          "k": "Rest",
+          "text": "Sleep early tonight. Memory consolidates during sleep, and the call can come any day now.",
+          "key": "d28-sleep"
+        }
+      ],
+      "night": []
+    }
+  ]
+}

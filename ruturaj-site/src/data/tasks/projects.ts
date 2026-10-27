@@ -1,61 +1,23 @@
 import type { Task } from '@/engine/types';
+import type { PortfolioProject } from '@/data/projects/types';
+import { PORTFOLIO_PROJECTS } from '@/data/projects/portfolio';
+import { SHIPPED_PROJECTS } from '@/data/projects/shipped';
 
-export interface PortfolioProject {
-  id: string;
-  name: string;
-  tagline: string;
-  /** Why this project and not a different one. */
-  why: string;
-  stack: string[];
-  /** The one thing an interviewer should walk away remembering. */
-  headline: string;
-  taskIds: string[];
-}
+export type { PortfolioProject, ProjectStatus } from '@/data/projects/types';
+export { milestoneId } from '@/data/projects/types';
 
 /**
  * §13 — a small number of defensible projects, not twenty toy repos.
  *
- * Each one is chosen to extend the professional profile that already exists
- * (Python, telecom, CI/CD) rather than to demonstrate a framework in isolation.
+ * Four from the roadmap that extend the professional profile that already
+ * exists (Python, telecom, CI/CD), plus three shipped pieces of client work
+ * that need polish and a write-up. Content lives in src/data/projects/.
  */
-export const PROJECTS: readonly PortfolioProject[] = [
-  {
-    id: 'proj-blueprint',
-    name: 'Ruturaj Blueprint',
-    tagline: 'This application — a career execution system with real accountability.',
-    why: 'Already built, already deployed, already used daily. A project someone actually uses beats a tutorial clone, and it demonstrates product judgement rather than framework familiarity.',
-    stack: ['React', 'TypeScript', 'Vite', 'Netlify Functions', 'Netlify Blobs'],
-    headline: 'Scheduled server-side jobs that read real user state and send personalised accountability mail.',
-    taskIds: [],
-  },
-  {
-    id: 'proj-rag',
-    name: 'Production RAG Service',
-    tagline: 'A retrieval system with measured quality, not a demo.',
-    why: 'The flagship. Almost every AI Engineer job description maps onto this project, and the evaluation harness is what makes it credible rather than derivative.',
-    stack: ['FastAPI', 'PostgreSQL + pgvector', 'Redis', 'Docker', 'LLM API'],
-    headline: 'Hybrid retrieval with reranking, and a measured hit-rate that improved from a stated baseline.',
-    taskIds: ['ai-vector-1', 'ai-retrieval-1', 'ai-rerank-1', 'ai-eval-1', 'ai-eval-2', 'ai-serve-1', 'ai-serve-2'],
-  },
-  {
-    id: 'proj-agent',
-    name: 'AI + Backend Platform',
-    tagline: 'Auth, APIs, queues and an agent loop in one deployable system.',
-    why: 'Proves the combination the target role actually wants: an AI engineer who can also build the service around the model. Reuses the backend track directly.',
-    stack: ['Django/DRF or FastAPI', 'PostgreSQL', 'Redis', 'Celery', 'Docker'],
-    headline: 'An agent with tool calling, persistent memory and a regression suite that gates deploys.',
-    taskIds: ['be-auth-1', 'be-celery-1', 'be-redis-1', 'ai-agent-1', 'ai-agent-2', 'ai-agent-3', 'be-docker-1'],
-  },
-  {
-    id: 'proj-systems',
-    name: 'Telecom Observability Tool',
-    tagline: 'Systems and CI/CD depth applied to the domain you already know.',
-    why: 'The differentiator no generic AI candidate can copy. Turns two years of 4G/5G and Jenkins work into something reviewable, and gives every interview a story nobody else in the pipeline has.',
-    stack: ['Python', 'C/C++', 'Linux', 'Jenkins', 'Metrics pipeline'],
-    headline: 'Telecom log and metric analysis with alerting, built on real domain knowledge.',
-    taskIds: ['cs-net-1', 'cs-os-3', 'be-deploy-1'],
-  },
-] as const;
+export const PROJECTS: readonly PortfolioProject[] = [...PORTFOLIO_PROJECTS, ...SHIPPED_PROJECTS];
+
+export function projectById(id: string): PortfolioProject | undefined {
+  return PROJECTS.find((p) => p.id === id);
+}
 
 export const PROJECT_TASKS: Task[] = [
   {

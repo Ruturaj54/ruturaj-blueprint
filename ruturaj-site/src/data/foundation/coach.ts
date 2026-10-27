@@ -20,7 +20,7 @@ export const COACH: Record<string, Coach> = {
   },
   'ap-data': {
     doThis: 'Pick one public dataset (Kaggle is fine — never company data) and use it in every module instead of the toy examples.',
-    why: 'SQL and Pandas come up in most AI-engineer screens, and GROUP BY, joins and window functions are where candidates stall.',
+    why: 'AI-engineer screens often include SQL and Pandas, and GROUP BY, joins and window functions are where candidates stall.',
     harder: 'For every Pandas operation, write the SQL that does the same thing. Close SQL Part 2 with ten LeetCode SQL 50 problems.',
     proof: 'One notebook analysing one dataset end to end · ten SQL problems logged',
   },

@@ -1,0 +1,1276 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Amazon SDE-1 Prep Tracker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&amp;family=IBM+Plex+Mono:wght@500;600&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+<style>
+/* Layout: one phone-first column (760px max). Hero = big percentage + a 5-row study calendar; full-bleed sticky
+   section chips; each day is a native disclosure card with a core set and a night block; checklists are ruled
+   lists, like a dotted notebook. Proof chips link every "asked" claim to its interview report. */
+:root {
+  --paper: #EDF0F4;
+  --dot: #CDD4DE;
+  --card: #FFFFFF;
+  --ink: #172030;
+  --ink-2: #556173;
+  --rule: #D8DEE7;
+  --accent: #2448C9;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E2E8FA;
+  --tick: #13805A;
+  --tick-soft: #DCF1E7;
+  --on-fill: #FFFFFF;
+  --hl: #FFE066;
+  --hl-ink: #3D2E00;
+  --warn: #B45309;
+  --night: #1E2540;
+  --night-ink: #E6EAFF;
+  --p1: #0B7F74; --p1-soft: #DDF1EE;
+  --p2: #2448C9; --p2-soft: #E2E8FA;
+  --p3: #94560A; --p3-soft: #FBEBCB;
+  --easy: #12784C; --med: #94560A; --hard: #B3261E;
+  --shadow: 0 1px 2px rgb(23 32 48 / .06), 0 6px 18px rgb(23 32 48 / .07);
+  --f-display: "Bricolage Grotesque", "Avenir Next Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0C1118; --dot: #1B2330; --card: #141B25; --ink: #E4E9F1; --ink-2: #98A4B6; --rule: #263040;
+    --accent: #8EA6FF; --accent-ink: #0B1018; --accent-soft: #1B2546;
+    --tick: #3FD49B; --tick-soft: #10301F; --on-fill: #0B1018;
+    --hl: #6B5512; --hl-ink: #FFE9A6; --warn: #F6A04D;
+    --night: #2A3358; --night-ink: #E6EAFF;
+    --p1: #40C9B9; --p1-soft: #11302D; --p2: #8EA6FF; --p2-soft: #1B2546; --p3: #F2B847; --p3-soft: #3A2C0B;
+    --easy: #47D59C; --med: #F2B847; --hard: #FF8A80;
+    --shadow: 0 1px 2px rgb(0 0 0 / .35), 0 8px 20px rgb(0 0 0 / .25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0C1118; --dot: #1B2330; --card: #141B25; --ink: #E4E9F1; --ink-2: #98A4B6; --rule: #263040;
+  --accent: #8EA6FF; --accent-ink: #0B1018; --accent-soft: #1B2546;
+  --tick: #3FD49B; --tick-soft: #10301F; --on-fill: #0B1018;
+  --hl: #6B5512; --hl-ink: #FFE9A6; --warn: #F6A04D;
+  --night: #2A3358; --night-ink: #E6EAFF;
+  --p1: #40C9B9; --p1-soft: #11302D; --p2: #8EA6FF; --p2-soft: #1B2546; --p3: #F2B847; --p3-soft: #3A2C0B;
+  --easy: #47D59C; --med: #F2B847; --hard: #FF8A80;
+  --shadow: 0 1px 2px rgb(0 0 0 / .35), 0 8px 20px rgb(0 0 0 / .25);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image: radial-gradient(circle, var(--dot) 1px, transparent 1.5px);
+  background-size: 22px 22px;
+  color: var(--ink);
+  font: 400 16px/1.5 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 56px;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--paper);
+}
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+a { color: var(--accent); text-underline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.wrap { max-width: 760px; margin-inline: auto; }
+.eyebrow { font: 500 12px/1.35 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.count { font: 500 12.5px/1.35 var(--f-mono); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- hero ---------- */
+.hero { display: grid; gap: 20px; padding-block: 22px 18px; }
+.hero-text { display: grid; gap: 14px; min-width: 0; }
+.hero h1 { font: 800 clamp(2.4rem, 11vw, 3.7rem)/.92 var(--f-display); letter-spacing: -.035em; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.lede { color: var(--ink-2); max-width: 56ch; }
+.score { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 18px; }
+.big { font: 800 60px/.8 var(--f-display); letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+.big small { font-size: 30px; color: var(--ink-2); margin-left: 2px; letter-spacing: 0; }
+.score-meta { display: grid; gap: 6px; min-width: 0; }
+.score-line { font-weight: 500; }
+.stats { display: flex; flex-wrap: wrap; gap: 4px 14px; font: 500 12.5px/1.35 var(--f-mono); color: var(--ink-2); }
+.stats b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.sync { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--ink-2); }
+.sync i { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--ink-2); }
+.sync[data-state="account"] i { background: var(--tick); }
+.sync[data-state="saving"] i { background: var(--accent); animation: blink 1s ease-in-out infinite; }
+.sync[data-state="local"] i { background: var(--warn); }
+
+.calendar { min-width: 0; width: 100%; max-width: 380px; }
+.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; }
+.wd { font: 500 10.5px/1 var(--f-mono); letter-spacing: .08em; color: var(--ink-2); text-align: center; padding-bottom: 4px; }
+.cell {
+  position: relative; display: block; aspect-ratio: 1 / 1; max-width: 100%; overflow: hidden;
+  border-radius: 7px; background: var(--card); border: 1px solid var(--rule); color: var(--ink); text-decoration: none;
+}
+.cell.blank { background: transparent; border-color: transparent; }
+.cell .lvl {
+  position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--f, 0) * 1%);
+  background: var(--ph-soft); border-top: 2px solid var(--ph); transition: height .35s ease;
+}
+.cell:not(.started) .lvl { border-top-width: 0; }
+.cell.full .lvl { background: var(--ph); border-top-width: 0; }
+.cell .dt { position: relative; display: block; padding: 5px 0 0 6px; font: 600 13px/1 var(--f-mono); font-variant-numeric: tabular-nums; }
+.cell .mo {
+  position: relative; display: block; padding: 2px 0 0 6px;
+  font: 500 9px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2);
+}
+.cell.full .dt, .cell.full .mo { color: var(--on-fill); }
+.cell.today { border: 2px solid var(--accent); }
+.cell.today .dt { padding: 4px 0 0 5px; }
+.cell.today .mo { padding-left: 5px; }
+.cell.behind::after {
+  content: ""; position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-radius: 50%; background: var(--warn);
+}
+.ph1 { --ph: var(--p1); --ph-soft: var(--p1-soft); }
+.ph2 { --ph: var(--p2); --ph-soft: var(--p2-soft); }
+.ph3 { --ph: var(--p3); --ph-soft: var(--p3-soft); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 10px; font-size: 12.5px; color: var(--ink-2); }
+.legend span::before {
+  content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: var(--ph);
+  margin-right: 6px; vertical-align: -1px;
+}
+@media (min-width: 720px) { .hero { grid-template-columns: minmax(0, 1fr) 330px; align-items: end; } }
+
+/* ---------- sticky chips ---------- */
+.nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  background: var(--paper); border-bottom: 1px solid var(--rule);
+}
+.nav-row {
+  position: relative; display: flex; gap: 6px; overflow-x: auto; padding-block: 10px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px), calc((100% - 760px) / 2));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.nav-row::-webkit-scrollbar { display: none; }
+.nav-row a {
+  flex: none; font: 500 13.5px/1 var(--f-body); color: var(--ink); text-decoration: none; white-space: nowrap;
+  padding: 9px 13px; border-radius: 999px; border: 1px solid var(--rule); background: var(--card);
+}
+.nav-row a[aria-current="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+/* ---------- sections ---------- */
+main { display: grid; gap: 44px; padding-top: 22px; }
+section, .day { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 70px); }
+.sec-head { display: grid; gap: 6px; margin-bottom: 16px; }
+.sec-head h2 { font: 700 clamp(1.55rem, 6vw, 2rem)/1.08 var(--f-display); letter-spacing: -.02em; }
+.sec-head > p:not(.eyebrow) { color: var(--ink-2); max-width: 62ch; }
+.sub-h { font: 600 1rem/1.3 var(--f-body); margin: 22px 0 10px; }
+
+/* ---------- today ---------- */
+.today { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+.today-band { background: var(--ph, var(--accent)); color: var(--on-fill); padding: 16px 16px 15px; display: grid; gap: 5px; }
+.today-band .eyebrow { color: inherit; opacity: .88; }
+.today-band h2 { font: 700 clamp(1.35rem, 5.4vw, 1.6rem)/1.15 var(--f-display); letter-spacing: -.01em; }
+.today-band p:last-child { font-size: 14px; opacity: .92; }
+.today-foot { border-top: 1px solid var(--rule); padding: 14px 16px 16px; display: grid; gap: 14px; font-size: 14.5px; }
+.today-status:empty { display: none; }
+.today-status { font-weight: 500; }
+.behind-note { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; color: var(--warn); font-weight: 500; }
+.iv { display: grid; gap: 6px; }
+.iv label { font: 600 11.5px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.iv-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.iv input {
+  font: 500 15px/1.2 var(--f-body); padding: 8px 10px; border-radius: 8px; border: 1px solid var(--rule);
+  background: var(--card); color: var(--ink); max-width: 100%;
+}
+.iv-text { color: var(--ink-2); min-width: 0; }
+.method { font: 500 12.5px/1.5 var(--f-mono); color: var(--ink-2); }
+
+/* ---------- checklist rows ---------- */
+.items { list-style: none; margin: 0; padding: 0; }
+.item {
+  display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; align-items: start;
+  padding: 12px 16px; border-top: 1px solid var(--rule);
+}
+.items > .item:first-child { border-top: 0; }
+.tick {
+  -webkit-appearance: none; appearance: none; margin: 1px 0 0; width: 24px; height: 24px; flex: none;
+  border: 2px solid var(--ink-2); border-radius: 7px; background: var(--card); cursor: pointer;
+  display: grid; place-content: center; transition: background-color .15s, border-color .15s;
+}
+.tick::before {
+  content: ""; width: 11px; height: 6px; margin-top: -3px;
+  border-left: 2.5px solid var(--on-fill); border-bottom: 2.5px solid var(--on-fill);
+  transform: rotate(-45deg) scale(0); transition: transform .14s ease-out;
+}
+.tick:checked { background: var(--tick); border-color: var(--tick); }
+.tick:checked::before { transform: rotate(-45deg) scale(1); }
+.tick.pop { animation: pop .24s ease-out; }
+.item label { display: grid; gap: 4px; min-width: 0; cursor: pointer; }
+.main { font-weight: 500; line-height: 1.4; overflow-wrap: anywhere; }
+.main b { font-weight: 600; }
+.meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 9px;
+  font: 500 12px/1.4 var(--f-mono); color: var(--ink-2); font-variant-numeric: tabular-nums;
+}
+.note { font-size: 14px; color: var(--ink-2); line-height: 1.45; }
+.diff::before {
+  content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: currentColor;
+  margin-right: 5px; vertical-align: 1px;
+}
+.diff-E { color: var(--easy); } .diff-M { color: var(--med); } .diff-H { color: var(--hard); }
+.badge {
+  font: 600 10.5px/1 var(--f-mono); letter-spacing: .07em; text-transform: uppercase;
+  padding: 4px 6px 3px; border-radius: 3px 6px 4px 5px; white-space: nowrap;
+}
+.asked { background: var(--hl); color: var(--hl-ink); }
+.badge.long { font: 600 12.5px/1.25 var(--f-body); letter-spacing: 0; text-transform: none; white-space: normal; }
+.asked-old { border: 1px dashed var(--ink-2); color: var(--ink-2); padding: 3px 5px 2px; }
+.prem { border: 1px solid var(--rule); color: var(--ink-2); padding: 3px 5px 2px; }
+.fq { color: var(--accent); }
+.proof { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 3px 6px; }
+.pf {
+  font: 500 11.5px/1.3 var(--f-mono); color: var(--accent); text-decoration: underline dotted; text-underline-offset: 3px;
+  white-space: nowrap;
+}
+span.pf { color: var(--ink-2); text-decoration: none; }
+.tag {
+  display: inline-block; margin-right: 7px; vertical-align: 1px;
+  font: 600 10.5px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-2); border: 1px solid var(--rule); border-radius: 4px; padding: 3px 5px 2px;
+}
+.tag-lp { color: var(--accent); border-color: var(--accent); }
+.tag-mock, .tag-rest { color: var(--warn); border-color: var(--warn); }
+.tag-genai, .tag-resume { color: var(--p1); border-color: var(--p1); }
+.tag-lld, .tag-ladder, .tag-problem { color: var(--p3); border-color: var(--p3); }
+.item.done .main, .item.done .main a { color: var(--ink-2); }
+.item.done .main { text-decoration: line-through; text-decoration-thickness: 1.5px; text-decoration-color: var(--ink-2); }
+.item.done .note, .item.done .story { opacity: .75; }
+.lbl { font: 600 10.5px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-right: 7px; }
+.story { font-size: 14.5px; line-height: 1.45; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+.chip { font: 500 12px/1 var(--f-body); padding: 5px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.goto {
+  display: inline-block; font: 600 12px/1 var(--f-mono); padding: 7px 8px; border-radius: 6px;
+  border: 1px solid var(--rule); background: var(--card); color: var(--ink); text-decoration: none; white-space: nowrap;
+}
+.goto:hover { border-color: var(--accent); color: var(--accent); }
+.list-card { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.night-h {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 9px 16px;
+  background: var(--night); color: var(--night-ink); font: 600 11px/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase;
+}
+.night-h span { opacity: .8; letter-spacing: .02em; text-transform: none; font-weight: 500; }
+
+.coach {
+  margin: 0; padding: 12px 16px; border-top: 1px solid var(--rule); background: var(--accent-soft); color: var(--ink);
+  font: italic 400 15px/1.5 var(--f-body);
+}
+.coach::before {
+  content: "Coach"; display: block; margin-bottom: 5px; font: normal 600 10.5px/1 var(--f-mono);
+  letter-spacing: .1em; text-transform: uppercase; color: var(--accent);
+}
+.coach-top { border-top: 0; border-bottom: 1px solid var(--rule); }
+.coach:empty { display: none; }
+.motto { margin: 0; display: grid; gap: 4px; max-width: 52ch; }
+.motto p { font: 700 1.12rem/1.3 var(--f-display); color: var(--ink); letter-spacing: -.01em; }
+.motto footer { font-size: 13px; color: var(--ink-2); }
+
+/* ---------- plan ---------- */
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 18px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; font: 500 14px/1 var(--f-body);
+  padding: 10px 14px; border-radius: 8px; border: 1px solid var(--rule); background: var(--card); color: var(--ink);
+  cursor: pointer; text-decoration: none;
+}
+.btn:hover { border-color: var(--ink-2); }
+.btn input { width: 17px; height: 17px; margin: 0; accent-color: var(--accent); }
+.btn.warn { color: var(--warn); border-color: var(--warn); }
+.phases { display: grid; gap: 30px; }
+.phase { display: grid; gap: 12px; }
+.phase-head { display: grid; gap: 6px; }
+.ph-k { font: 600 11.5px/1.3 var(--f-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--ph); }
+.phase-head h3 { font: 700 1.35rem/1.15 var(--f-display); letter-spacing: -.01em; }
+.ph-desc { color: var(--ink-2); max-width: 62ch; }
+.ph-prog { display: flex; align-items: center; gap: 10px; margin-top: 2px; }
+.bar { flex: 1; height: 6px; border-radius: 3px; background: var(--rule); overflow: hidden; }
+.bar i { display: block; height: 100%; width: calc(var(--p, 0) * 1%); background: var(--ph); transition: width .3s ease; }
+.days { display: grid; gap: 8px; }
+.day { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.day[open] { box-shadow: var(--shadow); }
+.day.is-today { border: 2px solid var(--accent); }
+.day summary {
+  list-style: none; display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 12px; align-items: center;
+  padding: 10px 12px; cursor: pointer;
+}
+.day summary::-webkit-details-marker { display: none; }
+.dnum {
+  width: 46px; height: 46px; border-radius: 8px; display: grid; place-content: center; text-align: center;
+  background: var(--ph-soft); color: var(--ph);
+}
+.dnum small { display: block; font: 600 8.5px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; }
+.dnum b { display: block; font: 800 20px/1 var(--f-display); margin-top: 3px; }
+.day.is-done .dnum { background: var(--ph); color: var(--on-fill); }
+.dmain { display: grid; gap: 2px; min-width: 0; }
+.ddate { font: 500 12px/1.3 var(--f-mono); color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.pill-today {
+  font: 600 10px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase;
+  background: var(--accent); color: var(--accent-ink); padding: 3px 6px 2px; border-radius: 4px;
+}
+.dtitle { font-weight: 600; line-height: 1.3; }
+.dprog { display: flex; align-items: center; gap: 8px; font: 500 12.5px/1 var(--f-mono); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.day.behind .dcount { color: var(--warn); }
+.ring {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: conic-gradient(var(--tick) calc(var(--p, 0) * 1%), var(--rule) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4.5px));
+}
+.chev { width: 16px; height: 16px; color: var(--ink-2); transition: transform .2s ease; }
+.day[open] .chev { transform: rotate(180deg); }
+.day .items { border-top: 1px solid var(--rule); }
+.hide-done .item.done, .hide-done .day.is-done { display: none; }
+.after { margin-top: 18px; color: var(--ink-2); max-width: 62ch; }
+
+/* ---------- asked bank ---------- */
+.bank { display: grid; gap: 24px; }
+.bank-group h3 {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  font: 600 1rem/1.3 var(--f-body); padding-bottom: 7px; border-bottom: 2px solid var(--ink);
+}
+.brows { list-style: none; margin: 0; padding: 0; }
+.brow {
+  display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 10px; align-items: start;
+  padding: 10px 0; border-bottom: 1px solid var(--rule);
+}
+.bdot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ink-2); margin-top: 5px; }
+.brow.done .bdot, .frow.done .bdot { background: var(--tick); border-color: var(--tick); }
+.bname { font-weight: 500; line-height: 1.4; overflow-wrap: anywhere; }
+.bmeta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 9px; margin-top: 3px;
+  font: 500 12px/1.4 var(--f-mono); color: var(--ink-2);
+}
+.bsub { font: 400 14px/1.4 var(--f-body); }
+.gotos { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; max-width: 132px; }
+
+/* ---------- Amazon frequency ---------- */
+.flist { list-style: none; margin: 0; padding: 0; }
+.frow {
+  display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: start;
+  padding: 10px 0; border-bottom: 1px solid var(--rule);
+}
+.frank { font: 600 13px/1.6 var(--f-mono); color: var(--ink-2); text-align: right; font-variant-numeric: tabular-nums; }
+.fname { font-weight: 500; line-height: 1.4; overflow-wrap: anywhere; display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; }
+.fname .num { font: 500 12px/1 var(--f-mono); color: var(--ink-2); }
+.fbar { height: 5px; border-radius: 3px; background: var(--rule); overflow: hidden; margin: 6px 0 5px; max-width: 260px; }
+.fbar i { display: block; height: 100%; width: calc(var(--w, 0) * 1%); background: var(--accent); }
+.frow.done .fbar i { background: var(--tick); }
+.fmeta { display: flex; flex-wrap: wrap; gap: 4px 10px; font: 500 12px/1.4 var(--f-mono); color: var(--ink-2); }
+.fgo { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 4px; max-width: 132px; }
+.xtick { display: inline-flex; align-items: center; gap: 6px; font: 600 11px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); cursor: pointer; }
+.frow.done .fname a { color: var(--ink-2); }
+
+/* ---------- rounds ---------- */
+.rounds { display: grid; gap: 10px; }
+@media (min-width: 560px) { .rounds { grid-template-columns: 1fr 1fr; } }
+.round { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+.rn { font: 600 11.5px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.round h3 { font: 700 1.15rem/1.2 var(--f-display); }
+.round > p { font-size: 14.5px; color: var(--ink-2); }
+.facts { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 64ch; }
+.facts .proof { margin-left: 4px; }
+.rules { list-style: none; counter-reset: r; margin: 0; padding: 0; display: grid; gap: 8px; max-width: 62ch; }
+.rules li { counter-increment: r; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; }
+.rules li::before { content: counter(r); font: 800 17px/1.45 var(--f-display); color: var(--accent); }
+
+/* ---------- sources & footer ---------- */
+.src { margin: 0; padding-left: 20px; display: grid; gap: 7px; font-size: 14.5px; max-width: 66ch; }
+.src .pf { margin-right: 6px; }
+.foot { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--rule); display: grid; gap: 14px; font-size: 14.5px; color: var(--ink-2); }
+.foot b { color: var(--ink); }
+.reset { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.reset-confirm { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
+
+@keyframes pop { 0% { transform: scale(.82); } 60% { transform: scale(1.1); } 100% { transform: scale(1); } }
+@keyframes stamp { 0% { transform: scale(1.3) rotate(-8deg); } 100% { transform: none; } }
+@keyframes blink { 50% { opacity: .3; } }
+.just-done { animation: stamp .45s cubic-bezier(.2, .9, .3, 1.25); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<header class="wrap hero">
+  <div class="hero-text">
+    <p class="eyebrow">Ruturaj · FinOps FP&amp;A · starts 22 Oct</p>
+    <h1>Amazon <em>SDE-1</em> Prep</h1>
+    <p class="lede">22 Oct – 18 Nov 2026: basics, then core patterns, then the questions Amazon actually asked, with mocks. Every day has a core set plus a night block of Amazon’s most frequent problems. Tap any task to tick it off.</p>
+    <blockquote class="motto"><p>“…that is why it is always Day 1.”</p><footer>Jeff Bezos, 2016 letter to Amazon shareholders · <a href="https://www.retaildive.com/news/bezos-to-shareholders-amazon-still-on-day-1/440439" target="_blank" rel="noopener">source</a></footer></blockquote>
+    <div class="score">
+      <p class="big"><span id="pct">0</span><small>%</small></p>
+      <div class="score-meta">
+        <p class="score-line"><span id="plan-done">0</span> of <span id="plan-total">0</span> plan tasks done</p>
+        <p class="stats"><span>Problems <b id="st-lc">0/0</b></span><span>Night <b id="st-night">0/0</b></span><span>LP <b id="st-lp">0/0</b></span><span>Resume <b id="st-rd">0/0</b></span></p>
+      </div>
+    </div>
+    <p class="sync" id="sync" data-state="connecting" role="status"><i aria-hidden="true"></i><span id="sync-text">Connecting to your account…</span></p>
+  </div>
+  <div class="calendar">
+    <div class="cal" id="cal" aria-label="Study calendar. Each square is one day; tap one to open it."></div>
+    <p class="legend"><span class="ph1">Basics</span><span class="ph2">Core patterns</span><span class="ph3">Asked + mocks</span></p>
+  </div>
+</header>
+
+<nav class="nav" aria-label="Sections">
+  <div class="nav-row" id="nav-row">
+    <a href="#today">Today</a>
+    <a href="#plan">Plan</a>
+    <a href="#topics">Topics</a>
+    <a href="#asked">Asked</a>
+    <a href="#freq">Amazon freq</a>
+    <a href="#stories">LP stories</a>
+    <a href="#resume">Resume</a>
+    <a href="#genai">GenAI + BR</a>
+    <a href="#rounds">Rounds</a>
+    <a href="#day-of">Interview day</a>
+    <a href="#sources">Sources</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="today" class="today" aria-labelledby="today-title">
+    <div class="today-band" id="today-band">
+      <p class="eyebrow" id="today-eyebrow">Today</p>
+      <h2 id="today-title">Your plan for today</h2>
+      <p id="today-sub"></p>
+    </div>
+    <p class="coach coach-top" id="today-coach"></p>
+    <ul class="items" id="today-items"></ul>
+    <div id="today-night"></div>
+    <div class="today-foot">
+      <p class="today-status" id="today-status"></p>
+      <p class="behind-note" id="behind" hidden></p>
+      <div class="iv">
+        <label for="interview-date">Interview date</label>
+        <div class="iv-row">
+          <input type="date" id="interview-date" min="2026-10-22" max="2027-12-31">
+          <span class="iv-text" id="iv-text"></span>
+        </div>
+      </div>
+      <p class="method">Every problem: clarify → brute force → optimal → code → dry run → complexity</p>
+    </div>
+  </section>
+
+  <section id="plan" aria-labelledby="plan-h">
+    <div class="sec-head">
+      <p class="eyebrow">28 days · 3 phases · night blocks</p>
+      <h2 id="plan-h">The plan</h2>
+      <p>Weekdays: the core set in the evening, then the night block. Weekends: a full day. Use a timer (20 minutes for easy, 40 for medium, 60 for hard) and log every miss in your mistakes notebook. If a day runs long, finish the core set and move that night block to the weekend. Sleep at least 7 hours before any mock or interview.</p>
+    </div>
+    <div class="controls">
+      <label class="btn" for="hide-done"><input type="checkbox" id="hide-done"> Hide finished</label>
+      <button type="button" class="btn" id="expand-all">Open all days</button>
+      <span class="count" id="hidden-note" hidden></span>
+    </div>
+    <div class="phases" id="phases"></div>
+    <p class="after"><b>After day 28, until the call comes:</b> 2 problems a day from Phase 3, the extras in the Amazon frequency list, and your mistakes notebook; 1 mock every weekend; and keep your LP stories warm. Keep applying elsewhere too.</p>
+  </section>
+
+  <section id="topics" aria-labelledby="topics-h">
+    <div class="sec-head">
+      <p class="eyebrow">Nothing left out</p>
+      <h2 id="topics-h">Topic coverage</h2>
+      <p>Every core topic appears in the 28 days. Tick a topic once you can solve a new problem on it without hints. <span class="count" id="cnt-cov"></span></p>
+    </div>
+    <div class="list-card"><ul class="items" id="cov-list"></ul></div>
+  </section>
+
+  <section id="asked" aria-labelledby="asked-h">
+    <div class="sec-head">
+      <p class="eyebrow">From real interviews, with proof</p>
+      <h2 id="asked-h">What Amazon asked</h2>
+      <p>Problems and close matches from 18 interview reports: 16 SDE-1 loops from 2025–26, plus 2 older ones marked ’22. Each row shows its proof; tap a source to open the report. Every problem is already in your plan, and the dot turns green once you tick it there. <span class="count" id="cnt-bank"></span></p>
+    </div>
+    <div class="bank" id="bank"></div>
+  </section>
+
+  <section id="freq" aria-labelledby="freq-h">
+    <div class="sec-head">
+      <p class="eyebrow">Data, last 3 months</p>
+      <h2 id="freq-h">Amazon’s most frequent problems</h2>
+      <p>The 120 algorithm problems reported most often for Amazon over the last 3 months, from LeetCode’s company tags (<a href="https://github.com/liquidslr/leetcode-company-wise-problems/tree/main/Amazon" target="_blank" rel="noopener">liquidslr dataset</a>, updated 20 Oct 2026). The bar shows LeetCode’s frequency score, where 100 is the most frequent. Most are already in your plan, so tap the day to jump there. The rest are extras you can tick here. <span class="count" id="cnt-freq"></span></p>
+    </div>
+    <ol class="flist" id="flist"></ol>
+  </section>
+
+  <section id="stories" aria-labelledby="stories-h">
+    <div class="sec-head">
+      <p class="eyebrow">Leadership Principles</p>
+      <h2 id="stories-h">LP story bank</h2>
+      <p>The LP questions from the reports, matched to stories from your resume, with proof of where each was asked. Write each one as STAR (situation, task, action, result), keep it under 2 minutes, and know the technical details, because interviewers keep asking follow-ups. Where it says “your example”, pick a real event with a date and an outcome. Tick a story once it’s written and you’ve said it out loud. <span class="count" id="cnt-lp"></span></p>
+    </div>
+    <div class="list-card"><ul class="items" id="lp-list"></ul></div>
+  </section>
+
+  <section id="resume" aria-labelledby="resume-h">
+    <div class="sec-head">
+      <p class="eyebrow">The resume you sent Amazon</p>
+      <h2 id="resume-h">Resume deep dive</h2>
+      <p>Round 2, the hiring manager and the Bar Raiser all dig into your resume. For each item, prepare a 2-minute and a 10-minute version: the problem, why this approach, the alternatives, how you knew it worked, what broke, and what you’d change. <span class="count" id="cnt-rd"></span></p>
+    </div>
+    <div class="list-card"><ul class="items" id="rd-list"></ul></div>
+  </section>
+
+  <section id="genai" aria-labelledby="genai-h">
+    <div class="sec-head">
+      <p class="eyebrow">Hiring manager and Bar Raiser</p>
+      <h2 id="genai-h">GenAI and Bar Raiser</h2>
+      <p>Each of these was reported from a 2025–26 loop; the proof is on every row. Answer in 60–90 seconds with your own examples: the RAG triage service, TC Executor, and how you use AI coding assistants. <span class="count" id="cnt-ga"></span></p>
+    </div>
+    <div class="list-card"><ul class="items" id="ga-list"></ul></div>
+  </section>
+
+  <section id="rounds" aria-labelledby="rounds-h">
+    <div class="sec-head">
+      <p class="eyebrow">How the loop runs</p>
+      <h2 id="rounds-h">Four rounds, about an hour each</h2>
+      <p>What 2025–26 SDE-1 candidates described. Leadership Principles come up in every round.</p>
+    </div>
+    <div class="rounds">
+      <article class="round"><p class="rn">Round 1</p><h3>DSA</h3><p>1–2 problems, medium to hard, then 1–2 LP questions. You state the complexity and dry-run your code out loud. Some 2026 loops also asked low-level design concepts here.</p><p data-proof="lc7724048 lc8542365 lc8546875"></p></article>
+      <article class="round"><p class="rn">Round 2</p><h3>DSA + project</h3><p>10–15 minutes on a project you owned, 1–2 problems, then up to 5 LP questions.</p><p data-proof="lc8014509 lc8029194 lc8542365"></p></article>
+      <article class="round"><p class="rn">Round 3</p><h3>Hiring manager / GenAI</h3><p>15–30 minutes on how you use GenAI and check AI-written code, sometimes a live incident scenario, then a DSA problem or a design question such as “schedule processes”.</p><p data-proof="lc8014509 lc8029194 lc7621408 lc7724048"></p></article>
+      <article class="round"><p class="rn">Round 4</p><h3>Bar Raiser</h3><p>3–5 LP questions with deep follow-ups on your exact contribution, decisions, metrics and trade-offs. Usually no coding, but one 2026 Bar Raiser added a 30-minute monotonic-stack problem.</p><p data-proof="lc7724048 lc8542365 lc6393977 lc7621408"></p></article>
+    </div>
+    <h3 class="sub-h">What interviewers checked</h3>
+    <ul class="facts">
+      <li>Brute force first, then the optimisation, trade-offs, edge cases and complexity. <span data-proof="lc8343668"></span></li>
+      <li>Problems are often wrapped in a story. Strip the story away and name the pattern first. <span data-proof="lc7154883"></span></li>
+      <li>Some wanted you to think out loud; one asked for the full code before any explanation. Ask which they prefer. <span data-proof="lc7035289"></span></li>
+      <li>Follow-ups on every LP answer: what exactly you did, the numbers, and how you knew your approach would work. <span data-proof="lc8542365 lc6393977"></span></li>
+    </ul>
+    <h3 class="sub-h">Timing</h3>
+    <ul class="facts">
+      <li>From the online assessment to the first interview: about 2 weeks to 3 months in 2026 reports. <span data-proof="lc8029194 roundz lc8343668"></span></li>
+      <li>Rounds 1–3 were sometimes on the same day; the Bar Raiser often came later, by video, and was rescheduled more than once in one loop. <span data-proof="lc8014509 lc8542365"></span></li>
+      <li>Offers came 4 days to about 6 weeks after the last round. <span data-proof="lc8343668 lc8546875 lc6738470"></span></li>
+    </ul>
+    <h3 class="sub-h">Rules for every problem you practise</h3>
+    <ol class="rules">
+      <li>Restate the problem and ask about input size, edge cases and constraints.</li>
+      <li>Say the brute force and its complexity, then improve it step by step.</li>
+      <li>Explain the final approach before you code, and use clear variable names.</li>
+      <li>Dry-run one example out loud, line by line.</li>
+      <li>State the time and space complexity and the trade-offs, then expect a follow-up.</li>
+      <li>If you only solved it because you remembered it, re-solve it from scratch 3 days later.</li>
+    </ol>
+  </section>
+
+  <section id="day-of" aria-labelledby="dayof-h">
+    <div class="sec-head">
+      <p class="eyebrow">The day before</p>
+      <h2 id="dayof-h">Interview-day checklist</h2>
+      <p><span class="count" id="cnt-do"></span></p>
+    </div>
+    <div class="list-card"><ul class="items" id="do-list"></ul></div>
+  </section>
+
+  <section id="sources" aria-labelledby="sources-h">
+    <div class="sec-head">
+      <p class="eyebrow">Where this comes from</p>
+      <h2 id="sources-h">Resources and sources</h2>
+    </div>
+    <h3 class="sub-h">Your resources</h3>
+    <ul class="src">
+      <li><a href="https://www.amazon.jobs/content/en/how-we-hire/interview-prep/software-development-topics" target="_blank" rel="noopener">Amazon: software development topics</a></li>
+      <li><a href="https://www.amazon.jobs/content/en/our-workplace/leadership-principles" target="_blank" rel="noopener">Amazon: Leadership Principles</a></li>
+      <li><a href="https://docs.google.com/document/u/0/d/1GGc3IdFNgvbhR-gzwiTgRpPZTwZxwNLmYZHar5OzXdk/mobilebasic?pli=1" target="_blank" rel="noopener">Amazon OA notes by Kumar K (the Google Doc you shared)</a></li>
+      <li><a href="https://videsiqna.in" target="_blank" rel="noopener">videsiqna.in: question links and concept videos</a></li>
+      <li><a href="https://neetcode.io/roadmap" target="_blank" rel="noopener">NeetCode roadmap: concept videos by pattern</a></li>
+    </ul>
+    <h3 class="sub-h">Interview reports and data</h3>
+    <ul class="src" id="src-list"></ul>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <p><b>How saving works.</b> Open this page signed in to Claude and every tick syncs to your account, so your phone and laptop stay in step. Opened signed out or from a shared link, ticks stay in that browser only.</p>
+  <div class="reset">
+    <button type="button" class="btn warn" id="reset">Clear all ticks</button>
+    <div class="reset-confirm" id="reset-confirm" hidden>
+      <span>Clear all <b id="reset-n">0</b> ticks? This can’t be undone.</span>
+      <button type="button" class="btn warn" id="reset-yes">Clear them</button>
+      <button type="button" class="btn" id="reset-no">Keep them</button>
+    </div>
+  </div>
+  <p>Built on 21 Oct 2026 for a 22 Oct start, from the resume you sent Amazon, 18 interview reports and Amazon’s LeetCode frequency data (updated 20 Oct 2026).</p>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+  const DATA = {"start":[2026,9,22],"phases":[{"n":1,"name":"Basics","range":"Days 1–7 · 22–28 Oct","desc":"Learn each pattern’s template on easy problems, so the harder versions later feel familiar."},{"n":2,"name":"Core patterns","range":"Days 8–19 · 29 Oct – 9 Nov","desc":"The must-do medium problems for every pattern Amazon tests, with a 40-minute timer each."},{"n":3,"name":"Asked questions and mocks","range":"Days 20–28 · 10–18 Nov","desc":"The problems, or their closest matches, from real SDE-1 rounds, plus hard practice and full mocks. <b>If your interview call comes early, jump straight here<\/b> and fit the rest into the days before the interview."}],"days":[{"n":1,"phase":1,"title":"Complexity, arrays and hashing","hours":"Evening + night · ~7 h","weekend":false,"coach":"You cleared the OA with every test case passing. Bring that same focus for 28 more days.","items":[{"t":"task","k":"Learn","text":"Big-O basics: loops, nested loops, recursion, and how to work out space complexity","key":"d1-bigo"},{"t":"lc","slug":"two-sum","name":"Two Sum","d":"E","a":1,"src":["rd1","freq"],"key":"two-sum","n":1,"f3":100.0,"f30":100.0},{"t":"lc","slug":"contains-duplicate","name":"Contains Duplicate","d":"E","key":"contains-duplicate","n":217,"f3":48.1},{"t":"lc","slug":"valid-anagram","name":"Valid Anagram","d":"E","key":"valid-anagram","n":242,"f3":59.5,"f30":61.7},{"t":"lc","slug":"best-time-to-buy-and-sell-stock","name":"Best Time to Buy and Sell Stock","d":"E","key":"best-time-to-buy-and-sell-stock","n":121,"f3":71.5,"f30":79.3},{"t":"lc","slug":"majority-element","name":"Majority Element","d":"E","key":"majority-element","n":169,"f3":59.5},{"t":"task","k":"LP","text":"Write your <b>hard deadline<\/b> story, including how you handled changing requirements","src":["lc7724048","lc8542365"],"key":"d1-lp"},{"t":"task","k":"Notes","text":"Start the mistakes notebook: pattern, key idea, the bug","key":"d1-notebook"}],"night":[{"t":"lc","slug":"longest-common-prefix","name":"Longest Common Prefix","d":"E","key":"longest-common-prefix","n":14,"f3":69.3,"f30":61.7},{"t":"lc","slug":"valid-sudoku","name":"Valid Sudoku","d":"M","key":"valid-sudoku","n":36,"f3":61.2,"f30":75.9},{"t":"lc","slug":"first-unique-character-in-a-string","name":"First Unique Character in a String","d":"E","key":"first-unique-character-in-a-string","n":387,"f3":36.4}]},{"n":2,"phase":1,"title":"Two pointers and prefix sums","hours":"Evening + night · ~7 h","weekend":false,"coach":"Two pointers, one goal. Showing up again tomorrow is the whole trick.","items":[{"t":"task","k":"Learn","text":"Watch the two pointers and prefix sums concept video (videsiqna.in or NeetCode), then solve without hints","key":"d2-learn"},{"t":"lc","slug":"valid-palindrome","name":"Valid Palindrome","d":"E","key":"valid-palindrome","n":125,"f3":48.1},{"t":"lc","slug":"merge-sorted-array","name":"Merge Sorted Array","d":"E","key":"merge-sorted-array","n":88,"f3":55.7},{"t":"lc","slug":"move-zeroes","name":"Move Zeroes","d":"E","a":2,"src":["gfg2022","freq"],"key":"move-zeroes","n":283,"f3":71.5,"f30":72.0},{"t":"lc","slug":"two-sum-ii-input-array-is-sorted","name":"Two Sum II","d":"M","a":1,"src":["rd1"],"note":"Then your own version: the largest pair sum ≤ X (the asked ladder)","key":"two-sum-ii-input-array-is-sorted","n":167,"f3":44.9},{"t":"lc","slug":"running-sum-of-1d-array","name":"Running Sum of 1d Array","d":"E","key":"running-sum-of-1d-array","n":1480,"f3":36.4},{"t":"lc","slug":"find-pivot-index","name":"Find Pivot Index","d":"E","key":"find-pivot-index","n":724,"f3":41.0},{"t":"task","k":"LP","text":"<b>Going beyond your responsibility<\/b>","src":["lc6393977","lc7035289"],"key":"d2-lp"}],"night":[{"t":"lc","slug":"remove-duplicates-from-sorted-array","name":"Remove Duplicates from Sorted Array","d":"E","key":"remove-duplicates-from-sorted-array","n":26,"f3":57.7,"f30":44.3},{"t":"lc","slug":"sort-colors","name":"Sort Colors","d":"M","key":"sort-colors","n":75,"f3":36.4}]},{"n":3,"phase":1,"title":"Binary search and sliding window","hours":"Full day · ~11 h","weekend":true,"coach":"Binary search your doubts: cut them in half every day until only the answer is left.","items":[{"t":"task","k":"Learn","text":"Watch the binary search and sliding window concept video (videsiqna.in or NeetCode), then solve without hints","key":"d3-learn"},{"t":"lc","slug":"binary-search","name":"Binary Search","d":"E","key":"binary-search","n":704,"f3":50.9,"f30":67.4},{"t":"lc","slug":"search-insert-position","name":"Search Insert Position","d":"E","key":"search-insert-position","n":35,"f3":48.1},{"t":"lc","slug":"first-bad-version","name":"First Bad Version","d":"E","key":"first-bad-version","n":278},{"t":"lc","slug":"sqrtx","name":"Sqrt(x)","d":"E","key":"sqrtx","n":69,"f3":59.5,"f30":54.4},{"t":"lc","slug":"maximum-average-subarray-i","name":"Maximum Average Subarray I","d":"E","key":"maximum-average-subarray-i","n":643,"f3":50.9},{"t":"lc","slug":"longest-substring-without-repeating-characters","name":"Longest Substring Without Repeating Characters","d":"M","a":1,"src":["lc6393977","freq"],"key":"longest-substring-without-repeating-characters","n":3,"f3":79.8,"f30":89.7},{"t":"task","k":"LP","text":"A <b>missed deadline<\/b>: how you told stakeholders and what you would do differently","src":["lc6393977","lc6738470"],"key":"d3-lp"}],"night":[{"t":"lc","slug":"find-first-and-last-position-of-element-in-sorted-array","name":"Find First and Last Position of Element in Sorted Array","d":"M","key":"find-first-and-last-position-of-element-in-sorted-array","n":34,"f3":50.9,"f30":44.3},{"t":"lc","slug":"max-consecutive-ones-iii","name":"Max Consecutive Ones III","d":"M","key":"max-consecutive-ones-iii","n":1004,"f3":55.7,"f30":67.4},{"t":"lc","slug":"search-a-2d-matrix-ii","name":"Search a 2D Matrix II","d":"M","key":"search-a-2d-matrix-ii","n":240,"f3":48.1,"f30":44.3}]},{"n":4,"phase":1,"title":"Recursion and binary trees + mock 0","hours":"Full day · ~11 h","weekend":true,"coach":"First mock today. Talking through your approach feels awkward now and normal by Day 25.","items":[{"t":"task","k":"Learn","text":"Watch the recursion and tree traversal concept video (videsiqna.in or NeetCode), then solve without hints","key":"d5-learn"},{"t":"lc","slug":"binary-tree-inorder-traversal","name":"Binary Tree Inorder Traversal","d":"E","note":"Recursive and iterative","key":"binary-tree-inorder-traversal","n":94},{"t":"lc","slug":"binary-tree-preorder-traversal","name":"Binary Tree Preorder Traversal","d":"E","note":"Recursive and iterative","key":"binary-tree-preorder-traversal","n":144,"f3":30.5},{"t":"lc","slug":"binary-tree-postorder-traversal","name":"Binary Tree Postorder Traversal","d":"E","note":"Recursive and iterative","key":"binary-tree-postorder-traversal","n":145},{"t":"lc","slug":"maximum-depth-of-binary-tree","name":"Maximum Depth of Binary Tree","d":"E","key":"maximum-depth-of-binary-tree","n":104,"f3":30.5},{"t":"lc","slug":"invert-binary-tree","name":"Invert Binary Tree","d":"E","key":"invert-binary-tree","n":226},{"t":"lc","slug":"same-tree","name":"Same Tree","d":"E","key":"same-tree","n":100,"f3":36.4},{"t":"lc","slug":"symmetric-tree","name":"Symmetric Tree","d":"E","key":"symmetric-tree","n":101,"f3":30.5},{"t":"lc","slug":"path-sum","name":"Path Sum","d":"E","note":"Sets up the path-sum questions asked later","key":"path-sum","n":112},{"t":"lc","slug":"binary-tree-level-order-traversal","name":"Binary Tree Level Order Traversal","d":"M","key":"binary-tree-level-order-traversal","n":102,"f3":36.4,"f30":44.3},{"t":"task","k":"Mock","text":"<b>Mock 0<\/b> (1 hour): two easy problems, explained out loud with complexity and a dry run","key":"d5-mock"},{"t":"task","k":"Review","text":"Re-solve every miss in your notebook from days 1–3","key":"d5-review"},{"t":"task","k":"LP","text":"A time you had to <b>dive deep<\/b> into a problem","src":["lc7724048","lc8014509"],"key":"d5-lp"}],"night":[{"t":"lc","slug":"balanced-binary-tree","name":"Balanced Binary Tree","d":"E","key":"balanced-binary-tree","n":110,"f3":36.4},{"t":"lc","slug":"convert-sorted-array-to-binary-search-tree","name":"Convert Sorted Array to Binary Search Tree","d":"E","key":"convert-sorted-array-to-binary-search-tree","n":108,"f3":36.4,"f30":44.3},{"t":"lc","slug":"generate-parentheses","name":"Generate Parentheses","d":"M","note":"Recursion warm-up for backtracking","key":"generate-parentheses","n":22,"f3":65.7,"f30":72.0}]},{"n":5,"phase":1,"title":"Stacks, queues and linked lists","hours":"Evening + night · ~7 h","weekend":false,"coach":"Every bug you log in the notebook is one you won’t repeat in the interview.","items":[{"t":"task","k":"Learn","text":"Watch the stack and linked list concept video (videsiqna.in or NeetCode), then solve without hints","key":"d4-learn"},{"t":"lc","slug":"valid-parentheses","name":"Valid Parentheses","d":"E","key":"valid-parentheses","n":20,"f3":65.7,"f30":67.4},{"t":"lc","slug":"implement-queue-using-stacks","name":"Implement Queue using Stacks","d":"E","key":"implement-queue-using-stacks","n":232},{"t":"lc","slug":"reverse-linked-list","name":"Reverse Linked List","d":"E","key":"reverse-linked-list","n":206,"f3":41.0},{"t":"lc","slug":"merge-two-sorted-lists","name":"Merge Two Sorted Lists","d":"E","key":"merge-two-sorted-lists","n":21,"f3":48.1,"f30":44.3},{"t":"lc","slug":"linked-list-cycle","name":"Linked List Cycle","d":"E","key":"linked-list-cycle","n":141,"f3":57.7,"f30":61.7},{"t":"lc","slug":"middle-of-the-linked-list","name":"Middle of the Linked List","d":"E","key":"middle-of-the-linked-list","n":876,"f3":41.0},{"t":"task","k":"LP","text":"<b>Something challenging you built<\/b>","src":["lc6393977","lc7035289"],"key":"d4-lp"}],"night":[{"t":"lc","slug":"asteroid-collision","name":"Asteroid Collision","d":"M","key":"asteroid-collision","n":735,"f3":57.7},{"t":"lc","slug":"palindrome-linked-list","name":"Palindrome Linked List","d":"E","key":"palindrome-linked-list","n":234,"f3":36.4},{"t":"lc","slug":"odd-even-linked-list","name":"Odd Even Linked List","d":"M","key":"odd-even-linked-list","n":328,"f3":41.0}]},{"n":6,"phase":1,"title":"BST, heaps and hashing","hours":"Evening + night · ~7 h","weekend":false,"coach":"A heap keeps the best on top. So does consistency.","items":[{"t":"task","k":"Learn","text":"Watch the BST and heap concept video (videsiqna.in or NeetCode), then solve without hints","key":"d6-learn"},{"t":"lc","slug":"search-in-a-binary-search-tree","name":"Search in a Binary Search Tree","d":"E","key":"search-in-a-binary-search-tree","n":700},{"t":"lc","slug":"insert-into-a-binary-search-tree","name":"Insert into a Binary Search Tree","d":"M","a":1,"src":["roundz"],"key":"insert-into-a-binary-search-tree","n":701},{"t":"lc","slug":"kth-largest-element-in-a-stream","name":"Kth Largest Element in a Stream","d":"E","key":"kth-largest-element-in-a-stream","n":703,"f3":22.6},{"t":"lc","slug":"last-stone-weight","name":"Last Stone Weight","d":"E","key":"last-stone-weight","n":1046},{"t":"lc","slug":"top-k-frequent-elements","name":"Top K Frequent Elements","d":"M","key":"top-k-frequent-elements","n":347,"f3":71.5,"f30":44.3},{"t":"lc","slug":"group-anagrams","name":"Group Anagrams","d":"M","key":"group-anagrams","n":49,"f3":73.4,"f30":72.0},{"t":"lc","slug":"longest-consecutive-sequence","name":"Longest Consecutive Sequence","d":"M","key":"longest-consecutive-sequence","n":128,"f3":61.2,"f30":54.4},{"t":"task","k":"Problem","text":"Find the households that submitted duplicate interest forms across member lists. Code the O(n·m) brute force first, then the O(n+m) hash-set version.","a":1,"src":["lc7621408"],"key":"d6-dupforms"},{"t":"task","k":"LP","text":"<b>Convincing someone<\/b> of your approach, and <b>a conflict<\/b>","src":["lc7724048","roundz"],"key":"d6-lp"}],"night":[{"t":"lc","slug":"reorganize-string","name":"Reorganize String","d":"M","key":"reorganize-string","n":767,"f3":68.2,"f30":54.4},{"t":"lc","slug":"intersection-of-two-arrays","name":"Intersection of Two Arrays","d":"E","note":"Warm-up for the duplicate-forms question","key":"intersection-of-two-arrays","n":349,"f3":36.4}]},{"n":7,"phase":1,"title":"Graphs, greedy and DP basics","hours":"Evening + night · ~7 h","weekend":false,"coach":"One week done. Most people stop around now. You are building the habit that gets offers.","items":[{"t":"task","k":"Learn","text":"Watch the BFS/DFS, greedy and DP concept video (videsiqna.in or NeetCode), then solve without hints","key":"d7-learn"},{"t":"lc","slug":"flood-fill","name":"Flood Fill","d":"E","key":"flood-fill","n":733,"f3":36.4},{"t":"lc","slug":"number-of-islands","name":"Number of Islands","d":"M","a":1,"src":["lc8014509","lc8029194","freq"],"key":"number-of-islands","n":200,"f3":69.3,"f30":79.3},{"t":"lc","slug":"find-if-path-exists-in-graph","name":"Find if Path Exists in Graph","d":"E","key":"find-if-path-exists-in-graph","n":1971,"f3":22.6,"f30":44.3},{"t":"lc","slug":"assign-cookies","name":"Assign Cookies","d":"E","key":"assign-cookies","n":455},{"t":"lc","slug":"lemonade-change","name":"Lemonade Change","d":"E","key":"lemonade-change","n":860},{"t":"lc","slug":"climbing-stairs","name":"Climbing Stairs","d":"E","a":2,"src":["gfg2022"],"key":"climbing-stairs","n":70,"f3":55.7},{"t":"lc","slug":"min-cost-climbing-stairs","name":"Min Cost Climbing Stairs","d":"E","key":"min-cost-climbing-stairs","n":746},{"t":"lc","slug":"house-robber","name":"House Robber","d":"M","a":1,"src":["lc8542365","lc8029194","lc7621408"],"key":"house-robber","n":198,"f3":53.4,"f30":67.4},{"t":"task","k":"LP","text":"<b>Critical feedback<\/b> you received and what you changed","src":["lc6393977","lc6738470","lc8542365"],"key":"d7-lp"}],"night":[{"t":"lc","slug":"pascals-triangle","name":"Pascal's Triangle","d":"E","key":"pascals-triangle","n":118,"f3":48.1},{"t":"lc","slug":"best-time-to-buy-and-sell-stock-ii","name":"Best Time to Buy and Sell Stock II","d":"M","key":"best-time-to-buy-and-sell-stock-ii","n":122,"f3":41.0,"f30":54.4}]},{"n":8,"phase":2,"title":"Arrays and prefix sums","hours":"Evening + night · ~7 h","weekend":false,"coach":"Prefix sums: small totals add up. So do your nights.","items":[{"t":"lc","slug":"3sum","name":"3Sum","d":"M","key":"3sum","n":15,"f3":69.3,"f30":54.4},{"t":"lc","slug":"container-with-most-water","name":"Container With Most Water","d":"M","key":"container-with-most-water","n":11,"f3":71.5,"f30":67.4},{"t":"lc","slug":"product-of-array-except-self","name":"Product of Array Except Self","d":"M","key":"product-of-array-except-self","n":238,"f3":62.8,"f30":61.7},{"t":"lc","slug":"subarray-sum-equals-k","name":"Subarray Sum Equals K","d":"M","key":"subarray-sum-equals-k","n":560,"f3":69.3,"f30":72.0},{"t":"lc","slug":"maximum-subarray","name":"Maximum Subarray","d":"M","note":"Kadane: the base for the circular and |a[i] − a[j]| = k versions asked in 2026","key":"maximum-subarray","n":53,"f3":69.3,"f30":54.4},{"t":"lc","slug":"continuous-subarray-sum","name":"Continuous Subarray Sum","d":"M","key":"continuous-subarray-sum","n":523,"f3":36.4},{"t":"task","k":"LP","text":"A <b>data-driven or intuition-based decision<\/b>","key":"d8-lp"}],"night":[{"t":"lc","slug":"next-permutation","name":"Next Permutation","d":"M","key":"next-permutation","n":31,"f3":55.7},{"t":"lc","slug":"contiguous-array","name":"Contiguous Array","d":"M","key":"contiguous-array","n":525,"f3":44.9,"f30":44.3}]},{"n":9,"phase":2,"title":"Binary search","hours":"Evening + night · ~7 h","weekend":false,"coach":"Stuck for 40 minutes? Read the solution, log it, re-solve it in 3 days. That is the system working.","items":[{"t":"lc","slug":"search-in-rotated-sorted-array","name":"Search in Rotated Sorted Array","d":"M","a":1,"src":["lc8014509","freq"],"key":"search-in-rotated-sorted-array","n":33,"f3":59.5,"f30":54.4},{"t":"lc","slug":"find-minimum-in-rotated-sorted-array","name":"Find Minimum in Rotated Sorted Array","d":"M","key":"find-minimum-in-rotated-sorted-array","n":153,"f3":48.1},{"t":"lc","slug":"koko-eating-bananas","name":"Koko Eating Bananas","d":"M","note":"Binary search on the answer","key":"koko-eating-bananas","n":875,"f3":71.5,"f30":54.4},{"t":"lc","slug":"find-peak-element","name":"Find Peak Element","d":"M","key":"find-peak-element","n":162,"f3":22.6},{"t":"lc","slug":"find-k-closest-elements","name":"Find K Closest Elements","d":"M","a":2,"src":["med2022"],"key":"find-k-closest-elements","n":658,"f3":22.6},{"t":"lc","slug":"heaters","name":"Heaters","d":"M","a":1,"src":["lc7035289"],"key":"heaters","n":475,"f3":30.5},{"t":"task","k":"Resume","text":"2-minute walkthrough of the <b>RAG failure-triage service<\/b>","key":"d9-resume"}],"night":[{"t":"lc","slug":"capacity-to-ship-packages-within-d-days","name":"Capacity To Ship Packages Within D Days","d":"M","key":"capacity-to-ship-packages-within-d-days","n":1011,"f3":59.5,"f30":44.3},{"t":"lc","slug":"split-array-largest-sum","name":"Split Array Largest Sum","d":"H","key":"split-array-largest-sum","n":410,"f3":55.7,"f30":61.7}]},{"n":10,"phase":2,"title":"Stacks and string parsing","hours":"Full day · ~11 h","weekend":true,"coach":"Parse Lisp was asked in a real 2026 loop. Hard problems are just stacks of easy steps.","items":[{"t":"lc","slug":"min-stack","name":"Min Stack","d":"M","key":"min-stack","n":155,"f3":41.0},{"t":"lc","slug":"daily-temperatures","name":"Daily Temperatures","d":"M","key":"daily-temperatures","n":739,"f3":50.9},{"t":"lc","slug":"evaluate-reverse-polish-notation","name":"Evaluate Reverse Polish Notation","d":"M","key":"evaluate-reverse-polish-notation","n":150,"f3":30.5},{"t":"lc","slug":"decode-string","name":"Decode String","d":"M","key":"decode-string","n":394,"f3":22.6},{"t":"lc","slug":"basic-calculator-ii","name":"Basic Calculator II","d":"M","key":"basic-calculator-ii","n":227,"f3":36.4,"f30":44.3},{"t":"lc","slug":"remove-all-adjacent-duplicates-in-string-ii","name":"Remove All Adjacent Duplicates in String II","d":"M","a":2,"src":["gfg2022"],"key":"remove-all-adjacent-duplicates-in-string-ii","n":1209,"f3":22.6},{"t":"lc","slug":"largest-rectangle-in-histogram","name":"Largest Rectangle in Histogram","d":"H","a":1,"src":["lc7621408"],"note":"A 2026 Bar Raiser asked a problem like this one","key":"largest-rectangle-in-histogram","n":84,"f3":44.9,"f30":44.3},{"t":"task","k":"LP","text":"<b>Owning something end to end<\/b> and delivering","src":["lc8542365","lc6738470"],"key":"d11-lp"}],"night":[{"t":"lc","slug":"remove-k-digits","name":"Remove K Digits","d":"M","key":"remove-k-digits","n":402,"f3":53.4,"f30":54.4},{"t":"lc","slug":"longest-valid-parentheses","name":"Longest Valid Parentheses","d":"H","key":"longest-valid-parentheses","n":32,"f3":50.9,"f30":67.4},{"t":"lc","slug":"basic-calculator","name":"Basic Calculator","d":"H","key":"basic-calculator","n":224,"f3":41.0}]},{"n":11,"phase":2,"title":"Linked lists + mock 1","hours":"Full day · ~11 h","weekend":true,"coach":"Mock 1: the goal is not perfect code, it is clear thinking out loud.","items":[{"t":"lc","slug":"remove-nth-node-from-end-of-list","name":"Remove Nth Node From End of List","d":"M","key":"remove-nth-node-from-end-of-list","n":19,"f3":30.5,"f30":44.3},{"t":"lc","slug":"reorder-list","name":"Reorder List","d":"M","key":"reorder-list","n":143,"f3":41.0},{"t":"lc","slug":"add-two-numbers","name":"Add Two Numbers","d":"M","key":"add-two-numbers","n":2,"f3":69.3,"f30":67.4},{"t":"lc","slug":"linked-list-cycle-ii","name":"Linked List Cycle II","d":"M","key":"linked-list-cycle-ii","n":142,"f3":30.5},{"t":"lc","slug":"copy-list-with-random-pointer","name":"Copy List with Random Pointer","d":"M","key":"copy-list-with-random-pointer","n":138,"f3":59.5,"f30":54.4},{"t":"lc","slug":"merge-k-sorted-lists","name":"Merge k Sorted Lists","d":"H","key":"merge-k-sorted-lists","n":23,"f3":57.7,"f30":44.3},{"t":"task","k":"Mock","text":"<b>Mock 1<\/b> (1 hour): two unseen mediums + 2 LP questions, recorded or with a friend","key":"d12-mock"},{"t":"task","k":"Review","text":"Re-solve every miss in your notebook from days 4–10","key":"d12-review"},{"t":"task","k":"LP","text":"<b>Customer obsession<\/b>","key":"d12-lp"}],"night":[{"t":"lc","slug":"reverse-linked-list-ii","name":"Reverse Linked List II","d":"M","key":"reverse-linked-list-ii","n":92,"f3":36.4,"f30":44.3},{"t":"lc","slug":"rotate-list","name":"Rotate List","d":"M","key":"rotate-list","n":61,"f3":36.4},{"t":"lc","slug":"find-the-duplicate-number","name":"Find the Duplicate Number","d":"M","note":"Floyd’s cycle trick on an array","key":"find-the-duplicate-number","n":287,"f3":44.9}]},{"n":12,"phase":2,"title":"Sliding window","hours":"Evening + night · ~7 h","weekend":false,"coach":"Shrink the window and keep only what matters. Same with distractions tonight.","items":[{"t":"lc","slug":"longest-repeating-character-replacement","name":"Longest Repeating Character Replacement","d":"M","key":"longest-repeating-character-replacement","n":424,"f3":22.6},{"t":"lc","slug":"permutation-in-string","name":"Permutation in String","d":"M","key":"permutation-in-string","n":567,"f3":41.0},{"t":"lc","slug":"fruit-into-baskets","name":"Fruit Into Baskets","d":"M","key":"fruit-into-baskets","n":904,"f3":57.7},{"t":"lc","slug":"minimum-window-substring","name":"Minimum Window Substring","d":"H","key":"minimum-window-substring","n":76,"f3":50.9},{"t":"task","k":"LP","text":"<b>Simplifying a process<\/b>","key":"d10-lp"}],"night":[{"t":"lc","slug":"maximum-coins-from-k-consecutive-bags","name":"Maximum Coins From K Consecutive Bags","d":"M","note":"Number 2 on Amazon’s list for the last 3 months","key":"maximum-coins-from-k-consecutive-bags","n":3413,"f3":93.1,"f30":100.0},{"t":"lc","slug":"find-all-anagrams-in-a-string","name":"Find All Anagrams in a String","d":"M","key":"find-all-anagrams-in-a-string","n":438,"f3":36.4}]},{"n":13,"phase":2,"title":"Binary trees","hours":"Evening + night · ~7 h","weekend":false,"coach":"Interviewers hire the person who explains clearly, not the one who types fastest.","items":[{"t":"lc","slug":"binary-tree-right-side-view","name":"Binary Tree Right Side View","d":"M","key":"binary-tree-right-side-view","n":199,"f3":36.4,"f30":44.3},{"t":"lc","slug":"binary-tree-zigzag-level-order-traversal","name":"Binary Tree Zigzag Level Order Traversal","d":"M","a":2,"src":["gfg2022"],"key":"binary-tree-zigzag-level-order-traversal","n":103},{"t":"lc","slug":"validate-binary-search-tree","name":"Validate Binary Search Tree","d":"M","key":"validate-binary-search-tree","n":98,"f3":44.9},{"t":"lc","slug":"kth-smallest-element-in-a-bst","name":"Kth Smallest Element in a BST","d":"M","key":"kth-smallest-element-in-a-bst","n":230},{"t":"lc","slug":"construct-binary-tree-from-preorder-and-inorder-traversal","name":"Construct Binary Tree from Preorder and Inorder Traversal","d":"M","key":"construct-binary-tree-from-preorder-and-inorder-traversal","n":105},{"t":"lc","slug":"diameter-of-binary-tree","name":"Diameter of Binary Tree","d":"E","key":"diameter-of-binary-tree","n":543,"f3":36.4},{"t":"lc","slug":"binary-tree-maximum-path-sum","name":"Binary Tree Maximum Path Sum","d":"H","a":2,"src":["gfg2022"],"key":"binary-tree-maximum-path-sum","n":124,"f3":53.4},{"t":"lc","slug":"maximum-width-of-binary-tree","name":"Maximum Width of Binary Tree","d":"M","a":1,"src":["lc7035289"],"key":"maximum-width-of-binary-tree","n":662,"f3":22.6},{"t":"lc","slug":"serialize-and-deserialize-binary-tree","name":"Serialize and Deserialize Binary Tree","d":"H","key":"serialize-and-deserialize-binary-tree","n":297,"f3":30.5},{"t":"task","k":"LP","text":"<b>Handing over responsibilities<\/b> or helping a teammate","src":["lc6393977","lc6738470"],"key":"d13-lp"}],"night":[{"t":"lc","slug":"all-nodes-distance-k-in-binary-tree","name":"All Nodes Distance K in Binary Tree","d":"M","key":"all-nodes-distance-k-in-binary-tree","n":863,"f3":41.0},{"t":"lc","slug":"house-robber-iii","name":"House Robber III","d":"M","key":"house-robber-iii","n":337,"f3":30.5}]},{"n":14,"phase":2,"title":"Tries, heaps and design","hours":"Evening + night · ~7 h","weekend":false,"coach":"LRU Cache from scratch today, from memory on Day 21, timed on Day 24. That is how “asked” becomes “easy”.","items":[{"t":"lc","slug":"implement-trie-prefix-tree","name":"Implement Trie (Prefix Tree)","d":"M","a":1,"src":["roundz"],"key":"implement-trie-prefix-tree","n":208,"f3":22.6},{"t":"lc","slug":"design-add-and-search-words-data-structure","name":"Design Add and Search Words Data Structure","d":"M","key":"design-add-and-search-words-data-structure","n":211,"f3":22.6},{"t":"lc","slug":"word-search-ii","name":"Word Search II","d":"H","a":2,"src":["med2022"],"note":"Asked as a variant: count a word’s occurrences in a grid","key":"word-search-ii","n":212,"f3":36.4,"f30":44.3},{"t":"lc","slug":"kth-largest-element-in-an-array","name":"Kth Largest Element in an Array","d":"M","key":"kth-largest-element-in-an-array","n":215,"f3":50.9},{"t":"lc","slug":"find-median-from-data-stream","name":"Find Median from Data Stream","d":"H","key":"find-median-from-data-stream","n":295,"f3":55.7,"f30":54.4},{"t":"lc","slug":"lru-cache","name":"LRU Cache","d":"M","a":1,"src":["rd1","lc7621408","freq"],"note":"From scratch: hash map + doubly linked list","key":"lru-cache","n":146,"f3":72.4,"f30":67.4},{"t":"lc","slug":"insert-delete-getrandom-o1","name":"Insert Delete GetRandom O(1)","d":"M","key":"insert-delete-getrandom-o1","n":380,"f3":44.9},{"t":"lc","slug":"time-based-key-value-store","name":"Time Based Key-Value Store","d":"M","key":"time-based-key-value-store","n":981,"f3":30.5},{"t":"task","k":"Resume","text":"10-minute deep dive of the <b>RAG failure-triage service<\/b>","key":"d14-resume"}],"night":[{"t":"lc","slug":"search-suggestions-system","name":"Search Suggestions System","d":"M","key":"search-suggestions-system","n":1268,"f3":22.6,"f30":44.3}]},{"n":15,"phase":2,"title":"Graphs I: BFS, DFS, topological sort","hours":"Evening + night · ~7 h","weekend":false,"coach":"Rotting Oranges came up in 3 real interviews. By tonight you will know it cold.","items":[{"t":"lc","slug":"max-area-of-island","name":"Max Area of Island","d":"M","key":"max-area-of-island","n":695,"f3":22.6},{"t":"lc","slug":"clone-graph","name":"Clone Graph","d":"M","key":"clone-graph","n":133,"f3":22.6,"f30":44.3},{"t":"lc","slug":"pacific-atlantic-water-flow","name":"Pacific Atlantic Water Flow","d":"M","key":"pacific-atlantic-water-flow","n":417,"f3":36.4},{"t":"lc","slug":"course-schedule","name":"Course Schedule","d":"M","a":1,"src":["lc7154883","freq"],"key":"course-schedule","n":207,"f3":64.3},{"t":"lc","slug":"course-schedule-ii","name":"Course Schedule II","d":"M","a":1,"src":["lc6393977","lc7621408"],"key":"course-schedule-ii","n":210,"f3":48.1,"f30":54.4},{"t":"lc","slug":"rotting-oranges","name":"Rotting Oranges","d":"M","a":1,"src":["lc8542365","roundz","med2022"],"note":"Reported in 3 interviews","key":"rotting-oranges","n":994,"f3":69.3,"f30":44.3},{"t":"task","k":"LP","text":"A <b>failure<\/b> or a blunder, and what you learned from it","src":["gfg2022","roundz"],"key":"d15-lp"}],"night":[{"t":"lc","slug":"evaluate-division","name":"Evaluate Division","d":"M","key":"evaluate-division","n":399,"f3":44.9,"f30":44.3},{"t":"lc","slug":"bus-routes","name":"Bus Routes","d":"H","key":"bus-routes","n":815,"f3":36.4,"f30":54.4}]},{"n":16,"phase":2,"title":"Graphs II: shortest paths and union-find","hours":"Evening + night · ~7 h","weekend":false,"coach":"Your CI pipeline went from unstable to a Star Award one fix at a time. This plan works the same way.","items":[{"t":"lc","slug":"word-ladder","name":"Word Ladder","d":"H","a":1,"src":["lc7035289","freq"],"key":"word-ladder","n":127,"f3":50.9},{"t":"lc","slug":"network-delay-time","name":"Network Delay Time","d":"M","note":"Dijkstra","key":"network-delay-time","n":743},{"t":"lc","slug":"cheapest-flights-within-k-stops","name":"Cheapest Flights Within K Stops","d":"M","key":"cheapest-flights-within-k-stops","n":787,"f3":41.0},{"t":"lc","slug":"number-of-provinces","name":"Number of Provinces","d":"M","note":"Union-find","key":"number-of-provinces","n":547,"f3":36.4},{"t":"lc","slug":"redundant-connection","name":"Redundant Connection","d":"M","note":"Union-find","key":"redundant-connection","n":684},{"t":"lc","slug":"min-cost-to-connect-all-points","name":"Min Cost to Connect All Points","d":"M","note":"Minimum spanning tree","key":"min-cost-to-connect-all-points","n":1584},{"t":"task","k":"Resume","text":"Deep dives of <b>CRV<\/b> and the <b>Kubernetes KPI pod and ELK pipelines<\/b>","key":"d16-resume"}],"night":[{"t":"lc","slug":"satisfiability-of-equality-equations","name":"Satisfiability of Equality Equations","d":"M","key":"satisfiability-of-equality-equations","n":990,"f3":36.4},{"t":"lc","slug":"single-threaded-cpu","name":"Single-Threaded CPU","d":"M","note":"Heap-based scheduling, useful for the “schedule processes” design question","key":"single-threaded-cpu","n":1834,"f3":36.4}]},{"n":17,"phase":2,"title":"Greedy and intervals + mock 2","hours":"Full day · ~11 h","weekend":true,"coach":"Take the best step available. Greedy works for intervals and for Saturdays.","items":[{"t":"lc","slug":"jump-game","name":"Jump Game","d":"M","a":1,"src":["lc8029194"],"key":"jump-game","n":55,"f3":36.4},{"t":"lc","slug":"jump-game-ii","name":"Jump Game II","d":"M","a":1,"src":["lc8029194"],"key":"jump-game-ii","n":45,"f3":41.0},{"t":"lc","slug":"gas-station","name":"Gas Station","d":"M","key":"gas-station","n":134,"f3":36.4},{"t":"lc","slug":"partition-labels","name":"Partition Labels","d":"M","key":"partition-labels","n":763,"f3":22.6},{"t":"lc","slug":"task-scheduler","name":"Task Scheduler","d":"M","key":"task-scheduler","n":621,"f3":59.5,"f30":61.7},{"t":"lc","slug":"merge-intervals","name":"Merge Intervals","d":"M","key":"merge-intervals","n":56,"f3":72.4,"f30":61.7},{"t":"lc","slug":"non-overlapping-intervals","name":"Non-overlapping Intervals","d":"M","key":"non-overlapping-intervals","n":435,"f3":36.4},{"t":"lc","slug":"meeting-rooms-ii","name":"Meeting Rooms II","d":"M","prem":true,"key":"meeting-rooms-ii","n":253,"f3":50.9},{"t":"lc","slug":"maximum-length-of-pair-chain","name":"Maximum Length of Pair Chain","d":"M","a":1,"src":["lc7621408"],"key":"maximum-length-of-pair-chain","n":646},{"t":"task","k":"GenAI","text":"Answers to “How do you use GenAI in your workflow?” and “Which use cases?”","src":["lc8546875","rd1"],"key":"d17-genai"},{"t":"task","k":"Mock","text":"<b>Mock 2<\/b>, Round 1 format: a BFS or tree problem + a parsing or binary-search problem + a deadline LP question","key":"d18-mock"}],"night":[{"t":"lc","slug":"candy","name":"Candy","d":"H","key":"candy","n":135,"f3":44.9},{"t":"lc","slug":"car-pooling","name":"Car Pooling","d":"M","key":"car-pooling","n":1094,"f3":36.4}]},{"n":18,"phase":2,"title":"Dynamic programming I + mock 3","hours":"Full day · ~11 h","weekend":true,"coach":"DP is remembering what you already solved. So is your mistakes notebook.","items":[{"t":"lc","slug":"coin-change","name":"Coin Change","d":"M","key":"coin-change","n":322,"f3":48.1,"f30":61.7},{"t":"lc","slug":"coin-change-ii","name":"Coin Change II","d":"M","key":"coin-change-ii","n":518},{"t":"lc","slug":"partition-equal-subset-sum","name":"Partition Equal Subset Sum","d":"M","a":1,"src":["rd1"],"key":"partition-equal-subset-sum","n":416,"f3":36.4},{"t":"lc","slug":"longest-increasing-subsequence","name":"Longest Increasing Subsequence","d":"M","key":"longest-increasing-subsequence","n":300,"f3":30.5},{"t":"lc","slug":"word-break","name":"Word Break","d":"M","key":"word-break","n":139,"f3":44.9,"f30":44.3},{"t":"lc","slug":"decode-ways","name":"Decode Ways","d":"M","key":"decode-ways","n":91},{"t":"task","k":"Mock","text":"<b>Mock 3<\/b>, Round 2 format: binary search on the answer + 1-D DP + a project deep dive","key":"d19-mock"},{"t":"task","k":"Review","text":"Re-solve every miss in your notebook from days 11–17","key":"d19-review"},{"t":"task","k":"Resume","text":"Deep dives of <b>TC Executor<\/b>, the <b>Core-Stacks CI pipeline<\/b> and the <b>EventLogging fix<\/b>","key":"d18-resume"}],"night":[{"t":"lc","slug":"longest-palindromic-substring","name":"Longest Palindromic Substring","d":"M","note":"Number 9 on Amazon’s list for the last 3 months","key":"longest-palindromic-substring","n":5,"f3":71.5,"f30":54.4},{"t":"lc","slug":"maximum-product-subarray","name":"Maximum Product Subarray","d":"M","key":"maximum-product-subarray","n":152,"f3":41.0,"f30":44.3},{"t":"lc","slug":"interleaving-string","name":"Interleaving String","d":"M","key":"interleaving-string","n":97,"f3":50.9,"f30":54.4}]},{"n":19,"phase":2,"title":"DP II and backtracking","hours":"Evening + night · ~7 h","weekend":false,"coach":"Every recursion needs a base case. Yours is showing up every day.","items":[{"t":"lc","slug":"unique-paths","name":"Unique Paths","d":"M","a":1,"src":["lc7035289"],"note":"Then the asked variant: a robot moving only right or down collects points; return the maximum total (recursion → memo → table)","key":"unique-paths","n":62,"f3":30.5},{"t":"lc","slug":"longest-common-subsequence","name":"Longest Common Subsequence","d":"M","key":"longest-common-subsequence","n":1143},{"t":"lc","slug":"edit-distance","name":"Edit Distance","d":"M","key":"edit-distance","n":72},{"t":"lc","slug":"best-time-to-buy-and-sell-stock-with-cooldown","name":"Best Time to Buy and Sell Stock with Cooldown","d":"M","note":"State-machine DP","key":"best-time-to-buy-and-sell-stock-with-cooldown","n":309,"f3":22.6},{"t":"lc","slug":"subsets","name":"Subsets","d":"M","key":"subsets","n":78,"f3":53.4},{"t":"lc","slug":"permutations","name":"Permutations","d":"M","key":"permutations","n":46,"f3":44.9,"f30":44.3},{"t":"lc","slug":"combination-sum","name":"Combination Sum","d":"M","key":"combination-sum","n":39,"f3":22.6},{"t":"lc","slug":"word-search","name":"Word Search","d":"M","key":"word-search","n":79,"f3":30.5,"f30":44.3},{"t":"task","k":"GenAI","text":"Answers on checking AI output and AI-written code, preferred models, and which tasks you give to GenAI","src":["lc7724048","lc8014509","rd1"],"key":"d19-genai"}],"night":[{"t":"lc","slug":"letter-combinations-of-a-phone-number","name":"Letter Combinations of a Phone Number","d":"M","key":"letter-combinations-of-a-phone-number","n":17,"f3":44.9},{"t":"lc","slug":"palindrome-partitioning","name":"Palindrome Partitioning","d":"M","key":"palindrome-partitioning","n":131,"f3":36.4},{"t":"lc","slug":"predict-the-winner","name":"Predict the Winner","d":"M","key":"predict-the-winner","n":486,"f3":41.0}]},{"n":20,"phase":3,"title":"Asked set A","hours":"Evening + night · ~7 h","weekend":false,"coach":"Phase 3: these are the problems from real loops. You are practising the actual interview now.","items":[{"t":"lc","slug":"vertical-order-traversal-of-a-binary-tree","name":"Vertical Order Traversal of a Binary Tree","d":"H","a":1,"src":["rd1"],"note":"Then code the vertical sum version that was asked","key":"vertical-order-traversal-of-a-binary-tree","n":987},{"t":"lc","slug":"path-sum-ii","name":"Path Sum II","d":"M","key":"path-sum-ii","n":113,"f3":30.5},{"t":"lc","slug":"path-sum-iii","name":"Path Sum III","d":"M","a":1,"src":["lc8029194"],"note":"Closest match to a 2026 “tree path sum with conditions” question","key":"path-sum-iii","n":437,"f3":30.5},{"t":"lc","slug":"random-pick-with-weight","name":"Random Pick with Weight","d":"M","a":1,"src":["rd1"],"key":"random-pick-with-weight","n":528,"f3":36.4},{"t":"lc","slug":"parse-lisp-expression","name":"Parse Lisp Expression","d":"H","a":1,"src":["lc8542365"],"note":"Stack + hash maps","key":"parse-lisp-expression","n":736},{"t":"lc","slug":"detonate-the-maximum-bombs","name":"Detonate the Maximum Bombs","d":"M","a":1,"src":["lc7724048"],"note":"Follow-up asked: the directed-graph version","key":"detonate-the-maximum-bombs","n":2101},{"t":"lc","slug":"sliding-window-maximum","name":"Sliding Window Maximum","d":"H","a":1,"src":["lc7154883"],"note":"Asked wrapped in a story","key":"sliding-window-maximum","n":239,"f3":55.7}],"night":[{"t":"lc","slug":"rotate-image","name":"Rotate Image","d":"M","key":"rotate-image","n":48,"f3":48.1},{"t":"lc","slug":"spiral-matrix","name":"Spiral Matrix","d":"M","key":"spiral-matrix","n":54,"f3":41.0,"f30":44.3}]},{"n":21,"phase":3,"title":"Asked set B","hours":"Evening + night · ~7 h","weekend":false,"coach":"“Work hard. Have fun. Make history.” That was Amazon’s early motto. Today is the work-hard part.","items":[{"t":"lc","slug":"most-profitable-path-in-a-tree","name":"Most Profitable Path in a Tree","d":"M","a":1,"src":["rd1"],"key":"most-profitable-path-in-a-tree","n":2467,"f3":22.6},{"t":"lc","slug":"lowest-common-ancestor-of-a-binary-tree","name":"Lowest Common Ancestor of a Binary Tree","d":"M","a":1,"src":["lc8014509","freq"],"key":"lowest-common-ancestor-of-a-binary-tree","n":236,"f3":68.2,"f30":75.9},{"t":"lc","slug":"lowest-common-ancestor-of-a-binary-search-tree","name":"Lowest Common Ancestor of a Binary Search Tree","d":"M","a":1,"src":["lc7981646","med2022"],"key":"lowest-common-ancestor-of-a-binary-search-tree","n":235,"f3":22.6},{"t":"lc","slug":"maximize-the-confusion-of-an-exam","name":"Maximize the Confusion of an Exam","d":"M","a":1,"src":["lc8542365"],"key":"maximize-the-confusion-of-an-exam","n":2024,"f3":22.6},{"t":"lc","slug":"magnetic-force-between-two-balls","name":"Magnetic Force Between Two Balls","d":"M","a":1,"src":["lc7724048"],"note":"Asked as “Aggressive Cows”","key":"magnetic-force-between-two-balls","n":1552,"f3":36.4},{"t":"lc","slug":"house-robber-ii","name":"House Robber II","d":"M","a":1,"src":["lc8029194"],"key":"house-robber-ii","n":213,"f3":22.6},{"t":"lc","slug":"single-element-in-a-sorted-array","name":"Single Element in a Sorted Array","d":"M","a":1,"src":["lc7154883","freq"],"key":"single-element-in-a-sorted-array","n":540,"f3":55.7,"f30":54.4},{"t":"lc","slug":"lru-cache","name":"LRU Cache","d":"M","a":1,"src":["rd1","lc7621408","freq"],"note":"Again, from memory","key":"lru-cache--2","n":146,"f3":72.4,"f30":67.4},{"t":"lc","slug":"lfu-cache","name":"LFU Cache","d":"H","key":"lfu-cache","n":460,"f3":36.4,"f30":44.3}],"night":[{"t":"lc","slug":"minimum-operations-to-reduce-x-to-zero","name":"Minimum Operations to Reduce X to Zero","d":"M","key":"minimum-operations-to-reduce-x-to-zero","n":1658,"f3":30.5,"f30":54.4},{"t":"lc","slug":"count-number-of-nice-subarrays","name":"Count Number of Nice Subarrays","d":"M","key":"count-number-of-nice-subarrays","n":1248,"f3":41.0}]},{"n":22,"phase":3,"title":"Asked set C","hours":"Evening + night · ~7 h","weekend":false,"coach":"Two weeks ago these looked hard. Notice how many feel familiar now.","items":[{"t":"lc","slug":"maximum-sum-circular-subarray","name":"Maximum Sum Circular Subarray","d":"M","a":1,"src":["lc8014509"],"key":"maximum-sum-circular-subarray","n":918,"f3":22.6},{"t":"lc","slug":"maximum-good-subarray-sum","name":"Maximum Good Subarray Sum","d":"M","a":1,"src":["lc8014509"],"note":"Asked as: the maximum subarray sum from i to j where |a[i] − a[j]| = k","key":"maximum-good-subarray-sum","n":3026},{"t":"lc","slug":"next-greater-element-i","name":"Next Greater Element I","d":"E","a":1,"src":["lc7724048"],"key":"next-greater-element-i","n":496,"f3":48.1},{"t":"lc","slug":"next-greater-element-ii","name":"Next Greater Element II","d":"M","a":1,"src":["lc7724048"],"key":"next-greater-element-ii","n":503,"f3":48.1},{"t":"lc","slug":"longest-substring-with-at-most-k-distinct-characters","name":"Longest Substring with At Most K Distinct Characters","d":"M","a":1,"prem":true,"src":["lc6393977"],"key":"longest-substring-with-at-most-k-distinct-characters","n":340},{"t":"lc","slug":"reverse-pairs","name":"Reverse Pairs","d":"H","a":1,"src":["lc6393977"],"note":"Asked as “count inversions”: code the merge-sort count first","key":"reverse-pairs","n":493,"f3":36.4}],"night":[{"t":"lc","slug":"4sum","name":"4Sum","d":"M","key":"4sum","n":18,"f3":48.1,"f30":44.3},{"t":"lc","slug":"3sum-closest","name":"3Sum Closest","d":"M","key":"3sum-closest","n":16,"f3":36.4,"f30":44.3}]},{"n":23,"phase":3,"title":"Asked set D","hours":"Evening + night · ~7 h","weekend":false,"coach":"Brute force first, then better, then best. True for problems, true for you.","items":[{"t":"lc","slug":"best-time-to-buy-and-sell-stock-iii","name":"Best Time to Buy and Sell Stock III","d":"H","a":1,"src":["lc8542365"],"key":"best-time-to-buy-and-sell-stock-iii","n":123,"f3":22.6},{"t":"lc","slug":"best-time-to-buy-and-sell-stock-iv","name":"Best Time to Buy and Sell Stock IV","d":"H","a":1,"src":["lc8542365"],"note":"The candidate gave the general K-transactions solution","key":"best-time-to-buy-and-sell-stock-iv","n":188},{"t":"task","k":"Ladder","text":"The asked ladder: Two Sum → pair sum ≤ X → buy any items with total price ≤ X (0/1 knapsack)","a":1,"src":["rd1"],"key":"d23-ladder"},{"t":"lc","slug":"reverse-nodes-in-k-group","name":"Reverse Nodes in k-Group","d":"H","key":"reverse-nodes-in-k-group","n":25,"f3":44.9},{"t":"lc","slug":"k-closest-points-to-origin","name":"K Closest Points to Origin","d":"M","a":1,"src":["roundz"],"key":"k-closest-points-to-origin","n":973,"f3":44.9},{"t":"lc","slug":"minimum-cost-to-connect-sticks","name":"Minimum Cost to Connect Sticks","d":"M","prem":true,"note":"Connect ropes at minimum cost","key":"minimum-cost-to-connect-sticks","n":1167}],"night":[{"t":"lc","slug":"separate-black-and-white-balls","name":"Separate Black and White Balls","d":"M","key":"separate-black-and-white-balls","n":2938,"f3":53.4,"f30":54.4},{"t":"lc","slug":"largest-number","name":"Largest Number","d":"M","key":"largest-number","n":179,"f3":41.0}]},{"n":24,"phase":3,"title":"Implementations + Bar Raiser rehearsal","hours":"Full day · ~11 h","weekend":true,"coach":"The Bar Raiser asks how you knew it would work. Your numbers answer that: 20%+ debuggability, same-day bug closure.","items":[{"t":"lc","slug":"insert-into-a-binary-search-tree","name":"Insert into a Binary Search Tree","d":"M","a":1,"src":["roundz"],"note":"Part of a BST from scratch: insert, delete and search","key":"insert-into-a-binary-search-tree--2","n":701},{"t":"lc","slug":"delete-node-in-a-bst","name":"Delete Node in a BST","d":"M","a":1,"src":["roundz"],"key":"delete-node-in-a-bst","n":450,"f3":30.5},{"t":"lc","slug":"implement-trie-prefix-tree","name":"Implement Trie (Prefix Tree)","d":"M","a":1,"src":["roundz"],"note":"From memory, timed","key":"implement-trie-prefix-tree--2","n":208,"f3":22.6},{"t":"lc","slug":"lru-cache","name":"LRU Cache","d":"M","a":1,"src":["rd1","lc7621408","freq"],"note":"From memory, timed","key":"lru-cache--3","n":146,"f3":72.4,"f30":67.4},{"t":"lc","slug":"design-circular-queue","name":"Design Circular Queue","d":"M","a":2,"src":["med2022"],"key":"design-circular-queue","n":622},{"t":"task","k":"LLD","text":"Design a <b>process or job scheduler<\/b>: job class, priority queue, worker threads; follow-ups on locking, deadlock and synchronisation","a":1,"src":["lc8014509","lc6738470"],"key":"d24-lld"},{"t":"task","k":"Mock","text":"Bar Raiser rehearsal: a friend grills you for 45 minutes on one project and your LP stories","src":["lc8542365","lc7724048"],"key":"d26-br"}],"night":[{"t":"lc","slug":"implement-rand10-using-rand7","name":"Implement Rand10() Using Rand7()","d":"M","key":"implement-rand10-using-rand7","n":470,"f3":30.5,"f30":44.3},{"t":"lc","slug":"maximum-white-tiles-covered-by-a-carpet","name":"Maximum White Tiles Covered by a Carpet","d":"M","key":"maximum-white-tiles-covered-by-a-carpet","n":2271,"f3":44.9,"f30":44.3}]},{"n":25,"phase":3,"title":"Full mock day + hard practice","hours":"Full day · ~11 h","weekend":true,"coach":"Three mocks today. Pressure now makes the real loop feel like practice.","items":[{"t":"task","k":"Mock","text":"<b>Mock 4<\/b>, Round 1 format: two DSA problems + LP questions","key":"d25-mock4"},{"t":"task","k":"Mock","text":"<b>Mock 5<\/b>, Round 2 format: two DSA problems + a resume project deep dive","key":"d25-mock5"},{"t":"task","k":"Mock","text":"<b>Mock 6<\/b>, hiring-manager format: one DSA ladder + GenAI questions + the one-hour production-incident scenario","src":["lc8029194"],"key":"d25-mock6"},{"t":"lc","slug":"trapping-rain-water","name":"Trapping Rain Water","d":"H","note":"Number 4 on Amazon’s list for the last 3 months","key":"trapping-rain-water","n":42,"f3":79.8,"f30":79.3},{"t":"lc","slug":"median-of-two-sorted-arrays","name":"Median of Two Sorted Arrays","d":"H","a":1,"src":["lc8029194","freq"],"note":"A 2026 hiring-manager round asked a hard binary-search problem like this one","key":"median-of-two-sorted-arrays","n":4,"f3":71.5,"f30":61.7},{"t":"task","k":"Resume","text":"Rehearse the 10-minute version of every resume item","key":"d25-resume"}],"night":[{"t":"lc","slug":"first-missing-positive","name":"First Missing Positive","d":"H","key":"first-missing-positive","n":41,"f3":30.5},{"t":"lc","slug":"maximal-rectangle","name":"Maximal Rectangle","d":"H","key":"maximal-rectangle","n":85,"f3":30.5},{"t":"lc","slug":"sum-of-subarray-minimums","name":"Sum of Subarray Minimums","d":"M","key":"sum-of-subarray-minimums","n":907,"f3":30.5}]},{"n":26,"phase":3,"title":"Hard practice and LLD","hours":"Evening + night · ~7 h","weekend":false,"coach":"Hard problems don’t care how you feel. Start with the brute force and keep moving.","items":[{"t":"lc","slug":"n-queens","name":"N-Queens","d":"H","key":"n-queens","n":51,"f3":44.9,"f30":44.3},{"t":"lc","slug":"minimum-window-substring","name":"Minimum Window Substring","d":"H","note":"Re-solve without looking","key":"minimum-window-substring--2","n":76,"f3":50.9},{"t":"lc","slug":"largest-rectangle-in-histogram","name":"Largest Rectangle in Histogram","d":"H","a":1,"src":["lc7621408"],"note":"Re-solve without looking","key":"largest-rectangle-in-histogram--2","n":84,"f3":44.9,"f30":44.3},{"t":"task","k":"LLD","text":"Design a <b>board game<\/b> (Snake and Ladder or Tic-Tac-Toe): classes for the board, players and moves","a":1,"src":["lc6813913"],"key":"d26-lld1"},{"t":"task","k":"LLD","text":"Sketch a <b>parking lot<\/b> and a <b>rate limiter<\/b>: classes and key methods, 30 minutes each","key":"d26-lld2"}],"night":[{"t":"lc","slug":"integer-to-english-words","name":"Integer to English Words","d":"H","key":"integer-to-english-words","n":273,"f3":41.0,"f30":61.7},{"t":"lc","slug":"word-break-ii","name":"Word Break II","d":"H","key":"word-break-ii","n":140,"f3":30.5,"f30":44.3},{"t":"lc","slug":"smallest-range-covering-elements-from-k-lists","name":"Smallest Range Covering Elements from K Lists","d":"H","key":"smallest-range-covering-elements-from-k-lists","n":632,"f3":30.5,"f30":44.3}]},{"n":27,"phase":3,"title":"Bits and math","hours":"Evening + night · ~7 h","weekend":false,"coach":"Small bits, big result. Two days left.","items":[{"t":"lc","slug":"single-number","name":"Single Number","d":"E","key":"single-number","n":136,"f3":44.9,"f30":44.3},{"t":"lc","slug":"number-of-1-bits","name":"Number of 1 Bits","d":"E","key":"number-of-1-bits","n":191,"f3":22.6},{"t":"lc","slug":"counting-bits","name":"Counting Bits","d":"E","key":"counting-bits","n":338},{"t":"lc","slug":"powx-n","name":"Pow(x, n)","d":"M","key":"powx-n","n":50,"f3":36.4},{"t":"lc","slug":"count-beautiful-splits-in-an-array","name":"Count Beautiful Splits in an Array","d":"M","a":1,"src":["lc7035289"],"key":"count-beautiful-splits-in-an-array","n":3388},{"t":"task","k":"LP","text":"Say every LP story out loud, each under 2 minutes","key":"d27-lp"}],"night":[{"t":"lc","slug":"divide-two-integers","name":"Divide Two Integers","d":"M","key":"divide-two-integers","n":29,"f3":44.9,"f30":54.4},{"t":"lc","slug":"string-to-integer-atoi","name":"String to Integer (atoi)","d":"M","key":"string-to-integer-atoi","n":8,"f3":44.9,"f30":44.3}]},{"n":28,"phase":3,"title":"Final revision","hours":"Light day · ~4 h, then sleep","weekend":false,"coach":"You did the work. Sleep early tonight; rested you interviews better than tired you.","items":[{"t":"task","k":"Review","text":"Re-solve every problem in the mistakes notebook without looking","key":"d28-review"},{"t":"task","k":"Notes","text":"One-page revision sheet: pattern → code template → complexity","key":"d28-sheet"},{"t":"task","k":"Review","text":"Interview-day checklist ready (near the bottom of this page)","key":"d28-checklist"},{"t":"task","k":"Rest","text":"Sleep early tonight. Memory consolidates during sleep, and the call can come any day now.","key":"d28-sleep"}],"night":[]}],"cov":[{"id":"cov-bigo","t":"Complexity analysis (Big-O, space)","go":[1]},{"id":"cov-arrays","t":"Arrays, hashing, two pointers","go":[1,2,8]},{"id":"cov-prefix","t":"Prefix sums and Kadane","go":[2,8,22]},{"id":"cov-bsearch","t":"Binary search and binary search on the answer","go":[3,9,21,25]},{"id":"cov-window","t":"Sliding window","go":[3,12,22]},{"id":"cov-stack","t":"Stacks, monotonic stack, string parsing","go":[5,10,20,22]},{"id":"cov-lists","t":"Linked lists","go":[5,11,23]},{"id":"cov-trees","t":"Recursion and binary trees","go":[4,13,20,21]},{"id":"cov-bst","t":"BST, heaps and hashing","go":[6,14,24]},{"id":"cov-trie","t":"Trie and LRU/LFU design","go":[14,21,24]},{"id":"cov-matrix","t":"Matrix problems","go":[1,3,20]},{"id":"cov-graph1","t":"Graphs: BFS, DFS, topological sort","go":[7,15,20]},{"id":"cov-graph2","t":"Graphs: Dijkstra, union-find, minimum spanning tree","go":[16]},{"id":"cov-greedy","t":"Greedy and intervals","go":[7,17,23]},{"id":"cov-dp1","t":"DP: 1-D and knapsack","go":[7,18,21,23]},{"id":"cov-dp2","t":"DP: 2-D and state machine","go":[19,23]},{"id":"cov-backtrack","t":"Backtracking","go":[4,14,19,26]},{"id":"cov-bits","t":"Bit manipulation and math","go":[27]},{"id":"cov-lld","t":"Low-level design and OOP","go":[24,26]},{"id":"cov-asked","t":"Previously asked Amazon questions","go":[20,21,22,23,24]},{"id":"cov-freq","t":"Amazon’s most frequent problems","go":["freq"]},{"id":"cov-mocks","t":"Mock interviews","go":[4,11,17,18,24,25]},{"id":"cov-lp","t":"Leadership Principles story bank","go":["stories"]},{"id":"cov-resume","t":"Resume deep dive","go":[9,14,16,18,25]},{"id":"cov-genai","t":"GenAI questions","go":[17,19,25]}],"bank":[{"g":"BFS and DFS on grids and graphs","rows":[{"slug":"rotting-oranges","name":"Rotting Oranges","n":994,"d":"M","a":1,"src":["lc8542365","roundz","med2022"],"keys":["rotting-oranges"],"days":[15],"f3":69.3,"f30":44.3},{"slug":"number-of-islands","name":"Number of Islands","n":200,"d":"M","a":1,"src":["lc8014509","lc8029194","freq"],"keys":["number-of-islands"],"days":[7],"f3":69.3,"f30":79.3},{"slug":"course-schedule","name":"Course Schedule","n":207,"d":"M","a":1,"src":["lc7154883","freq"],"keys":["course-schedule"],"days":[15],"f3":64.3,"f30":null},{"slug":"course-schedule-ii","name":"Course Schedule II","n":210,"d":"M","a":1,"src":["lc6393977","lc7621408"],"keys":["course-schedule-ii"],"days":[15],"f3":48.1,"f30":54.4},{"slug":"detonate-the-maximum-bombs","name":"Detonate the Maximum Bombs","n":2101,"d":"M","a":1,"src":["lc7724048"],"keys":["detonate-the-maximum-bombs"],"days":[20],"f3":null,"f30":null},{"slug":"word-ladder","name":"Word Ladder","n":127,"d":"H","a":1,"src":["lc7035289","freq"],"keys":["word-ladder"],"days":[16],"f3":50.9,"f30":null}]},{"g":"Trees","rows":[{"title":"Vertical sum of a binary tree","sub":"Do LeetCode 987 first","src":["rd1"],"a":1,"keys":["vertical-order-traversal-of-a-binary-tree"],"days":[20]},{"slug":"lowest-common-ancestor-of-a-binary-tree","name":"Lowest Common Ancestor of a Binary Tree","n":236,"d":"M","a":1,"src":["lc8014509","freq"],"keys":["lowest-common-ancestor-of-a-binary-tree"],"days":[21],"f3":68.2,"f30":75.9},{"slug":"lowest-common-ancestor-of-a-binary-search-tree","name":"Lowest Common Ancestor of a Binary Search Tree","n":235,"d":"M","a":1,"src":["lc7981646","med2022"],"keys":["lowest-common-ancestor-of-a-binary-search-tree"],"days":[21],"f3":22.6,"f30":null},{"slug":"path-sum-iii","name":"Path Sum III","n":437,"d":"M","a":1,"src":["lc8029194"],"keys":["path-sum-iii"],"days":[20],"f3":30.5,"f30":null},{"slug":"most-profitable-path-in-a-tree","name":"Most Profitable Path in a Tree","n":2467,"d":"M","a":1,"src":["rd1"],"keys":["most-profitable-path-in-a-tree"],"days":[21],"f3":22.6,"f30":null},{"slug":"maximum-width-of-binary-tree","name":"Maximum Width of Binary Tree","n":662,"d":"M","a":1,"src":["lc7035289"],"keys":["maximum-width-of-binary-tree"],"days":[13],"f3":22.6,"f30":null},{"slug":"binary-tree-zigzag-level-order-traversal","name":"Binary Tree Zigzag Level Order Traversal","n":103,"d":"M","a":2,"src":["gfg2022"],"keys":["binary-tree-zigzag-level-order-traversal"],"days":[13],"f3":null,"f30":null},{"slug":"binary-tree-maximum-path-sum","name":"Binary Tree Maximum Path Sum","n":124,"d":"H","a":2,"src":["gfg2022"],"keys":["binary-tree-maximum-path-sum"],"days":[13],"f3":53.4,"f30":null},{"title":"Implement a BST: insert, delete, search","sub":"LeetCode 701 + 450","src":["roundz"],"a":1,"keys":["insert-into-a-binary-search-tree--2","delete-node-in-a-bst"],"days":[24]},{"slug":"implement-trie-prefix-tree","name":"Implement Trie (Prefix Tree)","n":208,"d":"M","a":1,"src":["roundz"],"keys":["implement-trie-prefix-tree","implement-trie-prefix-tree--2"],"days":[14,24],"f3":22.6,"f30":null},{"slug":"word-search-ii","name":"Word Search II","n":212,"d":"H","a":2,"src":["med2022"],"keys":["word-search-ii"],"days":[14],"f3":36.4,"f30":44.3}]},{"g":"Binary search","rows":[{"slug":"search-in-rotated-sorted-array","name":"Search in Rotated Sorted Array","n":33,"d":"M","a":1,"src":["lc8014509","freq"],"keys":["search-in-rotated-sorted-array"],"days":[9],"f3":59.5,"f30":54.4},{"slug":"single-element-in-a-sorted-array","name":"Single Element in a Sorted Array","n":540,"d":"M","a":1,"src":["lc7154883","freq"],"keys":["single-element-in-a-sorted-array"],"days":[21],"f3":55.7,"f30":54.4},{"slug":"maximize-the-confusion-of-an-exam","name":"Maximize the Confusion of an Exam","n":2024,"d":"M","a":1,"src":["lc8542365"],"keys":["maximize-the-confusion-of-an-exam"],"days":[21],"f3":22.6,"f30":null},{"slug":"magnetic-force-between-two-balls","name":"Magnetic Force Between Two Balls","n":1552,"d":"M","a":1,"src":["lc7724048"],"keys":["magnetic-force-between-two-balls"],"days":[21],"f3":36.4,"f30":null},{"slug":"random-pick-with-weight","name":"Random Pick with Weight","n":528,"d":"M","a":1,"src":["rd1"],"keys":["random-pick-with-weight"],"days":[20],"f3":36.4,"f30":null},{"slug":"heaters","name":"Heaters","n":475,"d":"M","a":1,"src":["lc7035289"],"keys":["heaters"],"days":[9],"f3":30.5,"f30":null},{"slug":"find-k-closest-elements","name":"Find K Closest Elements","n":658,"d":"M","a":2,"src":["med2022"],"keys":["find-k-closest-elements"],"days":[9],"f3":22.6,"f30":null},{"slug":"median-of-two-sorted-arrays","name":"Median of Two Sorted Arrays","n":4,"d":"H","a":1,"src":["lc8029194","freq"],"keys":["median-of-two-sorted-arrays"],"days":[25],"f3":71.5,"f30":61.7}]},{"g":"Arrays, hashing and Kadane","rows":[{"slug":"maximum-sum-circular-subarray","name":"Maximum Sum Circular Subarray","n":918,"d":"M","a":1,"src":["lc8014509"],"keys":["maximum-sum-circular-subarray"],"days":[22],"f3":22.6,"f30":null},{"slug":"maximum-good-subarray-sum","name":"Maximum Good Subarray Sum","n":3026,"d":"M","a":1,"src":["lc8014509"],"keys":["maximum-good-subarray-sum"],"days":[22],"f3":null,"f30":null},{"title":"Two Sum → pair sum ≤ X → buy items within a budget","sub":"Two Sum, two pointers, then 0/1 knapsack","src":["rd1"],"a":1,"keys":["d23-ladder"],"days":[23]},{"title":"Households with duplicate interest forms","sub":"Hashing: O(n·m) brute force, then O(n+m)","src":["lc7621408"],"a":1,"keys":["d6-dupforms"],"days":[6]},{"slug":"move-zeroes","name":"Move Zeroes","n":283,"d":"E","a":2,"src":["gfg2022","freq"],"keys":["move-zeroes"],"days":[2],"f3":71.5,"f30":72.0}]},{"g":"Sliding window","rows":[{"slug":"longest-substring-without-repeating-characters","name":"Longest Substring Without Repeating Characters","n":3,"d":"M","a":1,"src":["lc6393977","freq"],"keys":["longest-substring-without-repeating-characters"],"days":[3],"f3":79.8,"f30":89.7},{"slug":"longest-substring-with-at-most-k-distinct-characters","name":"Longest Substring with At Most K Distinct Characters","n":340,"d":"M","a":1,"src":["lc6393977"],"keys":["longest-substring-with-at-most-k-distinct-characters"],"days":[22],"f3":null,"f30":null},{"slug":"sliding-window-maximum","name":"Sliding Window Maximum","n":239,"d":"H","a":1,"src":["lc7154883"],"keys":["sliding-window-maximum"],"days":[20],"f3":55.7,"f30":null}]},{"g":"Stacks and parsing","rows":[{"slug":"next-greater-element-i","name":"Next Greater Element I","n":496,"d":"E","a":1,"src":["lc7724048"],"keys":["next-greater-element-i"],"days":[22],"f3":48.1,"f30":null},{"slug":"next-greater-element-ii","name":"Next Greater Element II","n":503,"d":"M","a":1,"src":["lc7724048"],"keys":["next-greater-element-ii"],"days":[22],"f3":48.1,"f30":null},{"slug":"parse-lisp-expression","name":"Parse Lisp Expression","n":736,"d":"H","a":1,"src":["lc8542365"],"keys":["parse-lisp-expression"],"days":[20],"f3":null,"f30":null},{"slug":"remove-all-adjacent-duplicates-in-string-ii","name":"Remove All Adjacent Duplicates in String II","n":1209,"d":"M","a":2,"src":["gfg2022"],"keys":["remove-all-adjacent-duplicates-in-string-ii"],"days":[10],"f3":22.6,"f30":null},{"slug":"largest-rectangle-in-histogram","name":"Largest Rectangle in Histogram","n":84,"d":"H","a":1,"src":["lc7621408"],"keys":["largest-rectangle-in-histogram","largest-rectangle-in-histogram--2"],"days":[10,26],"f3":44.9,"f30":44.3}]},{"g":"Dynamic programming and greedy","rows":[{"slug":"house-robber","name":"House Robber","n":198,"d":"M","a":1,"src":["lc8542365","lc8029194","lc7621408"],"keys":["house-robber"],"days":[7],"f3":53.4,"f30":67.4},{"slug":"house-robber-ii","name":"House Robber II","n":213,"d":"M","a":1,"src":["lc8029194"],"keys":["house-robber-ii"],"days":[21],"f3":22.6,"f30":null},{"slug":"best-time-to-buy-and-sell-stock-iii","name":"Best Time to Buy and Sell Stock III","n":123,"d":"H","a":1,"src":["lc8542365"],"keys":["best-time-to-buy-and-sell-stock-iii"],"days":[23],"f3":22.6,"f30":null},{"slug":"best-time-to-buy-and-sell-stock-iv","name":"Best Time to Buy and Sell Stock IV","n":188,"d":"H","a":1,"src":["lc8542365"],"keys":["best-time-to-buy-and-sell-stock-iv"],"days":[23],"f3":null,"f30":null},{"slug":"partition-equal-subset-sum","name":"Partition Equal Subset Sum","n":416,"d":"M","a":1,"src":["rd1"],"keys":["partition-equal-subset-sum"],"days":[18],"f3":36.4,"f30":null},{"slug":"jump-game","name":"Jump Game","n":55,"d":"M","a":1,"src":["lc8029194"],"keys":["jump-game"],"days":[17],"f3":36.4,"f30":null},{"slug":"jump-game-ii","name":"Jump Game II","n":45,"d":"M","a":1,"src":["lc8029194"],"keys":["jump-game-ii"],"days":[17],"f3":41.0,"f30":null},{"slug":"unique-paths","name":"Unique Paths","n":62,"d":"M","a":1,"src":["lc7035289"],"keys":["unique-paths"],"days":[19],"f3":30.5,"f30":null},{"slug":"climbing-stairs","name":"Climbing Stairs","n":70,"d":"E","a":2,"src":["gfg2022"],"keys":["climbing-stairs"],"days":[7],"f3":55.7,"f30":null},{"slug":"count-beautiful-splits-in-an-array","name":"Count Beautiful Splits in an Array","n":3388,"d":"M","a":1,"src":["lc7035289"],"keys":["count-beautiful-splits-in-an-array"],"days":[27],"f3":null,"f30":null},{"slug":"maximum-length-of-pair-chain","name":"Maximum Length of Pair Chain","n":646,"d":"M","a":1,"src":["lc7621408"],"keys":["maximum-length-of-pair-chain"],"days":[17],"f3":null,"f30":null}]},{"g":"Design and OOP","rows":[{"slug":"lru-cache","name":"LRU Cache","n":146,"d":"M","a":1,"src":["rd1","lc7621408","freq"],"keys":["lru-cache","lru-cache--2","lru-cache--3"],"days":[14,21,24],"f3":72.4,"f30":67.4},{"slug":"design-circular-queue","name":"Design Circular Queue","n":622,"d":"M","a":2,"src":["med2022"],"keys":["design-circular-queue"],"days":[24],"f3":null,"f30":null},{"title":"Design a process scheduler","sub":"Priority queue + OOP, with follow-ups on threads and deadlock","src":["lc8014509","lc6738470"],"a":1,"keys":["d24-lld"],"days":[24]},{"title":"Design a board game","sub":"Classes for the board, players and moves","src":["lc6813913"],"a":1,"keys":["d26-lld1"],"days":[26]}]},{"g":"Heaps and sorting","rows":[{"slug":"k-closest-points-to-origin","name":"K Closest Points to Origin","n":973,"d":"M","a":1,"src":["roundz"],"keys":["k-closest-points-to-origin"],"days":[23],"f3":44.9,"f30":null},{"slug":"reverse-pairs","name":"Reverse Pairs","n":493,"d":"H","a":1,"src":["lc6393977"],"keys":["reverse-pairs"],"days":[22],"f3":36.4,"f30":null}]}],"freq":[{"rank":1,"slug":"two-sum","name":"Two Sum","n":1,"d":"E","f3":100.0,"f30":100.0,"keys":["two-sum"],"days":[1]},{"rank":2,"slug":"maximum-coins-from-k-consecutive-bags","name":"Maximum Coins From K Consecutive Bags","n":3413,"d":"M","f3":93.1,"f30":100.0,"keys":["maximum-coins-from-k-consecutive-bags"],"days":[12]},{"rank":3,"slug":"longest-substring-without-repeating-characters","name":"Longest Substring Without Repeating Characters","n":3,"d":"M","f3":79.8,"f30":89.7,"keys":["longest-substring-without-repeating-characters"],"days":[3]},{"rank":4,"slug":"trapping-rain-water","name":"Trapping Rain Water","n":42,"d":"H","f3":79.8,"f30":79.3,"keys":["trapping-rain-water"],"days":[25]},{"rank":5,"slug":"group-anagrams","name":"Group Anagrams","n":49,"d":"M","f3":73.4,"f30":72.0,"keys":["group-anagrams"],"days":[6]},{"rank":6,"slug":"merge-intervals","name":"Merge Intervals","n":56,"d":"M","f3":72.4,"f30":61.7,"keys":["merge-intervals"],"days":[17]},{"rank":7,"slug":"lru-cache","name":"LRU Cache","n":146,"d":"M","f3":72.4,"f30":67.4,"keys":["lru-cache","lru-cache--2","lru-cache--3"],"days":[14,21,24]},{"rank":8,"slug":"median-of-two-sorted-arrays","name":"Median of Two Sorted Arrays","n":4,"d":"H","f3":71.5,"f30":61.7,"keys":["median-of-two-sorted-arrays"],"days":[25]},{"rank":9,"slug":"longest-palindromic-substring","name":"Longest Palindromic Substring","n":5,"d":"M","f3":71.5,"f30":54.4,"keys":["longest-palindromic-substring"],"days":[18]},{"rank":10,"slug":"container-with-most-water","name":"Container With Most Water","n":11,"d":"M","f3":71.5,"f30":67.4,"keys":["container-with-most-water"],"days":[8]},{"rank":11,"slug":"best-time-to-buy-and-sell-stock","name":"Best Time to Buy and Sell Stock","n":121,"d":"E","f3":71.5,"f30":79.3,"keys":["best-time-to-buy-and-sell-stock"],"days":[1]},{"rank":12,"slug":"move-zeroes","name":"Move Zeroes","n":283,"d":"E","f3":71.5,"f30":72.0,"keys":["move-zeroes"],"days":[2]},{"rank":13,"slug":"top-k-frequent-elements","name":"Top K Frequent Elements","n":347,"d":"M","f3":71.5,"f30":44.3,"keys":["top-k-frequent-elements"],"days":[6]},{"rank":14,"slug":"koko-eating-bananas","name":"Koko Eating Bananas","n":875,"d":"M","f3":71.5,"f30":54.4,"keys":["koko-eating-bananas"],"days":[9]},{"rank":15,"slug":"add-two-numbers","name":"Add Two Numbers","n":2,"d":"M","f3":69.3,"f30":67.4,"keys":["add-two-numbers"],"days":[11]},{"rank":16,"slug":"longest-common-prefix","name":"Longest Common Prefix","n":14,"d":"E","f3":69.3,"f30":61.7,"keys":["longest-common-prefix"],"days":[1]},{"rank":17,"slug":"3sum","name":"3Sum","n":15,"d":"M","f3":69.3,"f30":54.4,"keys":["3sum"],"days":[8]},{"rank":18,"slug":"maximum-subarray","name":"Maximum Subarray","n":53,"d":"M","f3":69.3,"f30":54.4,"keys":["maximum-subarray"],"days":[8]},{"rank":19,"slug":"number-of-islands","name":"Number of Islands","n":200,"d":"M","f3":69.3,"f30":79.3,"keys":["number-of-islands"],"days":[7]},{"rank":20,"slug":"subarray-sum-equals-k","name":"Subarray Sum Equals K","n":560,"d":"M","f3":69.3,"f30":72.0,"keys":["subarray-sum-equals-k"],"days":[8]},{"rank":21,"slug":"rotting-oranges","name":"Rotting Oranges","n":994,"d":"M","f3":69.3,"f30":44.3,"keys":["rotting-oranges"],"days":[15]},{"rank":22,"slug":"lowest-common-ancestor-of-a-binary-tree","name":"Lowest Common Ancestor of a Binary Tree","n":236,"d":"M","f3":68.2,"f30":75.9,"keys":["lowest-common-ancestor-of-a-binary-tree"],"days":[21]},{"rank":23,"slug":"reorganize-string","name":"Reorganize String","n":767,"d":"M","f3":68.2,"f30":54.4,"keys":["reorganize-string"],"days":[6]},{"rank":24,"slug":"valid-parentheses","name":"Valid Parentheses","n":20,"d":"E","f3":65.7,"f30":67.4,"keys":["valid-parentheses"],"days":[5]},{"rank":25,"slug":"generate-parentheses","name":"Generate Parentheses","n":22,"d":"M","f3":65.7,"f30":72.0,"keys":["generate-parentheses"],"days":[4]},{"rank":26,"slug":"course-schedule","name":"Course Schedule","n":207,"d":"M","f3":64.3,"f30":null,"keys":["course-schedule"],"days":[15]},{"rank":27,"slug":"product-of-array-except-self","name":"Product of Array Except Self","n":238,"d":"M","f3":62.8,"f30":61.7,"keys":["product-of-array-except-self"],"days":[8]},{"rank":28,"slug":"palindrome-number","name":"Palindrome Number","n":9,"d":"E","f3":61.2,"f30":44.3,"xkey":"x-palindrome-number"},{"rank":29,"slug":"valid-sudoku","name":"Valid Sudoku","n":36,"d":"M","f3":61.2,"f30":75.9,"keys":["valid-sudoku"],"days":[1]},{"rank":30,"slug":"longest-consecutive-sequence","name":"Longest Consecutive Sequence","n":128,"d":"M","f3":61.2,"f30":54.4,"keys":["longest-consecutive-sequence"],"days":[6]},{"rank":31,"slug":"search-in-rotated-sorted-array","name":"Search in Rotated Sorted Array","n":33,"d":"M","f3":59.5,"f30":54.4,"keys":["search-in-rotated-sorted-array"],"days":[9]},{"rank":32,"slug":"sqrtx","name":"Sqrt(x)","n":69,"d":"E","f3":59.5,"f30":54.4,"keys":["sqrtx"],"days":[3]},{"rank":33,"slug":"copy-list-with-random-pointer","name":"Copy List with Random Pointer","n":138,"d":"M","f3":59.5,"f30":54.4,"keys":["copy-list-with-random-pointer"],"days":[11]},{"rank":34,"slug":"majority-element","name":"Majority Element","n":169,"d":"E","f3":59.5,"f30":null,"keys":["majority-element"],"days":[1]},{"rank":35,"slug":"valid-anagram","name":"Valid Anagram","n":242,"d":"E","f3":59.5,"f30":61.7,"keys":["valid-anagram"],"days":[1]},{"rank":36,"slug":"reverse-integer","name":"Reverse Integer","n":7,"d":"M","f3":59.5,"f30":54.4,"xkey":"x-reverse-integer"},{"rank":37,"slug":"capacity-to-ship-packages-within-d-days","name":"Capacity To Ship Packages Within D Days","n":1011,"d":"M","f3":59.5,"f30":44.3,"keys":["capacity-to-ship-packages-within-d-days"],"days":[9]},{"rank":38,"slug":"task-scheduler","name":"Task Scheduler","n":621,"d":"M","f3":59.5,"f30":61.7,"keys":["task-scheduler"],"days":[17]},{"rank":39,"slug":"merge-k-sorted-lists","name":"Merge k Sorted Lists","n":23,"d":"H","f3":57.7,"f30":44.3,"keys":["merge-k-sorted-lists"],"days":[11]},{"rank":40,"slug":"remove-duplicates-from-sorted-array","name":"Remove Duplicates from Sorted Array","n":26,"d":"E","f3":57.7,"f30":44.3,"keys":["remove-duplicates-from-sorted-array"],"days":[2]},{"rank":41,"slug":"fruit-into-baskets","name":"Fruit Into Baskets","n":904,"d":"M","f3":57.7,"f30":null,"keys":["fruit-into-baskets"],"days":[12]},{"rank":42,"slug":"asteroid-collision","name":"Asteroid Collision","n":735,"d":"M","f3":57.7,"f30":null,"keys":["asteroid-collision"],"days":[5]},{"rank":43,"slug":"linked-list-cycle","name":"Linked List Cycle","n":141,"d":"E","f3":57.7,"f30":61.7,"keys":["linked-list-cycle"],"days":[5]},{"rank":44,"slug":"climbing-stairs","name":"Climbing Stairs","n":70,"d":"E","f3":55.7,"f30":null,"keys":["climbing-stairs"],"days":[7]},{"rank":45,"slug":"sliding-window-maximum","name":"Sliding Window Maximum","n":239,"d":"H","f3":55.7,"f30":null,"keys":["sliding-window-maximum"],"days":[20]},{"rank":46,"slug":"find-median-from-data-stream","name":"Find Median from Data Stream","n":295,"d":"H","f3":55.7,"f30":54.4,"keys":["find-median-from-data-stream"],"days":[14]},{"rank":47,"slug":"single-element-in-a-sorted-array","name":"Single Element in a Sorted Array","n":540,"d":"M","f3":55.7,"f30":54.4,"keys":["single-element-in-a-sorted-array"],"days":[21]},{"rank":48,"slug":"max-consecutive-ones-iii","name":"Max Consecutive Ones III","n":1004,"d":"M","f3":55.7,"f30":67.4,"keys":["max-consecutive-ones-iii"],"days":[3]},{"rank":49,"slug":"next-permutation","name":"Next Permutation","n":31,"d":"M","f3":55.7,"f30":null,"keys":["next-permutation"],"days":[8]},{"rank":50,"slug":"split-array-largest-sum","name":"Split Array Largest Sum","n":410,"d":"H","f3":55.7,"f30":61.7,"keys":["split-array-largest-sum"],"days":[9]},{"rank":51,"slug":"roman-to-integer","name":"Roman to Integer","n":13,"d":"E","f3":55.7,"f30":null,"xkey":"x-roman-to-integer"},{"rank":52,"slug":"merge-sorted-array","name":"Merge Sorted Array","n":88,"d":"E","f3":55.7,"f30":null,"keys":["merge-sorted-array"],"days":[2]},{"rank":53,"slug":"subsets","name":"Subsets","n":78,"d":"M","f3":53.4,"f30":null,"keys":["subsets"],"days":[19]},{"rank":54,"slug":"house-robber","name":"House Robber","n":198,"d":"M","f3":53.4,"f30":67.4,"keys":["house-robber"],"days":[7]},{"rank":55,"slug":"concatenation-of-array","name":"Concatenation of Array","n":1929,"d":"E","f3":53.4,"f30":54.4,"xkey":"x-concatenation-of-array"},{"rank":56,"slug":"minimum-operations-to-make-array-non-decreasing","name":"Minimum Operations to Make Array Non Decreasing","n":3914,"d":"M","f3":53.4,"f30":null,"xkey":"x-minimum-operations-to-make-array-non-decreasing","contest":true},{"rank":57,"slug":"binary-tree-maximum-path-sum","name":"Binary Tree Maximum Path Sum","n":124,"d":"H","f3":53.4,"f30":null,"keys":["binary-tree-maximum-path-sum"],"days":[13]},{"rank":58,"slug":"remove-k-digits","name":"Remove K Digits","n":402,"d":"M","f3":53.4,"f30":54.4,"keys":["remove-k-digits"],"days":[10]},{"rank":59,"slug":"separate-black-and-white-balls","name":"Separate Black and White Balls","n":2938,"d":"M","f3":53.4,"f30":54.4,"keys":["separate-black-and-white-balls"],"days":[23]},{"rank":60,"slug":"word-ladder","name":"Word Ladder","n":127,"d":"H","f3":50.9,"f30":null,"keys":["word-ladder"],"days":[16]},{"rank":61,"slug":"kth-largest-element-in-an-array","name":"Kth Largest Element in an Array","n":215,"d":"M","f3":50.9,"f30":null,"keys":["kth-largest-element-in-an-array"],"days":[14]},{"rank":62,"slug":"meeting-rooms-ii","name":"Meeting Rooms II","n":253,"d":"M","f3":50.9,"f30":null,"keys":["meeting-rooms-ii"],"days":[17]},{"rank":63,"slug":"daily-temperatures","name":"Daily Temperatures","n":739,"d":"M","f3":50.9,"f30":null,"keys":["daily-temperatures"],"days":[10]},{"rank":64,"slug":"minimum-window-substring","name":"Minimum Window Substring","n":76,"d":"H","f3":50.9,"f30":null,"keys":["minimum-window-substring","minimum-window-substring--2"],"days":[12,26]},{"rank":65,"slug":"find-first-and-last-position-of-element-in-sorted-array","name":"Find First and Last Position of Element in Sorted Array","n":34,"d":"M","f3":50.9,"f30":44.3,"keys":["find-first-and-last-position-of-element-in-sorted-array"],"days":[3]},{"rank":66,"slug":"find-the-index-of-the-first-occurrence-in-a-string","name":"Find the Index of the First Occurrence in a String","n":28,"d":"E","f3":50.9,"f30":null,"xkey":"x-find-the-index-of-the-first-occurrence-in-a-string"},{"rank":67,"slug":"longest-valid-parentheses","name":"Longest Valid Parentheses","n":32,"d":"H","f3":50.9,"f30":67.4,"keys":["longest-valid-parentheses"],"days":[10]},{"rank":68,"slug":"interleaving-string","name":"Interleaving String","n":97,"d":"M","f3":50.9,"f30":54.4,"keys":["interleaving-string"],"days":[18]},{"rank":69,"slug":"binary-search","name":"Binary Search","n":704,"d":"E","f3":50.9,"f30":67.4,"keys":["binary-search"],"days":[3]},{"rank":70,"slug":"maximum-average-subarray-i","name":"Maximum Average Subarray I","n":643,"d":"E","f3":50.9,"f30":null,"keys":["maximum-average-subarray-i"],"days":[3]},{"rank":71,"slug":"4sum","name":"4Sum","n":18,"d":"M","f3":48.1,"f30":44.3,"keys":["4sum"],"days":[22]},{"rank":72,"slug":"merge-two-sorted-lists","name":"Merge Two Sorted Lists","n":21,"d":"E","f3":48.1,"f30":44.3,"keys":["merge-two-sorted-lists"],"days":[5]},{"rank":73,"slug":"rotate-image","name":"Rotate Image","n":48,"d":"M","f3":48.1,"f30":null,"keys":["rotate-image"],"days":[20]},{"rank":74,"slug":"pascals-triangle","name":"Pascal's Triangle","n":118,"d":"E","f3":48.1,"f30":null,"keys":["pascals-triangle"],"days":[7]},{"rank":75,"slug":"next-greater-element-ii","name":"Next Greater Element II","n":503,"d":"M","f3":48.1,"f30":null,"keys":["next-greater-element-ii"],"days":[22]},{"rank":76,"slug":"contains-duplicate","name":"Contains Duplicate","n":217,"d":"E","f3":48.1,"f30":null,"keys":["contains-duplicate"],"days":[1]},{"rank":77,"slug":"search-insert-position","name":"Search Insert Position","n":35,"d":"E","f3":48.1,"f30":null,"keys":["search-insert-position"],"days":[3]},{"rank":78,"slug":"next-greater-element-i","name":"Next Greater Element I","n":496,"d":"E","f3":48.1,"f30":null,"keys":["next-greater-element-i"],"days":[22]},{"rank":79,"slug":"search-a-2d-matrix-ii","name":"Search a 2D Matrix II","n":240,"d":"M","f3":48.1,"f30":44.3,"keys":["search-a-2d-matrix-ii"],"days":[3]},{"rank":80,"slug":"valid-palindrome","name":"Valid Palindrome","n":125,"d":"E","f3":48.1,"f30":null,"keys":["valid-palindrome"],"days":[2]},{"rank":81,"slug":"coin-change","name":"Coin Change","n":322,"d":"M","f3":48.1,"f30":61.7,"keys":["coin-change"],"days":[18]},{"rank":82,"slug":"course-schedule-ii","name":"Course Schedule II","n":210,"d":"M","f3":48.1,"f30":54.4,"keys":["course-schedule-ii"],"days":[15]},{"rank":83,"slug":"find-minimum-in-rotated-sorted-array","name":"Find Minimum in Rotated Sorted Array","n":153,"d":"M","f3":48.1,"f30":null,"keys":["find-minimum-in-rotated-sorted-array"],"days":[9]},{"rank":84,"slug":"range-sum-query-immutable","name":"Range Sum Query - Immutable","n":303,"d":"E","f3":48.1,"f30":44.3,"xkey":"x-range-sum-query-immutable"},{"rank":85,"slug":"maximum-bitwise-and-after-increment-operations","name":"Maximum Bitwise AND After Increment Operations","n":3806,"d":"H","f3":48.1,"f30":75.9,"xkey":"x-maximum-bitwise-and-after-increment-operations","contest":true},{"rank":86,"slug":"maximum-nesting-depth-of-two-valid-parentheses-strings","name":"Maximum Nesting Depth of Two Valid Parentheses Strings","n":1111,"d":"M","f3":48.1,"f30":61.7,"xkey":"x-maximum-nesting-depth-of-two-valid-parentheses-strings"},{"rank":87,"slug":"letter-combinations-of-a-phone-number","name":"Letter Combinations of a Phone Number","n":17,"d":"M","f3":44.9,"f30":null,"keys":["letter-combinations-of-a-phone-number"],"days":[19]},{"rank":88,"slug":"largest-rectangle-in-histogram","name":"Largest Rectangle in Histogram","n":84,"d":"H","f3":44.9,"f30":44.3,"keys":["largest-rectangle-in-histogram","largest-rectangle-in-histogram--2"],"days":[10,26]},{"rank":89,"slug":"single-number","name":"Single Number","n":136,"d":"E","f3":44.9,"f30":44.3,"keys":["single-number"],"days":[27]},{"rank":90,"slug":"find-the-duplicate-number","name":"Find the Duplicate Number","n":287,"d":"M","f3":44.9,"f30":null,"keys":["find-the-duplicate-number"],"days":[11]},{"rank":91,"slug":"n-queens","name":"N-Queens","n":51,"d":"H","f3":44.9,"f30":44.3,"keys":["n-queens"],"days":[26]},{"rank":92,"slug":"permutations","name":"Permutations","n":46,"d":"M","f3":44.9,"f30":44.3,"keys":["permutations"],"days":[19]},{"rank":93,"slug":"word-break","name":"Word Break","n":139,"d":"M","f3":44.9,"f30":44.3,"keys":["word-break"],"days":[18]},{"rank":94,"slug":"integer-to-roman","name":"Integer to Roman","n":12,"d":"M","f3":44.9,"f30":44.3,"xkey":"x-integer-to-roman"},{"rank":95,"slug":"validate-binary-search-tree","name":"Validate Binary Search Tree","n":98,"d":"M","f3":44.9,"f30":null,"keys":["validate-binary-search-tree"],"days":[13]},{"rank":96,"slug":"string-to-integer-atoi","name":"String to Integer (atoi)","n":8,"d":"M","f3":44.9,"f30":44.3,"keys":["string-to-integer-atoi"],"days":[27]},{"rank":97,"slug":"evaluate-division","name":"Evaluate Division","n":399,"d":"M","f3":44.9,"f30":44.3,"keys":["evaluate-division"],"days":[15]},{"rank":98,"slug":"reverse-nodes-in-k-group","name":"Reverse Nodes in k-Group","n":25,"d":"H","f3":44.9,"f30":null,"keys":["reverse-nodes-in-k-group"],"days":[23]},{"rank":99,"slug":"two-sum-ii-input-array-is-sorted","name":"Two Sum II - Input Array Is Sorted","n":167,"d":"M","f3":44.9,"f30":null,"keys":["two-sum-ii-input-array-is-sorted"],"days":[2]},{"rank":100,"slug":"k-closest-points-to-origin","name":"K Closest Points to Origin","n":973,"d":"M","f3":44.9,"f30":null,"keys":["k-closest-points-to-origin"],"days":[23]},{"rank":101,"slug":"maximum-white-tiles-covered-by-a-carpet","name":"Maximum White Tiles Covered by a Carpet","n":2271,"d":"M","f3":44.9,"f30":44.3,"keys":["maximum-white-tiles-covered-by-a-carpet"],"days":[24]},{"rank":102,"slug":"divide-two-integers","name":"Divide Two Integers","n":29,"d":"M","f3":44.9,"f30":54.4,"keys":["divide-two-integers"],"days":[27]},{"rank":103,"slug":"contiguous-array","name":"Contiguous Array","n":525,"d":"M","f3":44.9,"f30":44.3,"keys":["contiguous-array"],"days":[8]},{"rank":104,"slug":"insert-delete-getrandom-o1","name":"Insert Delete GetRandom O(1)","n":380,"d":"M","f3":44.9,"f30":null,"keys":["insert-delete-getrandom-o1"],"days":[14]},{"rank":105,"slug":"candy","name":"Candy","n":135,"d":"H","f3":44.9,"f30":null,"keys":["candy"],"days":[17]},{"rank":106,"slug":"length-of-last-word","name":"Length of Last Word","n":58,"d":"E","f3":44.9,"f30":54.4,"xkey":"x-length-of-last-word"},{"rank":107,"slug":"lexicographically-smallest-permutation-greater-than-target","name":"Lexicographically Smallest Permutation Greater Than Target","n":3720,"d":"M","f3":44.9,"f30":null,"xkey":"x-lexicographically-smallest-permutation-greater-than-target","contest":true},{"rank":108,"slug":"jump-game-ii","name":"Jump Game II","n":45,"d":"M","f3":41.0,"f30":null,"keys":["jump-game-ii"],"days":[17]},{"rank":109,"slug":"spiral-matrix","name":"Spiral Matrix","n":54,"d":"M","f3":41.0,"f30":44.3,"keys":["spiral-matrix"],"days":[20]},{"rank":110,"slug":"zigzag-conversion","name":"Zigzag Conversion","n":6,"d":"M","f3":41.0,"f30":null,"xkey":"x-zigzag-conversion"},{"rank":111,"slug":"odd-even-linked-list","name":"Odd Even Linked List","n":328,"d":"M","f3":41.0,"f30":null,"keys":["odd-even-linked-list"],"days":[5]},{"rank":112,"slug":"min-stack","name":"Min Stack","n":155,"d":"M","f3":41.0,"f30":null,"keys":["min-stack"],"days":[10]},{"rank":113,"slug":"largest-number","name":"Largest Number","n":179,"d":"M","f3":41.0,"f30":null,"keys":["largest-number"],"days":[23]},{"rank":114,"slug":"remove-element","name":"Remove Element","n":27,"d":"E","f3":41.0,"f30":null,"xkey":"x-remove-element"},{"rank":115,"slug":"permutation-in-string","name":"Permutation in String","n":567,"d":"M","f3":41.0,"f30":null,"keys":["permutation-in-string"],"days":[12]},{"rank":116,"slug":"reverse-string","name":"Reverse String","n":344,"d":"E","f3":41.0,"f30":44.3,"xkey":"x-reverse-string"},{"rank":117,"slug":"reorder-list","name":"Reorder List","n":143,"d":"M","f3":41.0,"f30":null,"keys":["reorder-list"],"days":[11]},{"rank":118,"slug":"best-time-to-buy-and-sell-stock-ii","name":"Best Time to Buy and Sell Stock II","n":122,"d":"M","f3":41.0,"f30":54.4,"keys":["best-time-to-buy-and-sell-stock-ii"],"days":[7]},{"rank":119,"slug":"valid-palindrome-ii","name":"Valid Palindrome II","n":680,"d":"E","f3":41.0,"f30":null,"xkey":"x-valid-palindrome-ii"},{"rank":120,"slug":"reverse-linked-list","name":"Reverse Linked List","n":206,"d":"E","f3":41.0,"f30":null,"keys":["reverse-linked-list"],"days":[5]}],"lp":[{"id":"lp-deadline","q":"A hard deadline, including one where requirements changed: the result, your manager’s feedback, what you changed","s":"A real release or CI crunch at Parallel Wireless (your example)","p":["Deliver Results","Ownership"],"src":["lc7724048","lc8542365","roundz"],"note":"Asked by two interviewers in one loop"},{"id":"lp-missed","q":"A missed deadline: how you told stakeholders and what you would do differently","s":"Your example","p":["Earn Trust","Ownership"],"src":["lc6393977","lc7724048","lc6738470"],"note":""},{"id":"lp-beyond","q":"Going beyond your role, or taking on something significant outside it","s":"The RAG triage service or TC Executor, if it started as your initiative; or debugging flaky test infrastructure","p":["Ownership"],"src":["lc6393977","lc7035289","roundz"],"note":""},{"id":"lp-challenge","q":"Your most challenging project, or something hard you built","s":"The EventLogging producer-consumer race, where a fast reader outran a slow writer and dropped data","p":["Dive Deep","Insist on the Highest Standards"],"src":["lc6393977","lc7035289"],"note":""},{"id":"lp-divedeep","q":"Diving deep into a problem (expect many follow-ups)","s":"Tracing flaky runs to silent SCP/SSH failures and cron race conditions","p":["Dive Deep"],"src":["lc7724048","lc8014509","lc6393977","lc6738470"],"note":""},{"id":"lp-convince","q":"Convincing someone of your approach, or persuading a colleague who disagreed","s":"Getting QA and dev teams to adopt TC Executor","p":["Earn Trust","Have Backbone; Disagree and Commit"],"src":["lc7724048","lc8014509","lc6738470"],"note":""},{"id":"lp-conflict","q":"A conflict, or disagreeing with a team decision, and how you resolved it","s":"Reviewing PRs as maintainer for teams in Pune, Bengaluru and Israel","p":["Have Backbone; Disagree and Commit"],"src":["roundz"],"note":""},{"id":"lp-manager","q":"Disagreeing with your manager","s":"Your example","p":["Have Backbone; Disagree and Commit"],"src":["roundz"],"note":""},{"id":"lp-feedback","q":"Critical feedback from your manager, and what changed afterwards","s":"Your example","p":["Learn and Be Curious","Earn Trust"],"src":["lc6393977","lc6738470","lc8542365"],"note":""},{"id":"lp-right","q":"How you knew your approach would actually work (data, tests, metrics)","s":"The RAG service’s 20%+ debuggability gain, or CI failure-rate data","p":["Are Right, A Lot","Dive Deep"],"src":["lc6393977","lc8542365"],"note":"A Bar Raiser asked: “How did you know multithreading would solve it?”"},{"id":"lp-stuck","q":"When you were stuck: how you decided what to do next","s":"Your example","p":["Bias for Action","Dive Deep"],"src":["lc6393977"],"note":""},{"id":"lp-data","q":"A data-driven or intuition-based decision","s":"CRV’s daily coverage reports driving new tests for low-coverage modules","p":["Are Right, A Lot","Dive Deep"],"src":[],"note":""},{"id":"lp-simplify","q":"Simplifying a process","s":"Turning a recurring two-PR data-model change into a single-file edit","p":["Invent and Simplify"],"src":[],"note":""},{"id":"lp-ownership","q":"Owning something end to end and delivering","s":"Taking Core-Stacks CI from unstable to a very low failure rate (Star Award)","p":["Ownership","Deliver Results"],"src":["lc8542365","lc6738470"],"note":""},{"id":"lp-customer","q":"Customer obsession","s":"The RAG triage service giving engineers same-day bug closure","p":["Customer Obsession"],"src":[],"note":""},{"id":"lp-helping","q":"Helping a teammate, or handing over responsibilities","s":"Your example","p":["Ownership","Earn Trust"],"src":["lc6738470","lc6393977"],"note":""},{"id":"lp-mentor","q":"Mentoring someone","s":"Your example (a new joiner or intern you guided through CI or code review)","p":["Hire and Develop the Best"],"src":["roundz"],"note":""},{"id":"lp-failure","q":"A failure or a blunder, and what you learned","s":"Your example","p":["Learn and Be Curious"],"src":["gfg2022","roundz"],"note":""},{"id":"lp-sme","q":"Becoming the expert on something so you could build a feature you needed","s":"Learning embeddings, vector databases and RAG to build the triage service","p":["Learn and Be Curious","Dive Deep"],"src":["lc6738470"],"note":""},{"id":"lp-frugal","q":"Innovation and frugality in your GenAI project","s":"TC Executor or the RAG service: what you built with the tools and infrastructure you already had","p":["Invent and Simplify","Frugality"],"src":["lc7981646"],"note":""},{"id":"lp-redo","q":"A feature you built in a week or two that later had to be redone","s":"Your example","p":["Insist on the Highest Standards","Bias for Action"],"src":["lc6738470"],"note":""},{"id":"lp-ambiguity","q":"Handling ambiguity: a vague, one-line requirement","s":"Your example (TC Executor’s early scope, if it fits)","p":["Bias for Action","Ownership"],"src":["roundz"],"note":""},{"id":"lp-weakness","q":"Something you are not good at, how you are improving it, and how you learn a new technology","s":"Your example, plus how you picked up LLM and RAG tooling","p":["Learn and Be Curious"],"src":["lc7035289","lc6393977"],"note":""},{"id":"lp-why","q":"Why Amazon, and why leave your current job?","s":"Your own answer, tied to the FinOps FP&amp;A team","p":[],"src":["gfg2022"],"note":""}],"rd":[{"id":"rd-rag","t":"RAG failure-triage service","q":"How logs and docs are chunked and embedded; which vector database and why; how a failure is labelled infra or product defect; how you measured “20%+ better debuggability”; what happens when it is wrong."},{"id":"rd-tcx","t":"TC Executor","q":"How generated Pytest cases are checked before they run; prompt design; handling wrong or made-up tests; how runs are scheduled on private, develop and release branches (useful for the “schedule processes” design question)."},{"id":"rd-config","t":"Config automation","q":"How the two-PR data-model change became a one-file edit; what gets generated; how the REST API publish is validated and rolled back."},{"id":"rd-ci","t":"Core-Stacks Jenkins CI","q":"What made it unstable; what you changed; how you measured the failure rate; how the Groovy pipeline is structured."},{"id":"rd-eventlog","t":"EventLogging race fix","q":"Why the fast reader dropped data; the fix and why you chose it; how you proved it worked; the Coverity and Clang findings. A 2026 Bar Raiser asked: “How did you know multithreading would solve it?”"},{"id":"rd-flaky","t":"Flaky test infrastructure","q":"How you traced silent SCP/SSH failures and cron race conditions."},{"id":"rd-crv","t":"CRV","q":"Django REST + React architecture, SSO, data model, coverage alerts, Docker setup."},{"id":"rd-k8s","t":"Kubernetes KPI pod and ELK pipelines","q":"Log volume, how KPI failures are detected, the upload to the SMO cloud."},{"id":"rd-voice","t":"AI Voice Caller","q":"Multi-tenant isolation; the streaming STT → LLM → TTS latency budget; how tenant documents feed the RAG knowledge base."},{"id":"rd-realestate","t":"Real Estate Listing Portal","q":"The 48-table PostgreSQL schema, scoped RBAC, Redis workers, and how WhatsApp messages become leads."},{"id":"rd-vision","t":"Real Vision AI","q":"Why YOLOv8; latency on edge NPU/GPU; handling many camera feeds; how the LLM search over recorded events works."},{"id":"rd-systems","t":"Systems projects","q":"Virtual File System internals (incore inode table, file table, UAREA) and your Java projects."},{"id":"rd-skills","t":"Skills your resume claims","q":"2-minute answers on Java collections and multithreading, JVM memory and GC, OS processes, threads and deadlocks, SQL joins and indexes, REST, Docker and Kubernetes basics."}],"ga":[{"id":"ga-workflow","q":"How do you use GenAI in your daily work?","s":"","src":["lc8546875","tuf","lc7621408","rd1"]},{"id":"ga-best","q":"How do you make the best use of LLMs?","s":"","src":["lc7724048"]},{"id":"ga-usecases","q":"Which GenAI use cases did you find in your projects?","s":"","src":["rd1"]},{"id":"ga-verify","q":"How do you check GenAI output, and AI-written code, before you trust it?","s":"","src":["lc7724048","lc8014509","rd1"]},{"id":"ga-models","q":"Which models do you prefer, and why?","s":"","src":["rd1"]},{"id":"ga-tasks","q":"How do you decide which tasks to give to GenAI?","s":"","src":["rd1"]},{"id":"ga-measure","q":"How do you measure a model’s performance?","s":"","src":["rd1"]},{"id":"ga-agents","q":"Tell me about agents and AI workflows you have built.","s":"TC Executor and the RAG triage service","src":["lc8542365","rd1"]},{"id":"ga-tips","q":"What are your tips for using LLMs efficiently?","s":"","src":["lc7724048","rd1"]},{"id":"ga-incident","q":"Scenario: a production incident must be fixed within one hour, and you may use AI tools. Walk through triage, logs and monitoring, what you ask the AI, and how you avoid relying on it too much.","s":"Your RAG failure-triage service is a strong example here","src":["lc8029194"]},{"id":"ga-arch","q":"Walk through your GenAI project’s architecture in 30 minutes, including where it shows Invent and Simplify and Frugality.","s":"TC Executor or the RAG service","src":["lc7981646"]},{"id":"ga-br","q":"Bar Raiser rehearsal: a friend grills you for 45 minutes on one project: why this approach, the alternatives, how you knew it worked, the critical feedback, what changed.","s":"Expect 3–5 LP questions with follow-ups on your exact contribution, metrics and trade-offs","src":["lc8542365","lc7724048","lc6393977"]}],"dayof":[{"id":"do-room","q":"Quiet room, stable internet, laptop charged, camera and mic tested"},{"id":"do-paper","q":"Pen and paper for dry runs, and water"},{"id":"do-early","q":"Join 5 minutes early"},{"id":"do-steps","q":"For every problem: clarify → brute force → optimal → code → dry run → complexity"},{"id":"do-aloud","q":"Think out loud, unless the interviewer asks you to finish the code first"},{"id":"do-sleep","q":"Seven hours of sleep the night before"},{"id":"do-questions","q":"Two questions ready to ask each interviewer"}],"src":{"rd1":{"short":"Reddit (yours)","label":"Reddit post you shared: 2026 on-campus SDE-1 loop, selected 10 Sep 2026","url":""},"lc8542365":{"short":"LC 8542365","label":"LeetCode: SDE-1 loop on 8 May 2026, offer 21 Sep 2026 (the same story as the r/DSALeetCode post you shared)","url":"https://leetcode.com/discuss/post/8542365/amazon-sde-1-interview-experience-tcs-am-8dyr/"},"lc8014509":{"short":"LC 8014509","label":"LeetCode: SDE-1 loop, April 2026","url":"https://leetcode.com/discuss/post/8014509/"},"lc8029194":{"short":"LC 8029194","label":"LeetCode: SDE-1 loop, March 2026, selected","url":"https://leetcode.com/discuss/post/8029194/amazon-interview-sde-1-selected-by-anony-qatd/"},"lc8343668":{"short":"LC 8343668","label":"LeetCode: SDE-1 2026, selected (round format and timeline)","url":"https://leetcode.com/discuss/post/8343668/amazon-sde-1-interview-experience-2026-s-uroi/"},"lc8546875":{"short":"LC 8546875","label":"LeetCode: SDE-1 2026, selected (LLD and GenAI rounds)","url":"https://leetcode.com/discuss/post/8546875/amazon-sde-1-interview-experience-2026-b-30gn/"},"tuf":{"short":"takeuforward","label":"takeuforward: Amazon SDE-1 interview experience 2026, offer","url":"https://takeuforward.org/community/interview-experiences/amazon-sde-1-interview-experience-2026"},"lc7621408":{"short":"LC 7621408","label":"LeetCode: SDE-1 2026, offer (GenAI fluency round)","url":"https://leetcode.com/discuss/post/7621408/amazon-sde-1-interview-experience-2026-b-6n61/"},"lc7724048":{"short":"LC 7724048","label":"LeetCode: SDE-1, selected (Detonate Bombs, Aggressive Cows, GenAI round)","url":"https://leetcode.com/discuss/post/7724048/amazon-sde-1-interview-experience-by-ano-t6fz/"},"lc7981646":{"short":"LC 7981646","label":"LeetCode: SDE-1, 2025 graduate, offer","url":"https://leetcode.com/discuss/post/7981646/"},"lc7035289":{"short":"LC 7035289","label":"LeetCode: SDE-1, 2025 offer (Heaters, Word Ladder, grid DP)","url":"https://leetcode.com/discuss/post/7035289/amazon-sde-1-offer-by-anonymous_user-3efp/"},"lc6813913":{"short":"LC 6813913","label":"LeetCode: SDE-1, 2025 offer (board-game design round)","url":"https://leetcode.com/discuss/post/6813913/amazon-sde-1-interview-experience-2025-o-p3fd/"},"lc6738470":{"short":"LC 6738470","label":"LeetCode: SDE-1 Bangalore, 2025 offer (priority queue + OOP)","url":"https://leetcode.com/discuss/post/6738470/amazon-offer-sde-1-bangalore-by-anonymou-to24/"},"lc6393977":{"short":"LC 6393977","label":"LeetCode: SDE-1, February 2025, selected","url":"https://leetcode.com/discuss/post/6393977/amazon-sde-1-interview-experience-select-ldzi/"},"lc7154883":{"short":"LC 7154883","label":"LeetCode: SDE-1, selected","url":"https://leetcode.com/discuss/post/7154883/"},"roundz":{"short":"Roundz","label":"Roundz: Amazon SDE-1 (L4) Bengaluru, 2025 offer","url":"https://roundz.substack.com/p/interview-experience-128-amazon-sde1-l4"},"gfg2022":{"short":"GfG 2022","label":"GeeksforGeeks: Amazon SDE-1 off campus, 2022","url":"https://www.geeksforgeeks.org/interview-experiences/amazon-interview-experience-for-sde-1-off-campus-11/"},"med2022":{"short":"Medium 2022","label":"Medium: Amazon SDE-1 off campus, selected, 2022","url":"https://vinscoder1627.medium.com/amazon-sde-1-off-campus-interview-experience-selected-c111ca8a6689"},"freq":{"short":"Amazon freq","label":"Amazon problem frequency from LeetCode company tags (liquidslr dataset, updated 20 Oct 2026)","url":"https://github.com/liquidslr/leetcode-company-wise-problems/tree/main/Amazon"}}};
+
+  /* ================= helpers ================= */
+  const $ = s => document.querySelector(s);
+  const reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const START = new Date(DATA.start[0], DATA.start[1], DATA.start[2]);
+  const WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const MO = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+  const fmtDate = d => `${WD[d.getDay()]} ${d.getDate()} ${MO[d.getMonth()]}`;
+  const DIFF = { E: ['Easy', 20], M: ['Medium', 40], H: ['Hard', 60] };
+  const KIND = { Learn: 'Learn', LP: 'LP', Resume: 'Resume', Mock: 'Mock', GenAI: 'GenAI', LLD: 'LLD', Review: 'Review', Notes: 'Notebook', Ladder: 'Ladder', Problem: 'Problem', Rest: 'Rest' };
+  const PHASE_LC = ['', 'basics', 'core patterns', 'asked questions and mocks'];
+  const attr = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  const lcUrl = slug => `https://leetcode.com/problems/${slug}/`;
+
+  const DAYS = DATA.days;
+  const ITEMS = new Map();
+  for (const day of DAYS) {
+    day.date = addDays(START, day.n - 1);
+    day.all = day.items.concat(day.night);
+    for (const it of day.all) ITEMS.set(it.key, { it, day });
+  }
+  const LC_KEYS = new Map();     // slug -> keys
+  for (const day of DAYS) for (const it of day.all) if (it.t === 'lc') {
+    if (!LC_KEYS.has(it.slug)) LC_KEYS.set(it.slug, []);
+    LC_KEYS.get(it.slug).push(it.key);
+  }
+  const NIGHT_KEYS = DAYS.flatMap(d => d.night.map(i => i.key));
+  const ALL_KEYS = new Set([...ITEMS.keys(), ...DATA.cov.map(r => r.id), ...DATA.lp.map(r => r.id),
+    ...DATA.rd.map(r => r.id), ...DATA.ga.map(r => r.id), ...DATA.dayof.map(r => r.id),
+    ...DATA.freq.filter(r => r.xkey).map(r => r.xkey)]);
+
+  function todayIndex() {
+    const now = new Date();
+    const t = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return Math.round((t - START) / 864e5) + 1;
+  }
+
+  /* ================= rendering ================= */
+  function proofHTML(src, max) {
+    if (!src || !src.length) return '';
+    const list = max ? src.slice(0, max) : src;
+    const parts = list.map(k => {
+      const s = DATA.src[k];
+      if (!s) return '';
+      return s.url
+        ? `<a class="pf" href="${attr(s.url)}" target="_blank" rel="noopener" title="${attr(s.label)}">${s.short}</a>`
+        : `<span class="pf" title="${attr(s.label)}">${s.short}</span>`;
+    }).join('');
+    const more = max && src.length > max ? `<span class="pf">+${src.length - max}</span>` : '';
+    return `<span class="proof"><span class="lbl">Proof</span>${parts}${more}</span>`;
+  }
+
+  function badges(o) {
+    let s = '';
+    if (o.a === 1) s += '<span class="badge asked">Asked</span>';
+    else if (o.a === 2) s += '<span class="badge asked-old">Asked ’22</span>';
+    if (o.prem) s += '<span class="badge prem">Premium</span>';
+    return s;
+  }
+  const freqChip = o => o.f3 ? `<span class="fq" title="Amazon frequency score, last 3 months (LeetCode company tag)">Freq ${Math.round(o.f3)}</span>` : '';
+
+  function tickRow(key, pre, inner) {
+    const id = pre + key;
+    return `<li class="item"><input type="checkbox" class="tick" id="${id}" data-key="${key}"><label for="${id}">${inner}</label></li>`;
+  }
+
+  function itemHTML(it, pre) {
+    let main, meta;
+    if (it.t === 'lc') {
+      const df = DIFF[it.d];
+      main = `<a href="${lcUrl(it.slug)}" target="_blank" rel="noopener">${it.name}</a>`;
+      meta = `${it.n ? `<span class="num">#${it.n}</span>` : ''}<span class="diff diff-${it.d}">${df[0]} · ${df[1]} min</span>${badges(it)}${freqChip(it)}`;
+    } else {
+      main = `<span class="tag tag-${it.k.toLowerCase()}">${KIND[it.k] || it.k}</span>${it.text}`;
+      meta = badges(it);
+    }
+    const proof = it.src && it.src.length ? proofHTML(it.src.filter(s => s !== 'freq'), 3) : '';
+    return tickRow(it.key, pre,
+      `<span class="main">${main}</span>` +
+      (meta || proof ? `<span class="meta">${meta}${proof}</span>` : '') +
+      (it.note ? `<span class="note">${it.note}</span>` : ''));
+  }
+
+  function nightHTML(day, pre) {
+    if (!day.night.length) return '';
+    const when = day.weekend ? 'any time today' : 'after the core set, until about 2 AM';
+    return `<p class="night-h">Night block · ${day.night.length} problems <span>${when}</span></p>` +
+      `<ul class="items">${day.night.map(it => itemHTML(it, pre)).join('')}</ul>`;
+  }
+
+  const CHEV = '<svg class="chev" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function dayHTML(day) {
+    return `<details class="day ph${day.phase}" id="day-${day.n}">
+      <summary>
+        <span class="dnum"><small>Day</small><b>${day.n}</b></span>
+        <span class="dmain"><span class="ddate"><span>${fmtDate(day.date)} · ${day.hours}</span></span><span class="dtitle">${day.title}</span></span>
+        <span class="dprog"><span class="dcount">0/${day.all.length}</span><span class="ring"></span>${CHEV}</span>
+      </summary>
+      <ul class="items">${day.items.map(it => itemHTML(it, 'p-')).join('')}</ul>
+      ${nightHTML(day, 'p-')}
+      <p class="coach">${day.coach}</p>
+    </details>`;
+  }
+
+  function phaseHTML(ph) {
+    const days = DAYS.filter(d => d.phase === ph.n);
+    return `<section class="phase ph${ph.n}" id="phase-${ph.n}" aria-labelledby="phase-${ph.n}-h">
+      <div class="phase-head">
+        <p class="ph-k">Phase ${ph.n} · ${ph.range}</p>
+        <h3 id="phase-${ph.n}-h">${ph.name}</h3>
+        <p class="ph-desc">${ph.desc}</p>
+        <div class="ph-prog"><div class="bar"><i data-pbar="${ph.n}"></i></div><span class="count" data-pcount="${ph.n}"></span></div>
+      </div>
+      <div class="days">${days.map(dayHTML).join('')}</div>
+    </section>`;
+  }
+
+  function calHTML() {
+    let s = ['M', 'T', 'W', 'T', 'F', 'S', 'S'].map(w => `<span class="wd" aria-hidden="true">${w}</span>`).join('');
+    const lead = (START.getDay() + 6) % 7;
+    for (let i = 0; i < lead; i++) s += '<span class="cell blank" aria-hidden="true"></span>';
+    for (const day of DAYS) {
+      const d = day.date;
+      const mo = (day.n === 1 || d.getDate() === 1) ? `<span class="mo">${MO[d.getMonth()]}</span>` : '';
+      s += `<a class="cell ph${day.phase}" href="#day-${day.n}" data-cell="${day.n}"><span class="lvl"></span><span class="dt">${d.getDate()}</span>${mo}</a>`;
+    }
+    return s;
+  }
+
+  const gotoChip = n => typeof n === 'number'
+    ? `<a class="goto" href="#day-${n}" aria-label="Go to day ${n}">D${n}</a>`
+    : `<a class="goto" href="#${n}">${n === 'freq' ? 'Freq list' : 'LP stories'}</a>`;
+
+  function bankRowHTML(r) {
+    let name, meta = '';
+    if (r.slug) {
+      name = `<a href="${lcUrl(r.slug)}" target="_blank" rel="noopener">${r.name}</a>`;
+      meta = `${r.n ? `<span class="num">#${r.n}</span>` : ''}<span class="diff diff-${r.d}">${DIFF[r.d][0]}</span>`;
+    } else {
+      name = r.title;
+      meta = `<span class="bsub">${r.sub}</span>`;
+    }
+    if (r.a === 2) meta += '<span class="badge asked-old">Asked ’22</span>';
+    meta += freqChip(r);
+    meta += proofHTML(r.src.filter(s => s !== 'freq'));
+    return `<li class="brow" data-keys="${r.keys.join(' ')}"><span class="bdot" aria-hidden="true"></span>
+      <div><div class="bname">${name}<span class="sr bstate"></span></div><div class="bmeta">${meta}</div></div>
+      <div class="gotos">${r.days.map(gotoChip).join('')}</div></li>`;
+  }
+
+  function freqRowHTML(r) {
+    const d = DIFF[r.d];
+    const keys = r.keys ? `data-keys="${r.keys.join(' ')}"` : `data-xkey="${r.xkey}"`;
+    const go = r.keys
+      ? r.days.map(gotoChip).join('')
+      : `<label class="xtick" for="f-${r.xkey}"><input type="checkbox" class="tick" id="f-${r.xkey}" data-key="${r.xkey}">Extra</label>`;
+    return `<li class="frow" ${keys}>
+      <span class="frank">${r.rank}</span>
+      <div style="min-width:0">
+        <div class="fname"><a href="${lcUrl(r.slug)}" target="_blank" rel="noopener">${r.name}</a>${r.n ? `<span class="num">#${r.n}</span>` : ''}</div>
+        <div class="fbar" aria-hidden="true"><i style="--w:${r.f3}"></i></div>
+        <div class="fmeta"><span class="diff diff-${r.d}">${d ? d[0] : r.d}</span><span>3 months ${Math.round(r.f3)}</span><span>30 days ${r.f30 ? Math.round(r.f30) : '–'}</span>${r.contest ? '<span>recent contest problem, most likely from online assessments</span>' : ''}</div>
+      </div>
+      <div class="fgo">${go}</div></li>`;
+  }
+
+  function buildStatic() {
+    $('#cal').innerHTML = calHTML();
+    $('#phases').innerHTML = DATA.phases.map(phaseHTML).join('');
+
+    $('#cov-list').innerHTML = DATA.cov.map(r => tickRow(r.id, 'x-',
+      `<span class="main">${r.t}</span><span class="chips">${r.go.map(gotoChip).join('')}</span>`)).join('');
+
+    $('#bank').innerHTML = DATA.bank.map(g =>
+      `<div class="bank-group"><h3>${g.g}<span class="count">${g.rows.length}</span></h3><ul class="brows">${g.rows.map(bankRowHTML).join('')}</ul></div>`).join('');
+
+    $('#flist').innerHTML = DATA.freq.map(freqRowHTML).join('');
+
+    $('#lp-list').innerHTML = DATA.lp.map(r => tickRow(r.id, 'x-',
+      `<span class="main">${r.q}</span>` +
+      `<span class="story"><span class="lbl">Story</span>${r.s}</span>` +
+      `<span class="chips">${r.p.map(x => `<span class="chip">${x}</span>`).join('')}${r.note ? `<span class="badge asked long">${r.note}</span>` : ''}</span>` +
+      (r.src.length ? `<span class="meta">${proofHTML(r.src)}</span>` : ''))).join('');
+
+    $('#rd-list').innerHTML = DATA.rd.map(r => tickRow(r.id, 'x-',
+      `<span class="main">${r.t}</span><span class="note">${r.q}</span>`)).join('');
+
+    $('#ga-list').innerHTML = DATA.ga.map(r => tickRow(r.id, 'x-',
+      `<span class="main">${r.q}</span>` +
+      (r.s ? `<span class="story"><span class="lbl">Use</span>${r.s}</span>` : '') +
+      (r.src.length ? `<span class="meta">${proofHTML(r.src)}</span>` : ''))).join('');
+
+    $('#do-list').innerHTML = DATA.dayof.map(r => tickRow(r.id, 'x-', `<span class="main">${r.q}</span>`)).join('');
+
+    for (const el of document.querySelectorAll('[data-proof]')) {
+      el.innerHTML = proofHTML(el.dataset.proof.split(' '));
+    }
+
+    $('#src-list').innerHTML = Object.keys(DATA.src).map(k => {
+      const s = DATA.src[k];
+      return s.url
+        ? `<li><a class="pf" href="${attr(s.url)}" target="_blank" rel="noopener">${s.short}</a>${s.label}</li>`
+        : `<li><span class="pf">${s.short}</span>${s.label}</li>`;
+    }).join('');
+  }
+
+  let todayDay = null;
+  function buildToday() {
+    const idx = todayIndex();
+    const band = $('#today-band');
+    band.classList.remove('ph1', 'ph2', 'ph3');
+    if (idx > DAYS.length) {
+      todayDay = null;
+      $('#today-eyebrow').textContent = `Today · ${fmtDate(new Date())}`;
+      $('#today-title').textContent = 'The 28 days are done';
+      $('#today-sub').textContent = 'Until the call comes: 2 problems a day from Phase 3, the Amazon frequency extras and your mistakes notebook, 1 mock every weekend, and keep your LP stories warm.';
+      $('#today-items').innerHTML = '';
+      $('#today-night').innerHTML = '';
+      $('#today-coach').textContent = '';
+      return;
+    }
+    const day = DAYS[Math.max(1, idx) - 1];
+    todayDay = day;
+    band.classList.add('ph' + day.phase);
+    $('#today-eyebrow').textContent = idx === 0 ? `Starts tomorrow · ${fmtDate(day.date)}` : idx < 1 ? `Starts ${fmtDate(day.date)}` : `Today · ${fmtDate(day.date)}`;
+    $('#today-title').textContent = `Day ${day.n} · ${day.title}`;
+    $('#today-sub').textContent = `${day.hours} · Phase ${day.phase}, ${PHASE_LC[day.phase]}`;
+    $('#today-items').innerHTML = day.items.map(it => itemHTML(it, 't-')).join('');
+    $('#today-night').innerHTML = nightHTML(day, 't-');
+    $('#today-coach').textContent = day.coach;
+  }
+
+  /* ================= state ================= */
+  const LS_KEY = 'sde1-prep-tracker-v1';
+  const LS_UI = 'sde1-prep-ui-v1';
+  const state = { done: {}, interview: '' };
+  let dirty = false;
+  let lsOK = true;
+  let mode = 'connecting';
+  let localReason = '';
+  let docRef = null, unsub = null, settled = false;
+  let localSeq = 0, savedSeq = 0, writing = false, writeTimer = 0;
+
+  function cleanDone(d) {
+    const out = {};
+    if (d && typeof d === 'object') {
+      for (const k of Object.keys(d)) if (ALL_KEYS.has(k) && d[k]) out[k] = typeof d[k] === 'number' ? d[k] : 1;
+    }
+    return out;
+  }
+  const cleanDate = v => (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)) ? v : '';
+
+  function readLocal() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return;
+      const o = JSON.parse(raw);
+      if (o && typeof o === 'object') {
+        state.done = cleanDone(o.done);
+        state.interview = cleanDate(o.interview);
+        dirty = !!o.dirty && Object.keys(state.done).length > 0;
+      }
+    } catch (e) { lsOK = false; }
+  }
+  function writeLocal() {
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify({ done: state.done, interview: state.interview, dirty }));
+      lsOK = true;
+    } catch (e) { lsOK = false; }
+  }
+  function readUI() { try { return JSON.parse(localStorage.getItem(LS_UI) || '{}') || {}; } catch (e) { return {}; } }
+  function writeUI(o) { try { localStorage.setItem(LS_UI, JSON.stringify(o)); } catch (e) { /* convenience only */ } }
+
+  const SYNC_TEXT = {
+    connecting: 'Connecting to your account…',
+    slow: 'Saved in this browser · still connecting to your account',
+    account: 'Synced to your Claude account',
+    saving: 'Saving…',
+  };
+  function setSync(s) {
+    const el = $('#sync');
+    let st = s, text = SYNC_TEXT[s] || '';
+    if (s === 'local') {
+      text = !lsOK ? 'Ticks can’t be saved here. Open the link signed in to Claude.'
+        : localReason === 'error' ? 'Couldn’t reach your account · saved in this browser'
+        : localReason === 'quota' ? 'Account storage is full · saved in this browser'
+        : 'Saved in this browser only';
+    }
+    if (s === 'slow') st = 'local';
+    el.dataset.state = st;
+    $('#sync-text').textContent = text;
+  }
+
+  function commit() {
+    if (mode === 'account') { localSeq++; scheduleWrite(); }
+    else { dirty = true; }
+    writeLocal();
+    refresh();
+    if (mode === 'local') setSync('local');
+  }
+
+  /* ---------- account sync (db + user capabilities) ---------- */
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  function scheduleWrite() {
+    clearTimeout(writeTimer);
+    setSync('saving');
+    writeTimer = setTimeout(flush, 500);
+  }
+  async function flush() {
+    if (!docRef || mode !== 'account') return;
+    if (writing) { writeTimer = setTimeout(flush, 300); return; }
+    writing = true;
+    const seq = localSeq;
+    const body = { done: Object.assign({}, state.done), interview: state.interview || '', updatedAt: Date.now(), v: 2 };
+    let ok = false, code = '';
+    for (let attempt = 0; attempt < 2 && !ok; attempt++) {
+      try { await docRef.set(body); ok = true; }
+      catch (e) {
+        code = (e && e.code) || 'unavailable';
+        if (code !== 'unavailable' || attempt === 1) break;
+        await wait(600 + Math.random() * 900);
+      }
+    }
+    writing = false;
+    if (ok) {
+      savedSeq = Math.max(savedSeq, seq);
+      if (localSeq !== savedSeq) scheduleWrite(); else setSync('account');
+    } else {
+      dirty = true;
+      writeLocal();
+      toLocal(code === 'quota_exceeded' ? 'quota' : 'error');
+    }
+  }
+  function toLocal(reason) {
+    mode = 'local';
+    localReason = reason || '';
+    if (unsub) { try { unsub(); } catch (e) { /* already closed */ } unsub = null; }
+    setSync('local');
+  }
+  function onSnap(snap) {
+    if (mode === 'local') return;
+    const fromCache = !!(snap.metadata && snap.metadata.fromCache);
+    const data = snap.exists ? (snap.data() || {}) : null;
+    if (!settled) {
+      if (fromCache) return;
+      settled = true;
+      mode = 'account';
+      const sDone = cleanDone(data && data.done);
+      const sIv = cleanDate(data && data.interview);
+      const hasLocal = Object.keys(state.done).length > 0 || !!state.interview;
+      if (dirty || (!snap.exists && hasLocal)) {
+        const merged = Object.assign({}, sDone);
+        for (const k of Object.keys(state.done)) if (!(k in merged)) merged[k] = state.done[k];
+        state.done = merged;
+        state.interview = state.interview || sIv;
+        dirty = false;
+        writeLocal(); refresh(); syncInterviewInput();
+        localSeq++; scheduleWrite();
+      } else {
+        state.done = sDone; state.interview = sIv;
+        dirty = false;
+        writeLocal(); refresh(); syncInterviewInput();
+        setSync('account');
+      }
+      return;
+    }
+    if (writing || localSeq !== savedSeq) return;
+    state.done = cleanDone(data && data.done);
+    state.interview = cleanDate(data && data.interview);
+    writeLocal(); refresh(); syncInterviewInput();
+  }
+  function subscribe(retried) {
+    try {
+      unsub = docRef.onSnapshot(onSnap, err => {
+        unsub = null;
+        const code = err && err.code;
+        if (code === 'unavailable' && !retried) setTimeout(() => subscribe(true), 1500);
+        else toLocal('error');
+      });
+    } catch (e) { toLocal('error'); }
+  }
+  async function connect() {
+    const c = window.claude;
+    if (!c || typeof c.use !== 'function') { toLocal('none'); return; }
+    let db = null, user = null;
+    try { [db, user] = await Promise.all([c.use('db'), c.use('user')]); } catch (e) { /* treated as absent */ }
+    if (!db || !user) { toLocal('signedout'); return; }
+    let uid = null;
+    try { uid = await user.id(); } catch (e) { uid = null; }
+    if (!uid) { toLocal('signedout'); return; }
+    try { docRef = db.collection('data/users/' + uid).doc('progress'); }
+    catch (e) { toLocal('error'); return; }
+    subscribe(false);
+    setTimeout(() => { if (!settled && mode === 'connecting') setSync('slow'); }, 9000);
+  }
+
+  /* ================= live view ================= */
+  let allTicks = [];
+  const dayEls = new Map(), cellEls = new Map();
+  const lastPct = new Map();
+
+  function cacheEls() {
+    allTicks = Array.from(document.querySelectorAll('input.tick'));
+    for (const day of DAYS) {
+      const el = document.getElementById('day-' + day.n);
+      dayEls.set(day.n, { el, count: el.querySelector('.dcount'), ring: el.querySelector('.ring'), dnum: el.querySelector('.dnum'), ddate: el.querySelector('.ddate') });
+      cellEls.set(day.n, document.querySelector(`[data-cell="${day.n}"]`));
+    }
+  }
+
+  function celebrate(n) {
+    if (reduceMotion) return;
+    for (const el of [dayEls.get(n).dnum, cellEls.get(n)]) {
+      el.classList.remove('just-done'); void el.offsetWidth; el.classList.add('just-done');
+      setTimeout(() => el.classList.remove('just-done'), 700);
+    }
+  }
+
+  const countDone = list => list.reduce((c, r) => c + (state.done[r.id] ? 1 : 0), 0);
+
+  function refresh() {
+    const done = state.done;
+    for (const el of allTicks) {
+      const on = !!done[el.dataset.key];
+      if (el.checked !== on) el.checked = on;
+      const row = el.closest('.item, .frow');
+      if (row) row.classList.toggle('done', on);
+    }
+
+    const idx = todayIndex();
+    let pDone = 0, pTotal = 0, hiddenDays = 0;
+    const phaseTot = {}, phaseDone = {};
+    for (const day of DAYS) {
+      let c = 0;
+      for (const it of day.all) if (done[it.key]) c++;
+      const n = day.all.length, pct = Math.round(c / n * 100), full = c === n;
+      pDone += c; pTotal += n;
+      phaseTot[day.phase] = (phaseTot[day.phase] || 0) + n;
+      phaseDone[day.phase] = (phaseDone[day.phase] || 0) + c;
+      if (full) hiddenDays++;
+      const d = dayEls.get(day.n);
+      d.count.textContent = `${c}/${n}`;
+      d.ring.style.setProperty('--p', pct);
+      d.el.classList.toggle('is-done', full);
+      d.el.classList.toggle('behind', day.n < idx && !full);
+      const cell = cellEls.get(day.n);
+      cell.style.setProperty('--f', pct);
+      cell.classList.toggle('full', full);
+      cell.classList.toggle('started', c > 0);
+      cell.classList.toggle('behind', day.n < idx && !full);
+      cell.setAttribute('aria-label', `Day ${day.n}, ${fmtDate(day.date)}: ${c} of ${n} done${day.n === idx ? ', today' : ''}`);
+      const prev = lastPct.get(day.n);
+      if (prev !== undefined && prev < 100 && full) celebrate(day.n);
+      lastPct.set(day.n, pct);
+    }
+    for (const ph of DATA.phases) {
+      const t = phaseTot[ph.n] || 1, c = phaseDone[ph.n] || 0;
+      document.querySelector(`[data-pbar="${ph.n}"]`).style.setProperty('--p', Math.round(c / t * 100));
+      document.querySelector(`[data-pcount="${ph.n}"]`).textContent = `${c}/${t}`;
+    }
+
+    $('#pct').textContent = Math.round(pDone / pTotal * 100);
+    $('#plan-done').textContent = pDone;
+    $('#plan-total').textContent = pTotal;
+    let lcDone = 0;
+    for (const keys of LC_KEYS.values()) if (keys.some(k => done[k])) lcDone++;
+    $('#st-lc').textContent = `${lcDone}/${LC_KEYS.size}`;
+    $('#st-night').textContent = `${NIGHT_KEYS.filter(k => done[k]).length}/${NIGHT_KEYS.length}`;
+    const lpDone = countDone(DATA.lp), rdDone = countDone(DATA.rd);
+    $('#st-lp').textContent = `${lpDone}/${DATA.lp.length}`;
+    $('#st-rd').textContent = `${rdDone}/${DATA.rd.length}`;
+
+    let bankDone = 0, bankTotal = 0;
+    for (const row of document.querySelectorAll('.brow')) {
+      const on = row.dataset.keys.split(' ').some(k => done[k]);
+      bankTotal++; if (on) bankDone++;
+      row.classList.toggle('done', on);
+      row.querySelector('.bstate').textContent = on ? ' (solved)' : ' (not solved yet)';
+    }
+    let freqDone = 0;
+    for (const row of document.querySelectorAll('.frow')) {
+      const on = row.dataset.keys ? row.dataset.keys.split(' ').some(k => done[k]) : !!done[row.dataset.xkey];
+      if (on) freqDone++;
+      row.classList.toggle('done', on);
+    }
+    $('#cnt-bank').textContent = `${bankDone} of ${bankTotal} solved.`;
+    $('#cnt-freq').textContent = `${freqDone} of ${DATA.freq.length} solved.`;
+    $('#cnt-cov').textContent = `${countDone(DATA.cov)} of ${DATA.cov.length} solid.`;
+    $('#cnt-lp').textContent = `${lpDone} of ${DATA.lp.length} ready.`;
+    $('#cnt-rd').textContent = `${rdDone} of ${DATA.rd.length} ready.`;
+    $('#cnt-ga').textContent = `${countDone(DATA.ga)} of ${DATA.ga.length} ready.`;
+    $('#cnt-do').textContent = `${countDone(DATA.dayof)} of ${DATA.dayof.length} ready. Tick these the day before.`;
+
+    const hideOn = $('#plan').classList.contains('hide-done');
+    const note = $('#hidden-note');
+    note.hidden = !(hideOn && hiddenDays);
+    note.textContent = `${hiddenDays} finished day${hiddenDays === 1 ? '' : 's'} hidden`;
+
+    refreshToday(idx);
+  }
+
+  function refreshToday(idx) {
+    const done = state.done;
+    const status = $('#today-status');
+    if (todayDay) {
+      const left = todayDay.all.filter(it => !done[it.key]).length;
+      const coreLeft = todayDay.items.filter(it => !done[it.key]).length;
+      if (idx >= 1 && left === 0) {
+        const next = DAYS[todayDay.n];
+        status.innerHTML = next
+          ? `Day ${todayDay.n} is done. Tomorrow: <a href="#day-${next.n}">${next.title}</a>.`
+          : 'Day 28 is done. You’re ready.';
+      } else if (idx >= 1) {
+        status.textContent = coreLeft
+          ? `${coreLeft} core task${coreLeft === 1 ? '' : 's'} and ${left - coreLeft} night problem${left - coreLeft === 1 ? '' : 's'} left today.`
+          : `Core set done. ${left} night problem${left === 1 ? '' : 's'} to go.`;
+      } else {
+        status.textContent = '';
+      }
+    } else {
+      status.textContent = '';
+    }
+    let behind = 0, first = 0;
+    for (const day of DAYS) {
+      if (day.n >= idx) break;
+      for (const it of day.all) if (!done[it.key]) { behind++; if (!first) first = day.n; }
+    }
+    const b = $('#behind');
+    if (behind) {
+      b.hidden = false;
+      b.innerHTML = `<span>${behind} task${behind === 1 ? '' : 's'} left from earlier days.</span><a class="btn warn" href="#day-${first}">Go to day ${first}</a>`;
+    } else {
+      b.hidden = true; b.innerHTML = '';
+    }
+    for (const [n, d] of dayEls) {
+      const isToday = n === idx;
+      d.el.classList.toggle('is-today', isToday);
+      cellEls.get(n).classList.toggle('today', isToday);
+      if (isToday) cellEls.get(n).setAttribute('aria-current', 'date'); else cellEls.get(n).removeAttribute('aria-current');
+      const pill = d.ddate.querySelector('.pill-today');
+      if (isToday && !pill) d.ddate.insertAdjacentHTML('afterbegin', '<span class="pill-today">Today</span>');
+      if (!isToday && pill) pill.remove();
+    }
+    ivText();
+  }
+
+  function syncInterviewInput() {
+    const inp = $('#interview-date');
+    if (inp.value !== state.interview) inp.value = state.interview;
+    ivText();
+  }
+  function ivText() {
+    const out = $('#iv-text');
+    const v = state.interview;
+    if (!v) { out.textContent = 'Add it when the recruiter calls, and this card counts down.'; return; }
+    const [y, m, d] = v.split('-').map(Number);
+    const dt = new Date(y, m - 1, d);
+    const now = new Date();
+    const t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const days = Math.round((dt - t0) / 864e5);
+    if (days < 0) { out.textContent = 'That date has passed. Change it if another round is booked.'; return; }
+    if (days === 0) { out.textContent = 'Interview today. Read your LP stories once, then rest.'; return; }
+    let html = `Interview in <b>${days} day${days === 1 ? '' : 's'}</b> (${fmtDate(dt)}).`;
+    if (days <= 10 && todayIndex() < 20) html += ' <a href="#day-20">Switch to Phase 3 now</a>: days 20–24 first, then the rest.';
+    out.innerHTML = html;
+  }
+
+  /* ================= events ================= */
+  document.addEventListener('change', e => {
+    const el = e.target;
+    if (el.classList && el.classList.contains('tick')) {
+      const k = el.dataset.key;
+      if (el.checked) state.done[k] = Date.now(); else delete state.done[k];
+      if (!reduceMotion) { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+      commit();
+    } else if (el.id === 'interview-date') {
+      state.interview = cleanDate(el.value);
+      commit();
+      ivText();
+    } else if (el.id === 'hide-done') {
+      $('#plan').classList.toggle('hide-done', el.checked);
+      const ui = readUI(); ui.hideDone = el.checked; writeUI(ui);
+      refresh();
+    }
+  });
+
+  document.addEventListener('animationend', e => {
+    if (e.target.classList && e.target.classList.contains('pop')) e.target.classList.remove('pop');
+  });
+
+  document.addEventListener('click', e => {
+    const a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const id = a.getAttribute('href').slice(1);
+    const target = id && document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    if (target.tagName === 'DETAILS') target.open = true;
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  });
+
+  $('#expand-all').addEventListener('click', () => {
+    const days = document.querySelectorAll('details.day');
+    const anyClosed = Array.from(days).some(d => !d.open);
+    days.forEach(d => { d.open = anyClosed; });
+    $('#expand-all').textContent = anyClosed ? 'Close all days' : 'Open all days';
+  });
+
+  $('#reset').addEventListener('click', () => {
+    $('#reset-n').textContent = Object.keys(state.done).length;
+    $('#reset-confirm').hidden = false;
+  });
+  $('#reset-no').addEventListener('click', () => { $('#reset-confirm').hidden = true; });
+  $('#reset-yes').addEventListener('click', () => {
+    state.done = {};
+    $('#reset-confirm').hidden = true;
+    commit();
+  });
+
+  function watchNav() {
+    if (!('IntersectionObserver' in window)) return;
+    const row = $('#nav-row');
+    const links = Array.from(row.querySelectorAll('a'));
+    const setActive = id => {
+      for (const a of links) {
+        if (a.getAttribute('href') === '#' + id) {
+          if (a.getAttribute('aria-current') === 'true') continue;
+          a.setAttribute('aria-current', 'true');
+          row.scrollTo({ left: a.offsetLeft - row.clientWidth / 2 + a.offsetWidth / 2, behavior: reduceMotion ? 'auto' : 'smooth' });
+        } else {
+          a.removeAttribute('aria-current');
+        }
+      }
+    };
+    const io = new IntersectionObserver(entries => {
+      for (const en of entries) if (en.isIntersecting) setActive(en.target.id);
+    }, { rootMargin: '-30% 0px -65% 0px' });
+    for (const a of links) {
+      const s = document.getElementById(a.getAttribute('href').slice(1));
+      if (s) io.observe(s);
+    }
+  }
+
+  /* ================= start ================= */
+  readLocal();
+  buildStatic();
+  buildToday();
+  cacheEls();
+  const ui = readUI();
+  if (ui.hideDone) { $('#hide-done').checked = true; $('#plan').classList.add('hide-done'); }
+  const td = todayDay && document.getElementById('day-' + todayDay.n);
+  if (td) td.open = true;
+  refresh();
+  syncInterviewInput();
+  setSync('connecting');
+  watchNav();
+  connect();
+})();
+</script>
+</body></html>

@@ -27,7 +27,7 @@ export const CS_TASKS: Task[] = [
     interviewCritical: true,
     portfolioCritical: false,
     optional: false,
-    rationale: 'Standard in Amazon and Microsoft loops, and directly adjacent to your telecom systems work.',
+    rationale: 'Core operating-systems material for SDE loops, and directly adjacent to your telecom systems work.',
   }),
   mk({
     id: 'cs-os-2',

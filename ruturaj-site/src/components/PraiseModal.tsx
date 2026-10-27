@@ -52,7 +52,7 @@ export function PraiseModal() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={dismiss}
-            className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 z-[60] bg-fg/40 backdrop-blur-sm"
           />
           {/* Flex centring rather than top-1/2 + -translate-y-1/2: Framer Motion
               writes its own transform for the `y` animation, which would drop
@@ -73,7 +73,7 @@ export function PraiseModal() {
               <button
                 onClick={dismiss}
                 aria-label="Dismiss"
-                className="absolute -top-11 right-0 grid size-9 place-items-center rounded-full bg-white/10 text-muted transition-colors hover:text-fg"
+                className="absolute -top-11 right-0 grid size-9 place-items-center rounded-full bg-surface text-muted shadow-card transition-colors hover:text-fg"
               >
                 <X size={17} />
               </button>

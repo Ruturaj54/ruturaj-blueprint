@@ -1,200 +1,95 @@
-// §21 — the voice.
-//
-// Direct, evidence-led, occasionally strict. Never abusive, never humiliating.
-// Lines are chosen from the digest rather than rotated blindly, so the mail
-// reacts to what actually happened instead of shouting generic motivation.
+// Subject lines and the few header lines both the HTML and the plain text
+// share. Every subject is built from what the day actually holds (day number,
+// weekday, topic, re-solves, the first open item), never a generic string.
 
-const pick = (list, n) => list[((n % list.length) + list.length) % list.length];
+import { weekdayOf } from './engine.mjs';
 
-/** Morning subject. Prefers a line grounded in real data over a generic one. */
+const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+const short = (s, max = 48) => (s.length > max ? `${s.slice(0, max - 1).trimEnd()}…` : s);
+const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
+
+/* ---------- subjects ---------------------------------------------------------- */
+
 export function morningSubject(d) {
-  const y = d.yesterday;
+  const dow = DOW[weekdayOf(d.today)];
+  if (!d.started) return 'Day 1 is waiting — press Start, then run';
+  if (d.phase === 'general') return `Day ${d.general.day} · Roadmap — ${short(d.leadTitle)}`;
+  if (d.mode === 'interview-day') return `Interview day — Day ${d.day}. Checklist, then go.`;
+  if (d.mode === 'interview') {
+    const lead = d.items.find((i) => !i.revision) ?? d.items[0];
+    return `${plural(d.interview.daysTo, 'day')} to the interview — Phase 3: ${short(lead?.title ?? d.topic)}`;
+  }
+  if (d.mode === 'done') return `Day ${d.day} · ${dow} — curriculum complete, revisions only`;
 
-  if (d.day === 1) return 'Ruturaj — Day 1 of 161. Apna College, module 3, today.';
-  if (d.dayType === 'saturday') {
-    return `Ruturaj — Saturday, Day ${d.day}: the deep block first, then the hills.`;
+  const revisions = d.items.filter((i) => i.revision).length;
+  if (d.dayType === 'saturday') return `Saturday, Day ${d.day} — long run, then ${short(d.topic)}`;
+  if (d.dayType === 'sunday') return `Sunday, Day ${d.day} — recovery walk, then ${short(d.topic)}`;
+  if (revisions > 0 && d.curriculumDay) {
+    return `Day ${d.day} · ${dow} — ${plural(revisions, 're-solve')}, then Day ${d.curriculumDay}: ${short(d.topic)}`;
   }
-  if (d.dayType === 'sunday') {
-    return `Ruturaj — Sunday: close week ${d.week}, timed DSA, then ride.`;
+  if (dow === 'Mon') return `Day ${d.day} · Mon — new week, Amazon first: ${short(d.topic)}`;
+  if (dow === 'Fri') return `Day ${d.day} · Fri — Amazon first, then the weekend set: ${short(d.topic, 40)}`;
+  if (d.amazon.daysLeft <= 2 && !d.amazon.overrun) {
+    return `Day ${d.day} · ${dow} — ${plural(d.amazon.daysLeft, 'day')} left in the window: ${short(d.topic)}`;
   }
-  if (y && y.score !== null && y.score < 50) {
-    return `Ruturaj — yesterday was ${y.score}%. Today is not for planning.`;
-  }
-  if (y && y.score === 100) {
-    return `Ruturaj — clean day yesterday. Day ${d.day}, same standard.`;
-  }
-  if (d.dsa.streak >= 7) {
-    return `Ruturaj — ${d.dsa.streak}-day DSA streak. Day ${d.day} of 161.`;
-  }
-  if (d.dsa.total === 0 && d.day > 3) {
-    return `Ruturaj — ${d.daysLeft} days left and zero problems logged.`;
-  }
-  if (!d.gate.open && d.gate.pct >= 80) {
-    return `Ruturaj — the Foundation Gate is ${d.gate.pct}% done. Close it.`;
-  }
-
-  return pick(
-    [
-      `Ruturaj — Day ${d.day}. The switch is built on days like this one.`,
-      `Ruturaj — ${d.daysLeft} days. What are you doing with today's?`,
-      `Ruturaj — Day ${d.day}. Execution, not intake.`,
-      `Ruturaj — your next offer is being earned this week, not in March.`,
-    ],
-    d.day,
-  );
+  return `Day ${d.day} · ${dow} — Amazon first: ${short(d.topic)}`;
 }
 
 export function eveningSubject(d) {
-  const t = d.todayLog;
-  const score = t && t.score !== null ? t.score : null;
-  if (d.dayType === 'sunday') {
-    const w = d.weekStats;
-    return `Week ${d.week} closed${w.pct !== null ? ` — ${w.pct}% of plan` : ''}. Monday starts at 07:00.`;
-  }
+  const dow = weekdayOf(d.today);
+  const left = d.open.length;
+  const time = d.settings.eveningEmailTime;
+  const at = d.nextMove.at;
+
+  if (!d.started) return `Office done — Day 1 is waiting, press Start before ${at === 'now' ? time : at}`;
+  if (d.mode === 'interview-day') return 'Interview day — checklist, then rest';
+  if (d.mode === 'done' && !d.items.length) return 'Office done — curriculum complete, nothing due tonight';
   if (d.dayType === 'saturday') {
-    return score === null
-      ? `Saturday, Day ${d.day} — did the study come before the ride?`
-      : `Saturday, Day ${d.day} — ${score}%. Study, then the hills.`;
+    return `Saturday ${time} — ${plural(left, 'item')} left${d.freeAt ? `, free evening at ${d.freeAt}` : ''}`;
   }
-  if (score !== null) {
-    if (score >= 90) return `Day ${d.day} — ${score}%. That is the standard.`;
-    if (score >= 50) return `Day ${d.day} — ${score}%. What blocked the rest?`;
-    return `Day ${d.day} — ${score}%. Be honest about today.`;
-  }
-  return `Ruturaj — daily accountability, Day ${d.day}`;
+  if (d.dayType === 'sunday') return `Sunday ${time} — ${plural(left, 'item')} left, weekly review at 20:30`;
+  if (d.nextMove.allDone) return 'Office done — tonight’s set is already logged';
+  const item = d.nextMove.item;
+  if (!item) return 'Office done — nothing queued, open the app and pull the next item';
+  if (dow === 5) return `Friday done — ${plural(left, 'item')} tonight, then the weekend plan`;
+  if (d.day % 2 === 1) return `Office done — ${at}: ${short(item.title)} (${item.minutes} min)`;
+  return `Workday complete. Next: ${short(item.title, 40)} ${at === 'now' ? 'now' : `at ${at}`}`;
 }
 
-/**
- * The one-line challenge that closes the morning mail. Picked by what the data
- * says is actually wrong, not at random.
- */
-export function morningChallenge(d) {
-  const y = d.yesterday;
+/* ---------- shared header lines ---------------------------------------------------- */
 
-  if (d.day === 1) {
-    return 'Day 1 is not about motivation — it is about proof. By tonight: three modules ticked, three problems logged, one notebook pushed. Then do it again tomorrow.';
-  }
-  if (y && y.missed.length > 0) {
-    return `Yesterday you planned ${y.planned} items and closed ${y.completed}. Today you are not adding anything new — you are clearing "${y.missed[0]}".`;
-  }
-  if (d.dsa.todayCount === 0 && d.dsa.streak === 0 && d.dsa.total > 0) {
-    return 'Your DSA streak is at zero. Amazon does not care that you planned to study — it cares what you can solve under time.';
-  }
-  if (d.dsa.total === 0 && d.day > 3) {
-    return `Zero problems logged so far. Every day this stays at zero, the ${d.daysLeft} days left get more expensive.`;
-  }
-  if (!d.gate.open && d.day > 20) {
-    return `Day ${d.day} and the gate is ${d.gate.pct}%. Phase 1 is for finishing what you started, not collecting more of it.`;
-  }
-  if (d.gate.open && d.dsa.weakest) {
-    return `${d.dsa.weakest} is still your thinnest pattern. Strength is built where it is uncomfortable, not where it is easy.`;
-  }
-  return 'You said you want to win. Winning is boring from the inside: the same blocks, at the same times, every day, until the offer arrives.';
+/** "Day 3 · Tuesday 28 Oct · Amazon intensive, day 3 of 14". */
+export function headerLine(d) {
+  const date = `${d.weekday} ${d.dateLabel}`;
+  if (!d.started) return `Day 1 is waiting · ${date}`;
+  if (d.phase === 'general') return `Roadmap · Day ${d.general.day} of ${d.general.totalDays} · ${date}`;
+  const a = d.amazon;
+  const window = a.overrun
+    ? `Amazon intensive, day ${a.day}, past the ${a.windowDays}-day window`
+    : `Amazon intensive, day ${a.day} of ${a.windowDays}`;
+  return `Day ${d.day} · ${date} · ${window}`;
 }
 
-/** Genuine progress deserves naming. §21 explicitly asks for this. */
-export function recognition(d) {
-  if (d.gate.open && !d.gate.overridden) {
-    return 'You closed the Foundation Gate on merit. That is a real milestone — most people keep buying courses instead.';
-  }
-  if (d.dsa.streak >= 14) {
-    return `${d.dsa.streak} days of unbroken DSA. Consistency at this length is rarer than talent.`;
-  }
-  if (d.dsa.accuracy >= 75 && d.dsa.total >= 20) {
-    return `${d.dsa.accuracy}% clean solve rate across ${d.dsa.total} problems. That is interview-grade accuracy holding up.`;
-  }
-  if (d.yesterday && d.yesterday.score === 100) {
-    return 'You closed every planned item yesterday. Do it twice more and it stops being a good day and starts being your baseline.';
-  }
-  return null;
-}
-
-/** The evening recovery plan, when the day went badly. */
-export function recoveryPlan(d) {
-  const t = d.todayLog;
-  if (!t || t.score === null) {
-    return 'Today was never started in the app. Tomorrow, open it before 08:00 — an unplanned day cannot be measured, and what cannot be measured drifts.';
-  }
-  if (t.score >= 90) return null;
-  if (t.missed.length === 1) {
-    return `One item open: "${t.missed[0]}". It goes first tomorrow, before anything new.`;
-  }
-  if (t.missed.length > 1) {
-    return `${t.missed.length} items open. They carry to the top of tomorrow — start with "${t.missed[0]}" and do not open anything new until it is closed.`;
-  }
-  return null;
-}
-
-/** §20 — tomorrow's single mission. */
-export function tomorrowMission(d) {
-  const t = d.todayLog;
-  if (t && t.missed.length > 0) return t.missed[0];
-  if (d.missions.length > 0) return d.missions[0].title;
-  return 'Open the roadmap and pull the next milestone forward.';
-}
-
-/* ---------- avoid / growing ---------------------------------------------- */
-
-const AVOID_WEEKDAY = [
-  'Avoid opening a new course, playlist or roadmap video. Apna first, Five Minute Engineering second — nothing else until the gate closes.',
-  'Avoid watching without typing. If the code did not go through your fingers, it did not go into your head.',
-  'Avoid the phone in the office spare hours. Two hours a day is ten a week — a whole module.',
-  'Avoid letting DSA slide because the course ran long. It sits first in the night block for exactly that reason.',
-  'Avoid going past 01:00. Six hours is already the floor; a 3 am night costs tomorrow’s two blocks.',
-  'Avoid perfect notes. One page per module, written from memory, then move on.',
-  'Avoid announcing the switch at work. Do the job well — your strongest resume lines and references come from there.',
-  'Avoid comparing yourself with LinkedIn highlight reels. The only comparison that counts is you, seven days ago.',
+/** One line about leaving the office behind, varied by day number. */
+const LEAVE = [
+  'Whatever happened at work today stays there. The next three hours are yours.',
+  'Change, eat something small, and let the hour before the block be an actual hour off.',
+  'The commute is the boundary. Nothing from the office crosses it tonight.',
+  'Shoes off, phone on the shelf. The evening does not need the office in it.',
+  'You have done the paid work. What follows is the work that changes the next job.',
 ];
 
-const AVOID_SATURDAY = [
-  'Avoid starting the ride before the study ends. Study first is exactly what makes the ride guilt-free.',
-  'Avoid the ghat after dark. The hills will still be there next weekend.',
-];
+const WEEKEND_LEAVE = {
+  saturday: 'The long blocks are behind you. Finish what is open, then the evening is genuinely free.',
+  sunday: 'Clear what is still open, then the review at 20:30 sets up Monday.',
+};
 
-const AVOID_SUNDAY = [
-  'Avoid skipping the review because the week felt bad. A bad week reviewed beats a good week forgotten.',
-  'Avoid a late Sunday night. Monday’s 07:00 decides the whole week.',
-];
-
-/** Three lines: what to avoid today, chosen by the kind of day it is. */
-export function avoidToday(d) {
-  const lines = [];
-  if (d.dayType === 'saturday') lines.push(...AVOID_SATURDAY);
-  else if (d.dayType === 'sunday') lines.push(...AVOID_SUNDAY);
-  else {
-    lines.push(pick(AVOID_WEEKDAY, d.day));
-    lines.push(pick(AVOID_WEEKDAY, d.day + 3));
-  }
-  const health = d.health.tipAvoidAlt;
-  lines.push(
-    health
-      ? `Avoid ${health.line.charAt(0).toLowerCase()}${health.line.slice(1)}`
-      : 'Avoid eating during the night block. Kitchen closes after dinner.',
-  );
-  return lines.slice(0, 3);
+export function leaveLine(d) {
+  if (d.dayType !== 'weekday') return WEEKEND_LEAVE[d.dayType];
+  return LEAVE[Math.abs(d.day) % LEAVE.length];
 }
 
-/** "You are growing" — real totals since 1 Oct, never padded. */
-export function growing(d) {
-  const g = d.growth;
-  const stats = [
-    { label: 'Modules', value: g.modules + g.tasks },
-    { label: 'Solved', value: g.problems },
-    { label: 'Runs', value: g.runs },
-    { label: 'Focus h', value: g.focusHours },
-  ];
-  const anything = g.modules + g.tasks + g.problems + g.runs + g.focusHours > 0;
-  if (!anything) {
-    return {
-      line: d.day === 1
-        ? 'Day 1. Nothing on the board yet — by tonight there will be. Every number below starts from here.'
-        : 'Nothing logged yet. The numbers below only move when you tick things in the app.',
-      stats,
-    };
-  }
-  const clean = g.cleanDays > 0 ? ` ${g.cleanDays} clean day${g.cleanDays === 1 ? '' : 's'} so far.` : '';
-  return {
-    line: `Since 1 October: ${g.daysStarted} day${g.daysStarted === 1 ? '' : 's'} on the plan, ${g.km} km run.${clean} This is what the hero arc looks like from the inside — small, repeated, real.`,
-    stats,
-  };
+export function nextMoveTitle(d) {
+  return d.nextMove.at === 'now' ? 'Next move, now' : `Next move at ${d.nextMove.at}`;
 }

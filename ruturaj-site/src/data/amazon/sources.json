@@ -1,0 +1,97 @@
+{
+  "rd1": {
+    "short": "Reddit (yours)",
+    "label": "Reddit post you shared: 2026 on-campus SDE-1 loop, selected 10 Sep 2026",
+    "url": ""
+  },
+  "lc8542365": {
+    "short": "LC 8542365",
+    "label": "LeetCode: SDE-1 loop on 8 May 2026, offer 21 Sep 2026 (the same story as the r/DSALeetCode post you shared)",
+    "url": "https://leetcode.com/discuss/post/8542365/amazon-sde-1-interview-experience-tcs-am-8dyr/"
+  },
+  "lc8014509": {
+    "short": "LC 8014509",
+    "label": "LeetCode: SDE-1 loop, April 2026",
+    "url": "https://leetcode.com/discuss/post/8014509/"
+  },
+  "lc8029194": {
+    "short": "LC 8029194",
+    "label": "LeetCode: SDE-1 loop, March 2026, selected",
+    "url": "https://leetcode.com/discuss/post/8029194/amazon-interview-sde-1-selected-by-anony-qatd/"
+  },
+  "lc8343668": {
+    "short": "LC 8343668",
+    "label": "LeetCode: SDE-1 2026, selected (round format and timeline)",
+    "url": "https://leetcode.com/discuss/post/8343668/amazon-sde-1-interview-experience-2026-s-uroi/"
+  },
+  "lc8546875": {
+    "short": "LC 8546875",
+    "label": "LeetCode: SDE-1 2026, selected (LLD and GenAI rounds)",
+    "url": "https://leetcode.com/discuss/post/8546875/amazon-sde-1-interview-experience-2026-b-30gn/"
+  },
+  "tuf": {
+    "short": "takeuforward",
+    "label": "takeuforward: Amazon SDE-1 interview experience 2026, offer",
+    "url": "https://takeuforward.org/community/interview-experiences/amazon-sde-1-interview-experience-2026"
+  },
+  "lc7621408": {
+    "short": "LC 7621408",
+    "label": "LeetCode: SDE-1 2026, offer (GenAI fluency round)",
+    "url": "https://leetcode.com/discuss/post/7621408/amazon-sde-1-interview-experience-2026-b-6n61/"
+  },
+  "lc7724048": {
+    "short": "LC 7724048",
+    "label": "LeetCode: SDE-1, selected (Detonate Bombs, Aggressive Cows, GenAI round)",
+    "url": "https://leetcode.com/discuss/post/7724048/amazon-sde-1-interview-experience-by-ano-t6fz/"
+  },
+  "lc7981646": {
+    "short": "LC 7981646",
+    "label": "LeetCode: SDE-1, 2025 graduate, offer",
+    "url": "https://leetcode.com/discuss/post/7981646/"
+  },
+  "lc7035289": {
+    "short": "LC 7035289",
+    "label": "LeetCode: SDE-1, 2025 offer (Heaters, Word Ladder, grid DP)",
+    "url": "https://leetcode.com/discuss/post/7035289/amazon-sde-1-offer-by-anonymous_user-3efp/"
+  },
+  "lc6813913": {
+    "short": "LC 6813913",
+    "label": "LeetCode: SDE-1, 2025 offer (board-game design round)",
+    "url": "https://leetcode.com/discuss/post/6813913/amazon-sde-1-interview-experience-2025-o-p3fd/"
+  },
+  "lc6738470": {
+    "short": "LC 6738470",
+    "label": "LeetCode: SDE-1 Bangalore, 2025 offer (priority queue + OOP)",
+    "url": "https://leetcode.com/discuss/post/6738470/amazon-offer-sde-1-bangalore-by-anonymou-to24/"
+  },
+  "lc6393977": {
+    "short": "LC 6393977",
+    "label": "LeetCode: SDE-1, February 2025, selected",
+    "url": "https://leetcode.com/discuss/post/6393977/amazon-sde-1-interview-experience-select-ldzi/"
+  },
+  "lc7154883": {
+    "short": "LC 7154883",
+    "label": "LeetCode: SDE-1, selected",
+    "url": "https://leetcode.com/discuss/post/7154883/"
+  },
+  "roundz": {
+    "short": "Roundz",
+    "label": "Roundz: Amazon SDE-1 (L4) Bengaluru, 2025 offer",
+    "url": "https://roundz.substack.com/p/interview-experience-128-amazon-sde1-l4"
+  },
+  "gfg2022": {
+    "short": "GfG 2022",
+    "label": "GeeksforGeeks: Amazon SDE-1 off campus, 2022",
+    "url": "https://www.geeksforgeeks.org/interview-experiences/amazon-interview-experience-for-sde-1-off-campus-11/"
+  },
+  "med2022": {
+    "short": "Medium 2022",
+    "label": "Medium: Amazon SDE-1 off campus, selected, 2022",
+    "url": "https://vinscoder1627.medium.com/amazon-sde-1-off-campus-interview-experience-selected-c111ca8a6689"
+  },
+  "freq": {
+    "short": "Amazon freq",
+    "label": "Amazon problem frequency from LeetCode company tags (liquidslr dataset, updated 20 Oct 2026)",
+    "url": "https://github.com/liquidslr/leetcode-company-wise-problems/tree/main/Amazon"
+  }
+}

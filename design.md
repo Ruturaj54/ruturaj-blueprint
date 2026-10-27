@@ -1,65 +1,58 @@
 # Ruturaj Blueprint — design system
 
-Dark-first "mission control". Professional, sharp, minimal, slightly intense.
-Every screen glanceable in 3 seconds. Mobile-first — this is used on a phone daily.
+Light-first personal command center. Calm, premium, legible on a phone in
+daylight. Every screen answers "what do I do next" in three seconds. Mobile-first:
+this is opened on an iPhone every morning and every evening.
 
-## Color tokens
+## Color tokens (src/index.css `@theme`)
 
 | Token | Hex | Use |
 |---|---|---|
-| `--bg` | `#08080A` | page background |
-| `--surface` | `#101014` | cards, sheets |
-| `--surface-2` | `#16161B` | raised / hover |
-| `--border` | `rgba(255,255,255,0.08)` | 1px hairlines |
-| `--border-strong` | `rgba(255,255,255,0.14)` | focused / active |
-| `--text` | `#F4F4F5` | primary |
-| `--muted` | `#A1A1AA` | secondary |
-| `--faint` | `#52525B` | tertiary, timestamps |
-| `--accent` | `#FBBF24` | amber — energy, streaks, CTAs |
-| `--success` | `#34D399` | emerald — completion |
-| `--info` | `#38BDF8` | sky — informational |
-| `--danger` | `#FB7185` | rose — overdue, blocked |
+| `--color-bg` | `#F6F4EF` | warm ivory page background |
+| `--color-surface` | `#FFFFFF` | cards, sheets |
+| `--color-raised` | `#F1EEE8` | hover, segmented control track, subtle wells |
+| `--color-line` / `--color-line2` | `#E6E1D8` / `#D3CCC0` | hairlines / input borders |
+| `--color-fg` | `#1C2333` | primary text (deep navy) |
+| `--color-muted` / `--color-faint` | `#5C6578` / `#8B93A3` | secondary / tertiary |
+| `--color-accent` (+ `-soft`) | `#2B57D9` | one sophisticated blue: CTAs, active nav, links |
+| `--color-success` (+ `-soft`) | `#1F8A5B` | done, streaks |
+| `--color-warn` (+ `-soft`) | `#B4731A` | amber: behind, reminders, P1 |
+| `--color-danger` (+ `-soft`) | `#C43D3D` | overdue, P0, destructive |
+| `--color-info` (+ `-soft`) | `#1F7AA6` | informational, P2 |
+| `--color-amazon` (+ `-soft`, `-ink`) | `#D9770A` | the Amazon module's identity only |
 
-Priority colors: P0 `--danger` · P1 `--accent` · P2 `--info` · P3 `--faint`.
-
-Radius: cards `16px`, controls `10px`, pills `999px`.
-Never use a gradient as a surface fill. Accent is for emphasis, not decoration —
-if more than ~10% of a screen is amber, it has stopped meaning anything.
+Priority colors: P0 danger · P1 warn · P2 info · P3 faint.
+Radius: cards 16px, controls 12px, chips 999px. Shadows: `shadow-card` only.
+No gradients as fills. No dark surfaces. Accent is for emphasis, not decoration.
+The Amazon tab is the one place orange appears: its header band, active nav state,
+checkbox tone and primary button. Everything else is blue.
 
 ## Typography
 
-- **Space Grotesk** — display, day numbers, section headers. Tight tracking.
-- **Inter** — all body, labels, buttons.
-- **JetBrains Mono** — counters, timers, percentages, code, problem IDs.
+- **Manrope** 600–800 — display, day numbers, section headers, big stats.
+- **Inter** 400–600 — body, labels, buttons.
+- **JetBrains Mono** 400–600 — counters, timers, times, problem numbers, P0–P3.
 
-Day number on Home is the largest type on the app (clamp 56–96px, Space Grotesk).
-Nothing else competes with it.
+Body 15px/1.55. Section titles are 13px uppercase tracked, muted. The largest type on
+My Day is the day number. Nothing competes with it.
+
+## Layout
+
+Mobile: bottom bar with My Day · Amazon · Roadmap · Fitness · More (Projects, Progress,
+Settings). 16px gutters, 44px minimum touch targets, no horizontal scroll, long lists
+collapse behind disclosures or segmented tabs. Desktop (`lg:`): left sidebar, 1080px
+max content. 24px between sections, 16px inside cards.
 
 ## Motion
 
 Framer Motion only. Default spring `{ stiffness: 400, damping: 30 }`.
-
-- Checkbox tap: spring scale 1 → 0.92 → 1, check path draws via `pathLength`.
-- Card entrance: stagger 40ms, y 12 → 0, opacity 0 → 1.
-- Tab change: `AnimatePresence` cross-fade + 8px slide in the travel direction.
-- Nav indicator: shared `layoutId` pill.
-- Group completion: one tasteful burst on the card — never full-screen confetti.
-- All of it disabled under `prefers-reduced-motion`; opacity-only fallbacks.
-
-## Layout
-
-Mobile: bottom nav, 5 primary destinations + overflow sheet. 16px gutters.
-Desktop (`lg:`): left sidebar, all destinations visible, 1200px max content.
-Generous whitespace — 24px between sections, 16px inside cards.
-Touch targets never below 44px.
+Checkbox: scale 1 → 0.88 → 1, check pops in. Card entrance: stagger 40ms, y 12 → 0.
+Nav indicator: shared `layoutId`. One tasteful bloom on a completed day; never confetti.
+Everything collapses to opacity-only under `prefers-reduced-motion`.
 
 ## Voice
 
-Direct, evidence-led, occasionally strict. Never abusive.
-
-- Good: "Yesterday you planned 3 DSA problems and finished 1. Today you're not
-  starting anything new — you're clearing the backlog."
-- Bad: "You failed yesterday!" / "Keep grinding! 💪"
-
-Recognise genuine progress plainly: "Your DSA consistency improved this week."
-State evidence and recommendation separately, never blended.
+Direct, warm, evidence-led. Reference what actually happened, never generic hype.
+Good: "You planned 5 Amazon items yesterday and closed 3. Today starts with the two you
+missed." Bad: "Keep grinding!" Recognise real progress plainly. State evidence and
+recommendation separately.

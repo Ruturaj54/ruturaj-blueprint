@@ -1,20 +1,18 @@
 import { useState, useRef } from 'react';
-import { Download, Upload, TriangleAlert, RotateCcw } from 'lucide-react';
+import { Download, Upload, RotateCcw } from 'lucide-react';
 import { Card, SectionTitle, Button } from '@/components/ui/primitives';
 import * as storage from '@/lib/storage';
 import { todayISO } from '@/engine/dates';
+import { ConfirmAction } from './ConfirmAction';
 
-/** Backup, restore and reset. Split out to keep Settings under 300 lines. */
+/** Backup, restore and the full reset. Two sections, so Settings stays short. */
 export function DataTools() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [importNote, setImportNote] = useState<string | null>(null);
-  const [resetStep, setResetStep] = useState<0 | 1>(0);
   const [resetNote, setResetNote] = useState<string | null>(null);
-  const [resetting, setResetting] = useState(false);
 
   const exportBackup = () => {
-    // Exports the whole state object, so nothing can be silently omitted the
-    // way the old app's hand-listed key array dropped three stores.
+    // The whole state object, so nothing can be silently left out of a backup.
     const blob = new Blob([storage.exportState()], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -29,7 +27,7 @@ export function DataTools() {
     reader.onload = (e) => {
       try {
         storage.replaceState(JSON.parse(String(e.target?.result)));
-        setImportNote('Backup restored.');
+        setImportNote('Backup restored and pushed to the server.');
       } catch {
         setImportNote('That file could not be read as a backup.');
       }
@@ -39,13 +37,10 @@ export function DataTools() {
   };
 
   const doReset = async () => {
-    setResetting(true);
     const r = await storage.resetAll();
-    setResetting(false);
-    setResetStep(0);
     setResetNote(
       r.remoteCleared
-        ? 'Everything cleared, here and on the server. You are back to a clean Day 1.'
+        ? 'Everything cleared, here and on the server. Day 1 is not started; press Start when you are ready.'
         : r.localCleared
           ? 'Cleared in this browser, but the server was not reachable. Reconnect and reset again, or the old data may sync back.'
           : 'Could not clear local storage. Try a normal window rather than private browsing.',
@@ -54,13 +49,14 @@ export function DataTools() {
 
   return (
     <>
-      {/* ---- backup ---- */}
       <section>
         <SectionTitle>Backup</SectionTitle>
         <Card>
-          <p className="text-[13px] text-muted">
-            Exports the complete state in one object — foundation ticks, tasks, day logs, DSA
-            attempts, runs, work, applications, health and settings.
+          <p className="text-[13px] leading-relaxed text-muted">
+            Exports the complete state as one JSON file: programme, Amazon tracker, foundation and
+            course ticks, day logs, DSA attempts, deep-work sessions, runs, work, applications, health
+            records and settings. Import replaces everything with that file and pushes it to the
+            server.
           </p>
           <div className="mt-3 flex flex-col gap-2 sm:flex-row">
             <Button onClick={exportBackup} className="flex-1">
@@ -83,48 +79,36 @@ export function DataTools() {
               }}
             />
           </div>
-          {importNote && <p className="mt-2 text-[12px] text-muted">{importNote}</p>}
+          {importNote && <p className="mt-2 text-[12.5px] text-muted">{importNote}</p>}
         </Card>
       </section>
 
-      {/* ---- reset ---- */}
       <section>
         <SectionTitle>Start over</SectionTitle>
         <Card className="border-danger/25">
-          <p className="text-[13px] text-muted">
-            Clears every tick, task, day log, DSA attempt, run, achievement and health entry —
-            here and on the server — and puts you back to a clean Day 1. Your sync passphrase and
-            your schedule settings are kept. This cannot be undone.
+          <p className="text-[13px] leading-relaxed text-muted">
+            Clears progress here and on the server and puts you back to a clean, not-yet-started Day
+            1: the Amazon tracker (every logged problem, tick and note; the stage goes back to
+            awaiting invitation), the programme (Day 1 and phase), foundation and course ticks, day
+            logs, DSA attempts, deep-work sessions, runs and weekly reviews.
           </p>
-
-          {resetStep === 0 ? (
-            <Button variant="danger" className="mt-3 w-full" onClick={() => setResetStep(1)}>
-              <RotateCcw size={15} />
-              Reset all progress
-            </Button>
-          ) : (
-            <div className="mt-3 rounded-[10px] border border-danger/30 bg-danger/[0.05] p-3">
-              <div className="flex items-start gap-2">
-                <TriangleAlert size={15} className="mt-0.5 shrink-0 text-danger" />
-                <div className="min-w-0">
-                  <p className="text-[13px]">
-                    This wipes everything permanently. Export a backup first if there is anything
-                    here worth keeping.
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <Button variant="danger" size="sm" onClick={() => void doReset()} disabled={resetting}>
-                      {resetting ? 'Clearing…' : 'Yes, wipe everything'}
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={() => setResetStep(0)}>
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {resetNote && <p className="mt-2 text-[12px] text-muted">{resetNote}</p>}
+          <p className="mt-2 text-[13px] leading-relaxed text-muted">
+            Kept: the timetable and every other setting, the sync passphrase, work achievements,
+            applications, and the weight and lab records. This cannot be undone.
+          </p>
+          <div className="mt-3 flex flex-col">
+            <ConfirmAction
+              variant="danger"
+              tone="danger"
+              icon={<RotateCcw size={15} />}
+              label="Reset all progress"
+              confirmLabel="Yes, wipe everything"
+              busyLabel="Clearing"
+              explain="This wipes progress permanently, here and on the server. Export a backup first if there is anything worth keeping."
+              onConfirm={doReset}
+            />
+          </div>
+          {resetNote && <p className="mt-2 text-[12.5px] text-muted">{resetNote}</p>}
         </Card>
       </section>
     </>

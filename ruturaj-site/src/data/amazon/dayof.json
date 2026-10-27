@@ -1,0 +1,30 @@
+[
+  {
+    "id": "do-room",
+    "q": "Quiet room, stable internet, laptop charged, camera and mic tested"
+  },
+  {
+    "id": "do-paper",
+    "q": "Pen and paper for dry runs, and water"
+  },
+  {
+    "id": "do-early",
+    "q": "Join 5 minutes early"
+  },
+  {
+    "id": "do-steps",
+    "q": "For every problem: clarify → brute force → optimal → code → dry run → complexity"
+  },
+  {
+    "id": "do-aloud",
+    "q": "Think out loud, unless the interviewer asks you to finish the code first"
+  },
+  {
+    "id": "do-sleep",
+    "q": "Seven hours of sleep the night before"
+  },
+  {
+    "id": "do-questions",
+    "q": "Two questions ready to ask each interviewer"
+  }
+]

@@ -1,15 +1,12 @@
 import { useState } from 'react';
 import { Scale, Plus, Trash2 } from 'lucide-react';
-import { Card, SectionTitle, Button } from '@/components/ui/primitives';
+import { Card, SectionTitle, Button, inputCls } from '@/components/ui/primitives';
 import { useAppState, useUpdateState } from '@/hooks/useAppState';
 import { cn } from '@/lib/cn';
 import { todayISO, formatShort } from '@/engine/dates';
 
-const inputCls =
-  'h-[44px] w-full rounded-[10px] border border-line bg-bg px-3 text-[14px] text-fg outline-none placeholder:text-faint focus:border-line2';
-
 /**
- * Weekly weigh-ins and the trend. Only what he measured is drawn — no
+ * Weekly weigh-ins and the trend. Only what he measured is drawn: no
  * smoothing, no projection, no target the app invented.
  */
 export function WeightLog() {
@@ -42,10 +39,10 @@ export function WeightLog() {
     <section>
       <SectionTitle
         action={
-          latest && entries.length > 1 ? (
-            <span className={cn('tnum text-[12px]', change < 0 ? 'text-success' : change > 0 ? 'text-accent' : 'text-faint')}>
+          first && latest && entries.length > 1 ? (
+            <span className={cn('tnum text-[12px]', change < 0 ? 'text-success' : change > 0 ? 'text-warn' : 'text-faint')}>
               {change > 0 ? '+' : ''}
-              {change} kg since {formatShort(first![0])}
+              {change} kg since {formatShort(first[0])}
             </span>
           ) : undefined
         }
@@ -57,7 +54,7 @@ export function WeightLog() {
       </SectionTitle>
       <Card>
         <div className="flex items-baseline gap-2">
-          <p className="tnum font-display text-[28px] font-bold leading-none">{latest ? latest[1] : '—'}</p>
+          <p className="tnum font-display text-[28px] font-bold leading-none text-fg">{latest ? latest[1] : '–'}</p>
           <p className="text-[13px] text-muted">{latest ? `kg · ${formatShort(latest[0])}` : 'No weigh-in yet'}</p>
         </div>
 
@@ -86,7 +83,13 @@ export function WeightLog() {
             aria-label="Weight in kg"
             className={cn(inputCls, 'tnum font-mono')}
           />
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value || todayISO())} aria-label="Weigh-in date" className={inputCls} />
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value || todayISO())}
+            aria-label="Weigh-in date"
+            className={inputCls}
+          />
           <Button variant="primary" onClick={add} disabled={!valid} aria-label="Log weigh-in">
             <Plus size={15} />
           </Button>
@@ -94,24 +97,28 @@ export function WeightLog() {
         <p className="mt-2 text-[12px] text-faint">Once a week, same morning, before breakfast. Daily numbers are mostly water.</p>
 
         {entries.length > 0 && (
-          <div className="mt-3 space-y-1.5 border-t border-line pt-3">
-            {[...entries].reverse().slice(0, 6).map(([d, w]) => (
-              <div key={d} className="flex items-center gap-3 text-[13px]">
-                <span className="tnum min-w-0 flex-1 text-muted">{formatShort(d)}</span>
-                <span className="tnum font-mono">{w} kg</span>
-                <button
-                  onClick={() =>
-                    update((draft) => {
-                      delete draft.health.weight[d];
-                    })
-                  }
-                  aria-label={`Remove weigh-in on ${formatShort(d)}`}
-                  className="grid size-[32px] place-items-center text-faint hover:text-danger"
-                >
-                  <Trash2 size={14} />
-                </button>
-              </div>
-            ))}
+          <div className="mt-3 space-y-0.5 border-t border-line pt-3">
+            {[...entries]
+              .reverse()
+              .slice(0, 6)
+              .map(([d, w]) => (
+                <div key={d} className="flex items-center gap-3 text-[13px]">
+                  <span className="tnum min-w-0 flex-1 text-muted">{formatShort(d)}</span>
+                  <span className="tnum font-mono text-fg">{w} kg</span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      update((draft) => {
+                        delete draft.health.weight[d];
+                      })
+                    }
+                    aria-label={`Remove weigh-in on ${formatShort(d)}`}
+                    className="-mr-2 grid size-[44px] place-items-center rounded-full text-faint transition-colors hover:bg-danger-soft hover:text-danger"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              ))}
           </div>
         )}
       </Card>

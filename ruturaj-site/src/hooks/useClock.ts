@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
+import { istClock } from '@/engine/dates';
 
-const hhmm = (d: Date): string =>
-  `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-
-/** The wall clock as "HH:MM", refreshed every minute — enough for "now" in a timetable. */
+/** The IST wall clock as "HH:MM", refreshed every minute. */
 export function useClock(intervalMs = 60_000): string {
-  const [now, setNow] = useState(() => hhmm(new Date()));
+  const [now, setNow] = useState(() => istClock());
   useEffect(() => {
-    const t = setInterval(() => setNow(hhmm(new Date())), intervalMs);
+    const t = setInterval(() => setNow(istClock()), intervalMs);
     return () => clearInterval(t);
   }, [intervalMs]);
   return now;

@@ -1,15 +1,18 @@
 # Ruturaj Blueprint — engineering rules
 
 Personal career-execution OS for Ruturaj Dharne. Static SPA on Netlify free tier.
-**Mission: 161 days, Day 1 = 2026-10-01, Day 161 = 2027-03-10.** A mission day
-runs 04:00→04:00 (`DAY_START_HOUR`), so the 22:00–01:00 night block belongs to
-the day it was planned on. The timetable is his real day (`src/data/routine.ts`):
-weekdays are hard study, Saturday and Sunday trade some study for an evening
-ride and have their own mails.
+**Day 1 is whatever date he pressed "Start Day 1"** (`state.program.startedOn`); never
+hard-code a calendar start. The programme has two phases: the **Amazon SDE-1
+intensive** (default 14 days, configurable, extendable) and then the **general
+roadmap**, whose Day 1 is the date the Amazon phase was marked complete and whose
+length runs to the application target `TARGET_DATE` (10 Mar 2027). A mission day runs
+04:00→04:00 IST (`DAY_START_HOUR`), so the 23:30–01:00 block belongs to the day it was
+planned on. Timetable: `src/data/routine.ts` driven by `Settings` (home 17:00, study
+18–20, dinner 20–21, deep 21–23, walk 23–23:30, optional final block to 01:00).
 
 ## Stack — do not add to this without a reason
 Vite · React 18 · TypeScript (strict) · Tailwind v4 (CSS-first tokens) ·
-Radix primitives · Framer Motion · lucide-react · cmdk.
+Radix primitives · Framer Motion · lucide-react.
 Backend is Netlify Functions only. Storage is Netlify Blobs + localStorage mirror.
 No database server. No SSR. No Next.js. Push to `main` = live.
 
@@ -17,61 +20,51 @@ No database server. No SSR. No Next.js. Push to `main` = live.
 
 1. **Framer Motion for every interactive tap.** Springs, not linear easings.
    Default `{ type: 'spring', stiffness: 400, damping: 30 }`. Honour
-   `prefers-reduced-motion` via the `useReducedMotion` hook — never ship motion
-   that ignores it.
+   `prefers-reduced-motion` via `useReducedMotion`.
 2. **No emojis in the UI.** Lucide icons only. Emojis are allowed in email
-   templates (they render in Gmail and the old copy uses them) but never in a
-   React component.
-3. **Storage only via `src/lib/storage.ts`.** Never call `localStorage` or
-   `fetch('/.netlify/functions/sync')` from a component. Every read is guarded
-   by a Zod-less runtime schema check with a typed fallback; a corrupt blob must
-   degrade to defaults, never throw into the render tree.
-4. **No file over 300 lines.** Split by responsibility, not by line count.
+   templates but never in a React component.
+3. **Storage only via `src/lib/storage.ts`** through the hooks in
+   `src/hooks/useAppState.ts`. Never call `localStorage` or `fetch` to the sync
+   endpoint from a component. Reads are guarded by `src/lib/parse.ts`; a corrupt
+   blob must degrade to defaults, never throw into the render tree.
+4. **No file over 300 lines.** Split by responsibility. Large data lives in JSON
+   under `src/data/amazon/` (imported verbatim from the tracker; do not edit by hand).
 5. **No secrets in source.** `process.env` in functions only. Never import a
-   secret into anything under `src/` — it ships to the browser.
-6. **Dates are IST-local.** Use `src/engine/dates.ts` helpers. Never
-   `new Date(str)` on a bare `YYYY-MM-DD` (parses as UTC and shifts the day).
-   Always `new Date(str + 'T12:00:00')`.
-7. **Priority language is P0/P1/P2/P3** everywhere — data, UI, emails. P0 is
-   critical, P3 is droppable. The scheduler sheds P2/P3 first when behind.
+   secret into anything under `src/`.
+6. **Dates are IST.** Use `src/engine/dates.ts`. `todayISO()` is IST-explicit so
+   it is correct in a Netlify function too. Never `new Date(str)` on a bare
+   `YYYY-MM-DD`; always `parseDay`.
+7. **Priority language is P0/P1/P2/P3** everywhere. The Amazon planner sheds
+   P3 first, then P2 (`src/engine/amazon-plan.ts`); every item shows its reason.
 8. **All day scoring goes through `src/engine/scoring.ts`.** Score planned work
-   that got done (`plannedHits`), never `completed.length / planned.length` —
-   `completed` accumulates all day and that ratio produced 800% in six places.
-9. **Client and server must agree.** `netlify/functions/_shared/plan.mjs`,
-   `schedule.mjs` and `digest.mjs` mirror `src/engine/`. Change one, change the
-   other, and re-run `node scripts/preview-emails.mjs`.
-10. **Resetting stored progress means bumping `DATA_EPOCH`** in both
-    `src/lib/schema.ts` and `_shared/digest.mjs`. Never clear it by hand. An
-    epoch change resets study progress only — labs, directed items, the work
-    log and applications are real records and carry across.
-11. **Deploys cost credits** (15 each, ~20/month on the free plan). Verify
-    locally and push once per session — never after every small fix.
-12. **The repository is public. No personal health data in source.** Which
-    conditions he tracks, lab values and what he takes live only in the private
-    synced store. `src/data/health.ts` is a generic library; keep it generic.
-
-## Syllabus rules
-
-The Foundation Gate is built only from what Ruturaj supplied: Apna College
-Prime modules (numbered as in the course player), the Five Minute Engineering
-bootcamp's own section names, and the PPA/LB tracks from his original tracker.
-Do not add invented checkpoints to it.
+   that got done (`plannedHits`), never `completed.length / planned.length`.
+9. **Client and server share one engine.** `scripts/gen-engine.mjs` bundles
+   `src/engine/server-entry.ts` into `netlify/functions/_shared/engine.mjs`
+   (generated, committed, regenerated on every build). Functions import from it;
+   never re-implement engine logic in `.mjs`.
+10. **Exactly two routine emails a day**: morning (default 06:00 IST) and
+    evening (17:00 IST). Both run inside a 15-minute cron window and are guarded
+    by the send log in Netlify Blobs (`_shared/maillog.mjs`), so a retry can never
+    produce a duplicate and a missed window never bursts later. Any other send is
+    an explicit button press by Ruturaj and is logged as a test.
+11. **Deploys cost credits.** Verify locally and push once per session.
+12. **The repository is public. No personal health data in source.** Weight,
+    sleep and lab values live only in the private synced store.
+13. **Never fabricate.** No invented interview reports, question frequencies,
+    timelines, quotes or metrics. Label every claim: official Amazon guidance /
+    candidate-reported / general advice / our own inference. When a metric is
+    missing render the literal string `Metric needed`.
 
 ## Content rules
 
-- Copy is real UX writing: specific, direct, occasionally strict. Never
-  humiliating. Reference actual progress over generic motivation.
-- Never fabricate a metric. When a metric is missing, render the literal string
-  `Metric needed`.
-- Health features track and inform. They never diagnose or prescribe a dose.
-  Always distinguish: personal tracking / general evidence / doctor-directed.
-- Course order is fixed: Course 1 is Apna College, Course 2 is Five Minute
-  Engineering, then the practice tier. Every foundation subject has a coaching
-  card in `src/data/foundation/coach.ts` (do this / why / go harder / proof);
-  `gen-catalog` fails the build if one is missing.
-- When the roadmap prioritises a skill, state the evidence separately from the
-  recommendation. No "everyone uses it" reasoning.
+- Copy is real UX writing: specific, direct, occasionally strict, never
+  humiliating. It must read as written by a thoughtful person, not a template.
+- Course order for the general roadmap is fixed: Course 1 Apna College, Course 2
+  Five Minute Engineering, then practice (PPA, LB, DSA, LSP). Do not invent
+  expansions of those abbreviations.
+- Fitness tracks and informs. Never claim spot fat reduction; the honest note is
+  `FAT_LOSS_NOTE` in `src/data/fitness.ts`.
 
 ## Verification before calling anything done
-`npm run build` clean · `npx tsc --noEmit` clean · zero console errors ·
-screenshots at 375px and 1440px · day-math boundaries re-verified.
+`npm run build` clean · `npx tsc --noEmit` clean · `npm run verify` ·
+`npm run test:mail` · zero console errors · screenshots at 375px and 1440px.

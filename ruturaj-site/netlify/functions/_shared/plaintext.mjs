@@ -1,120 +1,93 @@
-// Plain-text versions of both mails. Some clients show only this, and it is
-// what a notification preview reads — so it carries the same plan, in order.
+// Plain-text versions of both mails, same sections in the same order. Some
+// clients show only this, and it is what a notification preview reads.
 
-import { formatHM } from './schedule.mjs';
+import { formatHM } from './engine.mjs';
 import { SITE_URL } from './mail.mjs';
-import { shortDate, leadMission } from './coach.mjs';
-
-const TIER = { 1: 'Course 1 · Apna', 2: 'Course 2 · 5ME', 3: 'Practice' };
+import { headerLine, leaveLine, nextMoveTitle } from './voice.mjs';
 
 const line = (s = '') => `${s}\n`;
 
-function timetable(d) {
-  return [
-    ...d.schedule.slots.flatMap((s) => [
-      line(`  ${s.start}-${s.end}  ${s.label}`),
-      ...s.items.map((i) =>
-        line(
-          `      - ${i.title} (${i.partial && i.totalMinutes ? `${formatHM(i.minutes)} of ${formatHM(i.totalMinutes)}` : formatHM(i.minutes)})${i.carried ? ' — carried over' : ''}`,
-        ),
-      ),
-    ]),
-    d.schedule.overflow.length
-      ? line(`  CONTINUES TOMORROW: ${d.schedule.overflow.map((i) => `${i.title} (${formatHM(i.minutes)} left)`).join(' · ')}`)
-      : '',
-  ];
+function timetable(rowsList) {
+  return rowsList.flatMap((r) => [
+    line(`  ${r.time}  ${r.label}${!r.items.length && r.note ? ` — ${r.note}` : ''}`),
+    ...r.items.map((i) => line(`      - ${i}`)),
+  ]);
 }
 
-function health(d) {
-  const h = d.health;
-  const out = [];
-  if (h.doctor.length) out.push(line(`  Doctor-directed: ${h.doctor.map((x) => x.name).join(', ')} — exactly as prescribed`));
-  if (h.weight) out.push(line(`  Weight: ${h.weight.latest.kg} kg (${shortDate(h.weight.latest.date)})${h.weight.entries > 1 ? `, ${h.weight.change > 0 ? '+' : ''}${h.weight.change} kg since ${shortDate(h.weight.first.date)}` : ''}`));
-  if (h.noSugarStreak > 0) out.push(line(`  No added sugar: ${h.noSugarStreak}-day streak`));
-  if (h.tipDo) out.push(line(`  Do: ${h.tipDo.line}`));
-  if (h.tipAvoid) out.push(line(`  Avoid: ${h.tipAvoid.line}`));
-  if (!out.length) out.push(line('  Set up your health focus on the Health page — it stays in your private store.'));
-  return out;
-}
+export function morningText(d) {
+  const q = d.quote;
+  const setTitle = d.phase === 'general' ? 'ROADMAP MISSIONS' : d.started ? 'AMAZON SET' : 'DAY 1 SET, PREVIEWED';
+  const e = d.exercise;
+  const exercise = e.rest
+    ? [line('  Rest day. Nothing to log this morning.')]
+    : [
+        line(`  ${e.moved ? `${e.title} · ${e.name}` : e.name} · ${e.minutes} min${e.done ? ' · already logged' : ''}`),
+        ...e.lines.map((l) => line(`  - ${l}`)),
+      ];
+  const cta = !d.started ? 'Start Day 1' : d.phase === 'general' ? 'Open today’s plan' : 'Open Amazon prep';
+  const href = `${SITE_URL}/#/${d.started && d.phase !== 'general' ? 'amazon' : 'home'}`;
 
-export function morningText(d, { q, challenge, praise, avoid, grow, intro }) {
-  const lead = leadMission(d);
   return [
-    line(`${d.dayType === 'weekday' ? 'GOOD MORNING RUTURAJ' : d.dayType.toUpperCase()} — Day ${d.day} of 161 · ${d.weekday} ${d.dateLabel}`),
-    line(`${d.phase.label} ${d.phase.title} · ${d.daysLeft} days to 10 Mar 2027`),
+    line('MORNING, RUTURAJ.'),
+    line(headerLine(d)),
     line(),
-    line(`"${q.line}"`),
+    line(`"${q.line}"${q.by ? ` — ${q.by}${q.source ? `, ${q.source}` : ''}` : ''}`),
     line(),
-    intro ? line(intro) : '',
-    intro ? line() : '',
-    lead ? line(`RUTURAJ, DO THIS TODAY — ${lead.title}`) : '',
-    lead ? line(`  ${lead.coach.doThis}`) : '',
-    lead ? line(`  Why: ${lead.coach.why}`) : '',
-    lead ? line(`  Go harder: ${lead.coach.harder}`) : '',
-    lead ? line(`  Proof by tonight: ${lead.coach.proof}`) : '',
-    lead ? line() : '',
-    line("TODAY'S MISSIONS"),
-    ...d.missions.map((m, i) =>
-      line(`  ${i + 1}. ${m.title} (${[TIER[m.tier], m.context].filter(Boolean).join(' · ')})${m.carriedFrom ? ' — carried over' : ''}`),
-    ),
+    line("TODAY'S OBJECTIVE"),
+    line(`  ${d.objective}`),
+    d.started && d.phase !== 'general' && d.pace ? line(`  ${d.pace}`) : '',
     line(),
-    line(d.dayType === 'weekday' ? 'YOUR DAY — EVERY HOUR' : `YOUR ${d.dayType.toUpperCase()}`),
-    ...timetable(d),
+    line('MORNING EXERCISE'),
+    ...exercise,
     line(),
-    line('HEALTH TODAY'),
-    ...health(d),
+    line('YOUR DAY'),
+    ...timetable(d.timetable),
+    d.overflow ? line(`  ${d.overflow}`) : '',
     line(),
-    line('AVOID TODAY'),
-    ...avoid.map((a) => line(`  - ${a}`)),
+    line(setTitle),
+    ...(d.items.length
+      ? d.items.map((i) =>
+          line(`  ${i.n}. ${i.title} (${formatHM(i.minutes)}${i.tier ? `, ${i.tier}` : ''}${i.carried ? ', carried' : ''}) — ${i.reason}${i.url ? `\n      ${i.url}` : ''}`),
+        )
+      : [line('  Nothing queued.')]),
     line(),
-    line(`YOU ARE GROWING: ${grow.line}`),
-    line(`  ${grow.stats.map((s) => `${s.label} ${s.value}`).join(' · ')}`),
+    line('BY TONIGHT'),
+    ...d.outcomes.map((o, i) => line(`  ${i + 1}. ${o}`)),
     line(),
-    line('THE PLAN'),
-    ...d.courses.map((c) =>
-      line(`  ${c.label}: ${c.done}/${c.total}${c.status === 'done' ? ' — complete' : c.etaDate ? ` — at three a day, done by ${shortDate(c.etaDate)}` : ''}`),
-    ),
-    line(),
-    line(`DSA TARGET: ${d.dsa.target} problems${d.dsa.weakest ? ` — start with ${d.dsa.weakest}` : ''}`),
-    line(`  ${d.dsa.total} logged · ${d.dsa.accuracy}% clean · ${d.dsa.streak}-day streak`),
-    line(),
-    praise ? line(`WORTH NAMING: ${praise}`) : '',
-    line(`THE CHALLENGE: ${challenge}`),
-    line(),
-    line(`Open today's plan: ${SITE_URL}/#/today`),
+    line(`${cta}: ${href}`),
   ].join('');
 }
 
-export function eveningText(d, { eq, questions, recovery, tomorrow }) {
-  const t = d.todayLog;
-  const w = d.weekStats;
+export function eveningText(d) {
+  const m = d.nextMove;
+  let next;
+  if (!d.started) next = `  Day 1 is still waiting. Press Start in the app before ${m.at}; the first set is ${d.items.length} items, ${formatHM(d.minutes)}.`;
+  else if (d.mode === 'interview-day') next = '  Interview day. Nothing new tonight: run the day-of checklist, read your one-page sheet, and stop early.';
+  else if (d.mode === 'done' && !d.items.length) next = '  Curriculum complete. Nothing is due tonight; re-solves appear when they fall due.';
+  else if (m.allDone) next = `  Today's set is already logged: ${d.dayLog.hits} of ${d.dayLog.planned} planned items closed.${m.item ? ` Next in order, only if you are fresh: ${m.item.title} (${formatHM(m.item.minutes)}).` : ''}`;
+  else if (!m.item) next = '  Nothing is queued. Open the app and pull the next item forward.';
+  else next = `  ${m.item.title} (${formatHM(m.item.minutes)}${m.item.tier ? `, ${m.item.tier}` : ''}) — ${m.item.reason}`;
+
+  const done = [
+    ...d.doneToday.map((t) => line(`  + ${t}`)),
+    d.workout ? line(`  + ${d.workout}`) : '',
+  ];
+  const href = `${SITE_URL}/#/${d.started && d.phase !== 'general' ? 'amazon' : 'home'}`;
+
   return [
-    line(`RUTURAJ — DAILY ACCOUNTABILITY — Day ${d.day} of 161 · ${d.weekday} ${d.dateLabel}`),
+    line(d.dayType === 'weekday' ? "THAT'S THE OFFICE DONE." : `${d.weekday.toUpperCase()} EVENING.`),
+    line(`Day ${d.started ? d.day : '1 is waiting'} · ${d.weekday} ${d.dateLabel}`),
+    line(leaveLine(d)),
     line(),
-    t && t.score !== null
-      ? line(`PLANNED VS ACTUAL: ${t.completed}/${t.planned} of your plan — ${t.score}%${(t.extras ?? 0) > 0 ? ` (plus ${t.extras} extra)` : ''}`)
-      : line('PLANNED VS ACTUAL: today was never started in the app.'),
-    t && t.missed.length ? line(`  Carries to tomorrow: ${t.missed.join(' · ')}`) : '',
-    line(`  Focused minutes: ${d.focusToday}`),
-    ...(t?.done ?? []).slice(0, 8).map((x) => line(`  + ${x}`)),
-    d.dayType === 'sunday'
-      ? line(`WEEK ${d.week}: ${w.pct === null ? '—' : `${w.pct}%`} of plan · ${w.problems} problems · ${w.runs} runs · ${formatHM(w.focusMinutes)} focus`)
-      : '',
-    line(`DAILY CARE: ${d.health.habits.done.length} of ${d.health.habits.total} ticked${d.health.habits.done.length ? ` (${d.health.habits.done.join(', ')})` : ''}`),
+    line(nextMoveTitle(d).toUpperCase()),
+    line(next),
     line(),
-    line(`"${eq}"`),
+    line('TONIGHT'),
+    ...timetable(d.tonight),
     line(),
-    d.praise?.hasWins ? line(`WHAT YOU DID WELL: ${d.praise.headline}`) : '',
-    ...(d.praise?.wins ?? []).map((x) => line(`  + ${x.label} — ${x.detail}`)),
-    d.praise?.hasWins ? line() : '',
-    line('ANSWER HONESTLY'),
-    ...questions.map((q) => line(`  - ${q}`)),
+    ...(done.some(Boolean) ? [line('ALREADY DONE TODAY'), ...done, line()] : []),
+    line(d.evening.line),
     line(),
-    line(`DSA streak ${d.dsa.streak} · ${d.dsa.total} problems · ${d.daysLeft} days left`),
-    line(),
-    recovery ? line(`RECOVERY: ${recovery}`) : '',
-    line(`${d.dayType === 'sunday' ? "MONDAY'S FIRST MISSION" : "TOMORROW'S MISSION"}: ${tomorrow}`),
-    line(),
-    line(`Log it: ${SITE_URL}/#/today`),
+    line(`Open tonight's plan: ${href}`),
   ].join('');
 }

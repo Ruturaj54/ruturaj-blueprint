@@ -1,0 +1,1041 @@
+[
+  {
+    "g": "BFS and DFS on grids and graphs",
+    "rows": [
+      {
+        "slug": "rotting-oranges",
+        "name": "Rotting Oranges",
+        "n": 994,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc8542365",
+          "roundz",
+          "med2022"
+        ],
+        "keys": [
+          "rotting-oranges"
+        ],
+        "days": [
+          15
+        ],
+        "f3": 69.3,
+        "f30": 44.3
+      },
+      {
+        "slug": "number-of-islands",
+        "name": "Number of Islands",
+        "n": 200,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc8014509",
+          "lc8029194",
+          "freq"
+        ],
+        "keys": [
+          "number-of-islands"
+        ],
+        "days": [
+          7
+        ],
+        "f3": 69.3,
+        "f30": 79.3
+      },
+      {
+        "slug": "course-schedule",
+        "name": "Course Schedule",
+        "n": 207,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc7154883",
+          "freq"
+        ],
+        "keys": [
+          "course-schedule"
+        ],
+        "days": [
+          15
+        ],
+        "f3": 64.3,
+        "f30": null
+      },
+      {
+        "slug": "course-schedule-ii",
+        "name": "Course Schedule II",
+        "n": 210,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc6393977",
+          "lc7621408"
+        ],
+        "keys": [
+          "course-schedule-ii"
+        ],
+        "days": [
+          15
+        ],
+        "f3": 48.1,
+        "f30": 54.4
+      },
+      {
+        "slug": "detonate-the-maximum-bombs",
+        "name": "Detonate the Maximum Bombs",
+        "n": 2101,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc7724048"
+        ],
+        "keys": [
+          "detonate-the-maximum-bombs"
+        ],
+        "days": [
+          20
+        ],
+        "f3": null,
+        "f30": null
+      },
+      {
+        "slug": "word-ladder",
+        "name": "Word Ladder",
+        "n": 127,
+        "d": "H",
+        "a": 1,
+        "src": [
+          "lc7035289",
+          "freq"
+        ],
+        "keys": [
+          "word-ladder"
+        ],
+        "days": [
+          16
+        ],
+        "f3": 50.9,
+        "f30": null
+      }
+    ]
+  },
+  {
+    "g": "Trees",
+    "rows": [
+      {
+        "title": "Vertical sum of a binary tree",
+        "sub": "Do LeetCode 987 first",
+        "src": [
+          "rd1"
+        ],
+        "a": 1,
+        "keys": [
+          "vertical-order-traversal-of-a-binary-tree"
+        ],
+        "days": [
+          20
+        ]
+      },
+      {
+        "slug": "lowest-common-ancestor-of-a-binary-tree",
+        "name": "Lowest Common Ancestor of a Binary Tree",
+        "n": 236,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc8014509",
+          "freq"
+        ],
+        "keys": [
+          "lowest-common-ancestor-of-a-binary-tree"
+        ],
+        "days": [
+          21
+        ],
+        "f3": 68.2,
+        "f30": 75.9
+      },
+      {
+        "slug": "lowest-common-ancestor-of-a-binary-search-tree",
+        "name": "Lowest Common Ancestor of a Binary Search Tree",
+        "n": 235,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc7981646",
+          "med2022"
+        ],
+        "keys": [
+          "lowest-common-ancestor-of-a-binary-search-tree"
+        ],
+        "days": [
+          21
+        ],
+        "f3": 22.6,
+        "f30": null
+      },
+      {
+        "slug": "path-sum-iii",
+        "name": "Path Sum III",
+        "n": 437,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc8029194"
+        ],
+        "keys": [
+          "path-sum-iii"
+        ],
+        "days": [
+          20
+        ],
+        "f3": 30.5,
+        "f30": null
+      },
+      {
+        "slug": "most-profitable-path-in-a-tree",
+        "name": "Most Profitable Path in a Tree",
+        "n": 2467,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "rd1"
+        ],
+        "keys": [
+          "most-profitable-path-in-a-tree"
+        ],
+        "days": [
+          21
+        ],
+        "f3": 22.6,
+        "f30": null
+      },
+      {
+        "slug": "maximum-width-of-binary-tree",
+        "name": "Maximum Width of Binary Tree",
+        "n": 662,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc7035289"
+        ],
+        "keys": [
+          "maximum-width-of-binary-tree"
+        ],
+        "days": [
+          13
+        ],
+        "f3": 22.6,
+        "f30": null
+      },
+      {
+        "slug": "binary-tree-zigzag-level-order-traversal",
+        "name": "Binary Tree Zigzag Level Order Traversal",
+        "n": 103,
+        "d": "M",
+        "a": 2,
+        "src": [
+          "gfg2022"
+        ],
+        "keys": [
+          "binary-tree-zigzag-level-order-traversal"
+        ],
+        "days": [
+          13
+        ],
+        "f3": null,
+        "f30": null
+      },
+      {
+        "slug": "binary-tree-maximum-path-sum",
+        "name": "Binary Tree Maximum Path Sum",
+        "n": 124,
+        "d": "H",
+        "a": 2,
+        "src": [
+          "gfg2022"
+        ],
+        "keys": [
+          "binary-tree-maximum-path-sum"
+        ],
+        "days": [
+          13
+        ],
+        "f3": 53.4,
+        "f30": null
+      },
+      {
+        "title": "Implement a BST: insert, delete, search",
+        "sub": "LeetCode 701 + 450",
+        "src": [
+          "roundz"
+        ],
+        "a": 1,
+        "keys": [
+          "insert-into-a-binary-search-tree--2",
+          "delete-node-in-a-bst"
+        ],
+        "days": [
+          24
+        ]
+      },
+      {
+        "slug": "implement-trie-prefix-tree",
+        "name": "Implement Trie (Prefix Tree)",
+        "n": 208,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "roundz"
+        ],
+        "keys": [
+          "implement-trie-prefix-tree",
+          "implement-trie-prefix-tree--2"
+        ],
+        "days": [
+          14,
+          24
+        ],
+        "f3": 22.6,
+        "f30": null
+      },
+      {
+        "slug": "word-search-ii",
+        "name": "Word Search II",
+        "n": 212,
+        "d": "H",
+        "a": 2,
+        "src": [
+          "med2022"
+        ],
+        "keys": [
+          "word-search-ii"
+        ],
+        "days": [
+          14
+        ],
+        "f3": 36.4,
+        "f30": 44.3
+      }
+    ]
+  },
+  {
+    "g": "Binary search",
+    "rows": [
+      {
+        "slug": "search-in-rotated-sorted-array",
+        "name": "Search in Rotated Sorted Array",
+        "n": 33,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc8014509",
+          "freq"
+        ],
+        "keys": [
+          "search-in-rotated-sorted-array"
+        ],
+        "days": [
+          9
+        ],
+        "f3": 59.5,
+        "f30": 54.4
+      },
+      {
+        "slug": "single-element-in-a-sorted-array",
+        "name": "Single Element in a Sorted Array",
+        "n": 540,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc7154883",
+          "freq"
+        ],
+        "keys": [
+          "single-element-in-a-sorted-array"
+        ],
+        "days": [
+          21
+        ],
+        "f3": 55.7,
+        "f30": 54.4
+      },
+      {
+        "slug": "maximize-the-confusion-of-an-exam",
+        "name": "Maximize the Confusion of an Exam",
+        "n": 2024,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc8542365"
+        ],
+        "keys": [
+          "maximize-the-confusion-of-an-exam"
+        ],
+        "days": [
+          21
+        ],
+        "f3": 22.6,
+        "f30": null
+      },
+      {
+        "slug": "magnetic-force-between-two-balls",
+        "name": "Magnetic Force Between Two Balls",
+        "n": 1552,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc7724048"
+        ],
+        "keys": [
+          "magnetic-force-between-two-balls"
+        ],
+        "days": [
+          21
+        ],
+        "f3": 36.4,
+        "f30": null
+      },
+      {
+        "slug": "random-pick-with-weight",
+        "name": "Random Pick with Weight",
+        "n": 528,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "rd1"
+        ],
+        "keys": [
+          "random-pick-with-weight"
+        ],
+        "days": [
+          20
+        ],
+        "f3": 36.4,
+        "f30": null
+      },
+      {
+        "slug": "heaters",
+        "name": "Heaters",
+        "n": 475,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc7035289"
+        ],
+        "keys": [
+          "heaters"
+        ],
+        "days": [
+          9
+        ],
+        "f3": 30.5,
+        "f30": null
+      },
+      {
+        "slug": "find-k-closest-elements",
+        "name": "Find K Closest Elements",
+        "n": 658,
+        "d": "M",
+        "a": 2,
+        "src": [
+          "med2022"
+        ],
+        "keys": [
+          "find-k-closest-elements"
+        ],
+        "days": [
+          9
+        ],
+        "f3": 22.6,
+        "f30": null
+      },
+      {
+        "slug": "median-of-two-sorted-arrays",
+        "name": "Median of Two Sorted Arrays",
+        "n": 4,
+        "d": "H",
+        "a": 1,
+        "src": [
+          "lc8029194",
+          "freq"
+        ],
+        "keys": [
+          "median-of-two-sorted-arrays"
+        ],
+        "days": [
+          25
+        ],
+        "f3": 71.5,
+        "f30": 61.7
+      }
+    ]
+  },
+  {
+    "g": "Arrays, hashing and Kadane",
+    "rows": [
+      {
+        "slug": "maximum-sum-circular-subarray",
+        "name": "Maximum Sum Circular Subarray",
+        "n": 918,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc8014509"
+        ],
+        "keys": [
+          "maximum-sum-circular-subarray"
+        ],
+        "days": [
+          22
+        ],
+        "f3": 22.6,
+        "f30": null
+      },
+      {
+        "slug": "maximum-good-subarray-sum",
+        "name": "Maximum Good Subarray Sum",
+        "n": 3026,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc8014509"
+        ],
+        "keys": [
+          "maximum-good-subarray-sum"
+        ],
+        "days": [
+          22
+        ],
+        "f3": null,
+        "f30": null
+      },
+      {
+        "title": "Two Sum → pair sum ≤ X → buy items within a budget",
+        "sub": "Two Sum, two pointers, then 0/1 knapsack",
+        "src": [
+          "rd1"
+        ],
+        "a": 1,
+        "keys": [
+          "d23-ladder"
+        ],
+        "days": [
+          23
+        ]
+      },
+      {
+        "title": "Households with duplicate interest forms",
+        "sub": "Hashing: O(n·m) brute force, then O(n+m)",
+        "src": [
+          "lc7621408"
+        ],
+        "a": 1,
+        "keys": [
+          "d6-dupforms"
+        ],
+        "days": [
+          6
+        ]
+      },
+      {
+        "slug": "move-zeroes",
+        "name": "Move Zeroes",
+        "n": 283,
+        "d": "E",
+        "a": 2,
+        "src": [
+          "gfg2022",
+          "freq"
+        ],
+        "keys": [
+          "move-zeroes"
+        ],
+        "days": [
+          2
+        ],
+        "f3": 71.5,
+        "f30": 72
+      }
+    ]
+  },
+  {
+    "g": "Sliding window",
+    "rows": [
+      {
+        "slug": "longest-substring-without-repeating-characters",
+        "name": "Longest Substring Without Repeating Characters",
+        "n": 3,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc6393977",
+          "freq"
+        ],
+        "keys": [
+          "longest-substring-without-repeating-characters"
+        ],
+        "days": [
+          3
+        ],
+        "f3": 79.8,
+        "f30": 89.7
+      },
+      {
+        "slug": "longest-substring-with-at-most-k-distinct-characters",
+        "name": "Longest Substring with At Most K Distinct Characters",
+        "n": 340,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc6393977"
+        ],
+        "keys": [
+          "longest-substring-with-at-most-k-distinct-characters"
+        ],
+        "days": [
+          22
+        ],
+        "f3": null,
+        "f30": null
+      },
+      {
+        "slug": "sliding-window-maximum",
+        "name": "Sliding Window Maximum",
+        "n": 239,
+        "d": "H",
+        "a": 1,
+        "src": [
+          "lc7154883"
+        ],
+        "keys": [
+          "sliding-window-maximum"
+        ],
+        "days": [
+          20
+        ],
+        "f3": 55.7,
+        "f30": null
+      }
+    ]
+  },
+  {
+    "g": "Stacks and parsing",
+    "rows": [
+      {
+        "slug": "next-greater-element-i",
+        "name": "Next Greater Element I",
+        "n": 496,
+        "d": "E",
+        "a": 1,
+        "src": [
+          "lc7724048"
+        ],
+        "keys": [
+          "next-greater-element-i"
+        ],
+        "days": [
+          22
+        ],
+        "f3": 48.1,
+        "f30": null
+      },
+      {
+        "slug": "next-greater-element-ii",
+        "name": "Next Greater Element II",
+        "n": 503,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc7724048"
+        ],
+        "keys": [
+          "next-greater-element-ii"
+        ],
+        "days": [
+          22
+        ],
+        "f3": 48.1,
+        "f30": null
+      },
+      {
+        "slug": "parse-lisp-expression",
+        "name": "Parse Lisp Expression",
+        "n": 736,
+        "d": "H",
+        "a": 1,
+        "src": [
+          "lc8542365"
+        ],
+        "keys": [
+          "parse-lisp-expression"
+        ],
+        "days": [
+          20
+        ],
+        "f3": null,
+        "f30": null
+      },
+      {
+        "slug": "remove-all-adjacent-duplicates-in-string-ii",
+        "name": "Remove All Adjacent Duplicates in String II",
+        "n": 1209,
+        "d": "M",
+        "a": 2,
+        "src": [
+          "gfg2022"
+        ],
+        "keys": [
+          "remove-all-adjacent-duplicates-in-string-ii"
+        ],
+        "days": [
+          10
+        ],
+        "f3": 22.6,
+        "f30": null
+      },
+      {
+        "slug": "largest-rectangle-in-histogram",
+        "name": "Largest Rectangle in Histogram",
+        "n": 84,
+        "d": "H",
+        "a": 1,
+        "src": [
+          "lc7621408"
+        ],
+        "keys": [
+          "largest-rectangle-in-histogram",
+          "largest-rectangle-in-histogram--2"
+        ],
+        "days": [
+          10,
+          26
+        ],
+        "f3": 44.9,
+        "f30": 44.3
+      }
+    ]
+  },
+  {
+    "g": "Dynamic programming and greedy",
+    "rows": [
+      {
+        "slug": "house-robber",
+        "name": "House Robber",
+        "n": 198,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc8542365",
+          "lc8029194",
+          "lc7621408"
+        ],
+        "keys": [
+          "house-robber"
+        ],
+        "days": [
+          7
+        ],
+        "f3": 53.4,
+        "f30": 67.4
+      },
+      {
+        "slug": "house-robber-ii",
+        "name": "House Robber II",
+        "n": 213,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc8029194"
+        ],
+        "keys": [
+          "house-robber-ii"
+        ],
+        "days": [
+          21
+        ],
+        "f3": 22.6,
+        "f30": null
+      },
+      {
+        "slug": "best-time-to-buy-and-sell-stock-iii",
+        "name": "Best Time to Buy and Sell Stock III",
+        "n": 123,
+        "d": "H",
+        "a": 1,
+        "src": [
+          "lc8542365"
+        ],
+        "keys": [
+          "best-time-to-buy-and-sell-stock-iii"
+        ],
+        "days": [
+          23
+        ],
+        "f3": 22.6,
+        "f30": null
+      },
+      {
+        "slug": "best-time-to-buy-and-sell-stock-iv",
+        "name": "Best Time to Buy and Sell Stock IV",
+        "n": 188,
+        "d": "H",
+        "a": 1,
+        "src": [
+          "lc8542365"
+        ],
+        "keys": [
+          "best-time-to-buy-and-sell-stock-iv"
+        ],
+        "days": [
+          23
+        ],
+        "f3": null,
+        "f30": null
+      },
+      {
+        "slug": "partition-equal-subset-sum",
+        "name": "Partition Equal Subset Sum",
+        "n": 416,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "rd1"
+        ],
+        "keys": [
+          "partition-equal-subset-sum"
+        ],
+        "days": [
+          18
+        ],
+        "f3": 36.4,
+        "f30": null
+      },
+      {
+        "slug": "jump-game",
+        "name": "Jump Game",
+        "n": 55,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc8029194"
+        ],
+        "keys": [
+          "jump-game"
+        ],
+        "days": [
+          17
+        ],
+        "f3": 36.4,
+        "f30": null
+      },
+      {
+        "slug": "jump-game-ii",
+        "name": "Jump Game II",
+        "n": 45,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc8029194"
+        ],
+        "keys": [
+          "jump-game-ii"
+        ],
+        "days": [
+          17
+        ],
+        "f3": 41,
+        "f30": null
+      },
+      {
+        "slug": "unique-paths",
+        "name": "Unique Paths",
+        "n": 62,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc7035289"
+        ],
+        "keys": [
+          "unique-paths"
+        ],
+        "days": [
+          19
+        ],
+        "f3": 30.5,
+        "f30": null
+      },
+      {
+        "slug": "climbing-stairs",
+        "name": "Climbing Stairs",
+        "n": 70,
+        "d": "E",
+        "a": 2,
+        "src": [
+          "gfg2022"
+        ],
+        "keys": [
+          "climbing-stairs"
+        ],
+        "days": [
+          7
+        ],
+        "f3": 55.7,
+        "f30": null
+      },
+      {
+        "slug": "count-beautiful-splits-in-an-array",
+        "name": "Count Beautiful Splits in an Array",
+        "n": 3388,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc7035289"
+        ],
+        "keys": [
+          "count-beautiful-splits-in-an-array"
+        ],
+        "days": [
+          27
+        ],
+        "f3": null,
+        "f30": null
+      },
+      {
+        "slug": "maximum-length-of-pair-chain",
+        "name": "Maximum Length of Pair Chain",
+        "n": 646,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "lc7621408"
+        ],
+        "keys": [
+          "maximum-length-of-pair-chain"
+        ],
+        "days": [
+          17
+        ],
+        "f3": null,
+        "f30": null
+      }
+    ]
+  },
+  {
+    "g": "Design and OOP",
+    "rows": [
+      {
+        "slug": "lru-cache",
+        "name": "LRU Cache",
+        "n": 146,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "rd1",
+          "lc7621408",
+          "freq"
+        ],
+        "keys": [
+          "lru-cache",
+          "lru-cache--2",
+          "lru-cache--3"
+        ],
+        "days": [
+          14,
+          21,
+          24
+        ],
+        "f3": 72.4,
+        "f30": 67.4
+      },
+      {
+        "slug": "design-circular-queue",
+        "name": "Design Circular Queue",
+        "n": 622,
+        "d": "M",
+        "a": 2,
+        "src": [
+          "med2022"
+        ],
+        "keys": [
+          "design-circular-queue"
+        ],
+        "days": [
+          24
+        ],
+        "f3": null,
+        "f30": null
+      },
+      {
+        "title": "Design a process scheduler",
+        "sub": "Priority queue + OOP, with follow-ups on threads and deadlock",
+        "src": [
+          "lc8014509",
+          "lc6738470"
+        ],
+        "a": 1,
+        "keys": [
+          "d24-lld"
+        ],
+        "days": [
+          24
+        ]
+      },
+      {
+        "title": "Design a board game",
+        "sub": "Classes for the board, players and moves",
+        "src": [
+          "lc6813913"
+        ],
+        "a": 1,
+        "keys": [
+          "d26-lld1"
+        ],
+        "days": [
+          26
+        ]
+      }
+    ]
+  },
+  {
+    "g": "Heaps and sorting",
+    "rows": [
+      {
+        "slug": "k-closest-points-to-origin",
+        "name": "K Closest Points to Origin",
+        "n": 973,
+        "d": "M",
+        "a": 1,
+        "src": [
+          "roundz"
+        ],
+        "keys": [
+          "k-closest-points-to-origin"
+        ],
+        "days": [
+          23
+        ],
+        "f3": 44.9,
+        "f30": null
+      },
+      {
+        "slug": "reverse-pairs",
+        "name": "Reverse Pairs",
+        "n": 493,
+        "d": "H",
+        "a": 1,
+        "src": [
+          "lc6393977"
+        ],
+        "keys": [
+          "reverse-pairs"
+        ],
+        "days": [
+          22
+        ],
+        "f3": 36.4,
+        "f30": null
+      }
+    ]
+  }
+]

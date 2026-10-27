@@ -1,30 +1,24 @@
 /**
  * The whole day, not just the study blocks.
  *
- * Ruturaj described his weekday on 1 Oct 2026 and asked for a timetable that
- * says what to do at every point of it — including the run, skin and hair
- * care, meals and sleep — and for weekends that trade some study for an
- * evening ride into the hills on his Classic 350.
+ * Ruturaj's weekday as he described it on 25 Oct 2026: home at 17:00, study
+ * 18:00–20:00, dinner and recovery to 21:00, deep study 21:00–23:00, a short
+ * walk, then an optional final block. Exercise is a morning run by default and
+ * can move to the evening for a day or for good.
  *
- * Weekday times reference Settings, so changing a block in Settings moves the
- * timetable with it. A ref is "HH:MM", a Settings key, or a key with a minute
- * offset ("morningRunEnd+30"). Weekend times are fixed.
- *
- * Generic on purpose: nothing here names a condition or a medicine. The
- * repository is public, so his health specifics live in the private synced
- * store and are merged in at render time.
+ * Weekday times reference Settings, so changing a block moves the whole day.
+ * A ref is "HH:MM", a Settings key, or a key with a minute offset ("walkEnd+30").
+ * `when` hides an entry unless the condition holds for that day.
  */
 
 export type DayType = 'weekday' | 'saturday' | 'sunday';
 
-export type EntryKind = 'care' | 'move' | 'meal' | 'work' | 'study' | 'ride' | 'routine' | 'sleep';
+export type EntryKind = 'wake' | 'move' | 'meal' | 'work' | 'study' | 'walk' | 'free' | 'routine' | 'sleep';
 
-/**
- * What a study entry is for. The scheduler places missions by role: watching
- * and reading go to office, course and light blocks; building goes to deep and
- * course blocks; DSA owns its own block, or the front of the deep block.
- */
+/** What a study block is for; the scheduler places work by role. */
 export type StudyRole = 'office' | 'course' | 'deep' | 'dsa' | 'light' | 'review';
+
+export type Condition = 'am-run' | 'am-norun' | 'pm-run' | 'pm-norun' | 'block3' | 'noblock3';
 
 export interface RoutineEntry {
   id: string;
@@ -34,55 +28,55 @@ export interface RoutineEntry {
   kind: EntryKind;
   study?: StudyRole;
   note: string;
+  when?: Condition;
 }
 
 const WEEKDAY: RoutineEntry[] = [
-  { id: 'wake', start: 'wakeTime', end: 'morningRunTime', label: 'Wake up · water · no phone', kind: 'care', note: 'A glass of water before anything else. The first ten minutes decide whether the day is yours or your feed’s.' },
-  { id: 'am-move', start: 'morningRunTime', end: 'morningRunEnd', label: 'Run or home workout', kind: 'move', note: 'Outdoors when you can — it is also your daylight. After a short night, go easy rather than skip.' },
-  { id: 'am-care', start: 'morningRunEnd', end: 'morningRunEnd+30', label: 'Shower · skin care (AM)', kind: 'care', note: 'Cleanse, moisturise, sunscreen. Tied to the shower so it never needs remembering.' },
-  { id: 'breakfast', start: 'morningRunEnd+30', end: 'morningRunEnd+60', label: 'Breakfast — protein first', kind: 'meal', note: 'Eggs, paneer, dal, curd or sprouts before anything sweet. Morning items your doctor directed go here.' },
-  { id: 'prep', start: 'morningRunEnd+60', end: 'officeStart', label: 'Recall yesterday’s notes · get ready', kind: 'routine', note: 'Twenty minutes: write what you remember from yesterday’s module, then check. Recall beats re-watching.' },
-  { id: 'office', start: 'officeStart', end: 'officeEnd', label: 'Office · commute both ways', kind: 'work', study: 'office', note: 'The job comes first — deliver it well, the resume lines come from here. Spare time: watching and reading only.' },
-  { id: 'home', start: 'officeEnd', end: 'studyBlock1Start', label: 'Home · change · light snack', kind: 'meal', note: 'Fruit, roasted chana, buttermilk or nuts — not biscuits and sweet chai. This is where the evening sugar habit starts.' },
-  { id: 'block1', start: 'studyBlock1Start', end: 'studyBlock1End', label: 'Block 1 — Course', kind: 'study', study: 'course', note: 'Apna College first, Five Minute Engineering second. Code along — if you did not type it, you did not learn it.' },
-  { id: 'pm-move', start: 'eveningRunTime', end: 'eveningRunEnd', label: 'Evening run', kind: 'move', note: 'Protected. Fitness and recovery, not slack to raid when the day runs late.' },
-  { id: 'pm-care', start: 'eveningRunEnd', end: 'eveningRunEnd+15', label: 'Shower · skin + hair care (PM)', kind: 'care', note: 'Night skin routine, and your hair-care routine exactly as directed.' },
-  { id: 'dinner', start: 'eveningRunEnd+15', end: 'studyBlock2Start', label: 'Dinner — light, then the kitchen closes', kind: 'meal', note: 'Protein and vegetables, a smaller portion of rice or roti. Nothing to eat during the night block.' },
-  { id: 'block2', start: 'studyBlock2Start', end: 'studyBlock2End', label: 'Block 2 — DSA + deep work', kind: 'study', study: 'deep', note: 'DSA first while you are sharpest, then build. Phone in another room.' },
-  { id: 'sleep', start: 'sleepTarget', end: 'wakeTime', label: 'Sleep', kind: 'sleep', note: 'Screens off. Six hours is the floor, not the goal — the weekend pays it back.' },
+  { id: 'wake', start: 'wakeTime', end: 'exerciseStart', label: 'Wake · water · no phone', kind: 'wake', note: 'A glass of water, then shoes on. The first ten minutes decide whether the day is yours.' },
+  { id: 'am-move', start: 'exerciseStart', end: 'exerciseEnd', label: 'Morning run + core', kind: 'move', when: 'am-run', note: 'Warm up, run easy, cool down, then the short strength set. Today’s session is on the Fitness tab.' },
+  { id: 'am-easy', start: 'exerciseStart', end: 'exerciseEnd', label: 'Easy morning · 10-minute walk · stretch', kind: 'routine', when: 'am-norun', note: 'The run is in the evening today, so keep the morning light and get daylight on your face.' },
+  { id: 'ready', start: 'exerciseEnd', end: 'officeStart', label: 'Shower · breakfast · get ready', kind: 'meal', note: 'Protein first: eggs, paneer, dal or curd before anything sweet.' },
+  { id: 'office', start: 'officeStart', end: 'officeEnd', label: 'Office · commute both ways', kind: 'work', study: 'office', note: 'The job comes first; the resume lines come from here. Spare minutes go to reading an LP story, nothing heavier.' },
+  { id: 'settle', start: 'officeEnd', end: 'studyBlock1Start', label: 'Home · freshen up · snack · your time', kind: 'free', when: 'pm-norun', note: 'Change, eat something small, and take the hour. Study starts at the block, not before.' },
+  { id: 'settle-short', start: 'officeEnd', end: 'officeEnd+15', label: 'Home · change', kind: 'free', when: 'pm-run', note: 'Shoes on within fifteen minutes, before the sofa wins.' },
+  { id: 'pm-move', start: 'officeEnd+15', end: 'studyBlock1Start', label: 'Evening run + core', kind: 'move', when: 'pm-run', note: 'Same session as the morning plan. Shower and a quick snack before the block.' },
+  { id: 'block1', start: 'studyBlock1Start', end: 'studyBlock1End', label: 'Study block 1', kind: 'study', study: 'course', note: 'Timer on. Clarify, brute force, optimal, code, dry run, complexity. Phone in another room.' },
+  { id: 'dinner', start: 'studyBlock1End', end: 'studyBlock2Start', label: 'Dinner · rest', kind: 'meal', note: 'Eat properly, then twenty minutes with no screen. The kitchen closes after this.' },
+  { id: 'block2', start: 'studyBlock2Start', end: 'studyBlock2End', label: 'Study block 2 — deep', kind: 'study', study: 'deep', note: 'The hardest item of the day goes here, while you are still sharp.' },
+  { id: 'walk', start: 'studyBlock2End', end: 'walkEnd', label: 'Short walk in the society', kind: 'walk', note: 'No headphones needed. Let the last two hours settle.' },
+  { id: 'block3', start: 'walkEnd', end: 'studyBlock3End', label: 'Final block (optional)', kind: 'study', study: 'light', when: 'block3', note: 'Revision and lighter items only. If you are not fresh, sleep instead; tomorrow’s blocks are worth more.' },
+  { id: 'sleep', start: 'studyBlock3End', end: 'wakeTime', label: 'Sleep', kind: 'sleep', when: 'block3', note: 'Screens off. Six hours is the floor on weekdays; the weekend pays it back.' },
+  { id: 'sleep-early', start: 'walkEnd', end: 'wakeTime', label: 'Sleep', kind: 'sleep', when: 'noblock3', note: 'Screens off. A longer night tonight is tomorrow’s better block.' },
 ];
 
 const SATURDAY: RoutineEntry[] = [
-  { id: 'sat-wake', start: '08:30', end: '08:45', label: 'Wake slow · water', kind: 'care', note: 'Sleep in — five short nights are behind you. Still no phone for the first ten minutes.' },
-  { id: 'sat-move', start: '08:45', end: '09:45', label: 'Long easy run', kind: 'move', note: 'Slower and longer than a weekday, at a pace where you could still talk. This builds the aerobic base.' },
-  { id: 'sat-care', start: '09:45', end: '10:15', label: 'Shower · skin care (AM)', kind: 'care', note: 'Sunscreen matters more today — you will be on the bike later.' },
-  { id: 'sat-breakfast', start: '10:15', end: '10:45', label: 'Breakfast — protein first', kind: 'meal', note: 'A proper meal before the long block. Morning items your doctor directed go here.' },
-  { id: 'sat-deep', start: '10:45', end: '13:45', label: 'Deep block — the week’s hardest item', kind: 'study', study: 'deep', note: 'Three uninterrupted hours, the longest block of your week. Spend it on whatever needs the most focus.' },
-  { id: 'sat-lunch', start: '13:45', end: '14:45', label: 'Lunch · rest', kind: 'meal', note: 'Eat, walk ten minutes, lie down for twenty if you need it.' },
-  { id: 'sat-dsa', start: '14:45', end: '16:00', label: 'DSA — problems + one re-solve', kind: 'study', study: 'dsa', note: 'Re-solve one problem from earlier in the week, cold. Retention is the metric.' },
-  { id: 'ride', start: '16:00', end: '20:30', label: 'Ride — Classic 350 to the hills', kind: 'ride', note: 'Small happiness, fully earned. Full gear, fuel before the ghat, down before it is fully dark. Stops: tender coconut, chaas, unsweetened chai.' },
-  { id: 'sat-dinner', start: '20:30', end: '21:15', label: 'Dinner', kind: 'meal', note: 'Eating out is fine: tandoor or grilled over fried, no dessert, no cold drinks.' },
-  { id: 'sat-pm-care', start: '21:15', end: '21:30', label: 'Shower · skin + hair care (PM)', kind: 'care', note: 'Wash off the road. Night routine, hair care exactly as directed.' },
-  { id: 'sat-light', start: '21:30', end: '22:30', label: 'Light block — revise the week', kind: 'study', study: 'light', note: 'Recall-first revision of the week’s modules. Watching and reading only — you have ridden for four hours.' },
-  { id: 'sat-free', start: '22:30', end: '23:30', label: 'Free time', kind: 'routine', note: 'Guilt-free. A film, family, friends — the week was hard and this hour is yours.' },
-  { id: 'sat-sleep', start: '23:30', end: '08:30', label: 'Sleep', kind: 'sleep', note: 'A full night. This is where the week’s short sleep gets paid back.' },
+  { id: 'sat-wake', start: 'weekendWakeTime', end: 'weekendWakeTime+15', label: 'Wake slow · water', kind: 'wake', note: 'Sleep in a little; five short nights are behind you.' },
+  { id: 'sat-move', start: 'weekendWakeTime+15', end: 'weekendWakeTime+75', label: 'Longer easy run', kind: 'move', note: 'Slower and longer than a weekday, at a pace where you could still talk.' },
+  { id: 'sat-breakfast', start: 'weekendWakeTime+75', end: 'weekendWakeTime+120', label: 'Shower · breakfast', kind: 'meal', note: 'A proper meal before the long block.' },
+  { id: 'sat-a', start: 'weekendWakeTime+120', end: 'weekendWakeTime+300', label: 'Study A — the week’s hardest set', kind: 'study', study: 'deep', note: 'Three uninterrupted hours, the longest block of your week.' },
+  { id: 'sat-lunch', start: 'weekendWakeTime+300', end: 'weekendWakeTime+390', label: 'Lunch · rest', kind: 'meal', note: 'Eat, walk ten minutes, lie down for twenty if you need it.' },
+  { id: 'sat-b', start: 'weekendWakeTime+390', end: 'weekendWakeTime+570', label: 'Study B', kind: 'study', study: 'course', note: 'Mock or timed set if one is due; otherwise the next items in order.' },
+  { id: 'sat-free', start: 'weekendWakeTime+570', end: '20:00', label: 'Free evening — ride, friends, rest', kind: 'free', note: 'Fully earned. No laptop.' },
+  { id: 'sat-dinner', start: '20:00', end: '21:00', label: 'Dinner', kind: 'meal', note: 'Eating out is fine: grilled over fried, no dessert, no cold drinks.' },
+  { id: 'sat-c', start: '21:00', end: '23:00', label: 'Study C — lighter', kind: 'study', study: 'light', note: 'Revision, an LP story said out loud, the mistakes notebook.' },
+  { id: 'sat-walk', start: '23:00', end: 'weekendSleepTime', label: 'Short walk · wind down', kind: 'walk', note: 'Then a full night. This is where the week’s short sleep gets paid back.' },
+  { id: 'sat-sleep', start: 'weekendSleepTime', end: 'weekendWakeTime', label: 'Sleep', kind: 'sleep', note: 'A full night.' },
 ];
 
 const SUNDAY: RoutineEntry[] = [
-  { id: 'sun-wake', start: '08:30', end: '08:45', label: 'Wake slow · water', kind: 'care', note: 'Another full night behind you. Water first, phone later.' },
-  { id: 'sun-move', start: '08:45', end: '09:30', label: 'Walk or mobility — recovery', kind: 'move', note: 'Legs rest today. A brisk walk or twenty minutes of stretching keeps the habit without the load.' },
-  { id: 'sun-care', start: '09:30', end: '10:00', label: 'Shower · skin care (AM)', kind: 'care', note: 'Sunscreen — another ride today.' },
-  { id: 'sun-breakfast', start: '10:00', end: '10:30', label: 'Breakfast — protein first', kind: 'meal', note: 'Morning items your doctor directed go here.' },
-  { id: 'sun-deep', start: '10:30', end: '13:00', label: 'Deep block — clear the carry-over', kind: 'study', study: 'deep', note: 'Anything still open from the week goes first, so Monday starts clean.' },
-  { id: 'sun-lunch', start: '13:00', end: '14:00', label: 'Lunch · rest', kind: 'meal', note: 'Home food if you can. Cook extra for Monday.' },
-  { id: 'sun-dsa', start: '14:00', end: '15:15', label: 'Weekly timed DSA set', kind: 'study', study: 'dsa', note: 'Three problems under time, no hints. Log the solve times — that is the number interviews measure.' },
-  { id: 'sun-ride', start: '15:30', end: '19:30', label: 'Ride — short trip, back early', kind: 'ride', note: 'Back by 19:30. Sunday night resets the week; it should not be spent recovering from the ride.' },
-  { id: 'sun-dinner', start: '19:30', end: '20:30', label: 'Dinner', kind: 'meal', note: 'Light and early. Kitchen closes after this.' },
-  { id: 'sun-review', start: '20:30', end: '21:30', label: 'Weekly review · plan the week', kind: 'study', study: 'review', note: 'Analytics → weekly review. Name one thing that slipped and the one change that fixes it.' },
-  { id: 'sun-prep', start: '21:30', end: '22:00', label: 'Prep Monday — bag, clothes, office snacks', kind: 'routine', note: 'Pack nuts, fruit or chana for the office so the 4 pm craving already has an answer.' },
-  { id: 'sun-pm-care', start: '22:00', end: '22:15', label: 'Skin + hair care (PM)', kind: 'care', note: 'Night routine, hair care exactly as directed.' },
-  { id: 'sun-light', start: '22:15', end: '23:15', label: 'Light block — preview Monday’s module', kind: 'study', study: 'light', note: 'Skim the first module of the week so Monday’s block starts warm.' },
-  { id: 'sun-sleep', start: '23:30', end: 'wakeTime', label: 'Sleep — Monday starts at wake-up', kind: 'sleep', note: 'Earlier tonight so Monday morning is not a fight.' },
+  { id: 'sun-wake', start: 'weekendWakeTime', end: 'weekendWakeTime+15', label: 'Wake slow · water', kind: 'wake', note: 'Another full night behind you.' },
+  { id: 'sun-move', start: 'weekendWakeTime+15', end: 'weekendWakeTime+60', label: 'Walk or mobility — recovery', kind: 'move', note: 'Legs rest today. A brisk walk and twenty minutes of stretching keep the habit without the load.' },
+  { id: 'sun-breakfast', start: 'weekendWakeTime+60', end: 'weekendWakeTime+120', label: 'Shower · breakfast', kind: 'meal', note: 'Unhurried.' },
+  { id: 'sun-a', start: 'weekendWakeTime+120', end: 'weekendWakeTime+300', label: 'Study A — clear the carry-over', kind: 'study', study: 'deep', note: 'Anything still open from the week goes first, so Monday starts clean.' },
+  { id: 'sun-lunch', start: 'weekendWakeTime+300', end: 'weekendWakeTime+390', label: 'Lunch · rest', kind: 'meal', note: 'Home food if you can. Cook extra for Monday.' },
+  { id: 'sun-mock', start: 'weekendWakeTime+390', end: 'weekendWakeTime+510', label: 'Mock or timed set', kind: 'study', study: 'dsa', note: 'Two problems under time, out loud, no hints. Log the solve times.' },
+  { id: 'sun-free', start: 'weekendWakeTime+510', end: '19:30', label: 'Free time', kind: 'free', note: 'Back by 19:30 so Sunday night resets the week.' },
+  { id: 'sun-dinner', start: '19:30', end: '20:30', label: 'Dinner', kind: 'meal', note: 'Light and early.' },
+  { id: 'sun-review', start: '20:30', end: '21:15', label: 'Weekly review · plan the week', kind: 'study', study: 'review', note: 'Progress tab. Name one thing that slipped and the one change that fixes it.' },
+  { id: 'sun-light', start: '21:15', end: '22:30', label: 'Light block — preview Monday', kind: 'study', study: 'light', note: 'Skim tomorrow’s first items so Monday’s block starts warm.' },
+  { id: 'sun-prep', start: '22:30', end: '23:00', label: 'Prep Monday — bag, clothes, office snacks', kind: 'routine', note: 'Pack nuts, fruit or chana so the 4 pm craving already has an answer.' },
+  { id: 'sun-walk', start: '23:00', end: 'weekendSleepTime', label: 'Short walk · wind down', kind: 'walk', note: 'Earlier tonight so Monday morning is not a fight.' },
+  { id: 'sun-sleep', start: 'weekendSleepTime', end: 'wakeTime', label: 'Sleep — Monday starts at wake-up', kind: 'sleep', note: 'Screens off.' },
 ];
 
 export const ROUTINES: Record<DayType, readonly RoutineEntry[]> = {
@@ -92,7 +86,7 @@ export const ROUTINES: Record<DayType, readonly RoutineEntry[]> = {
 };
 
 export const DAY_TYPE_LABEL: Record<DayType, string> = {
-  weekday: 'Weekday — hard study',
-  saturday: 'Saturday — study, then ride',
-  sunday: 'Sunday — review, ride, reset',
+  weekday: 'Weekday',
+  saturday: 'Saturday',
+  sunday: 'Sunday',
 };
