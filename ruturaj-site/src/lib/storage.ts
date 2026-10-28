@@ -35,6 +35,10 @@ let status: SyncStatus = 'idle';
 let pushTimer: ReturnType<typeof setTimeout> | null = null;
 let initialPull: Promise<void> = Promise.resolve();
 let resetOnLoad = false;
+let pulling = false;
+let lastPullAt = 0;
+/** Minimum gap between pulls triggered by returning to the tab. */
+const PULL_THROTTLE_MS = 15_000;
 
 const listeners = new Set<Listener>();
 const statusListeners = new Set<StatusListener>();
@@ -128,6 +132,8 @@ function schedulePush(): void {
 export async function pullRemote(): Promise<void> {
   const pass = getPassphrase();
   if (!pass) return;
+  pulling = true;
+  lastPullAt = Date.now();
   setStatus('syncing');
   try {
     const res = await fetch(SYNC_URL, { headers: { 'x-blueprint-key': pass } });
@@ -149,7 +155,21 @@ export async function pullRemote(): Promise<void> {
     setStatus('synced');
   } catch {
     setStatus('offline');
+  } finally {
+    pulling = false;
   }
+}
+
+/**
+ * Pull when he comes back to the tab, so a day started on the phone shows on
+ * the PC without a reload, and a tab left open adopts the newer server copy
+ * before a tick could push its old Day 1 back. Skipped while a local write is
+ * waiting to push (the local copy is the newer one) and throttled.
+ */
+export function pullIfIdle(): void {
+  if (pulling || pushTimer || status === 'syncing') return;
+  if (Date.now() - lastPullAt < PULL_THROTTLE_MS) return;
+  void pullRemote();
 }
 
 /* ---------- public API ---------------------------------------------------- */

@@ -16,7 +16,10 @@ import { todayISO } from '@/engine/dates';
 export function useDaySnapshot(): void {
   const state = useAppState();
   const today = todayISO();
-  const started = Boolean(state.program.startedOn);
+  // Before 04:00 on the morning of Day 1 the mission date is still the day
+  // before. No snapshot then, or a phantom 0% day would sit in front of Day 1.
+  const startedOn = state.program.startedOn ?? null;
+  const started = startedOn !== null && today >= startedOn;
   const hasPlan = (state.days[today]?.planned.length ?? 0) > 0;
 
   useEffect(() => {
@@ -25,6 +28,7 @@ export function useDaySnapshot(): void {
     void storage.whenSynced().then(() => {
       if (cancelled) return;
       const latest = storage.getState();
+      if (!latest.program.startedOn || today < latest.program.startedOn) return;
       if ((latest.days[today]?.planned.length ?? 0) > 0) return;
       const ids =
         latest.program.phase === 'amazon' ? buildAmazonDay(latest, today).plannedIds : buildPlan(latest).plannedIds;

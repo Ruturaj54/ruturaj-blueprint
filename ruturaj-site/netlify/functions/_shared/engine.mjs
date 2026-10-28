@@ -9055,8 +9055,10 @@ function dayScore(state, date) {
 function executionStreak(state) {
   let streak = 0;
   const today = todayISO();
+  const startedOn = state.program.startedOn ?? today;
   for (let i = 0; i < 365; i += 1) {
     const date = addDays(today, -i);
+    if (date < startedOn) break;
     const score = dayScore(state, date);
     if (score === void 0) {
       if (i === 0) continue;
@@ -9069,10 +9071,12 @@ function executionStreak(state) {
 }
 function isBehindSchedule(state) {
   const today = todayISO();
+  const startedOn = state.program.startedOn ?? today;
   let planned = 0;
   let hits = 0;
   for (let i = 1; i <= 7; i += 1) {
     const date = addDays(today, -i);
+    if (date < startedOn) break;
     const log = state.days[date];
     if (!log) continue;
     planned += log.planned.length;

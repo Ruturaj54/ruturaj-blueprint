@@ -40,8 +40,10 @@ export function dayScore(state: AppState, date: string): number | undefined {
 export function executionStreak(state: AppState): number {
   let streak = 0;
   const today = todayISO();
+  const startedOn = state.program.startedOn ?? today;
   for (let i = 0; i < 365; i += 1) {
     const date = addDays(today, -i);
+    if (date < startedOn) break; // days before Day 1 are not programme history
     const score = dayScore(state, date);
     if (score === undefined) {
       if (i === 0) continue; // today may not be scored yet
@@ -62,10 +64,12 @@ export function executionStreak(state: AppState): number {
  */
 export function isBehindSchedule(state: AppState): boolean {
   const today = todayISO();
+  const startedOn = state.program.startedOn ?? today;
   let planned = 0;
   let hits = 0;
   for (let i = 1; i <= 7; i += 1) {
     const date = addDays(today, -i);
+    if (date < startedOn) break;
     const log = state.days[date];
     if (!log) continue;
     planned += log.planned.length;
