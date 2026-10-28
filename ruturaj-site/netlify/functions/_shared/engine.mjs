@@ -106,7 +106,8 @@ var DEFAULT_SETTINGS = {
   eveningEmailTime: "17:00",
   emailEnabled: true,
   deepWorkMinutes: 50,
-  dsaTargetPerDay: 3
+  dsaTargetPerDay: 3,
+  theme: "light"
 };
 var DEFAULT_PROGRAM = {
   phase: "amazon",
@@ -147,7 +148,7 @@ function defaultState() {
 function isStaleEpoch(state) {
   return state.dataEpoch < DATA_EPOCH;
 }
-var PREFERENCE_KEYS = ["emailEnabled", "dsaTargetPerDay", "deepWorkMinutes", "name"];
+var PREFERENCE_KEYS = ["emailEnabled", "dsaTargetPerDay", "deepWorkMinutes", "name", "theme"];
 function freshForNewEpoch(from, today = todayISO()) {
   const fresh = defaultState();
   for (const key of PREFERENCE_KEYS) {
@@ -203,6 +204,7 @@ function parseSettings(raw) {
     if (typeof d === "string" && HHMM.test(d) && !HHMM.test(v)) continue;
     if (typeof d === "number" && !Number.isFinite(v)) continue;
     if (k === "exerciseSlot" && v !== "morning" && v !== "evening") continue;
+    if (k === "theme" && v !== "light" && v !== "dark" && v !== "system") continue;
     out[k] = v;
   }
   out.officeStudyHours = Math.min(3, Math.max(0, out.officeStudyHours));

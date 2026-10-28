@@ -42,6 +42,9 @@ export const SETTINGS_VERSION = 2;
 
 export type ProgramPhase = 'amazon' | 'general';
 
+/** Light is the default; system follows the device. */
+export type Theme = 'light' | 'dark' | 'system';
+
 export interface Program {
   /** Day 1, set by the explicit "Start Day 1" action. Absent = not started. */
   startedOn?: string;
@@ -118,6 +121,8 @@ export interface Settings {
   /* study */
   deepWorkMinutes: number;
   dsaTargetPerDay: number;
+  /* appearance */
+  theme: Theme;
 }
 
 export interface AppState {
@@ -175,6 +180,7 @@ export const DEFAULT_SETTINGS: Settings = {
   emailEnabled: true,
   deepWorkMinutes: 50,
   dsaTargetPerDay: 3,
+  theme: 'light',
 };
 
 export const DEFAULT_PROGRAM: Program = {
@@ -228,7 +234,7 @@ export function isStaleEpoch(state: AppState): boolean {
 }
 
 /** Preferences that survive a timetable migration or an epoch change. */
-export const PREFERENCE_KEYS = ['emailEnabled', 'dsaTargetPerDay', 'deepWorkMinutes', 'name'] as const;
+export const PREFERENCE_KEYS = ['emailEnabled', 'dsaTargetPerDay', 'deepWorkMinutes', 'name', 'theme'] as const;
 
 /**
  * A clean start for a new epoch: old progress goes; preferences, the Amazon

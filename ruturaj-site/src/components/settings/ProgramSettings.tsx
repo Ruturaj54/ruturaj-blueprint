@@ -1,9 +1,9 @@
-import { Flag, CheckCircle2, RotateCcw } from 'lucide-react';
+import { Flag, CheckCircle2, RotateCcw, CalendarCheck } from 'lucide-react';
 import { Card, Chip, inputCls } from '@/components/ui/primitives';
 import { Field } from '@/components/ui/controls';
 import { useAppState, useUpdateState } from '@/hooks/useAppState';
-import { programInfo, startProgram, completeAmazonPhase, reactivateAmazonPhase } from '@/engine/program';
-import { formatLong, formatShort, todayISO } from '@/engine/dates';
+import { programInfo, startProgram, completeAmazonPhase, reactivateAmazonPhase, setDayOne } from '@/engine/program';
+import { formatLong, formatShort, istDateISO } from '@/engine/dates';
 import { ConfirmAction } from './ConfirmAction';
 import { Readout } from './Readout';
 
@@ -17,6 +17,8 @@ export function ProgramSettings() {
   const update = useUpdateState();
   const info = programInfo(state);
   const program = state.program;
+  // The calendar date, not the 04:00 mission date: after midnight he still means the new day.
+  const today = istDateISO();
 
   return (
     <Card>
@@ -33,12 +35,37 @@ export function ProgramSettings() {
         />
       </Field>
 
+      {info.started && (
+        <div className="mt-4">
+          <Field label="Day 1" hint={`Today is Day ${info.day}. The day number advances by date on its own; nothing needs pressing each morning.`}>
+            <input
+              type="date"
+              className={inputCls}
+              value={program.startedOn ?? ''}
+              max={today}
+              onChange={(e) => {
+                const v = e.target.value;
+                if (v) update((draft) => setDayOne(draft, v));
+              }}
+            />
+          </Field>
+          {program.startedOn !== today && (
+            <div className="mt-2">
+              <ConfirmAction
+                icon={<CalendarCheck size={15} />}
+                label="Make today Day 1"
+                confirmLabel="Yes, today is Day 1"
+                tone="accent"
+                explain={`Day 1 becomes ${formatLong(today)} and the Amazon window recounts from it. Every tick and log you already made stays.`}
+                onConfirm={() => update((draft) => setDayOne(draft, today))}
+              />
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="mt-4">
-        <Readout
-          label="Day 1"
-          value={info.started ? `${formatLong(info.startedOn)} · Day ${info.day}` : 'Not started'}
-          tone={info.started ? 'default' : 'muted'}
-        />
+        {!info.started && <Readout label="Day 1" value="Not started" tone="muted" />}
         <Readout
           label="Current phase"
           value={
@@ -71,8 +98,8 @@ export function ProgramSettings() {
             icon={<Flag size={15} />}
             label="Start Day 1"
             confirmLabel="Yes, today is Day 1"
-            explain={`Day 1 becomes today, ${formatLong(todayISO())}. The Amazon window counts from it and the daily mails have a real day to report. Only a full reset undoes this.`}
-            onConfirm={() => update((draft) => startProgram(draft))}
+            explain={`Day 1 becomes today, ${formatLong(today)}. The Amazon window counts from it and the daily mails have a real day to report. Only a full reset undoes this.`}
+            onConfirm={() => update((draft) => startProgram(draft, today))}
           />
         )}
 

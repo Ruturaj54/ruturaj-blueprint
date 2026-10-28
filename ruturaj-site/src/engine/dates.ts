@@ -36,6 +36,15 @@ export function todayISO(now: Date = new Date()): string {
   return `${shifted.getUTCFullYear()}-${pad(shifted.getUTCMonth() + 1)}-${pad(shifted.getUTCDate())}`;
 }
 
+/**
+ * The IST calendar date, with no 04:00 shift. Used only where he thinks in
+ * calendar days, such as choosing which date is Day 1 after midnight.
+ */
+export function istDateISO(now: Date = new Date()): string {
+  const shifted = new Date(now.getTime() + IST_OFFSET_MINUTES * 60_000);
+  return `${shifted.getUTCFullYear()}-${pad(shifted.getUTCMonth() + 1)}-${pad(shifted.getUTCDate())}`;
+}
+
 /** The IST wall clock as "HH:MM". */
 export function istClock(now: Date = new Date()): string {
   const shifted = new Date(now.getTime() + IST_OFFSET_MINUTES * 60_000);

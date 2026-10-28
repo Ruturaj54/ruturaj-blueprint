@@ -16,7 +16,7 @@ preview/test send, and a mail-status endpoint. No accounts, no database server.
 | **Projects** | The small number of defensible projects and their milestones. |
 | **Fitness** | Today's session (run, strength, long run, recovery), the AM/PM/rest slot for the day, logging, the week strip. The honest note on fat loss lives here. |
 | **Progress** | Day scores, execution streak, DSA patterns, phase bars, weekly review. |
-| **Settings** | Timetable, exercise slot, mail times, the Amazon window and interview date, sync passphrase, data tools, mail preview / test send / status. |
+| **Settings** | Day 1 date, timetable, exercise slot, mail times, the Amazon window and interview date, theme (light default, dark, system), sync passphrase, data tools, mail preview / test send / status. |
 
 ## Day 1 and the two phases
 

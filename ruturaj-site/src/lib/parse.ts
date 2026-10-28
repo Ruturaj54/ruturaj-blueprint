@@ -64,6 +64,7 @@ function parseSettings(raw: unknown): Settings {
     if (typeof d === 'string' && HHMM.test(d) && !HHMM.test(v as string)) continue;
     if (typeof d === 'number' && !Number.isFinite(v as number)) continue;
     if (k === 'exerciseSlot' && v !== 'morning' && v !== 'evening') continue;
+    if (k === 'theme' && v !== 'light' && v !== 'dark' && v !== 'system') continue;
     (out as unknown as Record<string, unknown>)[k] = v;
   }
   out.officeStudyHours = Math.min(3, Math.max(0, out.officeStudyHours));

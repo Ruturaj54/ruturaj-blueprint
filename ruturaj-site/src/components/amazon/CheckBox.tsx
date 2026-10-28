@@ -48,7 +48,7 @@ export function CheckBox({
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: reduce ? 0 : 0.18, ease: 'easeOut' }}
           >
-            <Check size={14} strokeWidth={3.5} className="text-white" />
+            <Check size={14} strokeWidth={3.5} className="text-on-accent" />
           </motion.span>
         )}
       </motion.span>

@@ -1,10 +1,11 @@
 import { useState, type ReactNode } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { MoreHorizontal, X, Cloud, CloudOff, RefreshCw, Lock, ServerCog } from 'lucide-react';
+import { MoreHorizontal, X, Cloud, CloudOff, RefreshCw, Lock, ServerCog, Sun, Moon } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { spring } from '@/lib/motion';
 import { NAV_ITEMS, PRIMARY_NAV, OVERFLOW_NAV } from '@/nav';
-import { useSyncStatus, useAppState } from '@/hooks/useAppState';
+import { useSyncStatus, useAppState, useUpdateState } from '@/hooks/useAppState';
+import { currentResolvedTheme } from '@/hooks/useTheme';
 import { programInfo } from '@/engine/program';
 
 /**
@@ -25,10 +26,31 @@ function SyncBadge() {
   } as const;
   const { icon: Icon, text, tone } = map[status];
   return (
-    <span className={cn('inline-flex items-center gap-1.5 text-[11px]', tone)}>
+    <span className={cn('inline-flex items-center gap-1.5 whitespace-nowrap text-[11px]', tone)} title={text}>
       <Icon size={13} className={status === 'syncing' ? 'animate-spin' : undefined} />
-      {text}
+      <span className="hidden sm:inline">{text}</span>
     </span>
+  );
+}
+
+/** Flips light and dark in one tap; "System" lives in Settings, Appearance. */
+function ThemeButton() {
+  const theme = useAppState().settings.theme;
+  const update = useUpdateState();
+  const dark = currentResolvedTheme(theme) === 'dark';
+  return (
+    <button
+      type="button"
+      onClick={() =>
+        update((draft) => {
+          draft.settings.theme = dark ? 'light' : 'dark';
+        })
+      }
+      aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'}
+      className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-raised hover:text-fg"
+    >
+      {dark ? <Sun size={17} /> : <Moon size={17} />}
+    </button>
   );
 }
 
@@ -37,7 +59,7 @@ function DayChip() {
   const info = programInfo(state);
   if (!info.started) return <span className="text-[11px] text-faint">Day 1 not started</span>;
   return (
-    <span className="tnum inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 py-[3px] text-[11px] font-medium text-fg">
+    <span className="tnum inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-surface px-2.5 py-[3px] text-[11px] font-medium text-fg">
       Day {info.day}
       <span className={cn('text-[10px] uppercase tracking-wide', info.phase === 'amazon' ? 'text-amazon' : 'text-accent')}>
         {info.phase === 'amazon' ? 'Amazon' : 'Roadmap'}
@@ -92,18 +114,20 @@ export function Shell({ route, navigate, children }: { route: string; navigate: 
             );
           })}
         </nav>
-        <div className="px-3 pt-4">
+        <div className="flex items-center justify-between px-3 pt-4">
           <SyncBadge />
+          <ThemeButton />
         </div>
       </aside>
 
       {/* ---- content ---- */}
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 flex h-[54px] items-center justify-between border-b border-line bg-bg/90 px-4 backdrop-blur-xl lg:hidden">
-          <p className="font-display text-[15px] font-extrabold tracking-tight">Ruturaj Blueprint</p>
-          <div className="flex items-center gap-3">
+          <p className="min-w-0 truncate font-display text-[15px] font-extrabold tracking-tight">Ruturaj Blueprint</p>
+          <div className="flex shrink-0 items-center gap-1.5">
             <DayChip />
             <SyncBadge />
+            <ThemeButton />
           </div>
         </header>
 

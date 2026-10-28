@@ -9,7 +9,7 @@ export function AmazonHeader() {
   return (
     <Card tone="amazon">
       <div className="flex items-start gap-3">
-        <span className="grid size-[44px] shrink-0 place-items-center rounded-[12px] bg-amazon text-white">
+        <span className="grid size-[44px] shrink-0 place-items-center rounded-[12px] bg-amazon text-on-accent">
           <Target size={22} />
         </span>
         <div className="min-w-0">

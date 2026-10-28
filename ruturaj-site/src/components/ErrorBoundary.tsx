@@ -46,7 +46,7 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, State> {
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="min-h-[44px] rounded-[12px] bg-accent px-4 text-[14px] font-medium text-white"
+              className="min-h-[44px] rounded-[12px] bg-accent px-4 text-[14px] font-medium text-on-accent"
             >
               Reload
             </button>

@@ -21,9 +21,13 @@ this is opened on an iPhone every morning and every evening.
 | `--color-info` (+ `-soft`) | `#1F7AA6` | informational, P2 |
 | `--color-amazon` (+ `-soft`, `-ink`) | `#D9770A` | the Amazon module's identity only |
 
+Optional dark theme: `html[data-theme='dark']` in `src/index.css` swaps every token (deep slate
+surfaces, lighter accent, `--color-on-accent` dark so filled buttons stay readable). Light is the
+default; Settings, Appearance offers Light, Dark or System, and the header has a one-tap switch.
+
 Priority colors: P0 danger · P1 warn · P2 info · P3 faint.
 Radius: cards 16px, controls 12px, chips 999px. Shadows: `shadow-card` only.
-No gradients as fills. No dark surfaces. Accent is for emphasis, not decoration.
+No gradients as fills. No dark surfaces inside the light theme. Accent is for emphasis, not decoration.
 The Amazon tab is the one place orange appears: its header band, active nav state,
 checkbox tone and primary button. Everything else is blue.
 

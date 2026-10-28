@@ -89,6 +89,17 @@ export function reactivateAmazonPhase(draft: AppState): void {
   delete draft.program.amazonCompletedOn;
 }
 
+/**
+ * Moves Day 1 to `iso` (never later than today). The Amazon window and the
+ * day number recount from it; a general roadmap that began earlier moves too.
+ */
+export function setDayOne(draft: AppState, iso: string, today: string = todayISO()): void {
+  const day1 = iso > today ? today : iso;
+  draft.program.startedOn = day1;
+  if (draft.program.generalStartedOn && draft.program.generalStartedOn < day1) draft.program.generalStartedOn = day1;
+  if (draft.program.amazonCompletedOn && draft.program.amazonCompletedOn < day1) draft.program.amazonCompletedOn = day1;
+}
+
 export function extendAmazonWindow(draft: AppState, days: number): void {
   draft.program.amazonExtendedDays = Math.max(0, draft.program.amazonExtendedDays + days);
 }

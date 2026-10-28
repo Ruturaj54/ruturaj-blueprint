@@ -18,6 +18,7 @@
 
   --color-accent: #2b57d9;
   --color-accent-soft: #e9eefd;
+  --color-on-accent: #ffffff;
   --color-success: #1f8a5b;
   --color-success-soft: #e3f3ea;
   --color-warn: #b4731a;
@@ -36,6 +37,36 @@
 
   --radius-card: 16px;
   --shadow-card: 0 1px 2px rgb(28 35 51 / 0.05), 0 6px 20px rgb(28 35 51 / 0.06);
+}
+
+/* Optional dark theme: the same design with the tokens swapped. Applied by
+   src/hooks/useTheme.ts as data-theme="dark" on <html>; light stays the
+   default and is what the mails use. */
+html[data-theme='dark'] {
+  --color-bg: #0f1217;
+  --color-surface: #161b23;
+  --color-raised: #1d2430;
+  --color-line: #262e3b;
+  --color-line2: #344052;
+  --color-fg: #e8ecf3;
+  --color-muted: #a3adbf;
+  --color-faint: #6f7a8e;
+  --color-accent: #7f9cff;
+  --color-accent-soft: #1b2546;
+  --color-on-accent: #0b1018;
+  --color-success: #4cc38a;
+  --color-success-soft: #123224;
+  --color-warn: #e0a64b;
+  --color-warn-soft: #3a2a0e;
+  --color-danger: #f07171;
+  --color-danger-soft: #3b1a1a;
+  --color-info: #5ab4e0;
+  --color-info-soft: #0f2a3a;
+  --color-amazon: #f39a3b;
+  --color-amazon-soft: #3a2410;
+  --color-amazon-ink: #ffd6a8;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.35);
+  color-scheme: dark;
 }
 
 @layer base {

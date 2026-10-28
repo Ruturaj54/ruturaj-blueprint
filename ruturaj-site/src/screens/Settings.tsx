@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { KeyRound, Flag, Target, Clock, Activity, BookOpen, Mail, type LucideIcon } from 'lucide-react';
+import { KeyRound, Flag, Target, Clock, Activity, BookOpen, Mail, Palette, type LucideIcon } from 'lucide-react';
 import { SectionTitle } from '@/components/ui/primitives';
 import { listContainer } from '@/lib/motion';
 import { SyncCard } from '@/components/settings/SyncCard';
@@ -11,6 +11,7 @@ import { ExerciseSettings } from '@/components/settings/ExerciseSettings';
 import { StudyCard } from '@/components/settings/StudyCard';
 import { EmailSettings } from '@/components/settings/EmailSettings';
 import { DataTools } from '@/components/settings/DataTools';
+import { AppearanceSettings } from '@/components/settings/AppearanceSettings';
 
 function Section({ icon: Icon, title, children }: { icon: LucideIcon; title: string; children: ReactNode }) {
   return (
@@ -53,6 +54,9 @@ export function Settings() {
       </Section>
       <Section icon={Mail} title="Mail">
         <EmailSettings />
+      </Section>
+      <Section icon={Palette} title="Appearance">
+        <AppearanceSettings />
       </Section>
       <DataTools />
     </motion.div>

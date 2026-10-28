@@ -5,6 +5,7 @@ import { Shell } from '@/components/Shell';
 import { PraiseModal } from '@/components/PraiseModal';
 import { useDaySnapshot } from '@/hooks/useDaySnapshot';
 import { useInitialSync } from '@/hooks/useAppState';
+import { useTheme } from '@/hooks/useTheme';
 import { RefreshCw } from 'lucide-react';
 import { pageVariants } from '@/lib/motion';
 import { LEGACY_ROUTES } from '@/nav';
@@ -34,6 +35,7 @@ export function App() {
   const [rawRoute, navigate] = useRoute();
   const route = LEGACY_ROUTES[rawRoute] ?? rawRoute;
   const ready = useInitialSync();
+  useTheme();
   useDaySnapshot();
 
   // Old bookmarks and mail links land on the new destination.
