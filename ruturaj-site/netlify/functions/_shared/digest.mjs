@@ -52,7 +52,10 @@ function workoutLabel(logged) {
  * means "Day 1 is waiting", never a broken mail.
  */
 export function buildDigest(raw, now = new Date()) {
-  const state = E.parseState(raw);
+  // A blob from an older epoch is read the way the app will rewrite it: old
+  // progress dropped, Day 1 re-anchored to today. The mail never resurrects it.
+  const parsed = E.parseState(raw);
+  const state = E.isStaleEpoch(parsed) ? E.freshForNewEpoch(parsed, E.todayISO(now)) : parsed;
   E.configureMission(state.program.phase === 'general' ? state.program.generalStartedOn : null);
 
   const today = E.todayISO(now);

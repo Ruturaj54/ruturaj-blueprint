@@ -17,7 +17,7 @@ export const SUN = '2026-11-01'; // Day 6
 export function amazonState({ startedOn = DAY1, program = {}, amazon = {}, items = {}, days = {}, runs = [], settings = {}, exerciseOverrides = {} } = {}) {
   return {
     version: 3,
-    dataEpoch: 4,
+    dataEpoch: 5,
     updatedAt: '2026-10-27T01:00:00.000Z',
     program: { startedOn, phase: 'amazon', amazonWindowDays: 14, amazonExtendedDays: 0, ...program },
     amazon: { stage: 'awaiting_invite', oaDate: '2026-10-19', items, extras: {}, solidTopics: [], ...amazon },

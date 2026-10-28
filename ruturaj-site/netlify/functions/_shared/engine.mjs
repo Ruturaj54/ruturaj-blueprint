@@ -2,9 +2,85 @@
 // Built by scripts/gen-engine.mjs from src/engine/server-entry.ts (one engine
 // for the app and the mail functions). Regenerated on every build; edit the
 // TypeScript sources under src/ and run `npm run gen:engine`.
+// src/engine/dates.ts
+var IST_OFFSET_MINUTES = 330;
+var MS_PER_DAY = 864e5;
+var DAY_START_HOUR = 4;
+var TARGET_DATE = "2027-03-10";
+var pad = (n) => String(n).padStart(2, "0");
+function parseDay(iso2) {
+  return /* @__PURE__ */ new Date(`${iso2}T12:00:00`);
+}
+function formatISO(d) {
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+function todayISO(now = /* @__PURE__ */ new Date()) {
+  const shifted = new Date(now.getTime() + IST_OFFSET_MINUTES * 6e4 - DAY_START_HOUR * 36e5);
+  return `${shifted.getUTCFullYear()}-${pad(shifted.getUTCMonth() + 1)}-${pad(shifted.getUTCDate())}`;
+}
+function istClock(now = /* @__PURE__ */ new Date()) {
+  const shifted = new Date(now.getTime() + IST_OFFSET_MINUTES * 6e4);
+  return `${pad(shifted.getUTCHours())}:${pad(shifted.getUTCMinutes())}`;
+}
+function istMinutes(now = /* @__PURE__ */ new Date()) {
+  const [h, m] = istClock(now).split(":").map(Number);
+  return (h ?? 0) * 60 + (m ?? 0);
+}
+function addDays(iso2, delta) {
+  const d = parseDay(iso2);
+  d.setDate(d.getDate() + delta);
+  return formatISO(d);
+}
+function daysBetween(from, to) {
+  return Math.round((parseDay(to).getTime() - parseDay(from).getTime()) / MS_PER_DAY);
+}
+var generalStart = null;
+function configureMission(start) {
+  generalStart = start ?? null;
+}
+function missionStart() {
+  return generalStart ?? todayISO();
+}
+function missionTotalDays() {
+  return Math.max(60, daysBetween(missionStart(), TARGET_DATE) + 1);
+}
+function dateForDay(n) {
+  return addDays(missionStart(), n - 1);
+}
+function dayForDate(iso2) {
+  return daysBetween(missionStart(), iso2) + 1;
+}
+function clampDay(n) {
+  const total = missionTotalDays();
+  if (n < 1) return 1;
+  if (n > total) return total;
+  return n;
+}
+function currentDay() {
+  return clampDay(dayForDate(todayISO()));
+}
+function weekdayOf(iso2) {
+  return parseDay(iso2).getDay();
+}
+function isSunday(iso2) {
+  return weekdayOf(iso2) === 0;
+}
+function weekOfDay(n) {
+  return Math.ceil(n / 7);
+}
+function formatLong(iso2) {
+  return parseDay(iso2).toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" });
+}
+function formatShort(iso2) {
+  return parseDay(iso2).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+}
+function formatWeekday(iso2) {
+  return parseDay(iso2).toLocaleDateString("en-IN", { weekday: "long" });
+}
+
 // src/lib/schema.ts
 var STATE_VERSION = 3;
-var DATA_EPOCH = 4;
+var DATA_EPOCH = 5;
 var SETTINGS_VERSION = 2;
 var DEFAULT_SETTINGS = {
   settingsVersion: SETTINGS_VERSION,
@@ -68,7 +144,32 @@ function defaultState() {
     weeklyReviews: {}
   };
 }
+function isStaleEpoch(state) {
+  return state.dataEpoch < DATA_EPOCH;
+}
 var PREFERENCE_KEYS = ["emailEnabled", "dsaTargetPerDay", "deepWorkMinutes", "name"];
+function freshForNewEpoch(from, today = todayISO()) {
+  const fresh = defaultState();
+  for (const key of PREFERENCE_KEYS) {
+    fresh.settings[key] = from.settings[key];
+  }
+  fresh.amazon = structuredClone(from.amazon);
+  fresh.program = {
+    ...from.program,
+    amazonExtendedDays: 0,
+    ...from.program.startedOn ? { startedOn: today } : {},
+    ...from.program.generalStartedOn ? { generalStartedOn: today } : {},
+    ...from.program.amazonCompletedOn ? { amazonCompletedOn: today } : {}
+  };
+  fresh.health.supplements = from.health.supplements;
+  fresh.health.labs = from.health.labs;
+  fresh.health.nextTestDate = from.health.nextTestDate;
+  fresh.health.focus = from.health.focus;
+  fresh.health.weight = from.health.weight;
+  fresh.work = from.work;
+  fresh.applications = from.applications;
+  return fresh;
+}
 
 // src/lib/parse.ts
 var isObj = (v) => typeof v === "object" && v !== null && !Array.isArray(v);
@@ -244,82 +345,6 @@ function parseState(raw) {
     settings: parseSettings(raw.settings),
     weeklyReviews: Object.fromEntries(Object.entries(rec(raw.weeklyReviews)).filter((e) => isObj(e[1])))
   };
-}
-
-// src/engine/dates.ts
-var IST_OFFSET_MINUTES = 330;
-var MS_PER_DAY = 864e5;
-var DAY_START_HOUR = 4;
-var TARGET_DATE = "2027-03-10";
-var pad = (n) => String(n).padStart(2, "0");
-function parseDay(iso2) {
-  return /* @__PURE__ */ new Date(`${iso2}T12:00:00`);
-}
-function formatISO(d) {
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-}
-function todayISO(now = /* @__PURE__ */ new Date()) {
-  const shifted = new Date(now.getTime() + IST_OFFSET_MINUTES * 6e4 - DAY_START_HOUR * 36e5);
-  return `${shifted.getUTCFullYear()}-${pad(shifted.getUTCMonth() + 1)}-${pad(shifted.getUTCDate())}`;
-}
-function istClock(now = /* @__PURE__ */ new Date()) {
-  const shifted = new Date(now.getTime() + IST_OFFSET_MINUTES * 6e4);
-  return `${pad(shifted.getUTCHours())}:${pad(shifted.getUTCMinutes())}`;
-}
-function istMinutes(now = /* @__PURE__ */ new Date()) {
-  const [h, m] = istClock(now).split(":").map(Number);
-  return (h ?? 0) * 60 + (m ?? 0);
-}
-function addDays(iso2, delta) {
-  const d = parseDay(iso2);
-  d.setDate(d.getDate() + delta);
-  return formatISO(d);
-}
-function daysBetween(from, to) {
-  return Math.round((parseDay(to).getTime() - parseDay(from).getTime()) / MS_PER_DAY);
-}
-var generalStart = null;
-function configureMission(start) {
-  generalStart = start ?? null;
-}
-function missionStart() {
-  return generalStart ?? todayISO();
-}
-function missionTotalDays() {
-  return Math.max(60, daysBetween(missionStart(), TARGET_DATE) + 1);
-}
-function dateForDay(n) {
-  return addDays(missionStart(), n - 1);
-}
-function dayForDate(iso2) {
-  return daysBetween(missionStart(), iso2) + 1;
-}
-function clampDay(n) {
-  const total = missionTotalDays();
-  if (n < 1) return 1;
-  if (n > total) return total;
-  return n;
-}
-function currentDay() {
-  return clampDay(dayForDate(todayISO()));
-}
-function weekdayOf(iso2) {
-  return parseDay(iso2).getDay();
-}
-function isSunday(iso2) {
-  return weekdayOf(iso2) === 0;
-}
-function weekOfDay(n) {
-  return Math.ceil(n / 7);
-}
-function formatLong(iso2) {
-  return parseDay(iso2).toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" });
-}
-function formatShort(iso2) {
-  return parseDay(iso2).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
-}
-function formatWeekday(iso2) {
-  return parseDay(iso2).toLocaleDateString("en-IN", { weekday: "long" });
 }
 
 // src/engine/program.ts
@@ -9378,6 +9403,7 @@ export {
   AMAZON_DAYOF,
   AMAZON_DAYS,
   AMAZON_ITEMS,
+  DATA_EPOCH,
   DAY_START_HOUR,
   DAY_TYPE_LABEL,
   DEFAULT_SETTINGS,
@@ -9413,7 +9439,9 @@ export {
   formatLong,
   formatShort,
   formatWeekday,
+  freshForNewEpoch,
   generalSlotItems,
+  isStaleEpoch,
   istClock,
   istMinutes,
   lcUrl,

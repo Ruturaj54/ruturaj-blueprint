@@ -60,7 +60,7 @@ await writeFile(out, HEADER + bundled, 'utf-8');
 // Smoke test: the bundle must load and expose the exports the functions use.
 const mod = await import(`${pathToFileURL(out).href}?t=${Date.now()}`);
 const required = [
-  'parseState', 'defaultState', 'todayISO', 'istClock', 'istMinutes', 'addDays', 'daysBetween',
+  'parseState', 'defaultState', 'DATA_EPOCH', 'isStaleEpoch', 'freshForNewEpoch', 'todayISO', 'istClock', 'istMinutes', 'addDays', 'daysBetween',
   'configureMission', 'programInfo', 'buildAmazonDay', 'amazonSummary', 'amazonLoggedOn',
   'AMAZON_ITEMS', 'amazonItem', 'revisionsDue', 'AMAZON_DAYS', 'AMAZON_DAYOF', 'lcUrl',
   'buildSchedule', 'daySlots', 'studyCapacity', 'dayTypeOf', 'formatHM', 'weekdaySleepHours',

@@ -6,7 +6,7 @@
  */
 
 export { parseState } from '@/lib/parse';
-export { defaultState, DEFAULT_SETTINGS } from '@/lib/schema';
+export { defaultState, DEFAULT_SETTINGS, DATA_EPOCH, isStaleEpoch, freshForNewEpoch } from '@/lib/schema';
 export {
   todayISO,
   istClock,

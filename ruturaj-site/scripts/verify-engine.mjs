@@ -71,5 +71,30 @@ check('istClock 22:30Z is 04:00', E.istClock(new Date('2026-10-29T22:30:00Z')), 
 check('todayISO after the roll-over', E.todayISO(new Date('2026-10-29T22:30:00Z')), '2026-10-30');
 check('daysBetween across a month', E.daysBetween('2026-10-29', '2026-11-02'), 4);
 
+console.log('\n=== Epoch 5: old progress is forgotten, Day 1 re-anchors to today ===');
+{
+  const old = E.parseState({
+    dataEpoch: 4,
+    program: { startedOn: '2026-10-25', phase: 'amazon', amazonWindowDays: 14, amazonExtendedDays: 7 },
+    amazon: { stage: 'awaiting_invite', oaDate: '2026-10-19', items: { 'two-sum': { doneOn: '2026-10-26', outcome: 'independent', revisits: 0 } }, extras: {}, solidTopics: [] },
+    foundation: { 'ap-03': true, 'ap-04': true },
+    days: { '2026-10-20': { planned: ['ap-03'], completed: ['ap-03'] } },
+    dsa: [{ id: 'a', date: '2026-10-20', problem: 'X', pattern: 'arrays', difficulty: 'easy', outcome: 'solved', minutes: 10, revision: false }],
+    runs: [{ id: 'r', date: '2026-10-20', slot: 'morning', kind: 'run', minutes: 30 }],
+    work: [{ id: 'w', date: '2026-10-20', raw: 'did a thing', metricNeeded: true, tags: [] }],
+    health: { labs: [{ id: 'l', date: '2026-09-10', marker: 'HDL', value: '50' }], weight: { '2026-10-01': 80 } },
+    settings: { settingsVersion: 2, emailEnabled: false, dsaTargetPerDay: 4 },
+  });
+  truthy('an epoch-4 blob is stale', E.isStaleEpoch(old));
+  const fresh5 = E.freshForNewEpoch(old, TODAY);
+  check('fresh state is on the current epoch', fresh5.dataEpoch, E.DATA_EPOCH);
+  check('course ticks, day logs, DSA and runs are forgotten', [Object.keys(fresh5.foundation).length, Object.keys(fresh5.days).length, fresh5.dsa.length, fresh5.runs.length], [0, 0, 0, 0]);
+  check('the Amazon tracker survives', Object.keys(fresh5.amazon.items), ['two-sum']);
+  check('Day 1 re-anchors to today and extensions reset', [fresh5.program.startedOn, fresh5.program.amazonExtendedDays], [TODAY, 0]);
+  check('work, labs, weight and preferences survive', [fresh5.work.length, fresh5.health.labs.length, Object.keys(fresh5.health.weight).length, fresh5.settings.emailEnabled, fresh5.settings.dsaTargetPerDay], [1, 1, 1, false, 4]);
+  check('a never-started programme stays not started', Boolean(E.freshForNewEpoch(E.parseState({ dataEpoch: 4 }), TODAY).program.startedOn), false);
+  check('programInfo on the fresh state is Day 1 today', E.programInfo(fresh5, TODAY).day, 1);
+}
+
 console.log(`\n${fail === 0 ? 'ALL ENGINE CHECKS PASSED' : `${fail} ENGINE CHECK(S) FAILED`}\n`);
 process.exit(fail === 0 ? 0 : 1);

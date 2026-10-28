@@ -4,6 +4,8 @@ import { useRoute } from '@/lib/router';
 import { Shell } from '@/components/Shell';
 import { PraiseModal } from '@/components/PraiseModal';
 import { useDaySnapshot } from '@/hooks/useDaySnapshot';
+import { useInitialSync } from '@/hooks/useAppState';
+import { RefreshCw } from 'lucide-react';
 import { pageVariants } from '@/lib/motion';
 import { LEGACY_ROUTES } from '@/nav';
 import { MyDay } from '@/screens/MyDay';
@@ -31,6 +33,7 @@ function screenFor(route: string, navigate: (id: string) => void): ReactElement 
 export function App() {
   const [rawRoute, navigate] = useRoute();
   const route = LEGACY_ROUTES[rawRoute] ?? rawRoute;
+  const ready = useInitialSync();
   useDaySnapshot();
 
   // Old bookmarks and mail links land on the new destination.
@@ -41,11 +44,20 @@ export function App() {
   return (
     <Shell route={route} navigate={navigate}>
       <PraiseModal />
-      <AnimatePresence mode="wait">
-        <motion.div key={route} variants={pageVariants} initial="hidden" animate="show" exit="exit">
-          {screenFor(route, navigate)}
-        </motion.div>
-      </AnimatePresence>
+      {ready ? (
+        <AnimatePresence mode="wait">
+          <motion.div key={route} variants={pageVariants} initial="hidden" animate="show" exit="exit">
+            {screenFor(route, navigate)}
+          </motion.div>
+        </AnimatePresence>
+      ) : (
+        <div className="flex min-h-[50vh] items-center justify-center">
+          <p className="inline-flex items-center gap-2 text-[14px] text-muted">
+            <RefreshCw size={15} className="animate-spin" />
+            Syncing your progress from the server
+          </p>
+        </div>
+      )}
     </Shell>
   );
 }

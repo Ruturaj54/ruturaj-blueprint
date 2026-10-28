@@ -3,6 +3,7 @@ import { RefreshCw, CheckCircle2, XCircle, FlaskConical } from 'lucide-react';
 import { Card, Chip, Button } from '@/components/ui/primitives';
 import { Banner } from '@/components/ui/controls';
 import { getMailStatus, type MailStatus, type MailFailure, type MailLogEntry, type MailWindow } from '@/lib/mail-api';
+import { useSyncStatus } from '@/hooks/useAppState';
 
 /** An ISO timestamp as "26 Oct, 06:02" on the IST clock; falls back to the raw string. */
 function istStamp(iso: string): string {
@@ -69,6 +70,7 @@ export function MailStatusPanel({ reloadKey }: { reloadKey: number }) {
   const [status, setStatus] = useState<MailStatus | null>(null);
   const [failure, setFailure] = useState<MailFailure | null>(null);
   const [loading, setLoading] = useState(true);
+  const sync = useSyncStatus();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -82,9 +84,12 @@ export function MailStatusPanel({ reloadKey }: { reloadKey: number }) {
     setLoading(false);
   }, []);
 
+  // Reloads after a test send and whenever the sync status settles, so saving
+  // the passphrase under Sync refreshes this panel without a page reload.
   useEffect(() => {
+    if (sync === 'syncing') return;
     void load();
-  }, [load, reloadKey]);
+  }, [load, reloadKey, sync]);
 
   const log = status ? [...status.log].sort((a, b) => (a.sentAt < b.sentAt ? 1 : -1)) : [];
   const allSet = Boolean(status && status.configured.sender && status.configured.recipient && status.configured.key);

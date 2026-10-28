@@ -28,6 +28,7 @@ export async function runScheduled({ type, now = new Date(), store, readState, s
   }
   const state = parseState(raw);
   if (!state.settings.emailEnabled) return 'skipped: mail is turned off in Settings';
+  // Settings survive an epoch change, so the enabled flag and times above are right either way.
 
   const target = type === 'morning' ? state.settings.morningEmailTime : state.settings.eveningEmailTime;
   const minutes = istMinutes(now);

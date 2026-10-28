@@ -25,6 +25,7 @@ export function CoursePlan({ onOpen }: { onOpen: () => void }) {
   const reduce = useReducedMotion();
   const courses = courseProgress(state);
   const gate = gateStatus(state);
+  const roadmapActive = state.program.phase === 'general' && Boolean(state.program.generalStartedOn);
   const finish = courses.at(-1)?.etaDay ?? null;
   const margin = finish === null ? null : gateDeadlineDay() - finish;
 
@@ -61,8 +62,8 @@ export function CoursePlan({ onOpen }: { onOpen: () => void }) {
                   />
                   <p className="tnum mt-1.5 text-[12px] text-muted">
                     {c.done} of {c.total} modules
-                    {c.status !== 'done' && c.etaDate && (
-                      <span className="text-faint"> · at three a day, done Day {c.etaDay} · {formatShort(c.etaDate)}</span>
+                    {roadmapActive && c.status !== 'done' && c.etaDate && (
+                      <span className="text-faint"> · at three a day, done roadmap Day {c.etaDay} · {formatShort(c.etaDate)}</span>
                     )}
                   </p>
                 </div>
@@ -77,7 +78,9 @@ export function CoursePlan({ onOpen }: { onOpen: () => void }) {
               <Lock size={15} className="mt-0.5 shrink-0 text-accent" />
             )}
             <p className="min-w-0 flex-1 text-[13px] text-muted">
-              {gate.unlocked
+              {!roadmapActive
+                ? 'Starts after the Amazon intensive. Roadmap day numbers count from the day you mark that phase complete.'
+                : gate.unlocked
                 ? gate.overridden
                   ? 'Advanced Mode unlocked by override, not by completion.'
                   : 'Foundation Gate cleared on merit. Advanced Mode is open.'

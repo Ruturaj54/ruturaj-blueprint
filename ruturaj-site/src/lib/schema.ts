@@ -7,6 +7,7 @@ import type {
   HealthState,
   WeeklyReview,
 } from './records';
+import { todayISO } from '@/engine/dates';
 
 export type {
   WorkoutKind,
@@ -24,12 +25,15 @@ export type {
 export const STATE_VERSION = 3;
 
 /**
- * Bumped only when stored progress must be discarded rather than migrated.
- * The 25 Oct 2026 restart deliberately did NOT bump it: Day 1 moved and the
- * timetable changed, but course ticks, DSA attempts, runs, work and
- * applications are real history and stay. See SETTINGS_VERSION.
+ * Bumped when stored progress must be discarded rather than migrated.
+ *
+ * Epoch 5 (28 Oct 2026): the clean restart he asked for. Old course ticks,
+ * day logs, DSA attempts, runs and deep-work sessions go. What stays: his
+ * preferences, the Amazon tracker state, work log, applications, weight and
+ * lab records. If Day 1 had been pressed, it re-anchors to the day the app
+ * is next opened, so today is Day 1.
  */
-export const DATA_EPOCH = 4;
+export const DATA_EPOCH = 5;
 
 /** Timetable keys were renamed on 25 Oct 2026; older settings take new defaults. */
 export const SETTINGS_VERSION = 2;
@@ -226,12 +230,23 @@ export function isStaleEpoch(state: AppState): boolean {
 /** Preferences that survive a timetable migration or an epoch change. */
 export const PREFERENCE_KEYS = ['emailEnabled', 'dsaTargetPerDay', 'deepWorkMinutes', 'name'] as const;
 
-/** A clean start for a new epoch: progress goes, real-life records and preferences stay. */
-export function freshForNewEpoch(from: AppState): AppState {
+/**
+ * A clean start for a new epoch: old progress goes; preferences, the Amazon
+ * tracker, real-life records stay; a started programme re-anchors to today.
+ */
+export function freshForNewEpoch(from: AppState, today: string = todayISO()): AppState {
   const fresh = defaultState();
   for (const key of PREFERENCE_KEYS) {
     (fresh.settings as unknown as Record<string, unknown>)[key] = from.settings[key];
   }
+  fresh.amazon = structuredClone(from.amazon);
+  fresh.program = {
+    ...from.program,
+    amazonExtendedDays: 0,
+    ...(from.program.startedOn ? { startedOn: today } : {}),
+    ...(from.program.generalStartedOn ? { generalStartedOn: today } : {}),
+    ...(from.program.amazonCompletedOn ? { amazonCompletedOn: today } : {}),
+  };
   fresh.health.supplements = from.health.supplements;
   fresh.health.labs = from.health.labs;
   fresh.health.nextTestDate = from.health.nextTestDate;
