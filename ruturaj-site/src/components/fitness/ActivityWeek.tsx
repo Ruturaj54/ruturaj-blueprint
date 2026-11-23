@@ -33,9 +33,9 @@ export function ActivityWeek() {
       <Card>
         <div className="grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-4">
           <Stat value={week.totals.runKm || '–'} unit={week.totals.runKm ? 'km' : undefined} label="Run" />
-          <Stat value={week.totals.walkKm || '–'} unit={week.totals.walkKm ? 'km' : undefined} label="Walk" />
+          <Stat value={week.totals.walkKm || '–'} unit={week.totals.walkKm ? 'km' : undefined} label="Walk" tone={week.totals.walkKm ? 'success' : 'default'} />
           <Stat value={`${week.walkTargetDays}/7`} label={`Walks of ${target} km+`} tone={week.walkTargetDays >= 5 ? 'success' : 'default'} />
-          <Stat value={streak} unit={streak === 1 ? 'day' : 'days'} label="Walk streak" tone={streak > 0 ? 'success' : 'default'} />
+          <Stat value={streak} unit={streak === 1 ? 'day' : 'days'} label="Walk streak" tone={streak > 0 ? 'success' : 'default'} flame={streak > 0} />
         </div>
         <p className="tnum mt-3 text-[12.5px] text-muted">
           {avgSteps !== null ? `${formatActivity('steps', avgSteps)} steps a day` : 'Steps not logged'}

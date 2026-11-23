@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Eye } from 'lucide-react';
 import { SectionTitle } from '@/components/ui/primitives';
 import { Banner } from '@/components/ui/controls';
@@ -35,6 +35,7 @@ import { TomorrowCard } from '@/components/today/TomorrowCard';
  */
 export function MyDay({ navigate }: { navigate: (id: string) => void }) {
   const state = useAppState();
+  const reduce = useReducedMotion();
   const today = todayISO();
   const info = programInfo(state, today);
   const work = todayWork(state, today);
@@ -46,15 +47,23 @@ export function MyDay({ navigate }: { navigate: (id: string) => void }) {
 
   return (
     <motion.div variants={listContainer} initial="hidden" animate="show" className="space-y-6">
-      {!info.started && (
-        <>
-          <StartDayOne navigate={navigate} />
-          <Banner icon={<Eye size={15} />} tone="default">
-            Below is a preview of My Day from Day 1, built from your timetable, the prep tracker and the Apna College
-            course. Nothing is scored until you press Start.
-          </Banner>
-        </>
-      )}
+      {/* Pressing Start folds the card away instead of making it vanish. */}
+      <AnimatePresence initial={false}>
+        {!info.started && (
+          <motion.div
+            key="start"
+            exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96, height: 0 }}
+            transition={{ duration: 0.32, ease: 'easeInOut' }}
+            className="origin-top space-y-6 overflow-hidden"
+          >
+            <StartDayOne navigate={navigate} />
+            <Banner icon={<Eye size={15} />} tone="default">
+              Below is a preview of My Day from Day 1, built from your timetable, the prep tracker and the Apna College
+              course. Nothing is scored until you press Start.
+            </Banner>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <DayHeader info={info} work={work} today={today} navigate={navigate} />
       <NowCard items={work.items} date={today} onOpen={revealTimetable} />

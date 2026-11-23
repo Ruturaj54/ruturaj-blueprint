@@ -1,18 +1,35 @@
-import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Radio } from 'lucide-react';
-import { Card, Chip } from '@/components/ui/primitives';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { Card, Chip, ProgressBar } from '@/components/ui/primitives';
 import { useAppState } from '@/hooks/useAppState';
 import { useClock } from '@/hooks/useClock';
 import { spring } from '@/lib/motion';
-import { buildSchedule, dayTypeOf, slotAt, nextSlot, formatHM, type SlotItem } from '@/engine/schedule';
+import { buildSchedule, dayTypeOf, slotAt, nextSlot, formatHM, blockMinutes, dayClock, type SlotItem } from '@/engine/schedule';
 import { exerciseSlotFor } from '@/engine/fitness';
 import { dayModeFor } from '@/engine/today-items';
 import { DAY_TYPE_LABEL } from '@/data/routine';
 import { withDinner } from '@/data/meals';
 
+/** A dot with a ring that keeps breathing outward: this card is live. */
+function LiveDot({ reduce }: { reduce: boolean }) {
+  return (
+    <span className="relative grid size-[14px] place-items-center" aria-hidden>
+      {!reduce && (
+        <motion.span
+          className="absolute inset-0 rounded-full bg-accent"
+          animate={{ scale: [1, 2.3], opacity: [0.45, 0] }}
+          transition={{ duration: 1.7, repeat: Infinity, ease: 'easeOut' }}
+        />
+      )}
+      <span className="relative size-[8px] rounded-full bg-accent" />
+    </span>
+  );
+}
+
 /**
  * "What should I be doing right now?" without opening the full timetable:
- * the current entry, the first open item inside it, and what comes next.
+ * the current entry with how much of it is left, the first open item inside
+ * it, and what comes next. The title cross-fades when the block changes.
  * Tapping anywhere opens the timetable section.
  */
 export function NowCard({ items, date, onOpen }: { items: SlotItem[]; date: string; onOpen: () => void }) {
@@ -26,6 +43,9 @@ export function NowCard({ items, date, onOpen }: { items: SlotItem[]; date: stri
   const completed = new Set(state.days[date]?.completed ?? []);
   const open = now?.items.filter((i) => !completed.has(i.id)) ?? [];
   const lead = open[0];
+  const total = now ? blockMinutes(now.start, now.end) : 0;
+  const elapsed = now ? (((dayClock(clock) - dayClock(now.start)) % 1440) + 1440) % 1440 : 0;
+  const left = Math.max(0, total - elapsed);
 
   return (
     <Card className="border-accent/25 p-0">
@@ -37,17 +57,33 @@ export function NowCard({ items, date, onOpen }: { items: SlotItem[]; date: stri
         className="block w-full p-4 text-left"
       >
         <div className="flex items-center gap-2">
-          <Radio size={14} className="text-accent" />
+          <LiveDot reduce={Boolean(reduce)} />
           <p className="tnum text-[11px] uppercase tracking-[0.14em] text-accent">Right now · {clock}</p>
           <span className="ml-auto text-[11px] text-faint">{DAY_TYPE_LABEL[schedule.dayType]}</span>
         </div>
 
-        <p className="mt-2 font-display text-[20px] font-bold leading-tight text-fg">{now ? now.label : 'Between entries'}</p>
-        {now && (
-          <p className="tnum mt-0.5 font-mono text-[12px] text-muted">
-            {now.start} – {now.end}
-          </p>
-        )}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={now?.id ?? 'between'}
+            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={spring}
+          >
+            <p className="mt-2 font-display text-[20px] font-bold leading-tight text-fg">{now ? now.label : 'Between entries'}</p>
+            {now && (
+              <div className="mt-1.5">
+                <div className="tnum flex items-baseline justify-between font-mono text-[12px] text-muted">
+                  <span>
+                    {now.start} – {now.end}
+                  </span>
+                  <span className="text-accent">{left > 0 ? `${formatHM(left)} left` : 'ending'}</span>
+                </div>
+                <ProgressBar value={total ? (elapsed / total) * 100 : 0} tone="accent" className="mt-1.5" />
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
 
         {lead ? (
           <div className="mt-3 rounded-[10px] border border-line bg-raised px-3 py-2.5">

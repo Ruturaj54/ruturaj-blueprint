@@ -102,11 +102,11 @@ export function TimetableSettings() {
           <Toggle
             checked={settings.freelanceEnabled}
             onChange={(v) => setToggle('freelanceEnabled', v)}
-            label="Freelance block before dinner"
-            hint="Off gives that time back to surprise prep. Weekend freelance blocks follow this too."
+            label="Startup & freelance block before dinner"
+            hint="Off gives that time back to surprise prep. The weekend startup blocks follow this too."
           />
         </div>
-        {timeInput({ key: 'studyBlock1End', label: 'Prep ends · freelance starts' }, !settings.freelanceEnabled)}
+        {timeInput({ key: 'studyBlock1End', label: 'Prep ends · startup starts' }, !settings.freelanceEnabled)}
         {timeInput({ key: 'dinnerStart', label: 'Dinner starts' })}
       </div>
 

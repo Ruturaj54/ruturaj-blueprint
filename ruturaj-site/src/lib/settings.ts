@@ -30,7 +30,7 @@ export interface Settings {
   /** Block 1: surprise prep. Starts after his own time from officeEnd. */
   studyBlock1Start: string;
   studyBlock1End: string;
-  /** Freelance runs from studyBlock1End to dinnerStart; off gives that time back to block 1. */
+  /** Startup and freelance work runs from studyBlock1End to dinnerStart; off gives that time back to block 1. */
   freelanceEnabled: boolean;
   dinnerStart: string;
   /** Block 2: the lecture block (Apna College) after dinner. */

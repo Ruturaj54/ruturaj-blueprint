@@ -39,7 +39,7 @@ export function WeekStrip() {
           <Stat value={week.sessions} label="Sessions" />
           <Stat value={week.minutes} label="Minutes" />
           <Stat value={week.km} unit="km" label="Distance" />
-          <Stat value={streak} label="Streak" tone={streak > 0 ? 'success' : 'default'} />
+          <Stat value={streak} label="Streak" tone={streak > 0 ? 'success' : 'default'} flame={streak > 0} />
         </div>
         <p className="mt-3 text-[12px] text-faint">
           The streak counts consecutive days with a logged session, ending today or yesterday.

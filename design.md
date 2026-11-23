@@ -49,10 +49,21 @@ max content. 24px between sections, 16px inside cards.
 
 ## Motion
 
-Framer Motion only. Default spring `{ stiffness: 400, damping: 30 }`.
-Checkbox: scale 1 → 0.88 → 1, check pops in. Card entrance: stagger 40ms, y 12 → 0.
-Nav indicator: shared `layoutId`. One tasteful bloom on a completed day; never confetti.
-Everything collapses to opacity-only under `prefers-reduced-motion`.
+Framer Motion only. Default spring `{ stiffness: 400, damping: 30 }`; `popSpring`
+(380/17) for things that land. Phone-first: the app is mostly used on his iPhone.
+
+- Checkbox: scale 1 → 0.88 → 1, check pops in, a ring blooms outward once on tick (`TickBloom`).
+- Card entrance: stagger 40ms, y 12 → 0. Timetable rows: stagger 25ms, y 8 → 0.
+- Tabs slide in from the side they sit on in the nav (`pageSlide`, x ±28); the page wrapper clips x.
+- Bottom nav: tap shrinks to 0.88, the active icon lifts 2px and grows to 1.12; indicator is a shared `layoutId`.
+- Numbers count to their value (`AnimatedNumber`): stats, the day number, the walk km.
+- The day number lands with `popSpring`; the phase chip re-enters when its text changes; the CTA arrow nudges every few seconds.
+- Right now: a breathing live dot and a bar for how much of the current block is left; the title cross-fades between blocks.
+- A live streak gets a small flickering flame (`StreakFlame`); the walk target gets one pop and a ring.
+- First sync: skeleton cards that breathe, not a bare spinner.
+- One tasteful bloom on a completed day; never confetti.
+
+Everything collapses to opacity-only (or stillness) under `prefers-reduced-motion`.
 
 ## Voice
 

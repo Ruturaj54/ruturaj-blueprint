@@ -159,8 +159,10 @@ Set these in Netlify → Site configuration → Environment variables. See
 - **Progress sync needs the passphrase on each device.** There are no accounts;
   one passphrase, one store. Lose it and the server copy is unreadable until the
   env var is changed.
-- **Mobile install** on iOS is Safari → Share → Add to Home Screen (there is a web
-  manifest; no native app).
+- **Mobile install** on iOS is Safari → Share → Add to Home Screen (a web manifest and a
+  PNG home-screen icon, `public/apple-touch-icon.png`; no native app). The app is built
+  phone-first and animated with Framer Motion; design.md lists every motion and its
+  reduced-motion fallback.
 - **The mails say only what the store knows.** If the app was not opened and synced
   today, the evening mail has no day log and says so.
 

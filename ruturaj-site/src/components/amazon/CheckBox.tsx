@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { spring } from '@/lib/motion';
+import { TickBloom } from '@/components/ui/controls';
 
 /**
  * The box alone, for rows whose label holds a link: an anchor inside a
@@ -38,10 +39,11 @@ export function CheckBox({
         animate={reduce ? undefined : { scale: checked ? [1, 0.88, 1] : 1 }}
         transition={spring}
         className={cn(
-          'grid size-[22px] place-items-center rounded-[7px] border-2 transition-colors',
+          'relative grid size-[22px] place-items-center rounded-[7px] border-2 transition-colors',
           checked ? (tone === 'amazon' ? 'border-amazon bg-amazon' : 'border-success bg-success') : 'border-line2 bg-surface',
         )}
       >
+        <TickBloom checked={checked} className={tone === 'amazon' ? 'border-amazon' : 'border-success'} />
         {checked && (
           <motion.span
             initial={reduce ? false : { scale: 0, opacity: 0 }}

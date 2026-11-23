@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { Footprints, Check } from 'lucide-react';
-import { Card, SectionTitle, ProgressBar, Chip, inputCls } from '@/components/ui/primitives';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { Footprints, Check, PartyPopper } from 'lucide-react';
+import { Card, SectionTitle, ProgressBar, inputCls } from '@/components/ui/primitives';
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 import { useAppState, useUpdateState } from '@/hooks/useAppState';
-import { spring } from '@/lib/motion';
+import { spring, popSpring } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 import { ACTIVITY_FIELDS, activityFor, setActivity, type ActivityKey } from '@/engine/activity';
 import type { ActivityLog } from '@/lib/schema';
@@ -63,10 +64,42 @@ export function ActivityCard({ date }: { date: string }) {
       <Card>
         <div className="flex items-baseline justify-between gap-3">
           <p className="text-[13px] text-fg">
-            Walk <span className="tnum font-semibold">{walk ? `${Math.round(walk * 10) / 10} km` : 'not logged'}</span>
+            Walk{' '}
+            <span className="tnum font-semibold">
+              {walk ? (
+                <>
+                  <AnimatedNumber value={Math.round(walk * 10) / 10} format={(n) => n.toFixed(1)} /> km
+                </>
+              ) : (
+                'not logged'
+              )}
+            </span>
             <span className="text-muted"> of {target} km</span>
           </p>
-          {walk >= target && <Chip tone="success">Target reached</Chip>}
+          <AnimatePresence>
+            {walk >= target && (
+              <motion.span
+                key="reached"
+                initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.5, rotate: -8 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={popSpring}
+                className="relative inline-flex items-center gap-1 rounded-full border border-success/30 bg-success-soft px-2 py-[3px] text-[11px] leading-none text-success"
+              >
+                {!reduce && (
+                  <motion.span
+                    aria-hidden
+                    initial={{ scale: 0.8, opacity: 0.5 }}
+                    animate={{ scale: 1.8, opacity: 0 }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                    className="pointer-events-none absolute inset-0 rounded-full border-2 border-success"
+                  />
+                )}
+                <PartyPopper size={12} />
+                Target reached
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
         <ProgressBar value={(walk / target) * 100} tone={walk >= target ? 'success' : 'accent'} className="mt-2" />
 

@@ -1,5 +1,8 @@
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Quote } from 'lucide-react';
 import { Card, Button, Chip } from '@/components/ui/primitives';
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
+import { popSpring, spring } from '@/lib/motion';
 import { useAppState } from '@/hooks/useAppState';
 import { useClock } from '@/hooks/useClock';
 import { formatLong } from '@/engine/dates';
@@ -49,6 +52,8 @@ function phaseChip(info: ProgramInfo): string {
 /**
  * The top of My Day: greeting, date, the day number as the largest type on
  * the screen, the phase chip, today's objective and the one primary action.
+ * The number lands with a spring and counts to today; the chip re-enters when
+ * its text changes (pressing Start, a new day); the arrow nudges now and then.
  */
 export function DayHeader({
   info,
@@ -63,7 +68,9 @@ export function DayHeader({
 }) {
   const state = useAppState();
   const clock = useClock();
+  const reduce = useReducedMotion();
   const amazon = !info.started || info.phase === 'amazon';
+  const chip = phaseChip(info);
   const quote = quoteForDay(info.day);
   const name = state.settings.name.trim() || 'Ruturaj';
 
@@ -76,28 +83,56 @@ export function DayHeader({
       <div className="mt-3 flex flex-wrap items-end gap-x-4 gap-y-2">
         <div>
           <p className="font-display text-[11px] font-bold uppercase tracking-[0.18em] text-muted">Day</p>
-          <p className="tnum font-display text-[56px] font-extrabold leading-none tracking-tight text-fg">
-            {info.started ? info.day : 1}
-          </p>
+          <motion.p
+            initial={reduce ? false : { opacity: 0, scale: 0.6, y: 6 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ ...popSpring, delay: 0.05 }}
+            className="tnum origin-bottom-left font-display text-[56px] font-extrabold leading-none tracking-tight text-fg"
+          >
+            <AnimatedNumber value={info.started ? info.day : 1} duration={0.9} />
+          </motion.p>
         </div>
-        <Chip tone={amazon ? 'amazon' : 'accent'} className="mb-1.5 max-w-full">
-          {phaseChip(info)}
-        </Chip>
+        <motion.span
+          key={chip}
+          initial={reduce ? false : { opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ ...spring, delay: 0.12 }}
+          className="mb-1.5 inline-flex max-w-full"
+        >
+          <Chip tone={amazon ? 'amazon' : 'accent'} className="max-w-full">
+            {chip}
+          </Chip>
+        </motion.span>
       </div>
 
       <p className="mt-3 text-[15px] leading-snug text-fg">{objective(work)}</p>
 
-      {info.started && (
-        <Button
-          variant={amazon ? 'amazon' : 'primary'}
-          size="lg"
-          className="mt-4 w-full sm:w-auto"
-          onClick={() => navigate(amazon ? 'prep' : 'roadmap')}
-        >
-          {amazon ? 'Start today’s prep' : 'Continue the roadmap'}
-          <ArrowRight size={17} />
-        </Button>
-      )}
+      <AnimatePresence initial={false}>
+        {info.started && (
+          <motion.div
+            key="cta"
+            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 10, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={popSpring}
+          >
+            <Button
+              variant={amazon ? 'amazon' : 'primary'}
+              size="lg"
+              className="mt-4 w-full sm:w-auto"
+              onClick={() => navigate(amazon ? 'prep' : 'roadmap')}
+            >
+              {amazon ? 'Start today’s prep' : 'Continue the roadmap'}
+              <motion.span
+                className="inline-flex"
+                animate={reduce ? undefined : { x: [0, 5, 0] }}
+                transition={{ duration: 1.1, repeat: Infinity, repeatDelay: 2.6, ease: 'easeInOut' }}
+              >
+                <ArrowRight size={17} />
+              </motion.span>
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <p className="mt-4 flex items-start gap-2 border-t border-line pt-3 text-[12.5px] leading-relaxed text-muted">
         <Quote size={13} className="mt-[3px] shrink-0 text-faint" />

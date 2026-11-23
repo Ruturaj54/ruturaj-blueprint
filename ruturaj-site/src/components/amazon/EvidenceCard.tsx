@@ -21,7 +21,7 @@ export function EvidenceCard({ summary, compact = false }: { summary: AmazonSumm
         <Stat value={s.problems.independent} label={`solved myself of ${s.problems.total}`} tone="amazon" />
         <Stat value={`${s.asked.independent}/${s.asked.total}`} label="asked problems, solved myself" tone="amazon" />
         <Stat value={s.revisions.passed} label="revisions passed cold" tone="success" />
-        <Stat value={s.streak} unit={s.streak === 1 ? 'day' : 'days'} label="current streak" tone={s.streak > 0 ? 'success' : 'default'} />
+        <Stat value={s.streak} unit={s.streak === 1 ? 'day' : 'days'} label="current streak" tone={s.streak > 0 ? 'success' : 'default'} flame={s.streak > 0} />
       </div>
 
       <p className="tnum mt-4 text-[12.5px] leading-relaxed text-muted">

@@ -1,9 +1,34 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { spring } from '@/lib/motion';
 import type { Tone } from './primitives';
+import { AnimatedNumber } from './AnimatedNumber';
+import { StreakFlame } from './StreakFlame';
+
+/**
+ * A ring that blooms out of a box the moment it is ticked. AnimatePresence
+ * with initial={false} keeps rows that load already ticked still.
+ */
+export function TickBloom({ checked, className }: { checked: boolean; className: string }) {
+  const reduce = useReducedMotion();
+  return (
+    <AnimatePresence initial={false}>
+      {checked && !reduce && (
+        <motion.span
+          key="bloom"
+          aria-hidden
+          initial={{ scale: 0.7, opacity: 0.6 }}
+          animate={{ scale: 1.9, opacity: 0 }}
+          exit={{ opacity: 0, transition: { duration: 0 } }}
+          transition={{ duration: 0.55, ease: 'easeOut' }}
+          className={cn('pointer-events-none absolute inset-0 rounded-[7px] border-2', className)}
+        />
+      )}
+    </AnimatePresence>
+  );
+}
 
 /* ---------- Checkbox row ---------------------------------------------------- */
 
@@ -41,10 +66,11 @@ export function TaskCheckbox({
         animate={reduce ? undefined : { scale: checked ? [1, 0.88, 1] : 1 }}
         transition={spring}
         className={cn(
-          'mt-[2px] grid size-[22px] shrink-0 place-items-center rounded-[7px] border-2 transition-colors',
+          'relative mt-[2px] grid size-[22px] shrink-0 place-items-center rounded-[7px] border-2 transition-colors',
           checked ? (tone === 'amazon' ? 'border-amazon bg-amazon' : 'border-success bg-success') : 'border-line2 bg-surface',
         )}
       >
+        <TickBloom checked={checked} className={tone === 'amazon' ? 'border-amazon' : 'border-success'} />
         {checked && (
           <motion.span
             initial={reduce ? false : { scale: 0, opacity: 0 }}
@@ -154,7 +180,8 @@ export function Field({ label, hint, children }: { label: string; hint?: string;
 
 /* ---------- Stat and banner ------------------------------------------------------- */
 
-export function Stat({ value, label, tone, unit }: { value: ReactNode; label: string; tone?: Tone; unit?: string }) {
+/** A big number that counts up to its value, with an optional flame for a live streak. */
+export function Stat({ value, label, tone, unit, flame }: { value: ReactNode; label: string; tone?: Tone; unit?: string; flame?: boolean }) {
   const color = {
     default: 'text-fg',
     accent: 'text-accent',
@@ -166,9 +193,14 @@ export function Stat({ value, label, tone, unit }: { value: ReactNode; label: st
   }[tone ?? 'default'];
   return (
     <div>
-      <p className={cn('tnum font-display text-[24px] font-bold leading-none', color)}>
-        {value}
-        {unit && <span className="ml-1 text-[13px] font-medium text-muted">{unit}</span>}
+      <p className={cn('tnum inline-flex items-baseline gap-1 font-display text-[24px] font-bold leading-none', color)}>
+        <span>{typeof value === 'number' ? <AnimatedNumber value={value} /> : value}</span>
+        {unit && <span className="text-[13px] font-medium text-muted">{unit}</span>}
+        {flame && (
+          <span className="self-center">
+            <StreakFlame active size={16} />
+          </span>
+        )}
       </p>
       <p className="mt-1.5 text-[10.5px] uppercase tracking-[0.1em] text-muted">{label}</p>
     </div>

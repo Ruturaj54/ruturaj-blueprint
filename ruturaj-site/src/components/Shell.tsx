@@ -131,7 +131,8 @@ export function Shell({ route, navigate, children }: { route: string; navigate: 
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-[1080px] flex-1 px-4 pb-[100px] pt-5 lg:px-8 lg:pb-12">{children}</main>
+        {/* overflow-x: clip keeps a sliding page from widening the document mid-transition; unlike hidden it leaves sticky alone. */}
+        <main className="mx-auto w-full max-w-[1080px] flex-1 overflow-x-clip px-4 pb-[100px] pt-5 lg:px-8 lg:pb-12">{children}</main>
       </div>
 
       {/* ---- mobile bottom bar ---- */}
@@ -141,15 +142,24 @@ export function Shell({ route, navigate, children }: { route: string; navigate: 
             const active = item.id === route;
             const amazon = item.id === 'prep';
             return (
-              <button
+              <motion.button
                 key={item.id}
                 onClick={() => go(item.id)}
+                whileTap={reduce ? undefined : { scale: 0.88 }}
+                transition={spring}
+                aria-current={active ? 'page' : undefined}
                 className={cn(
                   'relative flex min-h-[58px] flex-col items-center justify-center gap-1 text-[10.5px] transition-colors',
                   active ? (amazon ? 'font-semibold text-amazon' : 'font-semibold text-accent') : 'text-muted',
                 )}
               >
-                <item.icon size={20} />
+                <motion.span
+                  animate={reduce ? undefined : active ? { y: -2, scale: 1.12 } : { y: 0, scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 22 }}
+                  className="inline-flex"
+                >
+                  <item.icon size={20} />
+                </motion.span>
                 {item.short ?? item.label}
                 {active && (
                   <motion.span
@@ -158,10 +168,12 @@ export function Shell({ route, navigate, children }: { route: string; navigate: 
                     className={cn('absolute inset-x-5 top-0 h-[3px] rounded-full', amazon ? 'bg-amazon' : 'bg-accent')}
                   />
                 )}
-              </button>
+              </motion.button>
             );
           })}
-          <button
+          <motion.button
+            whileTap={reduce ? undefined : { scale: 0.88 }}
+            transition={spring}
             onClick={() => setSheetOpen(true)}
             className={cn(
               'flex min-h-[58px] flex-col items-center justify-center gap-1 text-[10.5px] transition-colors',
@@ -170,7 +182,7 @@ export function Shell({ route, navigate, children }: { route: string; navigate: 
           >
             <MoreHorizontal size={20} />
             More
-          </button>
+          </motion.button>
         </div>
       </nav>
 

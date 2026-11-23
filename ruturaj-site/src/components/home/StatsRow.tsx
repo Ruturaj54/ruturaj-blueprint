@@ -30,6 +30,7 @@ export function StatsRow() {
           unit={streak === 1 ? 'day' : 'days'}
           label="Execution streak"
           tone={streak > 0 ? 'success' : 'default'}
+          flame={streak > 0}
         />
         <Stat value={focus} unit="min" label="Focus today" tone={focus > 0 ? 'accent' : 'default'} />
       </div>

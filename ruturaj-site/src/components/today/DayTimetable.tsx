@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ChevronDown, Clock } from 'lucide-react';
 import { Card } from '@/components/ui/primitives';
 import { Segmented } from '@/components/ui/controls';
-import { spring } from '@/lib/motion';
+import { spring, rowContainer } from '@/lib/motion';
 import { useAppState } from '@/hooks/useAppState';
 import { useClock } from '@/hooks/useClock';
 import {
@@ -104,7 +104,7 @@ export function DayTimetable({ items, date }: { items: SlotItem[]; date: string 
               </p>
             )}
 
-            <div>
+            <motion.div key={view} variants={rowContainer} initial={reduce ? false : 'hidden'} animate="show">
               {slots.map((slot, i) => (
                 <TimelineRow
                   key={`${view}-${slot.id}`}
@@ -114,7 +114,7 @@ export function DayTimetable({ items, date }: { items: SlotItem[]; date: string 
                   last={i === slots.length - 1}
                 />
               ))}
-            </div>
+            </motion.div>
 
             {schedule.overflow.length > 0 && <OverflowCard items={schedule.overflow} />}
           </motion.div>
