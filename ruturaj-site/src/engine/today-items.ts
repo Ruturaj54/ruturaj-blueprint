@@ -4,18 +4,23 @@ import { buildAmazonDay, type AmazonDayPlan } from './amazon-plan';
 import { buildPlan, type DailyPlan } from './planner';
 import { programInfo } from './program';
 import { todayISO, clampDay, dayForDate } from './dates';
-import { formatHM } from './schedule';
+import { formatHM, type DayMode } from './schedule';
+import { lecturePlan, lectureSlotItems, type LectureModule } from './lecture';
 
 /**
- * What today's study blocks hold, whichever phase he is in. Before Day 1 is
- * started this previews the Amazon Day 1 set, so the Start card and the
- * morning mail can show real content rather than a placeholder.
+ * What today's study blocks hold, whichever phase he is in. During surprise
+ * prep that is the prep set plus the parallel Apna College lecture. Before
+ * Day 1 is started this previews Day 1, so the Start card and the morning
+ * mail can show real content rather than a placeholder.
  */
 
 export interface TodayWork {
   phase: 'amazon' | 'general' | 'not-started';
+  /** Prep items first, then the lecture: the order the mail numbers them in. */
   items: SlotItem[];
   amazon?: AmazonDayPlan;
+  /** Tonight's Apna College module(s) while surprise prep runs; empty otherwise. */
+  lecture: Array<LectureModule & { minutes: number }>;
   general?: DailyPlan;
   /** One line: what today is about. */
   focus: string;
@@ -69,13 +74,16 @@ export function todayWork(state: AppState, date: string = todayISO()): TodayWork
   const info = programInfo(state, date);
   if (!info.started || info.phase === 'amazon') {
     const amazon = buildAmazonDay(state, date);
+    const lecture = amazon.mode === 'interview-day' ? [] : lecturePlan(state, date);
+    const lectureItems = lectureSlotItems(lecture);
     return {
       phase: info.started ? 'amazon' : 'not-started',
-      items: amazonSlotItems(amazon),
+      items: [...amazonSlotItems(amazon), ...lectureItems],
       amazon,
+      lecture,
       focus: amazon.focus,
-      minutes: amazon.totalMinutes,
-      plannedIds: amazon.plannedIds,
+      minutes: amazon.totalMinutes + lectureItems.reduce((n, i) => n + i.minutes, 0),
+      plannedIds: [...amazon.plannedIds, ...lectureItems.map((i) => i.id)],
     };
   }
   const general = buildPlan(state, clampDay(dayForDate(date)));
@@ -87,11 +95,17 @@ export function todayWork(state: AppState, date: string = todayISO()): TodayWork
       ? `${lead.subject.name} · ${lead.milestone.title}`
       : lead.scored.task.title
     : 'Roadmap';
-  return { phase: 'general', items, general, focus: `${focus} · ${formatHM(minutes)}`, minutes, plannedIds: general.plannedIds };
+  return { phase: 'general', items, general, lecture: [], focus: `${focus} · ${formatHM(minutes)}`, minutes, plannedIds: general.plannedIds };
 }
 
 /** Title for a planned id, for day logs and mails. */
 export function titleForPlannedId(state: AppState, id: string): string {
   const work = todayWork(state);
   return work.items.find((i) => i.id === id)?.title ?? id;
+}
+
+/** Which labels the day's blocks wear: surprise prep until that phase is complete. */
+export function dayModeFor(state: AppState, date: string = todayISO()): DayMode {
+  const info = programInfo(state, date);
+  return info.started && info.phase === 'general' ? 'general' : 'prep';
 }

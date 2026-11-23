@@ -69,6 +69,10 @@ const required = [
   'dayScore', 'plannedHits', 'dayExtras', 'executionStreak', 'buildPraise', 'dsaTotals', 'dsaStreak',
   'taskById', 'FOUNDATION_SUBJECTS', 'coachFor', 'DAY_TYPE_LABEL', 'formatShort', 'formatLong',
   'formatWeekday', 'weekdayOf', 'DAY_START_HOUR', 'TARGET_DATE', 'DEFAULT_SETTINGS',
+  'SETTINGS_VERSION', 'PREP_WINDOW_DAYS', 'freshKeepingSettings', 'prepCapacity', 'roleCapacity', 'dayModeFor',
+  'activityFor', 'activityLine', 'activityWeek', 'walkStreak', 'hasActivity', 'setActivity',
+  'lectureActive', 'lecturePlan', 'lectureMinutes', 'openApnaModules',
+  'dinnerFor', 'withDinner', 'DINNER_SLOT_IDS', 'PROTEIN_DINNERS',
 ];
 const missing = required.filter((name) => !(name in mod));
 if (missing.length) {
@@ -77,4 +81,4 @@ if (missing.length) {
 }
 
 const kb = Math.round(bundled.length / 1024);
-console.log(`engine.mjs — ${kb} KB, ${required.length} exports checked, ${mod.AMAZON_ITEMS.length} Amazon items`);
+console.log(`engine.mjs — ${kb} KB, ${required.length} exports checked, ${mod.AMAZON_ITEMS.length} prep items`);

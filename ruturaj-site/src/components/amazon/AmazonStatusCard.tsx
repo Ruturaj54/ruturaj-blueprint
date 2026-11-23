@@ -8,8 +8,9 @@ import { amazonStatusLine } from './status-line';
 
 /**
  * The honest state machine. Three facts, kept apart: the assessment he sat,
- * the outcome Amazon has confirmed (none), and the invitation he is waiting
- * for. Nothing here guesses.
+ * the outcome the company has confirmed (none), and the invitation he is
+ * waiting for. Nothing here guesses. Until a mail arrives, prep is study for
+ * surprises.
  */
 
 const STAGES: ReadonlyArray<{ id: AmazonStage; label: string }> = [
@@ -19,7 +20,7 @@ const STAGES: ReadonlyArray<{ id: AmazonStage; label: string }> = [
 ];
 
 const TIMELINE_NOTE =
-  "Amazon's SDE assessment page says you get an email per section telling you whether you move forward, and that Amazon reaches out directly for an interview. It gives no number of days: 'one or two weeks' is your own planning assumption, and the tracker's reports ranged from about 2 weeks to 3 months.";
+  "Official guidance (Amazon's SDE assessment page): an email follows each section saying whether you move forward, and the company reaches out directly for an interview. It gives no number of days; the tracker's reports ranged from about 2 weeks to 3 months. So the prep runs whether or not a mail comes.";
 
 export function AmazonStatusCard({ compact = false }: { compact?: boolean }) {
   const state = useAppState();
@@ -41,7 +42,7 @@ export function AmazonStatusCard({ compact = false }: { compact?: boolean }) {
         <div className="flex items-start gap-3">
           <Target size={18} className="mt-0.5 shrink-0 text-amazon" />
           <div className="min-w-0">
-            <p className="text-[14px] font-medium leading-snug text-fg">Amazon SDE-1</p>
+            <p className="text-[14px] font-medium leading-snug text-fg">The surprise call</p>
             <p className="mt-0.5 text-[13px] leading-snug text-muted">{amazonStatusLine(state)}</p>
             {near && interviewLine && <p className="mt-1.5 text-[12.5px] text-amazon-ink">{interviewLine}</p>}
           </div>
@@ -52,7 +53,7 @@ export function AmazonStatusCard({ compact = false }: { compact?: boolean }) {
 
   return (
     <Card>
-      <p className="font-display text-[16px] font-bold leading-tight">Where the process stands</p>
+      <p className="font-display text-[16px] font-bold leading-tight">Where the surprise stands</p>
       <p className="mt-0.5 text-[12px] text-muted">Three facts, kept apart. Edit them here or in Settings.</p>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -69,8 +70,8 @@ export function AmazonStatusCard({ compact = false }: { compact?: boolean }) {
         </Field>
         <div>
           <p className="mb-1.5 text-[12px] font-medium text-muted">Outcome</p>
-          <p className="flex min-h-[42px] items-center text-[14px] text-fg">Not confirmed by Amazon.</p>
-          <p className="mt-1 text-[11.5px] text-faint">Stays this way until a mail from Amazon says otherwise.</p>
+          <p className="flex min-h-[42px] items-center text-[14px] text-fg">Not confirmed yet.</p>
+          <p className="mt-1 text-[11.5px] text-faint">Stays this way until a mail from the recruiter says otherwise.</p>
         </div>
       </div>
 

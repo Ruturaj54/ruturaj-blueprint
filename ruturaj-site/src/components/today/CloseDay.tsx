@@ -57,8 +57,8 @@ export function CloseDay() {
       {!closed ? (
         <Card>
           <p className="text-[13px] leading-relaxed text-muted">
-            Before you sleep: tick what you actually did, log the session and any extra problems, then close the
-            day. Tonight is compared with yesterday and the difference is named plainly.
+            Before you sleep: tick what you actually did, put in today&rsquo;s numbers and tomorrow&rsquo;s line, then
+            close the day. Tonight is compared with yesterday and the difference is named plainly.
           </p>
           <div className="mt-4 grid grid-cols-3 gap-x-3 gap-y-4 sm:grid-cols-5">
             <Stat value={`${plannedHits(state, today)}/${planned}`} label="Planned" />

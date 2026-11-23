@@ -27,8 +27,8 @@ export function TrackReadiness() {
       </SectionTitle>
       <Card>
         <p className="text-[12.5px] text-muted">
-          These tracks belong to the general roadmap, which starts the day the Amazon phase is marked complete. They
-          are not a read on the Amazon interview.
+          These tracks belong to the general roadmap, which starts the day surprise prep is marked complete. They
+          are not a read on any interview.
         </p>
 
         <div className="mt-4 space-y-4">

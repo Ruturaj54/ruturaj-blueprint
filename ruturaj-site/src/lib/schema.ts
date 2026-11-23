@@ -2,17 +2,23 @@ import type { DsaAttempt, DeepWorkSession, TaskState, Priority } from '@/engine/
 import type {
   WorkoutLog,
   DayLog,
+  ActivityLog,
   WorkAchievement,
   Application,
   HealthState,
   WeeklyReview,
 } from './records';
 import { todayISO } from '@/engine/dates';
+import { DEFAULT_SETTINGS, PREFERENCE_KEYS, type Settings } from './settings';
+
+export { SETTINGS_VERSION, DEFAULT_SETTINGS, PREFERENCE_KEYS } from './settings';
+export type { Settings, Theme } from './settings';
 
 export type {
   WorkoutKind,
   WorkoutLog,
   DayLog,
+  ActivityLog,
   WorkAchievement,
   ApplicationStage,
   Application,
@@ -27,29 +33,31 @@ export const STATE_VERSION = 3;
 /**
  * Bumped when stored progress must be discarded rather than migrated.
  *
- * Epoch 5 (28 Oct 2026): the clean restart he asked for. Old course ticks,
- * day logs, DSA attempts, runs and deep-work sessions go. What stays: his
- * preferences, the Amazon tracker state, work log, applications, weight and
- * lab records. If Day 1 had been pressed, it re-anchors to the day the app
- * is next opened, so today is Day 1.
+ * Epoch 5 (28 Oct 2026): the first clean restart.
+ *
+ * Epoch 6 (23 Nov 2026): the restart he asked for when he got serious about
+ * surprise prep. Old course ticks, day logs, DSA attempts and deep-work
+ * sessions go. What stays: his preferences, the prep tracker, the work log,
+ * applications, and every real-life record (runs, daily activity, weight,
+ * labs). If Day 1 had been pressed it re-anchors to the day the app (or the
+ * next mail) first reads the new epoch, so that day is Day 1. The prep window
+ * goes to the tracker's full 28 days, because his weekday prep block is now
+ * two hours rather than five.
  */
-export const DATA_EPOCH = 5;
-
-/** Timetable keys were renamed on 25 Oct 2026; older settings take new defaults. */
-export const SETTINGS_VERSION = 2;
+export const DATA_EPOCH = 6;
 
 /* ---------- program: Day 1, phases ---------------------------------------- */
 
 export type ProgramPhase = 'amazon' | 'general';
 
-/** Light is the default; system follows the device. */
-export type Theme = 'light' | 'dark' | 'system';
+/** Exercise is a morning run; a day can be marked as rest. Evenings belong to the walk. */
+export type ExerciseOverride = 'rest';
 
 export interface Program {
   /** Day 1, set by the explicit "Start Day 1" action. Absent = not started. */
   startedOn?: string;
   phase: ProgramPhase;
-  /** Intensive Amazon window in days, plus any extensions. */
+  /** Surprise-prep window in days (the Amazon tracker), plus any extensions. */
   amazonWindowDays: number;
   amazonExtendedDays: number;
   amazonCompletedOn?: string;
@@ -88,43 +96,6 @@ export interface AmazonState {
   solidTopics: string[];
 }
 
-export interface Settings {
-  settingsVersion: number;
-  name: string;
-  /* weekday timetable, 24h "HH:MM" IST */
-  wakeTime: string;
-  exerciseStart: string;
-  exerciseEnd: string;
-  /** Leaving home to getting back. */
-  officeStart: string;
-  officeEnd: string;
-  /** Spare light study at the office; 0 by default. */
-  officeStudyHours: number;
-  studyBlock1Start: string;
-  studyBlock1End: string;
-  studyBlock2Start: string;
-  studyBlock2End: string;
-  /** The short walk runs from studyBlock2End to walkEnd. */
-  walkEnd: string;
-  studyBlock3End: string;
-  studyBlock3Enabled: boolean;
-  /* weekend */
-  weekendWakeTime: string;
-  weekendSleepTime: string;
-  /* exercise */
-  exerciseSlot: 'morning' | 'evening';
-  /* email */
-  timezone: string;
-  morningEmailTime: string;
-  eveningEmailTime: string;
-  emailEnabled: boolean;
-  /* study */
-  deepWorkMinutes: number;
-  dsaTargetPerDay: number;
-  /* appearance */
-  theme: Theme;
-}
-
 export interface AppState {
   version: number;
   dataEpoch: number;
@@ -141,8 +112,10 @@ export interface AppState {
   dsa: DsaAttempt[];
   deepWork: DeepWorkSession[];
   runs: WorkoutLog[];
-  /** ISO date -> exercise slot override for that day. */
-  exerciseOverrides: Record<string, 'morning' | 'evening' | 'rest'>;
+  /** ISO date -> 'rest' when that day's run is skipped on purpose. */
+  exerciseOverrides: Record<string, ExerciseOverride>;
+  /** ISO date -> the day's movement numbers (steps, km, calories). */
+  activity: Record<string, ActivityLog>;
   work: WorkAchievement[];
   applications: Application[];
   health: HealthState;
@@ -150,42 +123,12 @@ export interface AppState {
   weeklyReviews: Record<string, WeeklyReview>;
 }
 
-/**
- * His day as described on 25 Oct 2026: home at 17:00, study 18:00–20:00,
- * dinner and recovery to 21:00, deep study 21:00–23:00, a short walk, then an
- * optional final block to 01:00. Six hours of sleep from 01:00 to 07:00.
- */
-export const DEFAULT_SETTINGS: Settings = {
-  settingsVersion: SETTINGS_VERSION,
-  name: 'Ruturaj',
-  wakeTime: '07:00',
-  exerciseStart: '07:10',
-  exerciseEnd: '08:00',
-  officeStart: '08:45',
-  officeEnd: '17:00',
-  officeStudyHours: 0,
-  studyBlock1Start: '18:00',
-  studyBlock1End: '20:00',
-  studyBlock2Start: '21:00',
-  studyBlock2End: '23:00',
-  walkEnd: '23:30',
-  studyBlock3End: '01:00',
-  studyBlock3Enabled: true,
-  weekendWakeTime: '08:00',
-  weekendSleepTime: '23:30',
-  exerciseSlot: 'morning',
-  timezone: 'Asia/Kolkata',
-  morningEmailTime: '06:00',
-  eveningEmailTime: '17:00',
-  emailEnabled: true,
-  deepWorkMinutes: 50,
-  dsaTargetPerDay: 3,
-  theme: 'light',
-};
+/** The tracker's own length: 28 days fits its plan into a two-hour weekday prep block. */
+export const PREP_WINDOW_DAYS = 28;
 
 export const DEFAULT_PROGRAM: Program = {
   phase: 'amazon',
-  amazonWindowDays: 14,
+  amazonWindowDays: PREP_WINDOW_DAYS,
   amazonExtendedDays: 0,
 };
 
@@ -214,6 +157,7 @@ export function defaultState(): AppState {
     deepWork: [],
     runs: [],
     exerciseOverrides: {},
+    activity: {},
     work: [],
     applications: [],
     health: { supplements: [], labs: [], sleep: {}, adherence: {}, focus: [], weight: {} },
@@ -233,12 +177,9 @@ export function isStaleEpoch(state: AppState): boolean {
   return state.dataEpoch < DATA_EPOCH;
 }
 
-/** Preferences that survive a timetable migration or an epoch change. */
-export const PREFERENCE_KEYS = ['emailEnabled', 'dsaTargetPerDay', 'deepWorkMinutes', 'name', 'theme'] as const;
-
 /**
- * A clean start for a new epoch: old progress goes; preferences, the Amazon
- * tracker, real-life records stay; a started programme re-anchors to today.
+ * A clean start for a new epoch: old progress goes; preferences, the prep
+ * tracker and real-life records stay; a started programme re-anchors to today.
  */
 export function freshForNewEpoch(from: AppState, today: string = todayISO()): AppState {
   const fresh = defaultState();
@@ -248,6 +189,7 @@ export function freshForNewEpoch(from: AppState, today: string = todayISO()): Ap
   fresh.amazon = structuredClone(from.amazon);
   fresh.program = {
     ...from.program,
+    amazonWindowDays: PREP_WINDOW_DAYS,
     amazonExtendedDays: 0,
     ...(from.program.startedOn ? { startedOn: today } : {}),
     ...(from.program.generalStartedOn ? { generalStartedOn: today } : {}),
@@ -258,14 +200,23 @@ export function freshForNewEpoch(from: AppState, today: string = todayISO()): Ap
   fresh.health.nextTestDate = from.health.nextTestDate;
   fresh.health.focus = from.health.focus;
   fresh.health.weight = from.health.weight;
+  fresh.health.sleep = from.health.sleep;
+  // Real-life records survive every restart (records.ts): what he ran and walked happened.
+  fresh.runs = from.runs;
+  fresh.activity = from.activity;
   fresh.work = from.work;
   fresh.applications = from.applications;
   return fresh;
 }
 
-/** The manual reset in Settings: same as an epoch change, but the timetable is kept. */
+/**
+ * The manual reset in Settings: a full start-over. Progress, the prep tracker
+ * and Day 1 go; the timetable, preferences and real-life records stay.
+ */
 export function freshKeepingSettings(from: AppState): AppState {
   const fresh = freshForNewEpoch(from);
   fresh.settings = { ...DEFAULT_SETTINGS, ...from.settings };
+  fresh.amazon = { ...DEFAULT_AMAZON, items: {}, extras: {}, solidTopics: [] };
+  fresh.program = { ...DEFAULT_PROGRAM };
   return fresh;
 }

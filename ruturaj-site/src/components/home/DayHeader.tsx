@@ -17,13 +17,16 @@ function greeting(clock: string): string {
 
 /** One sentence on what today is about, with the count and time from the plan. */
 function objective(work: TodayWork): string {
-  const n = work.items.length;
+  // During prep the lecture is named on its own, so the count and time are the prep set's.
+  const n = work.amazon ? work.amazon.planned.length : work.items.length;
   const count = `${n} item${n === 1 ? '' : 's'}`;
-  const about = `about ${formatHM(work.minutes)}`;
+  const about = `about ${formatHM(work.amazon ? work.amazon.totalMinutes : work.minutes)}`;
   if (work.amazon) {
     if (work.amazon.mode === 'interview-day') return 'Interview day. No set planned: review your stories, sleep, arrive early.';
-    if (work.amazon.mode === 'done') return 'Curriculum complete. Revisions only, until you mark the Amazon phase done.';
-    return n === 0 ? `${work.focus} — nothing left to place today.` : `${work.focus} — ${count}, ${about}`;
+    if (work.amazon.mode === 'done') return 'Curriculum complete. Revisions only, until you mark surprise prep done.';
+    const lecture = work.lecture[0];
+    const tail = lecture ? `, then the lecture: ${lecture.milestone.title}` : '';
+    return n === 0 ? `${work.focus} — nothing left to place today.` : `${work.focus} — ${count}, ${about}${tail}.`;
   }
   const lead = work.general?.missions[0];
   const head = !lead
@@ -38,9 +41,9 @@ function phaseChip(info: ProgramInfo): string {
   if (!info.started) return 'Preview · not started';
   if (info.phase === 'general') return `Roadmap · Day ${info.general.day} of ${info.general.totalDays}`;
   const { day, windowDays, daysLeft, overrun } = info.amazon;
-  if (overrun) return `Amazon intensive · Day ${day} · ${windowDays}-day window over`;
+  if (overrun) return `Surprise prep · Day ${day} · ${windowDays}-day window over`;
   const left = daysLeft <= 1 ? 'last day' : `${daysLeft} days left`;
-  return `Amazon intensive · Day ${day} of ${windowDays} · ${left}`;
+  return `Surprise prep · Day ${day} of ${windowDays} · ${left}`;
 }
 
 /**
@@ -89,9 +92,9 @@ export function DayHeader({
           variant={amazon ? 'amazon' : 'primary'}
           size="lg"
           className="mt-4 w-full sm:w-auto"
-          onClick={() => navigate(amazon ? 'amazon' : 'roadmap')}
+          onClick={() => navigate(amazon ? 'prep' : 'roadmap')}
         >
-          {amazon ? 'Start Amazon study' : 'Continue the roadmap'}
+          {amazon ? 'Start today’s prep' : 'Continue the roadmap'}
           <ArrowRight size={17} />
         </Button>
       )}

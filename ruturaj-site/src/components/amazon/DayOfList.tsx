@@ -15,7 +15,7 @@ export function DayOfList() {
       <p className="tnum text-[14px] font-medium text-fg">
         {done} of {AMAZON_DAYOF.length} ready
       </p>
-      <p className="mt-1 text-[13px] text-muted">Tick these the day before. General advice, not an Amazon requirement.</p>
+      <p className="mt-1 text-[13px] text-muted">Tick these the day before. General advice, not a company requirement.</p>
       <div className="mt-2 divide-y divide-line">
         {AMAZON_DAYOF.map((d) => (
           <TaskCheckbox

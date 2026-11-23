@@ -7,6 +7,10 @@ import { listContainer, spring } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 import { FAT_LOSS_NOTE } from '@/data/fitness';
 import { ExerciseCard } from '@/components/fitness/ExerciseCard';
+import { ActivityWeek } from '@/components/fitness/ActivityWeek';
+import { DinnerRotation } from '@/components/fitness/DinnerRotation';
+import { ActivityCard } from '@/components/today/ActivityCard';
+import { todayISO } from '@/engine/dates';
 import { WeekPlan } from '@/components/fitness/WeekPlan';
 import { WeekStrip } from '@/components/fitness/WeekStrip';
 import { HabitsCard } from '@/components/fitness/HabitsCard';
@@ -15,9 +19,9 @@ import { WeightLog } from '@/components/health/WeightLog';
 import { LabSection } from '@/components/health/Labs';
 
 /**
- * Fitness tracks and informs: today's session, the week, the two daily
- * habits, sleep and weight. Lab values sit behind a disclosure at the bottom.
- * Supplements, skin care and health-focus cards are retired from this screen.
+ * Fitness tracks and informs: today's run, today's numbers and the last seven
+ * days of them, the session week, protein dinners, the two daily habits, sleep
+ * and weight. Lab values sit behind a disclosure at the bottom.
  */
 export function Fitness() {
   const [recordsOpen, setRecordsOpen] = useState(false);
@@ -30,6 +34,8 @@ export function Fitness() {
         <ExerciseCard />
       </section>
 
+      <ActivityCard date={todayISO()} />
+      <ActivityWeek />
       <WeekPlan />
       <WeekStrip />
 
@@ -38,6 +44,7 @@ export function Fitness() {
         <p className="mt-1 text-muted">{FAT_LOSS_NOTE}</p>
       </Banner>
 
+      <DinnerRotation />
       <HabitsCard />
       <SleepCard />
       <WeightLog />

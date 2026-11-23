@@ -6,6 +6,7 @@ import { formatHM, type SlotItem } from '@/engine/schedule';
 const DOT: Record<SlotItem['kind'], string> = {
   amazon: 'bg-accent',
   revision: 'bg-warn',
+  lecture: 'bg-info',
   course: 'bg-accent',
   build: 'bg-accent',
   dsa: 'bg-info',
@@ -39,7 +40,7 @@ export function SlotItemList({
                     ? `${formatHM(item.minutes)} of ${formatHM(item.totalMinutes)}`
                     : formatHM(item.minutes)}
                 </Chip>
-                <Chip tone={item.kind === 'dsa' ? 'info' : item.kind === 'revision' ? 'warn' : 'default'}>{item.context}</Chip>
+                <Chip tone={item.kind === 'dsa' || item.kind === 'lecture' ? 'info' : item.kind === 'revision' ? 'warn' : 'default'}>{item.context}</Chip>
                 {item.carried && (
                   <Chip tone="accent">
                     <CornerDownRight size={11} />

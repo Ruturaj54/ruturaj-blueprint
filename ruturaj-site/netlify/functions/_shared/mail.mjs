@@ -2,7 +2,7 @@
 //
 // Credentials come from the environment only. The HTML is table-based with
 // inline styles because Gmail strips <style> blocks and ignores most modern
-// CSS. Tokens mirror design.md; orange is reserved for the Amazon label/button.
+// CSS. Tokens mirror design.md; orange is reserved for the Surprise Prep label/button.
 
 import nodemailer from 'nodemailer';
 
@@ -123,7 +123,7 @@ export function rows(items) {
     .join('');
 }
 
-/** A full-width button. Blue by default; orange only for the Amazon CTA. */
+/** A full-width button. Blue by default; orange only for the Surprise Prep CTA. */
 export function button(label, href, tone = C.accent) {
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="border-radius:12px;background:${tone};">
   <a href="${esc(href)}" style="display:block;padding:14px 18px;border-radius:12px;font:600 15px/1 ${FONT};color:#FFFFFF;text-align:center;text-decoration:none;">${esc(label)}</a>

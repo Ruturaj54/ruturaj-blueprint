@@ -6,16 +6,21 @@ import { weekdayOf, DAY_START_HOUR } from './dates';
 /**
  * Turns the day's work into the whole day's timetable.
  *
- * Every entry of the routine is returned (wake, exercise, office, meals,
- * sleep) and the study entries are filled with the day's items in order:
- * block 1, then block 2, then the optional final block. Capacity is real; a
- * long item spills into the next block, and only what fits nowhere today is
- * reported as continuing tomorrow. It is never silently dropped.
+ * Every entry of the routine is returned (wake, run, office, meals, walk,
+ * sleep) and the study entries are filled with the day's items by role:
+ * surprise prep in the deep block, the lecture in the lecture block, spill-over
+ * into the lighter blocks. Capacity is real; a long item spills into the next
+ * block, and only what fits nowhere today is reported as continuing tomorrow.
+ * It is never silently dropped.
  */
 
-export type ExerciseSlot = 'morning' | 'evening' | 'rest';
+/** Runs are morning-only; a day can be marked rest. */
+export type ExerciseSlot = 'morning' | 'rest';
 
-export type ItemKind = 'amazon' | 'revision' | 'course' | 'build' | 'dsa';
+/** Which labels the study blocks wear: surprise prep, or the general roadmap after it. */
+export type DayMode = 'prep' | 'general';
+
+export type ItemKind = 'amazon' | 'revision' | 'lecture' | 'course' | 'build' | 'dsa';
 
 export interface SlotItem {
   id: string;
@@ -91,22 +96,22 @@ export function dayTypeOf(iso: string): DayType {
   return dow === 6 ? 'saturday' : dow === 0 ? 'sunday' : 'weekday';
 }
 
-function conditionHolds(when: Condition | undefined, exercise: ExerciseSlot, block3: boolean): boolean {
+function conditionHolds(when: Condition | undefined, exercise: ExerciseSlot, settings: Settings): boolean {
   switch (when) {
     case undefined: return true;
     case 'am-run': return exercise === 'morning';
-    case 'am-norun': return exercise !== 'morning';
-    case 'pm-run': return exercise === 'evening';
-    case 'pm-norun': return exercise !== 'evening';
-    case 'block3': return block3;
-    case 'noblock3': return !block3;
+    case 'am-rest': return exercise === 'rest';
+    case 'block3': return settings.studyBlock3Enabled;
+    case 'noblock3': return !settings.studyBlock3Enabled;
+    case 'freelance': return settings.freelanceEnabled;
+    case 'nofreelance': return !settings.freelanceEnabled;
   }
 }
 
 /** The day's entries after conditions, with their study capacity in minutes. */
-export function daySlots(settings: Settings, dayType: DayType, exercise: ExerciseSlot = settings.exerciseSlot): Slot[] {
+export function daySlots(settings: Settings, dayType: DayType, exercise: ExerciseSlot = 'morning', mode: DayMode = 'prep'): Slot[] {
   return ROUTINES[dayType]
-    .filter((e) => conditionHolds(e.when, exercise, settings.studyBlock3Enabled))
+    .filter((e) => conditionHolds(e.when, exercise, settings))
     .map((e) => {
       const start = resolveTime(e.start, settings);
       const end = resolveTime(e.end, settings);
@@ -116,24 +121,37 @@ export function daySlots(settings: Settings, dayType: DayType, exercise: Exercis
           : e.study && e.study !== 'review'
             ? blockMinutes(start, end)
             : 0;
-      return { id: e.id, label: e.label, kind: e.kind, study: e.study, start, end, capacity, items: [], used: 0, note: e.note };
+      const label = mode === 'general' && e.general ? e.general : e.label;
+      return { id: e.id, label, kind: e.kind, study: e.study, start, end, capacity, items: [], used: 0, note: e.note };
     });
 }
 
 /** Study minutes available on a day of this type. Office spare time is excluded. */
-export function studyCapacity(settings: Settings, dayType: DayType, exercise: ExerciseSlot = settings.exerciseSlot): number {
+export function studyCapacity(settings: Settings, dayType: DayType, exercise: ExerciseSlot = 'morning'): number {
   return daySlots(settings, dayType, exercise)
     .filter((s) => s.capacity > 0 && s.study !== 'office')
     .reduce((n, s) => n + s.capacity, 0);
 }
 
-/** Where each kind of work may go, in order of preference. */
+/** Minutes in the blocks of one role, e.g. the lecture blocks that surprise prep leaves alone. */
+export function roleCapacity(settings: Settings, dayType: DayType, role: StudyRole, exercise: ExerciseSlot = 'morning'): number {
+  return daySlots(settings, dayType, exercise)
+    .filter((s) => s.study === role)
+    .reduce((n, s) => n + s.capacity, 0);
+}
+
+/**
+ * Where each kind of work may go, in order of preference. Surprise prep fills
+ * the deep block first and reaches the lecture block only as a last resort
+ * (when the parallel lecture is off); the lecture itself never leaves it.
+ */
 const PLACEMENT: Record<ItemKind, StudyRole[]> = {
-  amazon: ['course', 'deep', 'dsa', 'light'],
-  revision: ['course', 'deep', 'dsa', 'light'],
-  course: ['office', 'course', 'deep', 'light'],
-  build: ['deep', 'course', 'light'],
-  dsa: ['dsa', 'deep', 'course'],
+  amazon: ['deep', 'dsa', 'course', 'light', 'lecture'],
+  revision: ['deep', 'dsa', 'course', 'light', 'lecture'],
+  lecture: ['lecture'],
+  course: ['lecture', 'course', 'office', 'deep', 'light'],
+  build: ['deep', 'course', 'light', 'lecture'],
+  dsa: ['dsa', 'deep', 'course', 'lecture'],
 };
 
 /** A sliver shorter than this is not a plan, so a long item skips it. */
@@ -143,12 +161,15 @@ export function buildSchedule(
   settings: Settings,
   items: SlotItem[],
   dayType: DayType,
-  exercise: ExerciseSlot = settings.exerciseSlot,
+  exercise: ExerciseSlot = 'morning',
+  mode: DayMode = 'prep',
 ): DaySchedule {
-  const slots = daySlots(settings, dayType, exercise);
+  const slots = daySlots(settings, dayType, exercise, mode);
   const overflow: SlotItem[] = [];
+  // The lecture claims its block before prep can spill into it.
+  const ordered = [...items.filter((i) => i.kind === 'lecture'), ...items.filter((i) => i.kind !== 'lecture')];
 
-  for (const item of items) {
+  for (const item of ordered) {
     const order = PLACEMENT[item.kind].flatMap((role) => slots.filter((x) => x.study === role && x.capacity > 0));
     let remaining = item.minutes;
     const pieces: Array<{ slot: Slot; minutes: number }> = [];

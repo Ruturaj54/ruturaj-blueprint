@@ -19,7 +19,7 @@ this is opened on an iPhone every morning and every evening.
 | `--color-warn` (+ `-soft`) | `#B4731A` | amber: behind, reminders, P1 |
 | `--color-danger` (+ `-soft`) | `#C43D3D` | overdue, P0, destructive |
 | `--color-info` (+ `-soft`) | `#1F7AA6` | informational, P2 |
-| `--color-amazon` (+ `-soft`, `-ink`) | `#D9770A` | the Amazon module's identity only |
+| `--color-amazon` (+ `-soft`, `-ink`) | `#D9770A` | the Surprise Prep module's identity only |
 
 Optional dark theme: `html[data-theme='dark']` in `src/index.css` swaps every token (deep slate
 surfaces, lighter accent, `--color-on-accent` dark so filled buttons stay readable). Light is the
@@ -28,8 +28,8 @@ default; Settings, Appearance offers Light, Dark or System, and the header has a
 Priority colors: P0 danger · P1 warn · P2 info · P3 faint.
 Radius: cards 16px, controls 12px, chips 999px. Shadows: `shadow-card` only.
 No gradients as fills. No dark surfaces inside the light theme. Accent is for emphasis, not decoration.
-The Amazon tab is the one place orange appears: its header band, active nav state,
-checkbox tone and primary button. Everything else is blue.
+The Surprise Prep tab is the one place orange appears: its header band, active nav
+state, checkbox tone and primary button. Everything else is blue.
 
 ## Typography
 
@@ -42,8 +42,8 @@ My Day is the day number. Nothing competes with it.
 
 ## Layout
 
-Mobile: bottom bar with My Day · Amazon · Roadmap · Fitness · More (Projects, Progress,
-Settings). 16px gutters, 44px minimum touch targets, no horizontal scroll, long lists
+Mobile: bottom bar with My Day · Prep · Roadmap · Fitness · More (Projects, Progress,
+Settings); the sidebar spells it Surprise Prep. 16px gutters, 44px minimum touch targets, no horizontal scroll, long lists
 collapse behind disclosures or segmented tabs. Desktop (`lg:`): left sidebar, 1080px
 max content. 24px between sections, 16px inside cards.
 
@@ -57,6 +57,6 @@ Everything collapses to opacity-only under `prefers-reduced-motion`.
 ## Voice
 
 Direct, warm, evidence-led. Reference what actually happened, never generic hype.
-Good: "You planned 5 Amazon items yesterday and closed 3. Today starts with the two you
+Good: "You planned 5 prep items yesterday and closed 3. Today starts with the two you
 missed." Bad: "Keep grinding!" Recognise real progress plainly. State evidence and
 recommendation separately.

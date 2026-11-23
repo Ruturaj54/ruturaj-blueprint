@@ -22,8 +22,8 @@ export function PhaseList() {
     <section className="space-y-3">
       <p className="px-1 text-[13px] leading-relaxed text-muted">
         {active && info.general.startedOn
-          ? `Phase lengths were scaled to the ${info.general.totalDays} days between ${formatShort(info.general.startedOn)}, the day the Amazon phase ended, and ${target}.`
-          : `Lengths scale to the days left until ${target} from the day the Amazon phase ends. Until then these ranges are a preview, computed as if it ended today.`}
+          ? `Phase lengths were scaled to the ${info.general.totalDays} days between ${formatShort(info.general.startedOn)}, the day surprise prep ended, and ${target}.`
+          : `Lengths scale to the days left until ${target} from the day surprise prep ends. Until then these ranges are a preview, computed as if it ended today.`}
       </p>
       {phases.map((phase) => {
         const current = active && day >= phase.startDay && day <= phase.endDay;

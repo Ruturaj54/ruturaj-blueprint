@@ -6,7 +6,9 @@ import { useClock } from '@/hooks/useClock';
 import { spring } from '@/lib/motion';
 import { buildSchedule, dayTypeOf, slotAt, nextSlot, formatHM, type SlotItem } from '@/engine/schedule';
 import { exerciseSlotFor } from '@/engine/fitness';
+import { dayModeFor } from '@/engine/today-items';
 import { DAY_TYPE_LABEL } from '@/data/routine';
+import { withDinner } from '@/data/meals';
 
 /**
  * "What should I be doing right now?" without opening the full timetable:
@@ -17,9 +19,10 @@ export function NowCard({ items, date, onOpen }: { items: SlotItem[]; date: stri
   const state = useAppState();
   const reduce = useReducedMotion();
   const clock = useClock();
-  const schedule = buildSchedule(state.settings, items, dayTypeOf(date), exerciseSlotFor(state, date));
-  const now = slotAt(schedule.slots, clock);
-  const next = nextSlot(schedule.slots, clock) ?? schedule.slots[0] ?? null;
+  const schedule = buildSchedule(state.settings, items, dayTypeOf(date), exerciseSlotFor(state, date), dayModeFor(state, date));
+  const slots = withDinner(schedule.slots, date, state.settings.walkTargetKm);
+  const now = slotAt(slots, clock);
+  const next = nextSlot(slots, clock) ?? slots[0] ?? null;
   const completed = new Set(state.days[date]?.completed ?? []);
   const open = now?.items.filter((i) => !completed.has(i.id)) ?? [];
   const lead = open[0];

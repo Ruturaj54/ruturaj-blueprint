@@ -3,12 +3,9 @@ import { SESSIONS, WEEKLY_SESSION, sessionById, type Session } from '@/data/fitn
 import { todayISO, addDays, weekdayOf } from './dates';
 import type { ExerciseSlot } from './schedule';
 
-/** Which slot exercise takes on a date: his default, or the day's override. */
+/** Runs are in the morning, every day of the week, unless the day is marked rest. */
 export function exerciseSlotFor(state: AppState, date: string): ExerciseSlot {
-  const dow = weekdayOf(date);
-  // Weekends are morning by design: the Saturday long run and the Sunday walk.
-  if (dow === 0 || dow === 6) return state.exerciseOverrides[date] === 'rest' ? 'rest' : 'morning';
-  return state.exerciseOverrides[date] ?? state.settings.exerciseSlot;
+  return state.exerciseOverrides[date] === 'rest' ? 'rest' : 'morning';
 }
 
 export interface TodaySession {
@@ -78,7 +75,8 @@ export function logWorkout(
   });
 }
 
+/** Marks a day as rest, or clears it back to the morning run. */
 export function setExerciseOverride(draft: AppState, date: string, slot: ExerciseSlot | null): void {
-  if (slot === null || slot === draft.settings.exerciseSlot) delete draft.exerciseOverrides[date];
-  else draft.exerciseOverrides[date] = slot;
+  if (slot === 'rest') draft.exerciseOverrides[date] = 'rest';
+  else delete draft.exerciseOverrides[date];
 }

@@ -6,7 +6,7 @@
 var IST_OFFSET_MINUTES = 330;
 var MS_PER_DAY = 864e5;
 var DAY_START_HOUR = 4;
-var TARGET_DATE = "2027-03-10";
+var TARGET_DATE = "2027-02-28";
 var pad = (n) => String(n).padStart(2, "0");
 function parseDay(iso2) {
   return /* @__PURE__ */ new Date(`${iso2}T12:00:00`);
@@ -78,40 +78,47 @@ function formatWeekday(iso2) {
   return parseDay(iso2).toLocaleDateString("en-IN", { weekday: "long" });
 }
 
-// src/lib/schema.ts
-var STATE_VERSION = 3;
-var DATA_EPOCH = 5;
-var SETTINGS_VERSION = 2;
+// src/lib/settings.ts
+var SETTINGS_VERSION = 3;
 var DEFAULT_SETTINGS = {
   settingsVersion: SETTINGS_VERSION,
   name: "Ruturaj",
-  wakeTime: "07:00",
-  exerciseStart: "07:10",
-  exerciseEnd: "08:00",
-  officeStart: "08:45",
-  officeEnd: "17:00",
+  wakeTime: "08:00",
+  exerciseStart: "08:05",
+  exerciseEnd: "08:30",
+  officeStart: "09:15",
+  officeEnd: "17:15",
   officeStudyHours: 0,
-  studyBlock1Start: "18:00",
-  studyBlock1End: "20:00",
+  studyBlock1Start: "17:30",
+  studyBlock1End: "19:30",
+  freelanceEnabled: true,
+  dinnerStart: "20:15",
   studyBlock2Start: "21:00",
-  studyBlock2End: "23:00",
-  walkEnd: "23:30",
-  studyBlock3End: "01:00",
+  studyBlock2End: "22:15",
+  walkEnd: "23:15",
+  studyBlock3End: "23:45",
   studyBlock3Enabled: true,
   weekendWakeTime: "08:00",
-  weekendSleepTime: "23:30",
-  exerciseSlot: "morning",
+  weekendSleepTime: "23:45",
+  walkTargetKm: 5,
+  parallelLecture: true,
   timezone: "Asia/Kolkata",
-  morningEmailTime: "06:00",
-  eveningEmailTime: "17:00",
+  morningEmailTime: "07:45",
+  eveningEmailTime: "17:15",
   emailEnabled: true,
   deepWorkMinutes: 50,
   dsaTargetPerDay: 3,
   theme: "light"
 };
+var PREFERENCE_KEYS = ["emailEnabled", "dsaTargetPerDay", "deepWorkMinutes", "name", "theme"];
+
+// src/lib/schema.ts
+var STATE_VERSION = 3;
+var DATA_EPOCH = 6;
+var PREP_WINDOW_DAYS = 28;
 var DEFAULT_PROGRAM = {
   phase: "amazon",
-  amazonWindowDays: 14,
+  amazonWindowDays: PREP_WINDOW_DAYS,
   amazonExtendedDays: 0
 };
 var DEFAULT_AMAZON = {
@@ -138,6 +145,7 @@ function defaultState() {
     deepWork: [],
     runs: [],
     exerciseOverrides: {},
+    activity: {},
     work: [],
     applications: [],
     health: { supplements: [], labs: [], sleep: {}, adherence: {}, focus: [], weight: {} },
@@ -148,7 +156,6 @@ function defaultState() {
 function isStaleEpoch(state) {
   return state.dataEpoch < DATA_EPOCH;
 }
-var PREFERENCE_KEYS = ["emailEnabled", "dsaTargetPerDay", "deepWorkMinutes", "name", "theme"];
 function freshForNewEpoch(from, today = todayISO()) {
   const fresh = defaultState();
   for (const key of PREFERENCE_KEYS) {
@@ -157,6 +164,7 @@ function freshForNewEpoch(from, today = todayISO()) {
   fresh.amazon = structuredClone(from.amazon);
   fresh.program = {
     ...from.program,
+    amazonWindowDays: PREP_WINDOW_DAYS,
     amazonExtendedDays: 0,
     ...from.program.startedOn ? { startedOn: today } : {},
     ...from.program.generalStartedOn ? { generalStartedOn: today } : {},
@@ -167,8 +175,18 @@ function freshForNewEpoch(from, today = todayISO()) {
   fresh.health.nextTestDate = from.health.nextTestDate;
   fresh.health.focus = from.health.focus;
   fresh.health.weight = from.health.weight;
+  fresh.health.sleep = from.health.sleep;
+  fresh.runs = from.runs;
+  fresh.activity = from.activity;
   fresh.work = from.work;
   fresh.applications = from.applications;
+  return fresh;
+}
+function freshKeepingSettings(from) {
+  const fresh = freshForNewEpoch(from);
+  fresh.settings = { ...DEFAULT_SETTINGS, ...from.settings };
+  fresh.amazon = { ...DEFAULT_AMAZON, items: {}, extras: {}, solidTopics: [] };
+  fresh.program = { ...DEFAULT_PROGRAM };
   return fresh;
 }
 
@@ -203,11 +221,11 @@ function parseSettings(raw) {
     if (typeof v !== typeof d) continue;
     if (typeof d === "string" && HHMM.test(d) && !HHMM.test(v)) continue;
     if (typeof d === "number" && !Number.isFinite(v)) continue;
-    if (k === "exerciseSlot" && v !== "morning" && v !== "evening") continue;
     if (k === "theme" && v !== "light" && v !== "dark" && v !== "system") continue;
     out[k] = v;
   }
   out.officeStudyHours = Math.min(3, Math.max(0, out.officeStudyHours));
+  out.walkTargetKm = Math.min(20, Math.max(1, Math.round(out.walkTargetKm * 2) / 2));
   out.dsaTargetPerDay = Math.min(10, Math.max(1, Math.round(out.dsaTargetPerDay)));
   out.deepWorkMinutes = Math.min(180, Math.max(10, Math.round(out.deepWorkMinutes)));
   if (!out.name.trim()) out.name = DEFAULT_SETTINGS.name;
@@ -221,6 +239,7 @@ function parseDays(raw) {
     const closedAt = str(v.closedAt);
     const notes = str(v.notes);
     const blockers = str(v.blockers);
+    const tomorrow = str(v.tomorrow);
     const score = num(v.score);
     out[date] = {
       planned: strings(v.planned),
@@ -228,6 +247,7 @@ function parseDays(raw) {
       ...closedAt ? { closedAt } : {},
       ...notes ? { notes } : {},
       ...blockers ? { blockers } : {},
+      ...tomorrow ? { tomorrow } : {},
       ...score !== void 0 ? { score } : {}
     };
   }
@@ -267,6 +287,33 @@ function parseAmazonItems(raw) {
       revisits: num(v.revisits) ?? 0,
       ...history.length ? { history } : {}
     };
+  }
+  return out;
+}
+var ACTIVITY_LIMITS = {
+  runKm: { max: 100, integer: false },
+  walkKm: { max: 100, integer: false },
+  steps: { max: 2e5, integer: true },
+  distanceKm: { max: 150, integer: false },
+  activeKcal: { max: 1e4, integer: true },
+  totalKcal: { max: 15e3, integer: true }
+};
+function cleanActivityValue(key, v) {
+  const n = num(v);
+  const limit = ACTIVITY_LIMITS[key];
+  if (n === void 0 || n <= 0 || n > limit.max) return void 0;
+  return limit.integer ? Math.round(n) : Math.round(n * 100) / 100;
+}
+function parseActivity(raw) {
+  const out = {};
+  for (const [date, v] of Object.entries(rec(raw))) {
+    if (!ISO.test(date) || !isObj(v)) continue;
+    const log = {};
+    for (const key of Object.keys(ACTIVITY_LIMITS)) {
+      const clean = cleanActivityValue(key, v[key]);
+      if (clean !== void 0) log[key] = clean;
+    }
+    if (Object.keys(log).length) out[date] = log;
   }
   return out;
 }
@@ -328,11 +375,13 @@ function parseState(raw) {
     dsa: objs(raw.dsa).filter((a) => typeof a.problem === "string" && iso(a.date)),
     deepWork: objs(raw.deepWork).filter((d) => iso(d.date) && typeof d.actualMinutes === "number"),
     runs: parseWorkouts(raw.runs),
+    // Only rest days survive: runs are morning-only now, so an old 'evening' move means a normal morning.
     exerciseOverrides: Object.fromEntries(
       Object.entries(rec(raw.exerciseOverrides)).filter(
-        (e) => ISO.test(e[0]) && (e[1] === "morning" || e[1] === "evening" || e[1] === "rest")
+        (e) => ISO.test(e[0]) && e[1] === "rest"
       )
     ),
+    activity: parseActivity(raw.activity),
     work: objs(raw.work).filter((w) => typeof w.raw === "string"),
     applications: objs(raw.applications).filter((a) => typeof a.company === "string"),
     health: {
@@ -6193,49 +6242,56 @@ function revisionsDue(state, today = todayISO()) {
 }
 
 // src/data/routine.ts
+var PREP_NOTE = "Timer on, phone in another room. Restate, brute force, improve, code, dry run, complexity. Log every outcome honestly.";
+var WALK_NOTE = "An easy pace in the society, about an hour. Call home while you walk; you come back lighter and the day settles.";
 var WEEKDAY = [
-  { id: "wake", start: "wakeTime", end: "exerciseStart", label: "Wake \xB7 water \xB7 no phone", kind: "wake", note: "A glass of water, then shoes on. The first ten minutes decide whether the day is yours." },
-  { id: "am-move", start: "exerciseStart", end: "exerciseEnd", label: "Morning run + core", kind: "move", when: "am-run", note: "Warm up, run easy, cool down, then the short strength set. Today\u2019s session is on the Fitness tab." },
-  { id: "am-easy", start: "exerciseStart", end: "exerciseEnd", label: "Easy morning \xB7 10-minute walk \xB7 stretch", kind: "routine", when: "am-norun", note: "The run is in the evening today, so keep the morning light and get daylight on your face." },
-  { id: "ready", start: "exerciseEnd", end: "officeStart", label: "Shower \xB7 breakfast \xB7 get ready", kind: "meal", note: "Protein first: eggs, paneer, dal or curd before anything sweet." },
-  { id: "office", start: "officeStart", end: "officeEnd", label: "Office \xB7 commute both ways", kind: "work", study: "office", note: "The job comes first; the resume lines come from here. Spare minutes go to reading an LP story, nothing heavier." },
-  { id: "settle", start: "officeEnd", end: "studyBlock1Start", label: "Home \xB7 freshen up \xB7 snack \xB7 your time", kind: "free", when: "pm-norun", note: "Change, eat something small, and take the hour. Study starts at the block, not before." },
-  { id: "settle-short", start: "officeEnd", end: "officeEnd+15", label: "Home \xB7 change", kind: "free", when: "pm-run", note: "Shoes on within fifteen minutes, before the sofa wins." },
-  { id: "pm-move", start: "officeEnd+15", end: "studyBlock1Start", label: "Evening run + core", kind: "move", when: "pm-run", note: "Same session as the morning plan. Shower and a quick snack before the block." },
-  { id: "block1", start: "studyBlock1Start", end: "studyBlock1End", label: "Study block 1", kind: "study", study: "course", note: "Timer on. Clarify, brute force, optimal, code, dry run, complexity. Phone in another room." },
-  { id: "dinner", start: "studyBlock1End", end: "studyBlock2Start", label: "Dinner \xB7 rest", kind: "meal", note: "Eat properly, then twenty minutes with no screen. The kitchen closes after this." },
-  { id: "block2", start: "studyBlock2Start", end: "studyBlock2End", label: "Study block 2 \u2014 deep", kind: "study", study: "deep", note: "The hardest item of the day goes here, while you are still sharp." },
-  { id: "walk", start: "studyBlock2End", end: "walkEnd", label: "Short walk in the society", kind: "walk", note: "No headphones needed. Let the last two hours settle." },
-  { id: "block3", start: "walkEnd", end: "studyBlock3End", label: "Final block (optional)", kind: "study", study: "light", when: "block3", note: "Revision and lighter items only. If you are not fresh, sleep instead; tomorrow\u2019s blocks are worth more." },
-  { id: "sleep", start: "studyBlock3End", end: "wakeTime", label: "Sleep", kind: "sleep", when: "block3", note: "Screens off. Six hours is the floor on weekdays; the weekend pays it back." },
+  { id: "wake", start: "wakeTime", end: "exerciseStart", label: "Wake \xB7 water \xB7 shoes on", kind: "wake", note: "A glass of water and straight out. The run decides itself once you are through the gate." },
+  { id: "am-move", start: "exerciseStart", end: "exerciseEnd", label: "Morning run", kind: "move", when: "am-run", note: "Easy pace, the session on the Fitness tab. Log the km when you are back; it goes into today\u2019s numbers." },
+  { id: "am-rest", start: "exerciseStart", end: "exerciseEnd", label: "Rest morning \xB7 stretch", kind: "routine", when: "am-rest", note: "Planned rest. Ten minutes of stretching and daylight; the evening walk still stands." },
+  { id: "ready", start: "exerciseEnd", end: "officeStart", label: "Shower \xB7 protein breakfast \xB7 get ready", kind: "meal", note: "Protein first: eggs, paneer, curd or a besan chilla before anything sweet." },
+  { id: "office", start: "officeStart", end: "officeEnd", label: "Office \xB7 commute both ways", kind: "work", study: "office", note: "The job comes first; the resume lines come from here. Pack fruit or chana so the 4 pm craving already has an answer." },
+  { id: "settle", start: "officeEnd", end: "studyBlock1Start", label: "Home \xB7 your own time", kind: "free", note: "Change, wash your face, eat something small. Fifteen minutes that are yours, then the block starts on time." },
+  { id: "block1", start: "studyBlock1Start", end: "studyBlock1End", label: "Surprise prep", general: "Deep block \u2014 DSA and builds", kind: "study", study: "deep", when: "freelance", note: PREP_NOTE },
+  { id: "block1", start: "studyBlock1Start", end: "dinnerStart", label: "Surprise prep", general: "Deep block \u2014 DSA and builds", kind: "study", study: "deep", when: "nofreelance", note: PREP_NOTE },
+  { id: "freelance", start: "studyBlock1End", end: "dinnerStart", label: "Freelance projects", kind: "work", when: "freelance", note: "Client work, timeboxed. Pick one deliverable before you start and stop when the block ends." },
+  { id: "dinner", start: "dinnerStart", end: "studyBlock2Start", label: "Protein dinner", kind: "meal", note: "Tonight\u2019s plate is on My Day. Protein first, vegetables next, roti or rice last. The kitchen closes after this." },
+  { id: "block2", start: "studyBlock2Start", end: "studyBlock2End", label: "Lecture block", kind: "study", study: "lecture", note: "One module, notes open, code along. Pause the video and type it yourself; watching is not learning." },
+  { id: "walk", start: "studyBlock2End", end: "walkEnd", label: "Evening walk \xB7 call home", kind: "walk", note: WALK_NOTE },
+  { id: "block3", start: "walkEnd", end: "studyBlock3End", label: "Revise today \xB7 plan tomorrow", kind: "study", study: "review", when: "block3", note: "Ten minutes revising what you solved, five on the mistakes notebook, then log today\u2019s numbers and write tomorrow\u2019s plan in one line." },
+  { id: "sleep", start: "studyBlock3End", end: "wakeTime", label: "Sleep \xB7 lights out by 00:00", kind: "sleep", when: "block3", note: "Screens off. Eight hours is what makes 17:30 sharp tomorrow." },
   { id: "sleep-early", start: "walkEnd", end: "wakeTime", label: "Sleep", kind: "sleep", when: "noblock3", note: "Screens off. A longer night tonight is tomorrow\u2019s better block." }
 ];
 var SATURDAY = [
-  { id: "sat-wake", start: "weekendWakeTime", end: "weekendWakeTime+15", label: "Wake slow \xB7 water", kind: "wake", note: "Sleep in a little; five short nights are behind you." },
+  { id: "sat-wake", start: "weekendWakeTime", end: "weekendWakeTime+15", label: "Wake slow \xB7 water", kind: "wake", note: "No alarm panic. Water, then shoes." },
   { id: "sat-move", start: "weekendWakeTime+15", end: "weekendWakeTime+75", label: "Longer easy run", kind: "move", note: "Slower and longer than a weekday, at a pace where you could still talk." },
-  { id: "sat-breakfast", start: "weekendWakeTime+75", end: "weekendWakeTime+120", label: "Shower \xB7 breakfast", kind: "meal", note: "A proper meal before the long block." },
-  { id: "sat-a", start: "weekendWakeTime+120", end: "weekendWakeTime+300", label: "Study A \u2014 the week\u2019s hardest set", kind: "study", study: "deep", note: "Three uninterrupted hours, the longest block of your week." },
+  { id: "sat-breakfast", start: "weekendWakeTime+75", end: "weekendWakeTime+120", label: "Shower \xB7 protein breakfast", kind: "meal", note: "A proper meal before the long block." },
+  { id: "sat-a", start: "weekendWakeTime+120", end: "weekendWakeTime+300", label: "Surprise prep \u2014 the week\u2019s hardest set", general: "Study A \u2014 the week\u2019s hardest set", kind: "study", study: "deep", note: "Three uninterrupted hours, the longest block of your week. Mocks and asked problems go here." },
   { id: "sat-lunch", start: "weekendWakeTime+300", end: "weekendWakeTime+390", label: "Lunch \xB7 rest", kind: "meal", note: "Eat, walk ten minutes, lie down for twenty if you need it." },
-  { id: "sat-b", start: "weekendWakeTime+390", end: "weekendWakeTime+570", label: "Study B", kind: "study", study: "course", note: "Mock or timed set if one is due; otherwise the next items in order." },
-  { id: "sat-free", start: "weekendWakeTime+570", end: "20:00", label: "Free evening \u2014 ride, friends, rest", kind: "free", note: "Fully earned. No laptop." },
-  { id: "sat-dinner", start: "20:00", end: "21:00", label: "Dinner", kind: "meal", note: "Eating out is fine: grilled over fried, no dessert, no cold drinks." },
-  { id: "sat-c", start: "21:00", end: "23:00", label: "Study C \u2014 lighter", kind: "study", study: "light", note: "Revision, an LP story said out loud, the mistakes notebook." },
-  { id: "sat-walk", start: "23:00", end: "weekendSleepTime", label: "Short walk \xB7 wind down", kind: "walk", note: "Then a full night. This is where the week\u2019s short sleep gets paid back." },
+  { id: "sat-lecture", start: "weekendWakeTime+390", end: "weekendWakeTime+510", label: "Lecture block", kind: "study", study: "lecture", note: "The longer lecture of the week. Code along and finish the module\u2019s exercise before you stop." },
+  { id: "sat-freelance", start: "weekendWakeTime+510", end: "weekendWakeTime+630", label: "Freelance projects", kind: "work", when: "freelance", note: "The week\u2019s biggest freelance block. Ship one thing a client can see." },
+  { id: "sat-free", start: "weekendWakeTime+630", end: "20:30", label: "Free evening \u2014 family, friends, rest", kind: "free", when: "freelance", note: "Fully earned. No laptop." },
+  { id: "sat-free", start: "weekendWakeTime+510", end: "20:30", label: "Free evening \u2014 family, friends, rest", kind: "free", when: "nofreelance", note: "Fully earned. No laptop." },
+  { id: "sat-dinner", start: "20:30", end: "21:15", label: "Protein dinner", kind: "meal", note: "Eating out is fine: paneer or egg dishes, grilled over fried, no dessert, no cold drinks." },
+  { id: "sat-c", start: "21:15", end: "22:15", label: "Light block \u2014 revision", kind: "study", study: "light", note: "Re-solves, an LP story said out loud, the mistakes notebook." },
+  { id: "sat-walk", start: "22:15", end: "23:15", label: "Evening walk \xB7 call home", kind: "walk", note: WALK_NOTE },
+  { id: "sat-plan", start: "23:15", end: "weekendSleepTime", label: "Log today \xB7 plan Sunday", kind: "routine", note: "Today\u2019s numbers in, tomorrow in one line, screens off." },
   { id: "sat-sleep", start: "weekendSleepTime", end: "weekendWakeTime", label: "Sleep", kind: "sleep", note: "A full night." }
 ];
 var SUNDAY = [
   { id: "sun-wake", start: "weekendWakeTime", end: "weekendWakeTime+15", label: "Wake slow \xB7 water", kind: "wake", note: "Another full night behind you." },
-  { id: "sun-move", start: "weekendWakeTime+15", end: "weekendWakeTime+60", label: "Walk or mobility \u2014 recovery", kind: "move", note: "Legs rest today. A brisk walk and twenty minutes of stretching keep the habit without the load." },
+  { id: "sun-move", start: "weekendWakeTime+15", end: "weekendWakeTime+60", label: "Recovery walk + stretch", kind: "move", note: "Legs rest today. A brisk walk and twenty minutes of stretching keep the habit without the load." },
   { id: "sun-breakfast", start: "weekendWakeTime+60", end: "weekendWakeTime+120", label: "Shower \xB7 breakfast", kind: "meal", note: "Unhurried." },
-  { id: "sun-a", start: "weekendWakeTime+120", end: "weekendWakeTime+300", label: "Study A \u2014 clear the carry-over", kind: "study", study: "deep", note: "Anything still open from the week goes first, so Monday starts clean." },
+  { id: "sun-a", start: "weekendWakeTime+120", end: "weekendWakeTime+300", label: "Surprise prep \u2014 clear the carry-over", general: "Study A \u2014 clear the carry-over", kind: "study", study: "deep", note: "Anything still open from the week goes first, so Monday starts clean." },
   { id: "sun-lunch", start: "weekendWakeTime+300", end: "weekendWakeTime+390", label: "Lunch \xB7 rest", kind: "meal", note: "Home food if you can. Cook extra for Monday." },
   { id: "sun-mock", start: "weekendWakeTime+390", end: "weekendWakeTime+510", label: "Mock or timed set", kind: "study", study: "dsa", note: "Two problems under time, out loud, no hints. Log the solve times." },
-  { id: "sun-free", start: "weekendWakeTime+510", end: "19:30", label: "Free time", kind: "free", note: "Back by 19:30 so Sunday night resets the week." },
-  { id: "sun-dinner", start: "19:30", end: "20:30", label: "Dinner", kind: "meal", note: "Light and early." },
-  { id: "sun-review", start: "20:30", end: "21:15", label: "Weekly review \xB7 plan the week", kind: "study", study: "review", note: "Progress tab. Name one thing that slipped and the one change that fixes it." },
-  { id: "sun-light", start: "21:15", end: "22:30", label: "Light block \u2014 preview Monday", kind: "study", study: "light", note: "Skim tomorrow\u2019s first items so Monday\u2019s block starts warm." },
-  { id: "sun-prep", start: "22:30", end: "23:00", label: "Prep Monday \u2014 bag, clothes, office snacks", kind: "routine", note: "Pack nuts, fruit or chana so the 4 pm craving already has an answer." },
-  { id: "sun-walk", start: "23:00", end: "weekendSleepTime", label: "Short walk \xB7 wind down", kind: "walk", note: "Earlier tonight so Monday morning is not a fight." },
+  { id: "sun-freelance", start: "weekendWakeTime+510", end: "weekendWakeTime+630", label: "Freelance projects", kind: "work", when: "freelance", note: "Close the week\u2019s client loose ends so Monday evening is free for prep." },
+  { id: "sun-free", start: "weekendWakeTime+630", end: "19:30", label: "Free time", kind: "free", when: "freelance", note: "Back by 19:30 so Sunday night resets the week." },
+  { id: "sun-free", start: "weekendWakeTime+510", end: "19:30", label: "Free time", kind: "free", when: "nofreelance", note: "Back by 19:30 so Sunday night resets the week." },
+  { id: "sun-dinner", start: "19:30", end: "20:15", label: "Protein dinner", kind: "meal", note: "Light and early." },
+  { id: "sun-review", start: "20:15", end: "21:00", label: "Weekly review \xB7 plan the week", kind: "study", study: "review", note: "Progress tab. Name one thing that slipped and the one change that fixes it." },
+  { id: "sun-lecture", start: "21:00", end: "22:00", label: "Lecture block", kind: "study", study: "lecture", note: "A shorter lecture to end the week warm." },
+  { id: "sun-walk", start: "22:00", end: "23:00", label: "Evening walk \xB7 call home", kind: "walk", note: WALK_NOTE },
+  { id: "sun-prep", start: "23:00", end: "weekendSleepTime", label: "Prep Monday \xB7 log today", kind: "routine", note: "Bag, clothes, office snacks; today\u2019s numbers in; Monday in one line." },
   { id: "sun-sleep", start: "weekendSleepTime", end: "wakeTime", label: "Sleep \u2014 Monday starts at wake-up", kind: "sleep", note: "Screens off." }
 ];
 var ROUTINES = {
@@ -6282,47 +6338,53 @@ function dayTypeOf(iso2) {
   const dow = weekdayOf(iso2);
   return dow === 6 ? "saturday" : dow === 0 ? "sunday" : "weekday";
 }
-function conditionHolds(when, exercise, block3) {
+function conditionHolds(when, exercise, settings) {
   switch (when) {
     case void 0:
       return true;
     case "am-run":
       return exercise === "morning";
-    case "am-norun":
-      return exercise !== "morning";
-    case "pm-run":
-      return exercise === "evening";
-    case "pm-norun":
-      return exercise !== "evening";
+    case "am-rest":
+      return exercise === "rest";
     case "block3":
-      return block3;
+      return settings.studyBlock3Enabled;
     case "noblock3":
-      return !block3;
+      return !settings.studyBlock3Enabled;
+    case "freelance":
+      return settings.freelanceEnabled;
+    case "nofreelance":
+      return !settings.freelanceEnabled;
   }
 }
-function daySlots(settings, dayType, exercise = settings.exerciseSlot) {
-  return ROUTINES[dayType].filter((e) => conditionHolds(e.when, exercise, settings.studyBlock3Enabled)).map((e) => {
+function daySlots(settings, dayType, exercise = "morning", mode = "prep") {
+  return ROUTINES[dayType].filter((e) => conditionHolds(e.when, exercise, settings)).map((e) => {
     const start = resolveTime(e.start, settings);
     const end = resolveTime(e.end, settings);
     const capacity = e.study === "office" ? Math.round(settings.officeStudyHours * 60) : e.study && e.study !== "review" ? blockMinutes(start, end) : 0;
-    return { id: e.id, label: e.label, kind: e.kind, study: e.study, start, end, capacity, items: [], used: 0, note: e.note };
+    const label = mode === "general" && e.general ? e.general : e.label;
+    return { id: e.id, label, kind: e.kind, study: e.study, start, end, capacity, items: [], used: 0, note: e.note };
   });
 }
-function studyCapacity(settings, dayType, exercise = settings.exerciseSlot) {
+function studyCapacity(settings, dayType, exercise = "morning") {
   return daySlots(settings, dayType, exercise).filter((s) => s.capacity > 0 && s.study !== "office").reduce((n, s) => n + s.capacity, 0);
 }
+function roleCapacity(settings, dayType, role, exercise = "morning") {
+  return daySlots(settings, dayType, exercise).filter((s) => s.study === role).reduce((n, s) => n + s.capacity, 0);
+}
 var PLACEMENT = {
-  amazon: ["course", "deep", "dsa", "light"],
-  revision: ["course", "deep", "dsa", "light"],
-  course: ["office", "course", "deep", "light"],
-  build: ["deep", "course", "light"],
-  dsa: ["dsa", "deep", "course"]
+  amazon: ["deep", "dsa", "course", "light", "lecture"],
+  revision: ["deep", "dsa", "course", "light", "lecture"],
+  lecture: ["lecture"],
+  course: ["lecture", "course", "office", "deep", "light"],
+  build: ["deep", "course", "light", "lecture"],
+  dsa: ["dsa", "deep", "course", "lecture"]
 };
 var MIN_PIECE_MINUTES = 20;
-function buildSchedule(settings, items, dayType, exercise = settings.exerciseSlot) {
-  const slots = daySlots(settings, dayType, exercise);
+function buildSchedule(settings, items, dayType, exercise = "morning", mode = "prep") {
+  const slots = daySlots(settings, dayType, exercise, mode);
   const overflow = [];
-  for (const item of items) {
+  const ordered = [...items.filter((i) => i.kind === "lecture"), ...items.filter((i) => i.kind !== "lecture")];
+  for (const item of ordered) {
     const order = PLACEMENT[item.kind].flatMap((role) => slots.filter((x) => x.study === role && x.capacity > 0));
     let remaining = item.minutes;
     const pieces = [];
@@ -6362,51 +6424,37 @@ function weekdaySleepHours(settings) {
 var WARM_UP = {
   id: "warm",
   label: "Warm-up",
-  minutes: 5,
-  detail: "Brisk walk 2 min, then leg swings, hip circles, ankle rolls, 10 bodyweight squats."
+  minutes: 3,
+  detail: "Brisk walk 1 min, then leg swings, hip circles and 10 bodyweight squats."
 };
-var COOL_DOWN = {
-  id: "cool",
-  label: "Cool-down",
-  minutes: 5,
-  detail: "Walk 2 min, then 30 s each: calves, hamstrings, quads, hip flexors."
-};
-var STRENGTH = {
-  id: "strength",
-  label: "Strength set",
-  minutes: 12,
-  detail: "Squats 2\xD712 \xB7 push-ups 2\xD78 (incline if needed) \xB7 glute bridge 2\xD712 \xB7 plank 2\xD730 s \xB7 dead bug 2\xD710."
-};
-var CORE_SHORT = {
+var CORE = {
   id: "core",
   label: "Core",
-  minutes: 8,
-  detail: "Plank 3\xD730 s \xB7 side plank 2\xD720 s each \xB7 crunches 2\xD715 \xB7 bird dog 2\xD710."
+  minutes: 6,
+  detail: "Plank 3\xD730 s \xB7 dead bug 2\xD710 \xB7 glute bridge 2\xD712. Back home or at the gate."
 };
 var SESSIONS = [
   {
     id: "run-core",
-    name: "Run + strength",
+    name: "Easy run + core",
     kind: "run",
-    minutes: 47,
+    minutes: 25,
     parts: [
       WARM_UP,
-      { id: "run", label: "Easy run", minutes: 25, detail: "Conversational pace. New to running? Run 3 min, walk 1 min, six times." },
-      COOL_DOWN,
-      STRENGTH
+      { id: "run", label: "Easy run", minutes: 16, detail: "Conversational pace. New to running? Run 2 min, walk 1 min, five times." },
+      CORE
     ],
-    note: "Add 5 minutes to the run each week until it reaches 40. Never more than a 10% jump in a week."
+    note: "Add two minutes of running each week while it feels easy, taking them from the walk breaks. Never more than a 10% jump in a week."
   },
   {
     id: "run-easy",
-    name: "Easy run + mobility",
+    name: "Easy run",
     kind: "run",
-    minutes: 38,
+    minutes: 25,
     parts: [
       WARM_UP,
-      { id: "run", label: "Easy run or run-walk", minutes: 20, detail: "Shorter and lighter than yesterday. Legs heavy? Walk briskly instead." },
-      COOL_DOWN,
-      { id: "mobility", label: "Mobility", minutes: 8, detail: "Hip flexor stretch, couch stretch, calf wall stretch, thoracic rotations." }
+      { id: "run", label: "Easy run or run-walk", minutes: 19, detail: "Lighter than yesterday. Legs heavy? Walk briskly instead; it still counts." },
+      { id: "stretch", label: "Stretch", minutes: 3, detail: "Calves, hamstrings, quads, hip flexors, 30 s each." }
     ],
     note: "The easy day is what lets the hard days happen. Do not turn it into a race."
   },
@@ -6416,10 +6464,10 @@ var SESSIONS = [
     kind: "run",
     minutes: 60,
     parts: [
-      WARM_UP,
+      { ...WARM_UP, minutes: 5 },
       { id: "run", label: "Long run", minutes: 40, detail: "Slower than a weekday run. Could you talk in full sentences? That is the pace." },
-      { id: "cool", label: "Cool-down", minutes: 7, detail: "Walk 3 min, then the same four stretches, 40 s each." },
-      CORE_SHORT
+      { id: "cool", label: "Cool-down", minutes: 7, detail: "Walk 3 min, then the four stretches, 40 s each." },
+      { ...CORE, minutes: 8 }
     ],
     note: "Fuel first: a banana or two dates before you leave. Water after, not during, for runs under an hour."
   },
@@ -6427,12 +6475,12 @@ var SESSIONS = [
     id: "recovery",
     name: "Recovery walk + stretch",
     kind: "walk",
-    minutes: 35,
+    minutes: 45,
     parts: [
-      { id: "walk", label: "Brisk walk", minutes: 25, detail: "Outside, daylight, no agenda." },
-      { id: "stretch", label: "Full stretch", minutes: 10, detail: "Every stretch from the week, held a little longer." }
+      { id: "walk", label: "Brisk walk", minutes: 30, detail: "Outside, daylight, no agenda." },
+      { id: "stretch", label: "Full stretch", minutes: 15, detail: "Every stretch from the week, held a little longer." }
     ],
-    note: "Rest is part of the plan. Sleep in, and let Monday\u2019s run feel fresh."
+    note: "Rest is part of the plan. Let Monday\u2019s run feel fresh."
   }
 ];
 var WEEKLY_SESSION = {
@@ -6444,16 +6492,14 @@ var WEEKLY_SESSION = {
   5: "run-core",
   6: "long-run"
 };
-var FAT_LOSS_NOTE = "Core work strengthens the muscles under the belly; it does not burn the fat on top of it. Fat comes off everywhere at once when you stay in a modest calorie deficit for weeks: the runs, the walk, enough sleep and not eating during the night block do more than any abdominal exercise.";
+var FAT_LOSS_NOTE = "Core work strengthens the muscles under the belly; it does not burn the fat on top of it. Fat comes off everywhere at once when you stay in a modest calorie deficit for weeks: the morning runs, the 5 km walk, enough sleep, protein at dinner and a kitchen that closes after it do more than any abdominal exercise.";
 function sessionById(id) {
   return SESSIONS.find((s) => s.id === id);
 }
 
 // src/engine/fitness.ts
 function exerciseSlotFor(state, date) {
-  const dow = weekdayOf(date);
-  if (dow === 0 || dow === 6) return state.exerciseOverrides[date] === "rest" ? "rest" : "morning";
-  return state.exerciseOverrides[date] ?? state.settings.exerciseSlot;
+  return state.exerciseOverrides[date] === "rest" ? "rest" : "morning";
 }
 function sessionFor(state, date = todayISO()) {
   const slot = exerciseSlotFor(state, date);
@@ -6485,346 +6531,6 @@ function fitnessStreak(state, today = todayISO()) {
     cursor = addDays(cursor, -1);
   }
   return streak;
-}
-
-// src/engine/amazon-plan.ts
-var TIERS = ["P0", "P1", "P2", "P3"];
-var BREATHING_ROOM = 0.85;
-var MAX_REVISIONS = 3;
-var INTERVIEW_MODE_DAYS = 10;
-var tierRank = (t) => TIERS.indexOf(t);
-function tierList(xs) {
-  if (xs.length <= 1) return xs.join("");
-  return `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`;
-}
-function reasonFor(item, tier) {
-  if (item.asked === 1) return `${tier} \xB7 asked in ${item.src.length} report${item.src.length === 1 ? "" : "s"}`;
-  if (item.type === "task") return `${tier} \xB7 ${item.kind} work from the tracker`;
-  if (item.f3 && item.f3 >= 60) return `${tier} \xB7 Amazon frequency ${Math.round(item.f3)}`;
-  if (item.asked === 2) return `${tier} \xB7 asked in 2022`;
-  if (item.phase === 2) return `${tier} \xB7 core pattern`;
-  if (item.phase === 1) return `${tier} \xB7 basics${tier === "P3" ? ", topic marked solid" : ""}`;
-  return `${tier} \xB7 ${item.slot === "night" ? "night-block extra" : "curriculum"}`;
-}
-function dailyBudget(state, date) {
-  const capacity = studyCapacity(state.settings, dayTypeOf(date), exerciseSlotFor(state, date));
-  return Math.round(capacity * BREATHING_ROOM);
-}
-function buildAmazonDay(state, date = todayISO()) {
-  const info = programInfo(state, date);
-  const done = state.amazon.items;
-  const solid = solidDays(state.amazon.solidTopics);
-  const capacity = studyCapacity(state.settings, dayTypeOf(date), exerciseSlotFor(state, date));
-  const budget = Math.round(capacity * BREATHING_ROOM);
-  const interview = state.amazon.interviewDate ?? null;
-  const daysToInterview = interview ? daysBetween(date, interview) : null;
-  const interviewMode = daysToInterview !== null && daysToInterview >= 0 && daysToInterview <= INTERVIEW_MODE_DAYS;
-  const pool = AMAZON_ITEMS.filter((i) => !done[i.key]).map((item) => ({
-    item,
-    tier: effectiveTier(item, solid)
-  }));
-  if (interviewMode) {
-    pool.sort(
-      (a, b) => b.item.phase - a.item.phase || a.item.day - b.item.day || (a.item.slot === b.item.slot ? 0 : a.item.slot === "core" ? -1 : 1) || a.item.index - b.item.index
-    );
-  }
-  const baseEnd = info.amazon.overrun ? addDays(date, 6) : info.amazon.endsOn;
-  const beforeInterview = interview && daysToInterview !== null && daysToInterview >= 1 ? addDays(interview, -1) : null;
-  const windowEnd = beforeInterview && beforeInterview < baseEnd ? beforeInterview : baseEnd;
-  const daysLeft = Math.max(1, daysBetween(date, windowEnd) + 1);
-  let capacityLeft = 0;
-  for (let i = 0; i < daysLeft; i += 1) capacityLeft += dailyBudget(state, addDays(date, i));
-  const remainingByTier = { P0: 0, P1: 0, P2: 0, P3: 0 };
-  for (const p of pool) remainingByTier[p.tier] += p.item.minutes;
-  const fits = [];
-  let cumulative = 0;
-  for (const t of TIERS) {
-    cumulative += remainingByTier[t];
-    if (t === "P0" || cumulative <= capacityLeft) fits.push(t);
-    else break;
-  }
-  const tierFloor = fits[fits.length - 1] ?? "P0";
-  const neededMinutes = fits.reduce((n, t) => n + remainingByTier[t], 0);
-  const hoursPerDayNeeded = Math.round(neededMinutes / daysLeft / 60 * 10) / 10;
-  const shed = TIERS.filter((t) => !fits.includes(t));
-  const hoursLeft = Math.round(capacityLeft / 60);
-  const pace = {
-    remainingByTier,
-    capacityLeft,
-    daysLeft,
-    fits,
-    hoursPerDayNeeded,
-    note: remainingByTier.P0 > capacityLeft ? `The must-do set alone needs ${Math.round(remainingByTier.P0 / 60)}h and ${hoursLeft}h are left in the window. Extend the window or accept that some asked problems will be skipped.` : shed.length === 0 ? "Everything fits. Work in curriculum order; nothing is being shed." : `${tierList(fits)} ${fits.length === 1 ? "fits" : "fit"} in the ${hoursLeft}h left. ${tierList(shed)} ${shed.length === 1 ? "stays" : "stay"} visible as optional and ${shed.length === 1 ? "is" : "are"} added when you run ahead.`
-  };
-  if (daysToInterview === 0) {
-    return {
-      date,
-      mode: "interview-day",
-      capacity,
-      budget,
-      planned: [],
-      plannedIds: [],
-      totalMinutes: 0,
-      tierFloor,
-      pace,
-      focus: "Interview day",
-      nextUp: [],
-      daysToInterview
-    };
-  }
-  const planned = [];
-  let used = 0;
-  for (const item of revisionsDue(state, date).slice(0, MAX_REVISIONS)) {
-    const log = done[item.key];
-    const minutes = Math.max(15, Math.round(item.minutes * 0.6));
-    planned.push({
-      id: `rev:${item.key}`,
-      item,
-      minutes,
-      revision: true,
-      tier: "P0",
-      reason: `Revision due \xB7 ${log?.outcome === "hint" ? "needed a hint" : log?.outcome === "reviewed" ? "read the solution" : "keep it warm"} on ${log?.doneOn ?? date}`
-    });
-    used += minutes;
-  }
-  for (const p of pool) {
-    if (tierRank(p.tier) > tierRank(tierFloor)) continue;
-    const fitsToday = used + p.item.minutes <= budget;
-    const nothingYet = planned.every((x) => x.revision);
-    if (!fitsToday && !nothingYet) break;
-    planned.push({ id: p.item.key, item: p.item, minutes: p.item.minutes, revision: false, tier: p.tier, reason: reasonFor(p.item, p.tier) });
-    used += p.item.minutes;
-    if (used >= budget) break;
-  }
-  if (used < budget / 2) {
-    const taken = new Set(planned.map((x) => x.item.key));
-    for (const p of pool) {
-      if (tierRank(p.tier) <= tierRank(tierFloor) || taken.has(p.item.key)) continue;
-      if (used + p.item.minutes > budget) continue;
-      planned.push({ id: p.item.key, item: p.item, minutes: p.item.minutes, revision: false, tier: p.tier, reason: `${p.tier} \xB7 below the floor, added because you are ahead` });
-      taken.add(p.item.key);
-      used += p.item.minutes;
-    }
-  }
-  const plannedKeys = new Set(planned.map((x) => x.item.key));
-  const aboveFloor = pool.filter((p) => tierRank(p.tier) <= tierRank(tierFloor) && !plannedKeys.has(p.item.key));
-  const nextUp = (aboveFloor.length ? aboveFloor : pool.filter((p) => !plannedKeys.has(p.item.key))).slice(0, 3).map((p) => p.item);
-  const lead = planned.find((x) => !x.revision)?.item ?? planned[0]?.item;
-  const focus = pool.length === 0 ? "Curriculum complete" : lead ? `Day ${lead.day} \xB7 ${lead.topic}` : "Revision";
-  return {
-    date,
-    mode: pool.length === 0 ? "done" : interviewMode ? "interview" : "curriculum",
-    capacity,
-    budget,
-    planned,
-    plannedIds: planned.map((x) => x.id),
-    totalMinutes: used,
-    tierFloor,
-    pace,
-    focus,
-    nextUp,
-    daysToInterview
-  };
-}
-
-// src/engine/amazon-stats.ts
-var count = (ids, done) => ({
-  done: ids.filter((id) => done[id]).length,
-  total: ids.length
-});
-function slugOutcome(state, slug) {
-  const keys = AMAZON_ITEMS.filter((i) => i.slug === slug).map((i) => i.key);
-  const outcomes = keys.map((k) => state.amazon.items[k]?.outcome).filter(Boolean);
-  if (outcomes.length === 0) return null;
-  if (outcomes.includes("independent")) return "independent";
-  if (outcomes.includes("hint")) return "hint";
-  return "reviewed";
-}
-function amazonSummary(state, today = todayISO()) {
-  const done = state.amazon.items;
-  const solid = solidDays(state.amazon.solidTopics);
-  const outcomes = AMAZON_PROBLEM_SLUGS.map((s) => slugOutcome(state, s));
-  const askedOutcomes = AMAZON_ASKED_SLUGS.map((s) => slugOutcome(state, s));
-  const logs = Object.values(done);
-  const passed = logs.filter((l) => l.revisits > 0 && l.outcome === "independent").length;
-  const scheduled = logs.filter((l) => l.revisitOn && l.revisitOn > today).length;
-  const byPhase = [1, 2, 3].map((phase) => {
-    const items = AMAZON_ITEMS.filter((i) => i.phase === phase);
-    const finished = items.filter((i) => done[i.key]);
-    return {
-      phase,
-      done: finished.length,
-      total: items.length,
-      minutesDone: finished.reduce((n, i) => n + i.minutes, 0),
-      minutesTotal: items.reduce((n, i) => n + i.minutes, 0)
-    };
-  });
-  const byDay = AMAZON_DAYS.map((d) => {
-    const items = AMAZON_ITEMS.filter((i) => i.day === d.n);
-    const finished = items.filter((i) => done[i.key]).length;
-    return { n: d.n, done: finished, total: items.length, pct: items.length ? Math.round(finished / items.length * 100) : 0 };
-  });
-  const dates = new Set(logs.map((l) => l.doneOn));
-  for (const [date, log] of Object.entries(state.days)) {
-    if (log.completed.some((id) => id.startsWith("rev:"))) dates.add(date);
-  }
-  let streak = 0;
-  let cursor = dates.has(today) ? today : addDays(today, -1);
-  while (dates.has(cursor)) {
-    streak += 1;
-    cursor = addDays(cursor, -1);
-  }
-  const weak = /* @__PURE__ */ new Map();
-  for (const i of AMAZON_ITEMS) {
-    const o = done[i.key]?.outcome;
-    if (o === "hint" || o === "reviewed") weak.set(i.topic, (weak.get(i.topic) ?? 0) + 1);
-  }
-  const weakTopics = [...weak.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).map(([t]) => t);
-  const mockKeys = AMAZON_ITEMS.filter((i) => i.kind === "Mock").map((i) => i.key);
-  const learnKeys = AMAZON_ITEMS.filter((i) => i.kind === "Learn").map((i) => i.key);
-  const freqDone = AMAZON_FREQ.filter(
-    (r) => r.keys ? r.keys.some((k) => done[k]) : r.xkey ? Boolean(state.amazon.extras[r.xkey]) : false
-  ).length;
-  const counted = AMAZON_ITEMS.filter((i) => effectiveTier(i, solid) !== "P3");
-  const minutesTotal = counted.reduce((n, i) => n + i.minutes, 0);
-  const minutesDone = counted.filter((i) => done[i.key]).reduce((n, i) => n + i.minutes, 0);
-  return {
-    problems: {
-      total: AMAZON_PROBLEM_SLUGS.length,
-      logged: outcomes.filter(Boolean).length,
-      independent: outcomes.filter((o) => o === "independent").length,
-      hint: outcomes.filter((o) => o === "hint").length,
-      reviewed: outcomes.filter((o) => o === "reviewed").length
-    },
-    asked: {
-      total: AMAZON_ASKED_SLUGS.length,
-      logged: askedOutcomes.filter(Boolean).length,
-      independent: askedOutcomes.filter((o) => o === "independent").length
-    },
-    revisions: { due: revisionsDue(state, today).length, passed, scheduled },
-    lp: count(AMAZON_LP.map((x) => x.id), done),
-    resume: count(AMAZON_RESUME.map((x) => x.id), done),
-    genai: count(AMAZON_GENAI.map((x) => x.id), done),
-    dayof: count(AMAZON_DAYOF.map((x) => x.id), done),
-    mocks: count(mockKeys, done),
-    learn: count(learnKeys, done),
-    freq: { done: freqDone, total: AMAZON_FREQ.length },
-    items: { done: AMAZON_ITEMS.filter((i) => done[i.key]).length, total: AMAZON_ITEMS.length },
-    minutes: { done: minutesDone, total: minutesTotal },
-    byPhase,
-    byDay,
-    todayCount: logs.filter((l) => l.doneOn === today).length + revisitsOn(state, today),
-    streak,
-    weakTopics
-  };
-}
-function revisitsOn(state, date) {
-  return (state.days[date]?.completed ?? []).filter((id) => id.startsWith("rev:")).length;
-}
-function amazonLoggedOn(state, date) {
-  return Object.entries(state.amazon.items).filter(([, l]) => l.doneOn === date).map(([k]) => AMAZON_ITEMS.find((i) => i.key === k)).filter((i) => Boolean(i));
-}
-
-// src/data/quotes.ts
-var QUOTES = [
-  { line: "Day 2 is stasis. Followed by irrelevance. Followed by excruciating, painful decline. Followed by death. And that is why it is always Day 1.", by: "Jeff Bezos", source: "2016 letter to Amazon shareholders" },
-  { line: "Nobody is watching the 18:00 block. That is exactly why it counts." },
-  { line: "At dawn, when you have trouble getting out of bed, tell yourself: I have to go to work, as a human being.", by: "Marcus Aurelius", source: "Meditations, Book 5 (Hays translation)" },
-  { line: "A problem you solved with the solution open is a problem you have read. Close the tab and do it again." },
-  { line: "The first principle is that you must not fool yourself, and you are the easiest person to fool.", by: "Richard Feynman", source: "Caltech commencement address, 1974" },
-  { line: "Three problems a night, five nights a week, is sixty problems a month. The interview is lost or won in that arithmetic." },
-  { line: "You do not rise to the level of your goals. You fall to the level of your systems.", by: "James Clear", source: "Atomic Habits, 2018" },
-  { line: "Run before the day can argue with you." },
-  { line: "No great thing is created suddenly, any more than a bunch of grapes or a fig.", by: "Epictetus", source: "Discourses, Book 1, ch. 15" },
-  { line: "The interviewer is not looking for the fastest typist. They are looking for someone they would want on call with them at 2 am." },
-  { line: "Simple can be harder than complex: you have to work hard to get your thinking clean to make it simple.", by: "Steve Jobs", source: "BusinessWeek interview, 1998" },
-  { line: "Brute force first. Say it out loud. Then make it better. That order is the whole method." },
-  { line: "It is not that we have a short time to live, but that we waste a lot of it.", by: "Seneca", source: "On the Shortness of Life, ch. 1" },
-  { line: "The night block is where the people who get the offer are, while everyone else is watching something." },
-  { line: "Clarity about what matters provides clarity about what does not.", by: "Cal Newport", source: "Deep Work, 2016" },
-  { line: "You already passed the assessment once. The loop is the same work with someone watching. Practise with someone watching." },
-  { line: "Tired is not the same as done. Done is a logged outcome." },
-  { line: 'Your STAR stories are already true. The work is saying them in two minutes without the word "we".' },
-  { line: "Every pattern you skip now is forty minutes of silence in a room with a stranger later." },
-  { line: "The walk at 23:00 is part of the plan, not a break from it." },
-  { line: "One honest line in the mistakes notebook is worth more than another video." },
-  { line: "The Bar Raiser will ask how you knew it would work. Have the number ready." },
-  { line: "Consistency is boring from the inside. That is what it looks like when it is working." },
-  { line: "Sleep is study. Memory consolidates while you are out; the 01:00 cut-off is there for a reason." },
-  { line: "The person who gets the offer is not smarter than you. They finished the boring middle part." },
-  { line: "Explain it to the wall before you explain it to the interviewer." },
-  { line: "A weak topic is just an unvisited one. Visit it today." },
-  { line: "Two weeks of this and the asked problems stop looking like a list and start looking like a set of six ideas." },
-  { line: "The call can come any day. The only preparation that counts is the kind that is already done." },
-  { line: "Ten minutes of warm-up, then the run decides itself." },
-  { line: "You are not behind. You are at Day N, and Day N has a plan." },
-  { line: "Write the brute force even when you see the trick. Interviewers want to see the road, not just the destination." },
-  { line: "Do the hard problem at 21:00, not at 00:30. Energy is a resource; spend it where it buys the most." },
-  { line: "The best mock is the one that went badly on a Saturday instead of a Tuesday with an offer on the line." }
-];
-function quoteForDay(n) {
-  const i = (n % QUOTES.length + QUOTES.length) % QUOTES.length;
-  return QUOTES[i] ?? QUOTES[0];
-}
-var EVENING_LINES = {
-  strong: [
-    "That is a day that moves the needle. Same thing tomorrow, nothing clever.",
-    "You did what you said you would do this morning. That sentence is rarer than it sounds."
-  ],
-  partial: [
-    "Not everything, but the direction was right. Carry the open item and start with it.",
-    "Most days look like this one. The plan survives as long as two of these do not become five."
-  ],
-  empty: [
-    "Nothing logged yet. Start with the smallest item on the list, not the biggest.",
-    "The office took the day. The evening is yours; take it back one block at a time."
-  ]
-};
-
-// src/engine/mission.ts
-var SHAPE = [
-  { id: "m1", label: "P1", title: "Foundation Gate", share: 0.26, focus: "FINISH WHAT YOU ALREADY STARTED", description: "Close out the courses already in flight \u2014 Apna College Prime AI/ML, the Five Minute Engineering core, PPA/C/C++, LSP and DSA basics. Nothing new gets added. Each subject is proven by an implementation, not a completion percentage." },
-  { id: "m2", label: "P2", title: "SDE Fundamentals + AI Engineering", share: 0.3, focus: "DEPTH OVER COVERAGE", description: "DSA moves to daily patterns. OS, networking and DBMS get formal treatment. Docker, Kubernetes, Jenkins and CI/CD build on the pipelines you already own. The first real AI engineering work starts: embeddings, retrieval, evaluation." },
-  { id: "m3", label: "P3", title: "Interview-Level Preparation", share: 0.26, focus: "MEDIUM-HEAVY DSA \xB7 LLD \xB7 SYSTEM DESIGN \xB7 SHIP A PROJECT", description: "DSA shifts medium-heavy with timed sets. Low-level and system design become a daily thread. The flagship project reaches a deployed, defensible state." },
-  { id: "m4", label: "P4", title: "Interview Execution", share: 0.18, focus: "APPLY \xB7 MOCK \xB7 NEGOTIATE", description: "Company-specific preparation, mock interviews, behavioural stories, resume and portfolio polish, and applications going out in waves." }
-];
-function missionPhases() {
-  const total = missionTotalDays();
-  let start = 1;
-  return SHAPE.map((s, i) => {
-    const length = i === SHAPE.length - 1 ? total - start + 1 : Math.max(7, Math.round(total * s.share));
-    const phase = {
-      id: s.id,
-      label: s.label,
-      title: s.title,
-      startDay: start,
-      endDay: Math.min(total, start + length - 1),
-      focus: s.focus,
-      description: s.description
-    };
-    start = phase.endDay + 1;
-    return phase;
-  });
-}
-function phaseForDay(n) {
-  const day = clampDay(n);
-  const phases = missionPhases();
-  return phases.find((p) => day >= p.startDay && day <= p.endDay) ?? phases[0];
-}
-function dayContext(n) {
-  const day = clampDay(n);
-  const date = dateForDay(day);
-  const phase = phaseForDay(day);
-  return {
-    day,
-    date,
-    week: weekOfDay(day),
-    phase,
-    dayInPhase: day - phase.startDay + 1,
-    isSunday: isSunday(date),
-    isReviewDay: isSunday(date),
-    daysLeft: Math.max(0, missionTotalDays() - day)
-  };
 }
 
 // src/data/foundation/apna.ts
@@ -7289,6 +6995,504 @@ var MANDATORY_HOURS = Math.round(
     0
   ) / 60
 );
+
+// src/engine/lecture.ts
+var INTERVIEW_FOCUS_DAYS = 10;
+function lectureActive(state, date) {
+  if (!state.settings.parallelLecture) return false;
+  const info = programInfo(state, date);
+  if (info.started && info.phase !== "amazon") return false;
+  const interview = state.amazon.interviewDate;
+  if (interview) {
+    const days = daysBetween(date, interview);
+    if (days >= 0 && days <= INTERVIEW_FOCUS_DAYS) return false;
+  }
+  return true;
+}
+function openApnaModules(state) {
+  const all = APNA_SUBJECTS.flatMap((subject) => subject.milestones.map((milestone) => ({ subject, milestone })));
+  const open = all.filter((m) => !state.foundation[m.milestone.id]);
+  return [...open.filter((m) => m.milestone.mandatory), ...open.filter((m) => !m.milestone.mandatory)];
+}
+function lectureMinutes(state, date) {
+  if (!lectureActive(state, date)) return 0;
+  return roleCapacity(state.settings, dayTypeOf(date), "lecture", exerciseSlotFor(state, date));
+}
+function lecturePlan(state, date) {
+  if (!lectureActive(state, date)) return [];
+  const blocks = daySlots(state.settings, dayTypeOf(date), exerciseSlotFor(state, date)).filter(
+    (s) => s.study === "lecture" && s.capacity > 0
+  );
+  const open = openApnaModules(state);
+  return blocks.map((block, i) => {
+    const next = open[i];
+    return next ? { ...next, minutes: Math.min(next.milestone.estMinutes, block.capacity) } : null;
+  }).filter((x) => x !== null);
+}
+function lectureSlotItems(plan) {
+  return plan.map((m) => ({
+    id: m.milestone.id,
+    title: m.milestone.title,
+    context: "Apna College",
+    minutes: m.minutes,
+    kind: "lecture"
+  }));
+}
+
+// src/engine/amazon-plan.ts
+var TIERS = ["P0", "P1", "P2", "P3"];
+var BREATHING_ROOM = 0.85;
+var MAX_REVISIONS = 3;
+var INTERVIEW_MODE_DAYS = 10;
+var tierRank = (t) => TIERS.indexOf(t);
+function tierList(xs) {
+  if (xs.length <= 1) return xs.join("");
+  return `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`;
+}
+function reasonFor(item, tier) {
+  if (item.asked === 1) return `${tier} \xB7 asked in ${item.src.length} report${item.src.length === 1 ? "" : "s"}`;
+  if (item.type === "task") return `${tier} \xB7 ${item.kind} work from the tracker`;
+  if (item.f3 && item.f3 >= 60) return `${tier} \xB7 high company-tag frequency (${Math.round(item.f3)})`;
+  if (item.asked === 2) return `${tier} \xB7 asked in 2022`;
+  if (item.phase === 2) return `${tier} \xB7 core pattern`;
+  if (item.phase === 1) return `${tier} \xB7 basics${tier === "P3" ? ", topic marked solid" : ""}`;
+  return `${tier} \xB7 ${item.slot === "night" ? "night-block extra" : "curriculum"}`;
+}
+function prepCapacity(state, date) {
+  return studyCapacity(state.settings, dayTypeOf(date), exerciseSlotFor(state, date)) - lectureMinutes(state, date);
+}
+function dailyBudget(state, date) {
+  return Math.round(prepCapacity(state, date) * BREATHING_ROOM);
+}
+function buildAmazonDay(state, date = todayISO()) {
+  const info = programInfo(state, date);
+  const done = state.amazon.items;
+  const solid = solidDays(state.amazon.solidTopics);
+  const capacity = prepCapacity(state, date);
+  const budget = Math.round(capacity * BREATHING_ROOM);
+  const interview = state.amazon.interviewDate ?? null;
+  const daysToInterview = interview ? daysBetween(date, interview) : null;
+  const interviewMode = daysToInterview !== null && daysToInterview >= 0 && daysToInterview <= INTERVIEW_MODE_DAYS;
+  const pool = AMAZON_ITEMS.filter((i) => !done[i.key]).map((item) => ({
+    item,
+    tier: effectiveTier(item, solid)
+  }));
+  if (interviewMode) {
+    pool.sort(
+      (a, b) => b.item.phase - a.item.phase || a.item.day - b.item.day || (a.item.slot === b.item.slot ? 0 : a.item.slot === "core" ? -1 : 1) || a.item.index - b.item.index
+    );
+  }
+  const baseEnd = info.amazon.overrun ? addDays(date, 6) : info.amazon.endsOn;
+  const beforeInterview = interview && daysToInterview !== null && daysToInterview >= 1 ? addDays(interview, -1) : null;
+  const windowEnd = beforeInterview && beforeInterview < baseEnd ? beforeInterview : baseEnd;
+  const daysLeft = Math.max(1, daysBetween(date, windowEnd) + 1);
+  let capacityLeft = 0;
+  for (let i = 0; i < daysLeft; i += 1) capacityLeft += dailyBudget(state, addDays(date, i));
+  const remainingByTier = { P0: 0, P1: 0, P2: 0, P3: 0 };
+  for (const p of pool) remainingByTier[p.tier] += p.item.minutes;
+  const fits = [];
+  let cumulative = 0;
+  for (const t of TIERS) {
+    cumulative += remainingByTier[t];
+    if (t === "P0" || cumulative <= capacityLeft) fits.push(t);
+    else break;
+  }
+  const tierFloor = fits[fits.length - 1] ?? "P0";
+  const neededMinutes = fits.reduce((n, t) => n + remainingByTier[t], 0);
+  const hoursPerDayNeeded = Math.round(neededMinutes / daysLeft / 60 * 10) / 10;
+  const shed = TIERS.filter((t) => !fits.includes(t));
+  const hoursLeft = Math.round(capacityLeft / 60);
+  const pace = {
+    remainingByTier,
+    capacityLeft,
+    daysLeft,
+    fits,
+    hoursPerDayNeeded,
+    note: remainingByTier.P0 > capacityLeft ? `The must-do set alone needs ${Math.round(remainingByTier.P0 / 60)}h and ${hoursLeft}h are left in the window. Extend the window or accept that some asked problems will be skipped.` : shed.length === 0 ? "Everything fits. Work in curriculum order; nothing is being shed." : `${tierList(fits)} ${fits.length === 1 ? "fits" : "fit"} in the ${hoursLeft}h left. ${tierList(shed)} ${shed.length === 1 ? "stays" : "stay"} visible as optional and ${shed.length === 1 ? "is" : "are"} added when you run ahead.`
+  };
+  if (daysToInterview === 0) {
+    return {
+      date,
+      mode: "interview-day",
+      capacity,
+      budget,
+      planned: [],
+      plannedIds: [],
+      totalMinutes: 0,
+      tierFloor,
+      pace,
+      focus: "Interview day",
+      nextUp: [],
+      daysToInterview
+    };
+  }
+  const planned = [];
+  let used = 0;
+  for (const item of revisionsDue(state, date).slice(0, MAX_REVISIONS)) {
+    const log = done[item.key];
+    const minutes = Math.max(15, Math.round(item.minutes * 0.6));
+    planned.push({
+      id: `rev:${item.key}`,
+      item,
+      minutes,
+      revision: true,
+      tier: "P0",
+      reason: `Revision due \xB7 ${log?.outcome === "hint" ? "needed a hint" : log?.outcome === "reviewed" ? "read the solution" : "keep it warm"} on ${formatShort(log?.doneOn ?? date)}`
+    });
+    used += minutes;
+  }
+  for (const p of pool) {
+    if (tierRank(p.tier) > tierRank(tierFloor)) continue;
+    const fitsToday = used + p.item.minutes <= budget;
+    const nothingYet = planned.every((x) => x.revision);
+    if (!fitsToday && !nothingYet) break;
+    planned.push({ id: p.item.key, item: p.item, minutes: p.item.minutes, revision: false, tier: p.tier, reason: reasonFor(p.item, p.tier) });
+    used += p.item.minutes;
+    if (used >= budget) break;
+  }
+  if (used < budget / 2) {
+    const taken = new Set(planned.map((x) => x.item.key));
+    for (const p of pool) {
+      if (tierRank(p.tier) <= tierRank(tierFloor) || taken.has(p.item.key)) continue;
+      if (used + p.item.minutes > budget) continue;
+      planned.push({ id: p.item.key, item: p.item, minutes: p.item.minutes, revision: false, tier: p.tier, reason: `${p.tier} \xB7 below the floor, added because you are ahead` });
+      taken.add(p.item.key);
+      used += p.item.minutes;
+    }
+  }
+  const plannedKeys = new Set(planned.map((x) => x.item.key));
+  const aboveFloor = pool.filter((p) => tierRank(p.tier) <= tierRank(tierFloor) && !plannedKeys.has(p.item.key));
+  const nextUp = (aboveFloor.length ? aboveFloor : pool.filter((p) => !plannedKeys.has(p.item.key))).slice(0, 3).map((p) => p.item);
+  const lead = planned.find((x) => !x.revision)?.item ?? planned[0]?.item;
+  const focus = pool.length === 0 ? "Curriculum complete" : lead ? `Day ${lead.day} \xB7 ${lead.topic}` : "Revision";
+  return {
+    date,
+    mode: pool.length === 0 ? "done" : interviewMode ? "interview" : "curriculum",
+    capacity,
+    budget,
+    planned,
+    plannedIds: planned.map((x) => x.id),
+    totalMinutes: used,
+    tierFloor,
+    pace,
+    focus,
+    nextUp,
+    daysToInterview
+  };
+}
+
+// src/engine/amazon-stats.ts
+var count = (ids, done) => ({
+  done: ids.filter((id) => done[id]).length,
+  total: ids.length
+});
+function slugOutcome(state, slug) {
+  const keys = AMAZON_ITEMS.filter((i) => i.slug === slug).map((i) => i.key);
+  const outcomes = keys.map((k) => state.amazon.items[k]?.outcome).filter(Boolean);
+  if (outcomes.length === 0) return null;
+  if (outcomes.includes("independent")) return "independent";
+  if (outcomes.includes("hint")) return "hint";
+  return "reviewed";
+}
+function amazonSummary(state, today = todayISO()) {
+  const done = state.amazon.items;
+  const solid = solidDays(state.amazon.solidTopics);
+  const outcomes = AMAZON_PROBLEM_SLUGS.map((s) => slugOutcome(state, s));
+  const askedOutcomes = AMAZON_ASKED_SLUGS.map((s) => slugOutcome(state, s));
+  const logs = Object.values(done);
+  const passed = logs.filter((l) => l.revisits > 0 && l.outcome === "independent").length;
+  const scheduled = logs.filter((l) => l.revisitOn && l.revisitOn > today).length;
+  const byPhase = [1, 2, 3].map((phase) => {
+    const items = AMAZON_ITEMS.filter((i) => i.phase === phase);
+    const finished = items.filter((i) => done[i.key]);
+    return {
+      phase,
+      done: finished.length,
+      total: items.length,
+      minutesDone: finished.reduce((n, i) => n + i.minutes, 0),
+      minutesTotal: items.reduce((n, i) => n + i.minutes, 0)
+    };
+  });
+  const byDay = AMAZON_DAYS.map((d) => {
+    const items = AMAZON_ITEMS.filter((i) => i.day === d.n);
+    const finished = items.filter((i) => done[i.key]).length;
+    return { n: d.n, done: finished, total: items.length, pct: items.length ? Math.round(finished / items.length * 100) : 0 };
+  });
+  const dates = new Set(logs.map((l) => l.doneOn));
+  for (const [date, log] of Object.entries(state.days)) {
+    if (log.completed.some((id) => id.startsWith("rev:"))) dates.add(date);
+  }
+  let streak = 0;
+  let cursor = dates.has(today) ? today : addDays(today, -1);
+  while (dates.has(cursor)) {
+    streak += 1;
+    cursor = addDays(cursor, -1);
+  }
+  const weak = /* @__PURE__ */ new Map();
+  for (const i of AMAZON_ITEMS) {
+    const o = done[i.key]?.outcome;
+    if (o === "hint" || o === "reviewed") weak.set(i.topic, (weak.get(i.topic) ?? 0) + 1);
+  }
+  const weakTopics = [...weak.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).map(([t]) => t);
+  const mockKeys = AMAZON_ITEMS.filter((i) => i.kind === "Mock").map((i) => i.key);
+  const learnKeys = AMAZON_ITEMS.filter((i) => i.kind === "Learn").map((i) => i.key);
+  const freqDone = AMAZON_FREQ.filter(
+    (r) => r.keys ? r.keys.some((k) => done[k]) : r.xkey ? Boolean(state.amazon.extras[r.xkey]) : false
+  ).length;
+  const counted = AMAZON_ITEMS.filter((i) => effectiveTier(i, solid) !== "P3");
+  const minutesTotal = counted.reduce((n, i) => n + i.minutes, 0);
+  const minutesDone = counted.filter((i) => done[i.key]).reduce((n, i) => n + i.minutes, 0);
+  return {
+    problems: {
+      total: AMAZON_PROBLEM_SLUGS.length,
+      logged: outcomes.filter(Boolean).length,
+      independent: outcomes.filter((o) => o === "independent").length,
+      hint: outcomes.filter((o) => o === "hint").length,
+      reviewed: outcomes.filter((o) => o === "reviewed").length
+    },
+    asked: {
+      total: AMAZON_ASKED_SLUGS.length,
+      logged: askedOutcomes.filter(Boolean).length,
+      independent: askedOutcomes.filter((o) => o === "independent").length
+    },
+    revisions: { due: revisionsDue(state, today).length, passed, scheduled },
+    lp: count(AMAZON_LP.map((x) => x.id), done),
+    resume: count(AMAZON_RESUME.map((x) => x.id), done),
+    genai: count(AMAZON_GENAI.map((x) => x.id), done),
+    dayof: count(AMAZON_DAYOF.map((x) => x.id), done),
+    mocks: count(mockKeys, done),
+    learn: count(learnKeys, done),
+    freq: { done: freqDone, total: AMAZON_FREQ.length },
+    items: { done: AMAZON_ITEMS.filter((i) => done[i.key]).length, total: AMAZON_ITEMS.length },
+    minutes: { done: minutesDone, total: minutesTotal },
+    byPhase,
+    byDay,
+    todayCount: logs.filter((l) => l.doneOn === today).length + revisitsOn(state, today),
+    streak,
+    weakTopics
+  };
+}
+function revisitsOn(state, date) {
+  return (state.days[date]?.completed ?? []).filter((id) => id.startsWith("rev:")).length;
+}
+function amazonLoggedOn(state, date) {
+  return Object.entries(state.amazon.items).filter(([, l]) => l.doneOn === date).map(([k]) => AMAZON_ITEMS.find((i) => i.key === k)).filter((i) => Boolean(i));
+}
+
+// src/engine/activity.ts
+var ACTIVITY_FIELDS = [
+  { key: "runKm", label: "Running", short: "run", unit: "km", decimals: 2 },
+  { key: "walkKm", label: "Walking", short: "walk", unit: "km", decimals: 2 },
+  { key: "steps", label: "Total steps", short: "steps", unit: "steps", decimals: 0 },
+  { key: "distanceKm", label: "Total distance", short: "total", unit: "km", decimals: 2 },
+  { key: "activeKcal", label: "Calories from moving", short: "active", unit: "kcal", decimals: 0 },
+  { key: "totalKcal", label: "Total calories burned", short: "burned", unit: "kcal", decimals: 0 }
+];
+function activityFor(state, date) {
+  return state.activity[date] ?? {};
+}
+function hasActivity(log) {
+  return Boolean(log && Object.keys(log).length > 0);
+}
+function setActivity(draft, date, key, value) {
+  const clean = cleanActivityValue(key, value);
+  const log = { ...draft.activity[date] ?? {} };
+  if (clean === void 0) delete log[key];
+  else log[key] = clean;
+  if (Object.keys(log).length) draft.activity[date] = log;
+  else delete draft.activity[date];
+}
+function formatActivity(key, value) {
+  const field = ACTIVITY_FIELDS.find((f) => f.key === key);
+  if (!field || field.decimals === 0) return Math.round(value).toLocaleString("en-IN");
+  return String(Math.round(value * 10) / 10);
+}
+function activityLine(log) {
+  const parts = [];
+  if (log.steps) parts.push(`${formatActivity("steps", log.steps)} steps`);
+  if (log.distanceKm) parts.push(`${formatActivity("distanceKm", log.distanceKm)} km`);
+  if (log.runKm) parts.push(`run ${formatActivity("runKm", log.runKm)} km`);
+  if (log.walkKm) parts.push(`walk ${formatActivity("walkKm", log.walkKm)} km`);
+  if (log.activeKcal) parts.push(`${formatActivity("activeKcal", log.activeKcal)} active kcal`);
+  if (log.totalKcal) parts.push(`${formatActivity("totalKcal", log.totalKcal)} kcal burned`);
+  return parts.join(" \xB7 ");
+}
+function activityWeek(state, walkTargetKm, today = todayISO()) {
+  const days = Array.from({ length: 7 }, (_, i) => addDays(today, -6 + i)).map((date) => ({ date, log: activityFor(state, date) }));
+  const totals = { runKm: 0, walkKm: 0, steps: 0, distanceKm: 0, activeKcal: 0, totalKcal: 0 };
+  const counts = { runKm: 0, walkKm: 0, steps: 0, distanceKm: 0, activeKcal: 0, totalKcal: 0 };
+  for (const { log } of days) {
+    for (const f of ACTIVITY_FIELDS) {
+      const v = log[f.key];
+      if (typeof v === "number") {
+        totals[f.key] += v;
+        counts[f.key] += 1;
+      }
+    }
+  }
+  const round = (n, d) => Math.round(n * 10 ** d) / 10 ** d;
+  const averages = Object.fromEntries(
+    ACTIVITY_FIELDS.map((f) => [f.key, counts[f.key] ? round(totals[f.key] / counts[f.key], f.decimals === 0 ? 0 : 1) : null])
+  );
+  for (const f of ACTIVITY_FIELDS) totals[f.key] = round(totals[f.key], f.decimals === 0 ? 0 : 1);
+  return {
+    days,
+    loggedDays: days.filter((d) => hasActivity(d.log)).length,
+    totals,
+    averages,
+    walkTargetDays: days.filter((d) => (d.log.walkKm ?? 0) >= walkTargetKm).length
+  };
+}
+function walkStreak(state, walkTargetKm, today = todayISO()) {
+  const hit = (d) => (state.activity[d]?.walkKm ?? 0) >= walkTargetKm;
+  let cursor = hit(today) ? today : addDays(today, -1);
+  let streak = 0;
+  while (hit(cursor)) {
+    streak += 1;
+    cursor = addDays(cursor, -1);
+  }
+  return streak;
+}
+
+// src/data/meals.ts
+var PROTEIN_DINNERS = [
+  { id: "egg-bhurji", name: "Egg bhurji + 2 phulkas", plate: "3-egg bhurji with onion, tomato and capsicum \xB7 2 phulkas \xB7 cucumber salad", proteinG: 24 },
+  { id: "paneer-bhurji", name: "Paneer bhurji + 2 phulkas", plate: "100 g paneer bhurji with peas \xB7 2 phulkas \xB7 salad", proteinG: 24 },
+  { id: "moong-chilla", name: "Moong dal chilla + hung curd", plate: "2 chillas from about 60 g soaked moong dal \xB7 100 g hung curd dip \xB7 mint chutney", proteinG: 20 },
+  { id: "soya-curry", name: "Soya chunk curry + 1 phulka", plate: "40 g dry soya chunks in a tomato-onion curry \xB7 1 phulka \xB7 salad", proteinG: 23 },
+  { id: "egg-curry", name: "Egg curry + dal + 1 phulka", plate: "2-egg curry \xB7 1 katori dal \xB7 1 phulka", proteinG: 22 },
+  { id: "paneer-tikka", name: "Paneer tikka + dal", plate: "100 g paneer tikka, pan or air-fried \xB7 1 katori dal \xB7 salad", proteinG: 25 },
+  { id: "rajma-curd", name: "Rajma or chole + curd", plate: "1 katori rajma or chole \xB7 half katori rice \xB7 1 katori curd", proteinG: 15 },
+  { id: "besan-chilla", name: "Besan chilla + curd", plate: "2 chillas from about 60 g besan with vegetables \xB7 1 katori curd", proteinG: 18 }
+];
+var BY_WEEKDAY = {
+  0: "rajma-curd",
+  1: "egg-bhurji",
+  2: "paneer-bhurji",
+  3: "moong-chilla",
+  4: "soya-curry",
+  5: "egg-curry",
+  6: "paneer-tikka"
+};
+function dinnerById(id) {
+  return PROTEIN_DINNERS.find((d) => d.id === id);
+}
+function dinnerFor(date) {
+  return dinnerById(BY_WEEKDAY[weekdayOf(date)] ?? "") ?? PROTEIN_DINNERS[0];
+}
+var DINNER_SLOT_IDS = /* @__PURE__ */ new Set(["dinner", "sat-dinner", "sun-dinner"]);
+function withDinner(slots, date, walkKm) {
+  const d = dinnerFor(date);
+  return slots.map((s) => {
+    if (DINNER_SLOT_IDS.has(s.id)) {
+      return { ...s, label: `Protein dinner \xB7 ${d.name}`, note: `${d.plate}. About ${d.proteinG} g protein (rough estimate). ${s.note}` };
+    }
+    if (s.kind === "walk" && walkKm) return { ...s, label: s.label.replace(/^Evening walk/, `${walkKm} km walk`) };
+    return s;
+  });
+}
+
+// src/data/quotes.ts
+var QUOTES = [
+  { line: "Day 2 is stasis. Followed by irrelevance. Followed by excruciating, painful decline. Followed by death. And that is why it is always Day 1.", by: "Jeff Bezos", source: "2016 letter to Amazon shareholders" },
+  { line: "Nobody is watching the 17:30 block. That is exactly why it counts." },
+  { line: "At dawn, when you have trouble getting out of bed, tell yourself: I have to go to work, as a human being.", by: "Marcus Aurelius", source: "Meditations, Book 5 (Hays translation)" },
+  { line: "A problem you solved with the solution open is a problem you have read. Close the tab and do it again." },
+  { line: "The first principle is that you must not fool yourself, and you are the easiest person to fool.", by: "Richard Feynman", source: "Caltech commencement address, 1974" },
+  { line: "Three problems a night, five nights a week, is sixty problems a month. The interview is lost or won in that arithmetic." },
+  { line: "You do not rise to the level of your goals. You fall to the level of your systems.", by: "James Clear", source: "Atomic Habits, 2018" },
+  { line: "Run before the day can argue with you." },
+  { line: "No great thing is created suddenly, any more than a bunch of grapes or a fig.", by: "Epictetus", source: "Discourses, Book 1, ch. 15" },
+  { line: "The interviewer is not looking for the fastest typist. They are looking for someone they would want on call with them at 2 am." },
+  { line: "Simple can be harder than complex: you have to work hard to get your thinking clean to make it simple.", by: "Steve Jobs", source: "BusinessWeek interview, 1998" },
+  { line: "Brute force first. Say it out loud. Then make it better. That order is the whole method." },
+  { line: "It is not that we have a short time to live, but that we waste a lot of it.", by: "Seneca", source: "On the Shortness of Life, ch. 1" },
+  { line: "The evening block is where the people who get the offer are, while everyone else is scrolling." },
+  { line: "Clarity about what matters provides clarity about what does not.", by: "Cal Newport", source: "Deep Work, 2016" },
+  { line: "You already sat the assessment once. The loop is the same work with someone watching. Practise with someone watching." },
+  { line: "Tired is not the same as done. Done is a logged outcome." },
+  { line: 'Your STAR stories are already true. The work is saying them in two minutes without the word "we".' },
+  { line: "Every pattern you skip now is forty minutes of silence in a room with a stranger later." },
+  { line: "The 5 km walk is part of the plan, not a break from it. Call home and let the day settle." },
+  { line: "One honest line in the mistakes notebook is worth more than another video." },
+  { line: "The Bar Raiser will ask how you knew it would work. Have the number ready." },
+  { line: "Consistency is boring from the inside. That is what it looks like when it is working." },
+  { line: "Sleep is study. Memory consolidates while you are out; lights out by midnight is there for a reason." },
+  { line: "The person who gets the offer is not smarter than you. They finished the boring middle part." },
+  { line: "Explain it to the wall before you explain it to the interviewer." },
+  { line: "A weak topic is just an unvisited one. Visit it today." },
+  { line: "Four weeks of this and the asked problems stop looking like a list and start looking like a set of six ideas." },
+  { line: "The call can come any day. The only preparation that counts is the kind that is already done." },
+  { line: "Three minutes of warm-up, then the run decides itself." },
+  { line: "You are not behind. You are at Day N, and Day N has a plan." },
+  { line: "Write the brute force even when you see the trick. Interviewers want to see the road, not just the destination." },
+  { line: "Do the hard problem at 17:30, not at 23:30. Energy is a resource; spend it where it buys the most." },
+  { line: "The best mock is the one that went badly on a Saturday instead of a Tuesday with an offer on the line." }
+];
+function quoteForDay(n) {
+  const i = (n % QUOTES.length + QUOTES.length) % QUOTES.length;
+  return QUOTES[i] ?? QUOTES[0];
+}
+var EVENING_LINES = {
+  strong: [
+    "That is a day that moves the needle. Same thing tomorrow, nothing clever.",
+    "You did what you said you would do this morning. That sentence is rarer than it sounds."
+  ],
+  partial: [
+    "Not everything, but the direction was right. Carry the open item and start with it.",
+    "Most days look like this one. The plan survives as long as two of these do not become five."
+  ],
+  empty: [
+    "Nothing logged yet. Start with the smallest item on the list, not the biggest.",
+    "The office took the day. The evening is yours; take it back one block at a time."
+  ]
+};
+
+// src/engine/mission.ts
+var SHAPE = [
+  { id: "m1", label: "P1", title: "Foundation Gate", share: 0.26, focus: "FINISH WHAT YOU ALREADY STARTED", description: "Close out the courses already in flight \u2014 Apna College Prime AI/ML, the Five Minute Engineering core, PPA/C/C++, LSP and DSA basics. Nothing new gets added. Each subject is proven by an implementation, not a completion percentage." },
+  { id: "m2", label: "P2", title: "SDE Fundamentals + AI Engineering", share: 0.3, focus: "DEPTH OVER COVERAGE", description: "DSA moves to daily patterns. OS, networking and DBMS get formal treatment. Docker, Kubernetes, Jenkins and CI/CD build on the pipelines you already own. The first real AI engineering work starts: embeddings, retrieval, evaluation." },
+  { id: "m3", label: "P3", title: "Interview-Level Preparation", share: 0.26, focus: "MEDIUM-HEAVY DSA \xB7 LLD \xB7 SYSTEM DESIGN \xB7 SHIP A PROJECT", description: "DSA shifts medium-heavy with timed sets. Low-level and system design become a daily thread. The flagship project reaches a deployed, defensible state." },
+  { id: "m4", label: "P4", title: "Interview Execution", share: 0.18, focus: "APPLY \xB7 MOCK \xB7 NEGOTIATE", description: "Company-specific preparation, mock interviews, behavioural stories, resume and portfolio polish, and applications going out in waves." }
+];
+function missionPhases() {
+  const total = missionTotalDays();
+  let start = 1;
+  return SHAPE.map((s, i) => {
+    const length = i === SHAPE.length - 1 ? total - start + 1 : Math.max(7, Math.round(total * s.share));
+    const phase = {
+      id: s.id,
+      label: s.label,
+      title: s.title,
+      startDay: start,
+      endDay: Math.min(total, start + length - 1),
+      focus: s.focus,
+      description: s.description
+    };
+    start = phase.endDay + 1;
+    return phase;
+  });
+}
+function phaseForDay(n) {
+  const day = clampDay(n);
+  const phases = missionPhases();
+  return phases.find((p) => day >= p.startDay && day <= p.endDay) ?? phases[0];
+}
+function dayContext(n) {
+  const day = clampDay(n);
+  const date = dateForDay(day);
+  const phase = phaseForDay(day);
+  return {
+    day,
+    date,
+    week: weekOfDay(day),
+    phase,
+    dayInPhase: day - phase.startDay + 1,
+    isSunday: isSunday(date),
+    isReviewDay: isSunday(date),
+    daysLeft: Math.max(0, missionTotalDays() - day)
+  };
+}
 
 // src/engine/foundation.ts
 function subjectProgress(state, subject) {
@@ -9052,9 +9256,8 @@ function dayScore(state, date) {
   if (!log || log.planned.length === 0) return void 0;
   return Math.min(100, Math.round(plannedHits(state, date) / log.planned.length * 100));
 }
-function executionStreak(state) {
+function executionStreak(state, today = todayISO()) {
   let streak = 0;
-  const today = todayISO();
   const startedOn = state.program.startedOn ?? today;
   for (let i = 0; i < 365; i += 1) {
     const date = addDays(today, -i);
@@ -9245,13 +9448,16 @@ function todayWork(state, date = todayISO()) {
   const info = programInfo(state, date);
   if (!info.started || info.phase === "amazon") {
     const amazon = buildAmazonDay(state, date);
+    const lecture = amazon.mode === "interview-day" ? [] : lecturePlan(state, date);
+    const lectureItems = lectureSlotItems(lecture);
     return {
       phase: info.started ? "amazon" : "not-started",
-      items: amazonSlotItems(amazon),
+      items: [...amazonSlotItems(amazon), ...lectureItems],
       amazon,
+      lecture,
       focus: amazon.focus,
-      minutes: amazon.totalMinutes,
-      plannedIds: amazon.plannedIds
+      minutes: amazon.totalMinutes + lectureItems.reduce((n, i) => n + i.minutes, 0),
+      plannedIds: [...amazon.plannedIds, ...lectureItems.map((i) => i.id)]
     };
   }
   const general = buildPlan(state, clampDay(dayForDate(date)));
@@ -9259,7 +9465,11 @@ function todayWork(state, date = todayISO()) {
   const minutes = items.reduce((n, i) => n + i.minutes, 0);
   const lead = general.missions[0];
   const focus = lead ? lead.kind === "foundation" ? `${lead.subject.name} \xB7 ${lead.milestone.title}` : lead.scored.task.title : "Roadmap";
-  return { phase: "general", items, general, focus: `${focus} \xB7 ${formatHM(minutes)}`, minutes, plannedIds: general.plannedIds };
+  return { phase: "general", items, general, lecture: [], focus: `${focus} \xB7 ${formatHM(minutes)}`, minutes, plannedIds: general.plannedIds };
+}
+function dayModeFor(state, date = todayISO()) {
+  const info = programInfo(state, date);
+  return info.started && info.phase === "general" ? "general" : "prep";
 }
 
 // src/engine/praise.ts
@@ -9413,10 +9623,17 @@ export {
   DAY_START_HOUR,
   DAY_TYPE_LABEL,
   DEFAULT_SETTINGS,
+  DINNER_SLOT_IDS,
   EVENING_LINES,
   FAT_LOSS_NOTE,
   FOUNDATION_SUBJECTS,
+  PREP_WINDOW_DAYS,
+  PROTEIN_DINNERS,
+  SETTINGS_VERSION,
   TARGET_DATE,
+  activityFor,
+  activityLine,
+  activityWeek,
   addDays,
   amazonItem,
   amazonLoggedOn,
@@ -9430,11 +9647,13 @@ export {
   configureMission,
   dailyBudget,
   dayExtras,
+  dayModeFor,
   dayScore,
   daySlots,
   dayTypeOf,
   daysBetween,
   defaultState,
+  dinnerFor,
   dsaStreak,
   dsaTotals,
   executionStreak,
@@ -9446,22 +9665,33 @@ export {
   formatShort,
   formatWeekday,
   freshForNewEpoch,
+  freshKeepingSettings,
   generalSlotItems,
+  hasActivity,
   isStaleEpoch,
   istClock,
   istMinutes,
   lcUrl,
+  lectureActive,
+  lectureMinutes,
+  lecturePlan,
   missionTotalDays,
+  openApnaModules,
   parseState,
   plannedHits,
+  prepCapacity,
   programInfo,
   quoteForDay,
   revisionsDue,
+  roleCapacity,
   sessionFor,
+  setActivity,
   studyCapacity,
   taskById,
   todayISO,
   todayWork,
+  walkStreak,
   weekdayOf,
-  weekdaySleepHours
+  weekdaySleepHours,
+  withDinner
 };

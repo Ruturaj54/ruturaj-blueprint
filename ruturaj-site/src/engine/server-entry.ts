@@ -6,7 +6,7 @@
  */
 
 export { parseState } from '@/lib/parse';
-export { defaultState, DEFAULT_SETTINGS, DATA_EPOCH, isStaleEpoch, freshForNewEpoch } from '@/lib/schema';
+export { defaultState, DEFAULT_SETTINGS, DATA_EPOCH, SETTINGS_VERSION, PREP_WINDOW_DAYS, isStaleEpoch, freshForNewEpoch, freshKeepingSettings } from '@/lib/schema';
 export {
   todayISO,
   istClock,
@@ -23,16 +23,19 @@ export {
   TARGET_DATE,
 } from '@/engine/dates';
 export { programInfo } from '@/engine/program';
-export { buildAmazonDay, dailyBudget } from '@/engine/amazon-plan';
+export { buildAmazonDay, dailyBudget, prepCapacity } from '@/engine/amazon-plan';
 export { amazonSummary, amazonLoggedOn } from '@/engine/amazon-stats';
 export { AMAZON_ITEMS, amazonItem, revisionsDue } from '@/engine/amazon';
 export { AMAZON_DAYS, AMAZON_DAYOF, lcUrl } from '@/data/amazon';
-export { buildSchedule, daySlots, studyCapacity, dayTypeOf, formatHM, weekdaySleepHours } from '@/engine/schedule';
+export { buildSchedule, daySlots, studyCapacity, roleCapacity, dayTypeOf, formatHM, weekdaySleepHours } from '@/engine/schedule';
 export { sessionFor, exerciseSlotFor, fitnessWeek, fitnessStreak } from '@/engine/fitness';
 export { FAT_LOSS_NOTE } from '@/data/fitness';
+export { activityFor, activityLine, activityWeek, walkStreak, hasActivity, setActivity } from '@/engine/activity';
+export { lectureActive, lecturePlan, lectureMinutes, openApnaModules } from '@/engine/lecture';
+export { dinnerFor, withDinner, DINNER_SLOT_IDS, PROTEIN_DINNERS } from '@/data/meals';
 export { quoteForDay, EVENING_LINES } from '@/data/quotes';
 export { buildPlan } from '@/engine/planner';
-export { todayWork, amazonSlotItems, generalSlotItems } from '@/engine/today-items';
+export { todayWork, amazonSlotItems, generalSlotItems, dayModeFor } from '@/engine/today-items';
 export { dayScore, plannedHits, dayExtras, executionStreak } from '@/engine/scoring';
 export { buildPraise } from '@/engine/praise';
 export { dsaTotals, dsaStreak } from '@/engine/dsa';

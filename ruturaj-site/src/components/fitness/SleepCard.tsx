@@ -82,7 +82,7 @@ export function SleepCard() {
           })}
         </div>
         <p className="mt-3 text-[12px] text-faint">
-          Green from 7 h, blue from 6 h, red below. Six is the weekday floor; the weekend pays it back.
+          Green from 7 h, blue from 6 h, red below. Your timetable leaves about eight; two workouts a day need it.
         </p>
       </Card>
     </section>

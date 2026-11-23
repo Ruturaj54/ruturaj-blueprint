@@ -33,7 +33,7 @@ export function PhaseBars({ summary }: { summary: AmazonSummary }) {
     <div className="space-y-7">
       {completedOn && (
         <Banner tone="success" icon={<CheckCircle2 size={15} className="text-success" />}>
-          Amazon phase marked complete on {formatShort(completedOn)}. The counts below stay as the record of what was
+          Surprise prep marked complete on {formatShort(completedOn)}. The counts below stay as the record of what was
           done.
         </Banner>
       )}

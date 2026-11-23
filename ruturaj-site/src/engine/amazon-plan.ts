@@ -2,14 +2,17 @@ import type { AppState } from '@/lib/schema';
 import type { Priority } from './types';
 import { AMAZON_ITEMS, effectiveTier, solidDays, revisionsDue, type AmazonItem } from './amazon';
 import { programInfo } from './program';
-import { todayISO, addDays, daysBetween } from './dates';
+import { todayISO, addDays, daysBetween, formatShort } from './dates';
 import { dayTypeOf, studyCapacity } from './schedule';
 import { exerciseSlotFor } from './fitness';
+import { lectureMinutes } from './lecture';
 
 /**
- * Today's Amazon set, fitted to the time he actually has.
+ * Today's surprise-prep set (the Amazon SDE-1 tracker), fitted to the time he
+ * actually has: the study blocks minus the lecture block, which holds the
+ * parallel Apna College module while that is on.
  *
- * The curriculum is ~185 hours; a 14-day window is ~90. So the planner first
+ * The curriculum is ~185 hours; a 28-day window is far less. So the planner first
  * works out which priority tiers fit in the window that is left (P0 always,
  * then P1, P2, P3 while they fit), then fills today in curriculum order with
  * items at or above that tier floor. Revisions that are due come first. If an
@@ -69,23 +72,27 @@ export function tierList(xs: readonly Priority[]): string {
 function reasonFor(item: AmazonItem, tier: Priority): string {
   if (item.asked === 1) return `${tier} · asked in ${item.src.length} report${item.src.length === 1 ? '' : 's'}`;
   if (item.type === 'task') return `${tier} · ${item.kind} work from the tracker`;
-  if (item.f3 && item.f3 >= 60) return `${tier} · Amazon frequency ${Math.round(item.f3)}`;
+  if (item.f3 && item.f3 >= 60) return `${tier} · high company-tag frequency (${Math.round(item.f3)})`;
   if (item.asked === 2) return `${tier} · asked in 2022`;
   if (item.phase === 2) return `${tier} · core pattern`;
   if (item.phase === 1) return `${tier} · basics${tier === 'P3' ? ', topic marked solid' : ''}`;
   return `${tier} · ${item.slot === 'night' ? 'night-block extra' : 'curriculum'}`;
 }
 
+/** Study minutes prep may use on a date: every study block except the lecture while it runs. */
+export function prepCapacity(state: AppState, date: string): number {
+  return studyCapacity(state.settings, dayTypeOf(date), exerciseSlotFor(state, date)) - lectureMinutes(state, date);
+}
+
 export function dailyBudget(state: AppState, date: string): number {
-  const capacity = studyCapacity(state.settings, dayTypeOf(date), exerciseSlotFor(state, date));
-  return Math.round(capacity * BREATHING_ROOM);
+  return Math.round(prepCapacity(state, date) * BREATHING_ROOM);
 }
 
 export function buildAmazonDay(state: AppState, date: string = todayISO()): AmazonDayPlan {
   const info = programInfo(state, date);
   const done = state.amazon.items;
   const solid = solidDays(state.amazon.solidTopics);
-  const capacity = studyCapacity(state.settings, dayTypeOf(date), exerciseSlotFor(state, date));
+  const capacity = prepCapacity(state, date);
   const budget = Math.round(capacity * BREATHING_ROOM);
 
   const interview = state.amazon.interviewDate ?? null;
@@ -163,7 +170,7 @@ export function buildAmazonDay(state: AppState, date: string = todayISO()): Amaz
       minutes,
       revision: true,
       tier: 'P0',
-      reason: `Revision due · ${log?.outcome === 'hint' ? 'needed a hint' : log?.outcome === 'reviewed' ? 'read the solution' : 'keep it warm'} on ${log?.doneOn ?? date}`,
+      reason: `Revision due · ${log?.outcome === 'hint' ? 'needed a hint' : log?.outcome === 'reviewed' ? 'read the solution' : 'keep it warm'} on ${formatShort(log?.doneOn ?? date)}`,
     });
     used += minutes;
   }

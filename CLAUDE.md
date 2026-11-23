@@ -2,13 +2,20 @@
 
 Personal career-execution OS for Ruturaj Dharne. Static SPA on Netlify free tier.
 **Day 1 is whatever date he pressed "Start Day 1"** (`state.program.startedOn`); never
-hard-code a calendar start. The programme has two phases: the **Amazon SDE-1
-intensive** (default 14 days, configurable, extendable) and then the **general
-roadmap**, whose Day 1 is the date the Amazon phase was marked complete and whose
-length runs to the application target `TARGET_DATE` (10 Mar 2027). A mission day runs
-04:00→04:00 IST (`DAY_START_HOUR`), so the 23:30–01:00 block belongs to the day it was
-planned on. Timetable: `src/data/routine.ts` driven by `Settings` (home 17:00, study
-18–20, dinner 20–21, deep 21–23, walk 23–23:30, optional final block to 01:00).
+hard-code a calendar start. The programme has two phases: **Surprise Prep** (the Amazon
+SDE-1 tracker, studied before any interview call; default 28 days, configurable,
+extendable; internal ids stay `amazon`) and then the **general roadmap**, whose Day 1 is
+the date prep was marked complete and whose length runs to the switch target
+`TARGET_DATE` (28 Feb 2027). During prep the after-dinner lecture block holds the next
+Apna College module (`src/engine/lecture.ts`). A mission day runs 04:00→04:00 IST
+(`DAY_START_HOUR`). Timetable: `src/data/routine.ts` driven by `Settings` (wake 08:00,
+run 08:05–08:30, home 17:15, own time to 17:30, prep 17:30–19:30, freelance to 20:15,
+protein dinner to 21:00, lecture 21:00–22:15, 5 km walk and a call home to 23:15,
+revise and plan tomorrow to 23:45). Runs are morning-only; a day can be marked rest.
+
+**Naming.** In the UI and the mails it is "Surprise Prep" / "study for surprises", never
+"Amazon". The only exceptions are factual source labels on real data (official Amazon
+guidance, LeetCode's Amazon company tag, candidate reports), which must stay accurate.
 
 ## Stack — do not add to this without a reason
 Vite · React 18 · TypeScript (strict) · Tailwind v4 (CSS-first tokens) ·
@@ -42,14 +49,17 @@ No database server. No SSR. No Next.js. Push to `main` = live.
    `src/engine/server-entry.ts` into `netlify/functions/_shared/engine.mjs`
    (generated, committed, regenerated on every build). Functions import from it;
    never re-implement engine logic in `.mjs`.
-10. **Exactly two routine emails a day**: morning (default 06:00 IST) and
-    evening (17:00 IST). Both run inside a 15-minute cron window and are guarded
+10. **Exactly two routine emails a day**: morning (default 07:45 IST, waiting when
+    he wakes) and evening (default 17:15 IST, as he gets home). Both are short, and
+    every subject opens with one emoji and is built from the day's real content.
+    Both run inside a 15-minute cron window and are guarded
     by the send log in Netlify Blobs (`_shared/maillog.mjs`), so a retry can never
     produce a duplicate and a missed window never bursts later. Any other send is
     an explicit button press by Ruturaj and is logged as a test.
 11. **Deploys cost credits.** Verify locally and push once per session.
 12. **The repository is public. No personal health data in source.** Weight,
-    sleep and lab values live only in the private synced store.
+    sleep, lab values and daily activity numbers (steps, km, calories) live only in
+    the private synced store.
 13. **Never fabricate.** No invented interview reports, question frequencies,
     timelines, quotes or metrics. Label every claim: official Amazon guidance /
     candidate-reported / general advice / our own inference. When a metric is
@@ -64,6 +74,8 @@ No database server. No SSR. No Next.js. Push to `main` = live.
   expansions of those abbreviations.
 - Fitness tracks and informs. Never claim spot fat reduction; the honest note is
   `FAT_LOSS_NOTE` in `src/data/fitness.ts`.
+- Dinners are vegetarian with eggs (no chicken, fish or meat). Protein figures in
+  `src/data/meals.ts` are labelled rough estimates for the portion written.
 
 ## Verification before calling anything done
 `npm run build` clean · `npx tsc --noEmit` clean · `npm run verify` ·

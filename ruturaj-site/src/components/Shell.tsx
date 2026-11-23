@@ -62,7 +62,7 @@ function DayChip() {
     <span className="tnum inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-surface px-2.5 py-[3px] text-[11px] font-medium text-fg">
       Day {info.day}
       <span className={cn('text-[10px] uppercase tracking-wide', info.phase === 'amazon' ? 'text-amazon' : 'text-accent')}>
-        {info.phase === 'amazon' ? 'Amazon' : 'Roadmap'}
+        {info.phase === 'amazon' ? 'Prep' : 'Roadmap'}
       </span>
     </span>
   );
@@ -91,7 +91,7 @@ export function Shell({ route, navigate, children }: { route: string; navigate: 
         <nav className="flex flex-1 flex-col gap-0.5">
           {NAV_ITEMS.map((item) => {
             const active = item.id === route;
-            const amazon = item.id === 'amazon';
+            const amazon = item.id === 'prep';
             return (
               <button
                 key={item.id}
@@ -139,7 +139,7 @@ export function Shell({ route, navigate, children }: { route: string; navigate: 
         <div className="mx-auto grid max-w-[560px] grid-cols-5 pb-safe">
           {PRIMARY_NAV.map((item) => {
             const active = item.id === route;
-            const amazon = item.id === 'amazon';
+            const amazon = item.id === 'prep';
             return (
               <button
                 key={item.id}
@@ -150,7 +150,7 @@ export function Shell({ route, navigate, children }: { route: string; navigate: 
                 )}
               >
                 <item.icon size={20} />
-                {item.label}
+                {item.short ?? item.label}
                 {active && (
                   <motion.span
                     layoutId="nav-underline"

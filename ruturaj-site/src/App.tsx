@@ -21,7 +21,7 @@ import { Settings } from '@/screens/Settings';
 function screenFor(route: string, navigate: (id: string) => void): ReactElement {
   const screens: Record<string, () => ReactElement> = {
     home: () => <MyDay navigate={navigate} />,
-    amazon: () => <Amazon navigate={navigate} />,
+    prep: () => <Amazon navigate={navigate} />,
     roadmap: () => <Roadmap navigate={navigate} />,
     projects: () => <Projects />,
     fitness: () => <Fitness />,

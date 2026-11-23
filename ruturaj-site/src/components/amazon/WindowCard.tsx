@@ -10,8 +10,8 @@ import { Field, Segmented, Stat } from '@/components/ui/controls';
 import { formatDMY } from './status-line';
 
 /**
- * The intensive window: where he is in it, what the planner can still fit,
- * and the three controls that change it (extend, resize, end the phase).
+ * The prep window: where he is in it, what the planner can still fit, and
+ * the three controls that change it (extend, resize, end the phase).
  */
 
 const TIERS: readonly Priority[] = ['P0', 'P1', 'P2', 'P3'];
@@ -36,7 +36,7 @@ export function WindowCard({ plan }: { plan: AmazonDayPlan }) {
   const title = !info.started
     ? 'Day 1 not started'
     : info.phase === 'general'
-      ? 'Amazon phase complete'
+      ? 'Surprise prep complete'
       : w.overrun
         ? 'Window over'
         : `Day ${w.day} of ${w.windowDays}`;
@@ -48,10 +48,13 @@ export function WindowCard({ plan }: { plan: AmazonDayPlan }) {
         ? `The ${w.windowDays}-day window ended ${formatShort(w.endsOn)}. Extend it or mark the phase complete.`
         : `Started ${formatShort(info.startedOn)} · ends ${formatShort(w.endsOn)}${state.program.amazonExtendedDays ? ` · extended by ${state.program.amazonExtendedDays} days` : ''}`;
 
+  const left = formatHM(pace.capacityLeft);
   const floorWhy =
-    shed.length === 0
-      ? `every tier fits in the ${formatHM(pace.capacityLeft)} left, so nothing is shed.`
-      : `${tierList(pace.fits)} ${pace.fits.length === 1 ? 'fits' : 'fit'} in the ${formatHM(pace.capacityLeft)} left; ${tierList(shed)} ${shed.length === 1 ? 'stays' : 'stay'} optional until you run ahead.`;
+    pace.remainingByTier.P0 > pace.capacityLeft
+      ? `P0 alone is ${formatHM(pace.remainingByTier.P0)}, more than the ${left} left, so everything else stays optional and some P0 work will not fit unless the window grows.`
+      : shed.length === 0
+        ? `every tier fits in the ${left} left, so nothing is shed.`
+        : `${tierList(pace.fits)} ${pace.fits.length === 1 ? 'fits' : 'fit'} in the ${left} left; ${tierList(shed)} ${shed.length === 1 ? 'stays' : 'stay'} optional until you run ahead.`;
 
   return (
     <Card>
@@ -112,13 +115,13 @@ export function WindowCard({ plan }: { plan: AmazonDayPlan }) {
       <div className="mt-4 border-t border-line pt-4">
         {info.phase === 'general' ? (
           <Button variant="amazon" onClick={() => update((d) => reactivateAmazonPhase(d))}>
-            Reactivate Amazon as today's priority
+            Reactivate surprise prep as today&rsquo;s priority
           </Button>
         ) : confirm ? (
           <div className="rounded-[12px] border border-line bg-raised p-3">
             <p className="text-[13px] leading-relaxed text-fg">
-              From today the general roadmap becomes the daily programme and its Day 1 is set. Amazon stays available in this tab;
-              nothing here is deleted, and you can reactivate it when the call comes.
+              From today the general roadmap becomes the daily programme and its Day 1 is set. Surprise prep stays available in
+              this tab; nothing here is deleted, and you can reactivate it when the call comes.
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <Button
@@ -137,7 +140,7 @@ export function WindowCard({ plan }: { plan: AmazonDayPlan }) {
           </div>
         ) : (
           <Button variant="outline" onClick={() => setConfirm(true)}>
-            Mark Amazon phase complete
+            Mark surprise prep complete
           </Button>
         )}
       </div>

@@ -2,7 +2,8 @@ import { Moon } from 'lucide-react';
 import { Card, inputCls } from '@/components/ui/primitives';
 import { Field, Toggle, Banner } from '@/components/ui/controls';
 import { useAppState, useUpdateState } from '@/hooks/useAppState';
-import { studyCapacity, weekdaySleepHours, formatHM } from '@/engine/schedule';
+import { studyCapacity, roleCapacity, weekdaySleepHours, formatHM } from '@/engine/schedule';
+import type { Settings } from '@/lib/schema';
 import { cn } from '@/lib/cn';
 
 /** Only the "HH:MM" settings; the engine resolves the rest of the day from these. */
@@ -14,12 +15,15 @@ type TimeKey =
   | 'officeEnd'
   | 'studyBlock1Start'
   | 'studyBlock1End'
+  | 'dinnerStart'
   | 'studyBlock2Start'
   | 'studyBlock2End'
   | 'walkEnd'
   | 'studyBlock3End'
   | 'weekendWakeTime'
   | 'weekendSleepTime';
+
+type ToggleKey = 'freelanceEnabled' | 'studyBlock3Enabled' | 'parallelLecture';
 
 interface TimeField {
   key: TimeKey;
@@ -29,21 +33,17 @@ interface TimeField {
 
 const DAYTIME: TimeField[] = [
   { key: 'wakeTime', label: 'Wake' },
-  { key: 'exerciseStart', label: 'Exercise start' },
-  { key: 'exerciseEnd', label: 'Exercise end' },
+  { key: 'exerciseStart', label: 'Run start' },
+  { key: 'exerciseEnd', label: 'Run end' },
   { key: 'officeStart', label: 'Leave for office' },
-  { key: 'officeEnd', label: 'Home from office' },
+  { key: 'officeEnd', label: 'Home from office', hint: 'Your own time runs from here to the prep block.' },
+  { key: 'studyBlock1Start', label: 'Surprise prep starts' },
 ];
 
-const BLOCK1: TimeField[] = [
-  { key: 'studyBlock1Start', label: 'Study block 1 start' },
-  { key: 'studyBlock1End', label: 'Study block 1 end' },
-];
-
-const BLOCK2: TimeField[] = [
-  { key: 'studyBlock2Start', label: 'Study block 2 start' },
-  { key: 'studyBlock2End', label: 'Study block 2 end' },
-  { key: 'walkEnd', label: 'Walk ends', hint: 'The walk runs from the end of block 2.' },
+const LECTURE: TimeField[] = [
+  { key: 'studyBlock2Start', label: 'Lecture starts' },
+  { key: 'studyBlock2End', label: 'Lecture ends', hint: 'The walk starts here.' },
+  { key: 'walkEnd', label: 'Walk ends' },
 ];
 
 const WEEKEND: TimeField[] = [
@@ -52,9 +52,9 @@ const WEEKEND: TimeField[] = [
 ];
 
 /**
- * The weekday timetable as time inputs, the weekend wake and sleep, and a
- * live readout of what the settings add up to. Dinner is not a field: it is
- * whatever sits between block 1 and block 2.
+ * The weekday timetable as time inputs and switches, the weekend wake and
+ * sleep, and a live readout of what the settings add up to. Each block ends
+ * where the next one starts, so changing one time moves its neighbour too.
  */
 export function TimetableSettings() {
   const { settings } = useAppState();
@@ -66,98 +66,122 @@ export function TimetableSettings() {
       draft.settings[key] = value;
     });
   };
+  const setToggle = (key: ToggleKey, value: boolean) =>
+    update((draft) => {
+      draft.settings[key] = value;
+    });
 
   const capacity = studyCapacity(settings, 'weekday');
+  const lecture = roleCapacity(settings, 'weekday', 'lecture');
   const sleep = weekdaySleepHours(settings);
-  const shortSleep = sleep < 6;
+  const shortSleep = sleep < 7;
 
-  const timeInput = (f: TimeField) => (
+  const timeInput = (f: TimeField, disabled = false) => (
     <Field key={f.key} label={f.label} hint={f.hint}>
-      <input type="time" className={inputCls} value={settings[f.key]} onChange={(e) => setTime(f.key, e.target.value)} />
+      <input
+        type="time"
+        className={cn(inputCls, 'disabled:bg-raised disabled:text-faint')}
+        value={settings[f.key]}
+        disabled={disabled}
+        onChange={(e) => setTime(f.key, e.target.value)}
+      />
     </Field>
   );
 
   return (
     <Card>
       <p className="text-[13px] leading-relaxed text-muted">
-        Your weekday. Change a time and the whole day follows it, in the app and in the morning mail.
-        Saturday and Sunday keep their own plan; only their wake and sleep times move.
+        Your weekday. Change a time and the whole day follows it, in the app and in both mails. Saturday and
+        Sunday keep their own plan; only their wake and sleep times move.
       </p>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">{DAYTIME.map(timeInput)}</div>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">{DAYTIME.map((f) => timeInput(f))}</div>
 
-      <div className="mt-4 grid gap-3 border-t border-line pt-4 sm:grid-cols-2">
-        {BLOCK1.map(timeInput)}
-        <div className="rounded-[10px] border border-line bg-raised px-3 py-2 text-[12.5px] text-muted sm:col-span-2">
-          Dinner and rest:{' '}
-          <span className="tnum font-medium text-fg">
-            {settings.studyBlock1End} – {settings.studyBlock2Start}
-          </span>
-          , the gap between block 1 and block 2.
+      <div className="mt-4 grid gap-3 border-t border-line pt-3 sm:grid-cols-2">
+        <div className="sm:col-span-2">
+          <Toggle
+            checked={settings.freelanceEnabled}
+            onChange={(v) => setToggle('freelanceEnabled', v)}
+            label="Freelance block before dinner"
+            hint="Off gives that time back to surprise prep. Weekend freelance blocks follow this too."
+          />
         </div>
-        {BLOCK2.map(timeInput)}
+        {timeInput({ key: 'studyBlock1End', label: 'Prep ends · freelance starts' }, !settings.freelanceEnabled)}
+        {timeInput({ key: 'dinnerStart', label: 'Dinner starts' })}
+      </div>
+
+      <div className="mt-4 grid gap-3 border-t border-line pt-3 sm:grid-cols-2">
+        {LECTURE.map((f) => timeInput(f))}
+        <div className="sm:col-span-2">
+          <Toggle
+            checked={settings.parallelLecture}
+            onChange={(v) => setToggle('parallelLecture', v)}
+            label="Apna College in the lecture block"
+            hint="During surprise prep the lecture block holds the next Apna module. Off gives it to prep too."
+          />
+        </div>
       </div>
 
       <div className="mt-4 grid gap-3 border-t border-line pt-3 sm:grid-cols-2">
         <div className="sm:col-span-2">
           <Toggle
             checked={settings.studyBlock3Enabled}
-            onChange={(v) =>
-              update((draft) => {
-                draft.settings.studyBlock3Enabled = v;
-              })
-            }
-            label="Final block after the walk"
-            hint="Revision and lighter items only. Off means sleep starts when the walk ends."
+            onChange={(v) => setToggle('studyBlock3Enabled', v)}
+            label="Revise and plan tomorrow after the walk"
+            hint="Off means sleep starts when the walk ends."
           />
         </div>
-        <Field label="Final block end">
-          <input
-            type="time"
-            className={cn(inputCls, 'disabled:bg-raised disabled:text-faint')}
-            value={settings.studyBlock3End}
-            disabled={!settings.studyBlock3Enabled}
-            onChange={(e) => setTime('studyBlock3End', e.target.value)}
-          />
-        </Field>
+        {timeInput({ key: 'studyBlock3End', label: 'Lights out' }, !settings.studyBlock3Enabled)}
       </div>
 
       <div className="mt-4 grid gap-3 border-t border-line pt-4 sm:grid-cols-2">
-        {WEEKEND.map(timeInput)}
-        <Field label="Office spare study hours" hint="Light reading only; not counted as study capacity.">
-          <input
-            type="number"
-            min={0}
-            max={3}
-            step={0.5}
-            inputMode="decimal"
-            className={inputCls}
-            value={settings.officeStudyHours}
-            onChange={(e) => {
-              const n = Number(e.target.value);
-              if (!Number.isFinite(n)) return;
-              update((draft) => {
-                draft.settings.officeStudyHours = Math.min(3, Math.max(0, n));
-              });
-            }}
-          />
-        </Field>
+        {WEEKEND.map((f) => timeInput(f))}
+        <OfficeHours
+          settings={settings}
+          onChange={(n) =>
+            update((draft) => {
+              draft.settings.officeStudyHours = n;
+            })
+          }
+        />
       </div>
 
       <div className="mt-4 border-t border-line pt-4">
         <p className="tnum text-[13px] text-fg">
-          Weekday study capacity <span className="font-semibold">{formatHM(capacity)}</span>
+          Weekday study <span className="font-semibold">{formatHM(capacity)}</span>
           <span className="text-faint"> · </span>
-          Weekday sleep <span className={cn('font-semibold', shortSleep && 'text-warn')}>{sleep} h</span>
+          lecture <span className="font-semibold">{formatHM(lecture)}</span>
+          <span className="text-faint"> · </span>
+          sleep <span className={cn('font-semibold', shortSleep && 'text-warn')}>{sleep} h</span>
         </p>
         {shortSleep && (
           <div className="mt-2">
             <Banner tone="warn" icon={<Moon size={14} className="text-warn" />}>
-              Below six hours. Turn the final block off or end it earlier.
+              Under seven hours. With two workouts a day, recovery needs the sleep; move lights out earlier.
             </Banner>
           </div>
         )}
       </div>
     </Card>
+  );
+}
+
+function OfficeHours({ settings, onChange }: { settings: Settings; onChange: (n: number) => void }) {
+  return (
+    <Field label="Office spare study hours" hint="Light reading only; not counted as study capacity.">
+      <input
+        type="number"
+        min={0}
+        max={3}
+        step={0.5}
+        inputMode="decimal"
+        className={inputCls}
+        value={settings.officeStudyHours}
+        onChange={(e) => {
+          const n = Number(e.target.value);
+          if (Number.isFinite(n)) onChange(Math.min(3, Math.max(0, n)));
+        }}
+      />
+    </Field>
   );
 }

@@ -4,7 +4,7 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { todayISO, istMinutes, istClock } from '../netlify/functions/_shared/engine.mjs';
+import { todayISO, istMinutes, istClock, DEFAULT_SETTINGS } from '../netlify/functions/_shared/engine.mjs';
 import { buildDigest } from '../netlify/functions/_shared/digest.mjs';
 import { buildMorning, buildEvening } from '../netlify/functions/_shared/templates.mjs';
 import { shouldSendNow, alreadySent, recordEntry, prune, recentEntries } from '../netlify/functions/_shared/maillog.mjs';
@@ -59,17 +59,17 @@ console.log('\n=== 3. runScheduled: once per day, retried on failure, morning an
   const store = memoryStore();
   const state = F.weekday();
   const readState = async () => state;
-  const tick = F.ist(F.FRI, '06:00');
+  const tick = F.ist(F.FRI, F.AM);
   const first = await runScheduled({ type: 'morning', now: tick, store, readState, send: sendOk() });
   truthy(`first tick sends: ${first}`, first.startsWith('sent:'));
   const second = await runScheduled({ type: 'morning', now: tick, store, readState, send: sendOk('msg-2') });
   truthy(`same tick again skips: ${second}`, second.includes('already sent'));
-  const later = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '06:15'), store, readState, send: sendOk('msg-3') });
-  truthy('the 06:15 tick skips too', later.includes('already sent'));
+  const later = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '08:00'), store, readState, send: sendOk('msg-3') });
+  truthy('the 08:00 tick skips too', later.includes('already sent'));
   const log = JSON.parse(store.data.get('mail-log'));
   check('exactly one morning entry for the day', [log.days[F.FRI].morning.ok, log.days[F.FRI].morning.messageId], [true, 'msg-1']);
 
-  const evening = await runScheduled({ type: 'evening', now: F.ist(F.FRI, '17:00'), store, readState, send: sendOk('msg-e') });
+  const evening = await runScheduled({ type: 'evening', now: F.ist(F.FRI, F.PM), store, readState, send: sendOk('msg-e') });
   truthy(`the morning send never blocks the evening: ${evening}`, evening.startsWith('sent:'));
   const early = await runScheduled({ type: 'evening', now: F.ist(F.SAT, '15:30'), store, readState, send: sendOk() });
   truthy(`before the target the tick waits: ${early}`, early.includes('before window'));
@@ -77,11 +77,11 @@ console.log('\n=== 3. runScheduled: once per day, retried on failure, morning an
 {
   const store = memoryStore();
   const readState = async () => F.weekday();
-  const failed = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '06:00'), store, readState, send: sendFail });
+  const failed = await runScheduled({ type: 'morning', now: F.ist(F.FRI, F.AM), store, readState, send: sendFail });
   truthy(`a failed send is reported: ${failed}`, failed.startsWith('failed:'));
   const log1 = JSON.parse(store.data.get('mail-log'));
   check('the failure is recorded with its error', [log1.days[F.FRI].morning.ok, log1.days[F.FRI].morning.error], [false, 'SMTP refused']);
-  const retry = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '06:15'), store, readState, send: sendOk('msg-r') });
+  const retry = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '08:00'), store, readState, send: sendOk('msg-r') });
   truthy(`the next tick retries and sends: ${retry}`, retry.startsWith('sent:'));
   const log2 = JSON.parse(store.data.get('mail-log'));
   check('the retry overwrites the failed entry', [log2.days[F.FRI].morning.ok, log2.days[F.FRI].morning.messageId], [true, 'msg-r']);
@@ -89,9 +89,9 @@ console.log('\n=== 3. runScheduled: once per day, retried on failure, morning an
 {
   // Reads that fail must never send; the next tick retries.
   const brokenStore = { async get() { throw new Error('blobs GET 503'); }, async setJSON() {} };
-  const r1 = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '06:00'), store: brokenStore, readState: async () => F.weekday(), send: sendOk() });
+  const r1 = await runScheduled({ type: 'morning', now: F.ist(F.FRI, F.AM), store: brokenStore, readState: async () => F.weekday(), send: sendOk() });
   truthy(`an unreadable mail log sends nothing: ${r1}`, r1.startsWith('failed:') && r1.includes('log unreadable'));
-  const r2 = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '06:00'), store: memoryStore(), readState: async () => { throw new Error('blobs down'); }, send: sendOk() });
+  const r2 = await runScheduled({ type: 'morning', now: F.ist(F.FRI, F.AM), store: memoryStore(), readState: async () => { throw new Error('blobs down'); }, send: sendOk() });
   truthy(`an unreadable state sends nothing: ${r2}`, r2.startsWith('failed:') && r2.includes('state unreadable'));
 
   // A claim is written before the send, so a crash after SMTP accepted the
@@ -104,19 +104,19 @@ console.log('\n=== 3. runScheduled: once per day, retried on failure, morning an
     async setJSON(k, v) { this.calls += 1; if (this.calls === 2) throw new Error('blobs PUT 503'); return inner.setJSON(k, v); },
   };
   const sendCount = async () => { sends += 1; return { ok: true, messageId: `m${sends}` }; };
-  const r3 = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '06:00'), store: flaky, readState: async () => F.weekday(), send: sendCount });
+  const r3 = await runScheduled({ type: 'morning', now: F.ist(F.FRI, F.AM), store: flaky, readState: async () => F.weekday(), send: sendCount });
   truthy(`the send happened once although the result write failed: ${r3}`, sends === 1 && r3.startsWith('sent:'));
-  const r4 = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '06:15'), store: flaky, readState: async () => F.weekday(), send: sendCount });
+  const r4 = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '08:00'), store: flaky, readState: async () => F.weekday(), send: sendCount });
   truthy(`the next tick honours the pending claim: ${r4}`, sends === 1 && r4.includes('already sent'));
-  const r5 = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '06:45'), store: flaky, readState: async () => F.weekday(), send: sendCount });
+  const r5 = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '08:30'), store: flaky, readState: async () => F.weekday(), send: sendCount });
   truthy(`an abandoned claim older than 20 minutes is retried: ${r5}`, sends === 2 && r5.startsWith('sent:'));
-  const late = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '11:00'), store: memoryStore(), readState: async () => F.weekday(), send: sendOk() });
+  const late = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '12:00'), store: memoryStore(), readState: async () => F.weekday(), send: sendOk() });
   truthy(`past the window is reported as such: ${late}`, late.includes('past the window'));
 }
 {
   const store = memoryStore();
   const readState = async () => F.amazonState({ settings: { emailEnabled: false } });
-  const off = await runScheduled({ type: 'morning', now: F.ist(F.FRI, '06:00'), store, readState, send: sendOk() });
+  const off = await runScheduled({ type: 'morning', now: F.ist(F.FRI, F.AM), store, readState, send: sendOk() });
   truthy(`emailEnabled false skips: ${off}`, off.includes('turned off'));
   check('nothing is written when mail is off', store.data.size, 0);
 }
@@ -151,41 +151,49 @@ console.log('\n=== 5. Exactly two scheduled functions, with the agreed cron stri
 }
 
 console.log('\n=== 6. Rendering ===');
-const morningFri = buildDigest(F.weekday(), F.ist(F.FRI, '06:00'));
+check('default send times are 07:45 and 17:15', [DEFAULT_SETTINGS.morningEmailTime, DEFAULT_SETTINGS.eveningEmailTime], ['07:45', '17:15']);
+const morningFri = buildDigest(F.weekday(), F.ist(F.FRI, F.AM));
 const renders = {
-  'before-start': [buildDigest(F.beforeStart(), F.ist(F.THU, '06:00')), buildDigest(F.beforeStart(), F.ist(F.THU, '17:00'))],
-  weekday: [morningFri, buildDigest(F.weekdayEvening(morningFri), F.ist(F.FRI, '17:00'))],
-  thursday: [buildDigest(F.weekday(), F.ist(F.THU, '06:00')), buildDigest(F.weekday(), F.ist(F.THU, '17:00'))],
-  'evening-run': [buildDigest(F.eveningRun(), F.ist(F.THU, '06:00')), buildDigest(F.eveningRun(), F.ist(F.THU, '17:00'))],
-  saturday: [buildDigest(F.saturday(), F.ist(F.SAT, '06:00')), buildDigest(F.saturday(), F.ist(F.SAT, '17:00'))],
-  sunday: [buildDigest(F.sunday(), F.ist(F.SUN, '06:00')), buildDigest(F.sunday(), F.ist(F.SUN, '17:00'))],
+  'before-start': [buildDigest(F.beforeStart(), F.ist(F.THU, F.AM)), buildDigest(F.beforeStart(), F.ist(F.THU, F.PM))],
+  weekday: [morningFri, buildDigest(F.weekdayEvening(morningFri), F.ist(F.FRI, F.PM))],
+  thursday: [buildDigest(F.weekday(), F.ist(F.THU, F.AM)), buildDigest(F.weekday(), F.ist(F.THU, F.PM))],
+  'rest-morning': [buildDigest(F.restMorning(), F.ist(F.THU, F.AM)), buildDigest(F.restMorning(), F.ist(F.THU, F.PM))],
+  saturday: [buildDigest(F.saturday(), F.ist(F.SAT, F.AM)), buildDigest(F.saturday(), F.ist(F.SAT, F.PM))],
+  sunday: [buildDigest(F.sunday(), F.ist(F.SUN, F.AM)), buildDigest(F.sunday(), F.ist(F.SUN, F.PM))],
   general: [buildDigest(F.general(), new Date()), buildDigest(F.general(), new Date())],
-  'interview-4d': [buildDigest(F.interviewSoon(), F.ist(F.THU, '06:00')), buildDigest(F.interviewSoon(), F.ist(F.THU, '17:00'))],
+  'interview-4d': [buildDigest(F.interviewSoon(), F.ist(F.THU, F.AM)), buildDigest(F.interviewSoon(), F.ist(F.THU, F.PM))],
 };
 const before = buildMorning(renders['before-start'][0]);
-truthy('before start: morning says Day 1 is waiting', before.html.includes('Day 1 is waiting') && before.text.includes('Day 1 is waiting'));
-truthy('before start: the Day-1 set is previewed', renders['before-start'][0].items.length > 0 && before.html.includes('Day 1 set, previewed'));
+truthy('before start: morning says Day 1 is waiting', before.html.includes('Day 1 is waiting') && before.text.includes('press Start'));
+truthy('before start: the Day 1 prep set is previewed under its block', renders['before-start'][0].prepItems.length > 0 && before.html.includes(renders['before-start'][0].prepItems[0].title.replace(/&/g, '&amp;')));
 truthy('before start: CTA is Start Day 1', before.html.includes('Start Day 1'));
-check('two Amazon days have different subjects', buildMorning(renders.thursday[0]).subject === buildMorning(renders.weekday[0]).subject, false);
-truthy('Friday has two re-solves due in the subject', buildMorning(renders.weekday[0]).subject.includes('2 re-solves'));
-truthy('the morning mail has the exercise section', before.html.includes('Morning exercise') && before.html.includes(renders['before-start'][0].exercise.name));
-truthy('the morning mail has the timetable rows', renders['before-start'][0].timetable.every((r) => before.html.includes(r.time)));
-truthy('the morning mail has the Amazon set with reasons', buildMorning(renders.weekday[0]).html.includes(renders.weekday[0].items[0].reason.replace(/&/g, '&amp;')));
-truthy('the evening mail contains 18:00', buildEvening(renders.weekday[1]).html.includes('18:00'));
-truthy('the evening mail lists what was already done', buildEvening(renders.weekday[1]).html.includes('Already done today'));
-truthy('an evening-run day shows the run first tonight', renders['evening-run'][1].tonight[0]?.id === 'pm-move');
-truthy('an evening-run morning says the run moved', buildMorning(renders['evening-run'][0]).html.includes('Run moved to 17:15'));
-truthy('Sunday evening mentions the weekly review at 20:30', buildEvening(renders.sunday[1]).html.includes('20:30') && buildEvening(renders.sunday[1]).subject.includes('20:30'));
-truthy('interview mode leads with a Phase 3 item', renders['interview-4d'][0].items.find((i) => !i.revision)?.id === renders['interview-4d'][0].plan.planned.find((p) => !p.revision)?.item.key && renders['interview-4d'][0].plan.planned.find((p) => !p.revision)?.item.phase === 3);
+check('two prep days have different subjects', buildMorning(renders.thursday[0]).subject === buildMorning(renders.weekday[0]).subject, false);
+truthy('Friday has two cold re-solves in the subject', buildMorning(renders.weekday[0]).subject.includes('2 cold re-solves'));
+truthy('the morning mail names the run and its time', before.html.includes(renders['before-start'][0].exercise.name) && before.html.includes('08:05'));
+truthy('every key row of the day is in the morning mail', renders['before-start'][0].rows.every((r) => before.html.includes(r.start)));
+check('the key rows are run, prep, freelance, dinner, lecture, walk', renders.thursday[0].rows.map((r) => r.id), ['am-move', 'block1', 'freelance', 'dinner', 'block2', 'walk']);
+truthy('the morning mail has the prep set with reasons', buildMorning(renders.weekday[0]).html.includes(renders.weekday[0].prepItems[0].reason.replace(/&/g, '&amp;')));
+truthy('tonight’s Apna College lecture is in the morning mail', renders.weekday[0].lecture.length === 1 && buildMorning(renders.weekday[0]).html.includes(renders.weekday[0].lecture[0].title));
+truthy('tonight’s protein dinner is in both mails', buildMorning(renders.weekday[0]).html.includes(renders.weekday[0].dinner.name) && buildEvening(renders.weekday[1]).html.includes(renders.weekday[1].dinner.name));
+truthy('Friday morning reads back Thursday’s line and numbers', buildMorning(renders.weekday[0]).html.includes('Two re-solves before 18:30') && buildMorning(renders.weekday[0]).html.includes('9,240 steps'));
+truthy('a rest morning says so', buildMorning(renders['rest-morning'][0]).html.includes('Rest morning'));
+truthy('the evening mail points at the 17:30 block', buildEvening(renders.thursday[1]).html.includes('17:30') && renders.thursday[1].nextMove.at === '17:30');
+truthy('the evening mail lists the walk and the lecture', buildEvening(renders.weekday[1]).html.includes('5 km walk') && buildEvening(renders.weekday[1]).html.includes('Lecture block'));
+truthy('the evening mail lists what was already done', buildEvening(renders.weekday[1]).html.includes('Done today'));
+truthy('Sunday evening names the weekly review time', buildEvening(renders.sunday[1]).subject.includes('20:15') && buildEvening(renders.sunday[1]).html.includes('20:15'));
+truthy('interview mode leads with a Phase 3 item', renders['interview-4d'][0].plan.planned.find((p) => !p.revision)?.item.phase === 3);
+check('interview mode pauses the lecture', renders['interview-4d'][0].lecture.length, 0);
 truthy('general phase renders a roadmap subject', buildMorning(renders.general[0]).subject.includes('Roadmap'));
 for (const [label, [m, e]] of Object.entries(renders)) {
   const mm = buildMorning(m);
   const ee = buildEvening(e);
-  truthy(`${label}: no "undefined" or "NaN" in either mail`, !/undefined|NaN/.test(mm.html + mm.text + ee.html + ee.text + mm.subject + ee.subject));
+  truthy(`${label}: no "undefined" or "NaN" in either mail`, !/undefined|NaN|null/.test(mm.html + mm.text + ee.html + ee.text + mm.subject + ee.subject));
+  truthy(`${label}: no "Amazon" in either subject`, !/amazon/i.test(mm.subject + ee.subject));
+  truthy(`${label}: subjects open with an emoji and fit a phone (${[...mm.subject].length} / ${[...ee.subject].length})`, /^\p{Extended_Pictographic}/u.test(mm.subject) && /^\p{Extended_Pictographic}/u.test(ee.subject) && [...mm.subject].length <= 70 && [...ee.subject].length <= 70);
   truthy(`${label}: no dark colour-scheme meta`, !mm.html.includes('color-scheme') && !ee.html.includes('color-scheme'));
   // Prose is the unindented lines; the indented ones are the timetable and item rows.
   const prose = (t) => t.split('\n').filter((l) => l && !l.startsWith('  ')).join(' ').split(/\s+/).length;
-  truthy(`${label}: both mails stay under 300 words of prose (${prose(mm.text)} / ${prose(ee.text)})`, prose(mm.text) < 300 && prose(ee.text) < 300);
+  truthy(`${label}: both mails stay short, under 120 words of prose (${prose(mm.text)} / ${prose(ee.text)})`, prose(mm.text) < 120 && prose(ee.text) < 120);
 }
 
 console.log(`\n${failures === 0 ? 'ALL MAIL CHECKS PASSED' : `${failures} MAIL CHECK(S) FAILED`}\n`);

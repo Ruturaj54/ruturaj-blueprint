@@ -17,7 +17,9 @@ import {
   type ExerciseSlot,
 } from '@/engine/schedule';
 import { exerciseSlotFor } from '@/engine/fitness';
+import { dayModeFor } from '@/engine/today-items';
 import { DAY_TYPE_LABEL, type DayType } from '@/data/routine';
+import { withDinner } from '@/data/meals';
 import { TimelineRow, type RowTime } from './TimelineRow';
 import { TIMETABLE_ANCHOR_ID, useTimetableReveal } from './timetableReveal';
 
@@ -41,10 +43,10 @@ export function DayTimetable({ items, date }: { items: SlotItem[]; date: string 
   useTimetableReveal(useCallback(() => setOpen(true), []));
 
   const live = view === todayType;
-  // A weekday preview from a weekend uses his default slot; weekends run in the morning by design.
-  const exercise: ExerciseSlot = live ? exerciseSlotFor(state, date) : view === 'weekday' ? state.settings.exerciseSlot : 'morning';
-  const schedule = buildSchedule(state.settings, items, view, exercise);
-  const slots = schedule.slots;
+  // A preview of another day type assumes the usual morning run.
+  const exercise: ExerciseSlot = live ? exerciseSlotFor(state, date) : 'morning';
+  const schedule = buildSchedule(state.settings, items, view, exercise, dayModeFor(state, date));
+  const slots = withDinner(schedule.slots, date, state.settings.walkTargetKm);
   const completed = new Set(state.days[date]?.completed ?? []);
 
   const now = live ? slotAt(slots, clock) : null;

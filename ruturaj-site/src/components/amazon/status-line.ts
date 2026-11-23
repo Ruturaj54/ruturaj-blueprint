@@ -11,7 +11,7 @@ export function formatDMY(iso: string): string {
 }
 
 /**
- * The three facts in one line, kept apart: what he did, what Amazon has
+ * The three facts in one line, kept apart: what he did, what the company has
  * confirmed (nothing), and what he is waiting for. Never a guess.
  */
 export function amazonStatusLine(state: AppState): string {
@@ -29,7 +29,7 @@ export function windowLine(state: AppState): string {
   if (!info.started) return 'Day 1 not started yet';
   if (info.phase === 'general') {
     const on = state.program.amazonCompletedOn;
-    return `Amazon phase marked complete${on ? ` on ${formatDMY(on)}` : ''} · the roadmap is today's programme`;
+    return `Surprise prep marked complete${on ? ` on ${formatDMY(on)}` : ''} · the roadmap is today's programme`;
   }
   const w = info.amazon;
   if (w.overrun) return 'Window over: extend or mark complete';

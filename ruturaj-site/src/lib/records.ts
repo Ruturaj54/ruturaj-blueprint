@@ -24,6 +24,27 @@ export interface DayLog {
   notes?: string;
   score?: number;
   blockers?: string;
+  /** His one-line plan for the next day, written in the 23:15 revise-and-plan block. */
+  tomorrow?: string;
+}
+
+/**
+ * One day's movement numbers, typed in from his phone or watch. Every field
+ * is optional: a day with only steps logged is still a logged day. Private:
+ * it lives only in the synced store, never in source.
+ */
+export interface ActivityLog {
+  /** Morning run distance. */
+  runKm?: number;
+  /** The evening walk in the society. */
+  walkKm?: number;
+  steps?: number;
+  /** All walking and running distance the phone counted for the day. */
+  distanceKm?: number;
+  /** Calories burned by moving (active energy). */
+  activeKcal?: number;
+  /** Everything burned in the day: active plus resting. */
+  totalKcal?: number;
 }
 
 export interface WorkAchievement {

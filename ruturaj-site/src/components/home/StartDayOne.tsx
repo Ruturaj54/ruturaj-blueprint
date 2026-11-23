@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Play, ArrowRight, Activity, BookOpen, Clock } from 'lucide-react';
+import { Play, ArrowRight, Activity, BookOpen, Clock, MonitorPlay } from 'lucide-react';
 import { Card, Button } from '@/components/ui/primitives';
 import { useAppState, useUpdateState } from '@/hooks/useAppState';
 import { todayISO, formatLong } from '@/engine/dates';
@@ -11,9 +11,10 @@ import { daySlots, dayTypeOf, formatHM } from '@/engine/schedule';
 const PREVIEW_ITEMS = 5;
 
 /**
- * The explicit Day 1 action. Shows what Day 1 actually holds (the Amazon set,
- * the exercise session, the study blocks) so pressing Start is an informed
- * decision, then calls `startProgram` and seeds today's plan snapshot.
+ * The explicit Day 1 action. Shows what Day 1 actually holds (the prep set,
+ * tonight's lecture, the run and the walk, the study blocks) so pressing Start
+ * is an informed decision, then calls `startProgram` and seeds today's plan
+ * snapshot.
  */
 export function StartDayOne({ navigate }: { navigate: (id: string) => void }) {
   const state = useAppState();
@@ -41,11 +42,13 @@ export function StartDayOne({ navigate }: { navigate: (id: string) => void }) {
       <p className="font-display text-[11px] font-bold uppercase tracking-[0.18em] text-amazon-ink">Start My Blueprint</p>
       <h1 className="mt-1 font-display text-[26px] font-extrabold leading-tight text-fg">Day 1 is {formatLong(today)}.</h1>
       <p className="mt-2 text-[14px] leading-relaxed text-muted">
-        Today becomes Day 1. Amazon is the only active study track until you mark it complete. History is kept.
+        Today becomes Day 1: surprise prep in the evening block, one Apna College module after dinner, a run every
+        morning and a {state.settings.walkTargetKm} km walk every night. Study for surprises, so the call never
+        catches you cold. History is kept.
       </p>
 
       <div className="mt-4 space-y-3">
-        <PreviewBlock icon={<BookOpen size={14} />} title={`Amazon Day 1 set · ${plan ? formatHM(plan.totalMinutes) : '—'}`}>
+        <PreviewBlock icon={<BookOpen size={14} />} title={`Prep set · ${plan ? formatHM(plan.totalMinutes) : '—'}`}>
           {preview.length === 0 ? (
             <p className="text-[13px] text-muted">No items fit today&rsquo;s study budget. Check the study blocks in Settings.</p>
           ) : (
@@ -61,12 +64,24 @@ export function StartDayOne({ navigate }: { navigate: (id: string) => void }) {
           )}
         </PreviewBlock>
 
-        <PreviewBlock icon={<Activity size={14} />} title="Exercise">
+        {work.lecture.length > 0 && (
+          <PreviewBlock icon={<MonitorPlay size={14} />} title="Tonight’s lecture · Apna College">
+            {work.lecture.map((m) => (
+              <p key={m.milestone.id} className="flex items-baseline gap-2 text-[13px]">
+                <span className="min-w-0 flex-1 text-fg">{m.milestone.title}</span>
+                <span className="tnum shrink-0 font-mono text-[11px] text-muted">{m.minutes}m</span>
+              </p>
+            ))}
+          </PreviewBlock>
+        )}
+
+        <PreviewBlock icon={<Activity size={14} />} title="Move">
           <p className="text-[13px] text-fg">
-            {session.slot === 'rest'
-              ? 'Rest day'
-              : `${session.slot === 'morning' ? 'Morning' : 'Evening'} · ${session.session.name}`}
+            {session.slot === 'rest' ? 'Rest morning' : `Morning · ${session.session.name}`}
             <span className="tnum text-muted"> · {session.session.minutes}m</span>
+          </p>
+          <p className="mt-1 text-[13px] text-fg">
+            Night · {state.settings.walkTargetKm} km walk in the society, calling home
           </p>
         </PreviewBlock>
 
@@ -89,8 +104,8 @@ export function StartDayOne({ navigate }: { navigate: (id: string) => void }) {
         <Play size={17} />
         Start My Blueprint — Day 1
       </Button>
-      <Button variant="ghost" className="mt-2 w-full" onClick={() => navigate('amazon')}>
-        See the full Amazon plan first
+      <Button variant="ghost" className="mt-2 w-full" onClick={() => navigate('prep')}>
+        See the full prep plan first
         <ArrowRight size={15} />
       </Button>
     </Card>

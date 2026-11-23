@@ -79,7 +79,7 @@ export function CoursePlan({ onOpen }: { onOpen: () => void }) {
             )}
             <p className="min-w-0 flex-1 text-[13px] text-muted">
               {!roadmapActive
-                ? 'Starts after the Amazon intensive. Roadmap day numbers count from the day you mark that phase complete.'
+                ? 'Apna College moves one module a night during surprise prep; the full roadmap starts when you mark prep complete.'
                 : gate.unlocked
                 ? gate.overridden
                   ? 'Advanced Mode unlocked by override, not by completion.'

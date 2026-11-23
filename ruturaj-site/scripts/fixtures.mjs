@@ -1,11 +1,15 @@
 // Fixture states for the mail scripts. Invented test data, never Ruturaj's.
 // Every state is valid for parseState: program.startedOn set, amazon.items
-// with doneOn/outcome/revisitOn, settings.settingsVersion 2.
+// with doneOn/outcome/revisitOn, settings.settingsVersion 3, dataEpoch 6.
 
 import { addDays, todayISO } from '../netlify/functions/_shared/engine.mjs';
 
 /** A Date for an IST wall-clock time on a date. */
 export const ist = (iso, hhmm) => new Date(`${iso}T${hhmm}:00+05:30`);
+
+/** The default send times (Settings): morning 07:45, evening 17:15. */
+export const AM = '07:45';
+export const PM = '17:15';
 
 /** Day 1 of the fixtures: Tuesday 27 Oct 2026. */
 export const DAY1 = '2026-10-27';
@@ -14,17 +18,19 @@ export const FRI = '2026-10-30'; // Day 4, two revisions due
 export const SAT = '2026-10-31'; // Day 5
 export const SUN = '2026-11-01'; // Day 6
 
-export function amazonState({ startedOn = DAY1, program = {}, amazon = {}, items = {}, days = {}, runs = [], settings = {}, exerciseOverrides = {} } = {}) {
+export function amazonState({ startedOn = DAY1, program = {}, amazon = {}, items = {}, days = {}, runs = [], activity = {}, settings = {}, exerciseOverrides = {}, foundation = {} } = {}) {
   return {
     version: 3,
-    dataEpoch: 5,
+    dataEpoch: 6,
     updatedAt: '2026-10-27T01:00:00.000Z',
-    program: { startedOn, phase: 'amazon', amazonWindowDays: 14, amazonExtendedDays: 0, ...program },
+    program: { startedOn, phase: 'amazon', amazonWindowDays: 28, amazonExtendedDays: 0, ...program },
     amazon: { stage: 'awaiting_invite', oaDate: '2026-10-19', items, extras: {}, solidTopics: [], ...amazon },
+    foundation,
     days,
     runs,
+    activity,
     exerciseOverrides,
-    settings: { settingsVersion: 2, ...settings },
+    settings: { settingsVersion: 3, ...settings },
   };
 }
 
@@ -38,13 +44,17 @@ export const LOGGED = {
   'd2-learn': { doneOn: addDays(DAY1, 1), revisits: 0 },
 };
 
+/** Thursday's numbers and his line for Friday, so Friday's morning mail can read them back. */
+const THU_ACTIVITY = { [THU]: { steps: 9240, distanceKm: 6.1, walkKm: 5.2, activeKcal: 512, totalKcal: 2240 } };
+const THU_DAY = { [THU]: { planned: [], completed: [], tomorrow: 'Two re-solves before 18:30, then the full 5 km' } };
+
 /** Before start: an empty blob, exactly what a fresh deploy sees. */
 export const beforeStart = () => ({});
 
-/** Day 4 (Friday) with two re-solves due. */
-export const weekday = () => amazonState({ items: LOGGED });
+/** Day 4 (Friday) with two re-solves due; Thursday's numbers and plan are logged. */
+export const weekday = () => amazonState({ items: LOGGED, activity: THU_ACTIVITY, days: THU_DAY });
 
-/** The same day at 17:00: the first two planned items logged, the run done. */
+/** The same day at 17:15: the first two planned items logged, the run done. */
 export function weekdayEvening(morningDigest) {
   const planned = morningDigest.items.map((i) => i.id);
   const [first, second] = morningDigest.items;
@@ -62,8 +72,9 @@ export function weekdayEvening(morningDigest) {
   }
   return amazonState({
     items,
-    days: { [FRI]: { planned, completed } },
-    runs: [{ id: 'wo-1', date: FRI, slot: 'morning', kind: 'run', minutes: 46, km: 4.1 }],
+    days: { ...THU_DAY, [FRI]: { planned, completed } },
+    runs: [{ id: 'wo-1', date: FRI, slot: 'morning', kind: 'run', minutes: 25, km: 3.1 }],
+    activity: { ...THU_ACTIVITY, [FRI]: { runKm: 3.1 } },
   });
 }
 
@@ -74,8 +85,8 @@ export const sunday = () => amazonState({ items: LOGGED });
 export const interviewSoon = () =>
   amazonState({ items: LOGGED, amazon: { stage: 'interview_scheduled', interviewDate: addDays(THU, 4) } });
 
-/** The evening run, for a day where the slot was moved. */
-export const eveningRun = () => amazonState({ items: LOGGED, exerciseOverrides: { [THU]: 'evening' } });
+/** A planned rest morning on Thursday. */
+export const restMorning = () => amazonState({ items: LOGGED, exerciseOverrides: { [THU]: 'rest' } });
 
 /**
  * General roadmap. buildPlan reads the real clock for its day number, so

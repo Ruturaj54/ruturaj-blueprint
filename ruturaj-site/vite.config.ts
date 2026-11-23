@@ -13,11 +13,14 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        // Libraries change far less often than the app. A separate chunk means
-        // a deploy only re-downloads the app code on his phone, not React too.
-        manualChunks: {
-          react: ['react', 'react-dom'],
-          motion: ['framer-motion'],
+        // Libraries and the prep tracker's JSON change far less often than the
+        // app. Separate chunks mean a deploy only re-downloads the app code on
+        // his phone, not React, Framer Motion or 280 curriculum items too.
+        manualChunks(id) {
+          if (/node_modules\/(react|react-dom|scheduler)\//.test(id)) return 'react';
+          if (/node_modules\/(framer-motion|motion-dom|motion-utils)\//.test(id)) return 'motion';
+          if (id.includes('/src/data/amazon/') && id.endsWith('.json')) return 'tracker';
+          return undefined;
         },
       },
     },

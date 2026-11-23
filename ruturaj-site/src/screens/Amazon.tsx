@@ -13,9 +13,10 @@ import { EvidenceCard } from '@/components/amazon/EvidenceCard';
 import { AmazonTabs } from '@/components/amazon/AmazonTabs';
 
 /**
- * The Amazon SDE-1 module: status, window, today's set, evidence, then the
- * reference tabs. Everything is composed from components/amazon so this
- * file stays a layout.
+ * Surprise Prep (the Amazon SDE-1 tracker, studied before any call arrives):
+ * window, today's set, evidence, the status of the call, then the reference
+ * tabs. Everything is composed from components/amazon so this file stays a
+ * layout.
  */
 export function Amazon({ navigate }: { navigate: (id: string) => void }) {
   const state = useAppState();
@@ -27,8 +28,10 @@ export function Amazon({ navigate }: { navigate: (id: string) => void }) {
       <AmazonHeader />
 
       <section>
-        <SectionTitle>Where it stands</SectionTitle>
-        <AmazonStatusCard />
+        <SectionTitle>Today</SectionTitle>
+        <Card>
+          <AmazonSet plan={plan} navigate={navigate} />
+        </Card>
       </section>
 
       <section>
@@ -37,15 +40,13 @@ export function Amazon({ navigate }: { navigate: (id: string) => void }) {
       </section>
 
       <section>
-        <SectionTitle>Today</SectionTitle>
-        <Card>
-          <AmazonSet plan={plan} navigate={navigate} />
-        </Card>
+        <SectionTitle>Evidence</SectionTitle>
+        <EvidenceCard summary={summary} />
       </section>
 
       <section>
-        <SectionTitle>Evidence</SectionTitle>
-        <EvidenceCard summary={summary} />
+        <SectionTitle>The surprise call</SectionTitle>
+        <AmazonStatusCard />
       </section>
 
       <div>

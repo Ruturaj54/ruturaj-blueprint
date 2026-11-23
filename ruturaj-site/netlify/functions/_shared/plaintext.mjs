@@ -3,91 +3,75 @@
 
 import { formatHM } from './engine.mjs';
 import { SITE_URL } from './mail.mjs';
-import { headerLine, leaveLine, nextMoveTitle } from './voice.mjs';
+import { morningHeadline, headerLine, eveningHeadline, leaveLine, nextMoveTitle } from './voice.mjs';
 
 const line = (s = '') => `${s}\n`;
 
-function timetable(rowsList) {
-  return rowsList.flatMap((r) => [
-    line(`  ${r.time}  ${r.label}${!r.items.length && r.note ? ` — ${r.note}` : ''}`),
-    ...r.items.map((i) => line(`      - ${i}`)),
-  ]);
+function dayRow(r, d) {
+  if (r.kind === 'move') return d.exercise.rest ? 'Rest morning · stretch' : `${d.exercise.name} · ${d.exercise.minutes} min${d.exercise.done ? ' · done' : ''}`;
+  if (r.kind === 'meal') return `${r.label} · about ${d.dinner.proteinG} g protein`;
+  if (r.lecture) return r.items.length ? `Lecture · ${r.items.map((i) => i.title).join(', ')}` : r.label;
+  return r.label;
 }
 
 export function morningText(d) {
   const q = d.quote;
-  const setTitle = d.phase === 'general' ? 'ROADMAP MISSIONS' : d.started ? 'AMAZON SET' : 'DAY 1 SET, PREVIEWED';
-  const e = d.exercise;
-  const exercise = e.rest
-    ? [line('  Rest day. Nothing to log this morning.')]
-    : [
-        line(`  ${e.moved ? `${e.title} · ${e.name}` : e.name} · ${e.minutes} min${e.done ? ' · already logged' : ''}`),
-        ...e.lines.map((l) => line(`  - ${l}`)),
-      ];
-  const cta = !d.started ? 'Start Day 1' : d.phase === 'general' ? 'Open today’s plan' : 'Open Amazon prep';
-  const href = `${SITE_URL}/#/${d.started && d.phase !== 'general' ? 'amazon' : 'home'}`;
+  const rows = d.rows.flatMap((r) => [
+    line(`  ${r.start}  ${dayRow(r, d)}`),
+    ...(r.study && !r.lecture
+      ? r.items.length
+        ? r.items.map((i, n) => line(`      ${n + 1}. ${i.title} (${[i.minutes, i.reason].filter(Boolean).join(' · ')})${i.url ? `\n         ${i.url}` : ''}`))
+        : [line('      nothing queued')]
+      : []),
+  ]);
 
   return [
-    line('MORNING, RUTURAJ.'),
+    line(morningHeadline(d).toUpperCase()),
     line(headerLine(d)),
     line(),
-    line(`"${q.line}"${q.by ? ` — ${q.by}${q.source ? `, ${q.source}` : ''}` : ''}`),
-    line(),
-    line("TODAY'S OBJECTIVE"),
-    line(`  ${d.objective}`),
-    d.started && d.phase !== 'general' && d.pace ? line(`  ${d.pace}`) : '',
-    line(),
-    line('MORNING EXERCISE'),
-    ...exercise,
-    line(),
-    line('YOUR DAY'),
-    ...timetable(d.timetable),
+    line('TODAY'),
+    ...rows,
     d.overflow ? line(`  ${d.overflow}`) : '',
     line(),
-    line(setTitle),
-    ...(d.items.length
-      ? d.items.map((i) =>
-          line(`  ${i.n}. ${i.title} (${formatHM(i.minutes)}${i.tier ? `, ${i.tier}` : ''}${i.carried ? ', carried' : ''}) — ${i.reason}${i.url ? `\n      ${i.url}` : ''}`),
-        )
-      : [line('  Nothing queued.')]),
+    ...(d.yesterday.plan ? [line(`Last night you wrote: "${d.yesterday.plan}"`)] : []),
+    ...(d.yesterday.activity ? [line(`Yesterday · ${d.yesterday.activity}`)] : []),
+    ...(d.yesterday.plan || d.yesterday.activity ? [line()] : []),
+    line(`TONIGHT COUNTS IF: ${d.win}`),
     line(),
-    line('BY TONIGHT'),
-    ...d.outcomes.map((o, i) => line(`  ${i + 1}. ${o}`)),
+    line(`"${q.line}"${q.by ? ` — ${q.by}` : ''}`),
     line(),
-    line(`${cta}: ${href}`),
+    line(`${d.started ? 'Open today’s plan' : 'Start Day 1'}: ${SITE_URL}/#/home`),
   ].join('');
 }
 
 export function eveningText(d) {
   const m = d.nextMove;
   let next;
-  if (!d.started) next = `  Day 1 is still waiting. Press Start in the app before ${m.at}; the first set is ${d.items.length} items, ${formatHM(d.minutes)}.`;
+  if (!d.started) next = `  Day 1 is still waiting. Press Start in the app; the first set is ${d.prepItems.length} items, ${formatHM(d.prepMinutes)}.`;
   else if (d.mode === 'interview-day') next = '  Interview day. Nothing new tonight: run the day-of checklist, read your one-page sheet, and stop early.';
-  else if (d.mode === 'done' && !d.items.length) next = '  Curriculum complete. Nothing is due tonight; re-solves appear when they fall due.';
-  else if (m.allDone) next = `  Today's set is already logged: ${d.dayLog.hits} of ${d.dayLog.planned} planned items closed.${m.item ? ` Next in order, only if you are fresh: ${m.item.title} (${formatHM(m.item.minutes)}).` : ''}`;
+  else if (m.allDone) next = `  Today's set is already logged: ${d.dayLog.hits} of ${d.dayLog.planned} planned items closed. The lecture and the walk still stand.`;
   else if (!m.item) next = '  Nothing is queued. Open the app and pull the next item forward.';
-  else next = `  ${m.item.title} (${formatHM(m.item.minutes)}${m.item.tier ? `, ${m.item.tier}` : ''}) — ${m.item.reason}`;
+  else next = `  ${m.item.title} (${formatHM(m.item.minutes)}) — ${m.item.reason}${m.item.url ? `\n  ${m.item.url}` : ''}`;
 
-  const done = [
-    ...d.doneToday.map((t) => line(`  + ${t}`)),
-    d.workout ? line(`  + ${d.workout}`) : '',
-  ];
-  const href = `${SITE_URL}/#/${d.started && d.phase !== 'general' ? 'amazon' : 'home'}`;
+  const tonight = d.tonight.flatMap((r) => [
+    line(`  ${r.time}  ${r.kind === 'meal' && r.label.startsWith('Protein dinner') ? `${r.label} · about ${d.dinner.proteinG} g protein` : r.label}${!r.items.length && r.note ? ` — ${r.note}` : ''}`),
+    ...r.items.slice(0, 3).map((i) => line(`      - ${i.title} · ${i.minutes}`)),
+  ]);
+  const done = [...(d.workout ? [line(`  + ${d.workout}`)] : []), ...d.doneToday.slice(0, 4).map((t) => line(`  + ${t}`))];
 
   return [
-    line(d.dayType === 'weekday' ? "THAT'S THE OFFICE DONE." : `${d.weekday.toUpperCase()} EVENING.`),
-    line(`Day ${d.started ? d.day : '1 is waiting'} · ${d.weekday} ${d.dateLabel}`),
+    line(eveningHeadline(d).toUpperCase()),
     line(leaveLine(d)),
     line(),
     line(nextMoveTitle(d).toUpperCase()),
     line(next),
     line(),
     line('TONIGHT'),
-    ...timetable(d.tonight),
+    ...tonight,
     line(),
-    ...(done.some(Boolean) ? [line('ALREADY DONE TODAY'), ...done, line()] : []),
-    line(d.evening.line),
+    ...(done.length ? [line('DONE TODAY'), ...done, line()] : []),
+    line(`${d.evening.line} Before bed: today's numbers and tomorrow's line.`),
     line(),
-    line(`Open tonight's plan: ${href}`),
+    line(`Open tonight's plan: ${SITE_URL}/#/home`),
   ].join('');
 }

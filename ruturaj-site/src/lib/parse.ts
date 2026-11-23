@@ -8,6 +8,7 @@ import {
   PREFERENCE_KEYS,
   defaultState,
   type AppState,
+  type ActivityLog,
   type AmazonItemLog,
   type AmazonStage,
   type Application,
@@ -63,11 +64,11 @@ function parseSettings(raw: unknown): Settings {
     if (typeof v !== typeof d) continue;
     if (typeof d === 'string' && HHMM.test(d) && !HHMM.test(v as string)) continue;
     if (typeof d === 'number' && !Number.isFinite(v as number)) continue;
-    if (k === 'exerciseSlot' && v !== 'morning' && v !== 'evening') continue;
     if (k === 'theme' && v !== 'light' && v !== 'dark' && v !== 'system') continue;
     (out as unknown as Record<string, unknown>)[k] = v;
   }
   out.officeStudyHours = Math.min(3, Math.max(0, out.officeStudyHours));
+  out.walkTargetKm = Math.min(20, Math.max(1, Math.round(out.walkTargetKm * 2) / 2));
   out.dsaTargetPerDay = Math.min(10, Math.max(1, Math.round(out.dsaTargetPerDay)));
   out.deepWorkMinutes = Math.min(180, Math.max(10, Math.round(out.deepWorkMinutes)));
   if (!out.name.trim()) out.name = DEFAULT_SETTINGS.name;
@@ -82,6 +83,7 @@ function parseDays(raw: unknown): Record<string, DayLog> {
     const closedAt = str(v.closedAt);
     const notes = str(v.notes);
     const blockers = str(v.blockers);
+    const tomorrow = str(v.tomorrow);
     const score = num(v.score);
     out[date] = {
       planned: strings(v.planned),
@@ -89,6 +91,7 @@ function parseDays(raw: unknown): Record<string, DayLog> {
       ...(closedAt ? { closedAt } : {}),
       ...(notes ? { notes } : {}),
       ...(blockers ? { blockers } : {}),
+      ...(tomorrow ? { tomorrow } : {}),
       ...(score !== undefined ? { score } : {}),
     };
   }
@@ -132,6 +135,38 @@ function parseAmazonItems(raw: unknown): Record<string, AmazonItemLog> {
       revisits: num(v.revisits) ?? 0,
       ...(history.length ? { history } : {}),
     };
+  }
+  return out;
+}
+
+/** Upper bounds that no real day crosses; anything above is a typo and is dropped. */
+const ACTIVITY_LIMITS: Record<keyof ActivityLog, { max: number; integer: boolean }> = {
+  runKm: { max: 100, integer: false },
+  walkKm: { max: 100, integer: false },
+  steps: { max: 200_000, integer: true },
+  distanceKm: { max: 150, integer: false },
+  activeKcal: { max: 10_000, integer: true },
+  totalKcal: { max: 15_000, integer: true },
+};
+
+/** Clamps one activity number: positive, below its bound, rounded the way it is shown. */
+export function cleanActivityValue(key: keyof ActivityLog, v: unknown): number | undefined {
+  const n = num(v);
+  const limit = ACTIVITY_LIMITS[key];
+  if (n === undefined || n <= 0 || n > limit.max) return undefined;
+  return limit.integer ? Math.round(n) : Math.round(n * 100) / 100;
+}
+
+function parseActivity(raw: unknown): Record<string, ActivityLog> {
+  const out: Record<string, ActivityLog> = {};
+  for (const [date, v] of Object.entries(rec<unknown>(raw))) {
+    if (!ISO.test(date) || !isObj(v)) continue;
+    const log: ActivityLog = {};
+    for (const key of Object.keys(ACTIVITY_LIMITS) as Array<keyof ActivityLog>) {
+      const clean = cleanActivityValue(key, v[key]);
+      if (clean !== undefined) log[key] = clean;
+    }
+    if (Object.keys(log).length) out[date] = log;
   }
   return out;
 }
@@ -200,12 +235,13 @@ export function parseState(raw: unknown): AppState {
     dsa: objs<DsaAttempt>(raw.dsa).filter((a) => typeof a.problem === 'string' && iso(a.date)),
     deepWork: objs<DeepWorkSession>(raw.deepWork).filter((d) => iso(d.date) && typeof d.actualMinutes === 'number'),
     runs: parseWorkouts(raw.runs),
+    // Only rest days survive: runs are morning-only now, so an old 'evening' move means a normal morning.
     exerciseOverrides: Object.fromEntries(
       Object.entries(rec<unknown>(raw.exerciseOverrides)).filter(
-        (e): e is [string, 'morning' | 'evening' | 'rest'] =>
-          ISO.test(e[0]) && (e[1] === 'morning' || e[1] === 'evening' || e[1] === 'rest'),
+        (e): e is [string, 'rest'] => ISO.test(e[0]) && e[1] === 'rest',
       ),
     ),
+    activity: parseActivity(raw.activity),
     work: objs<WorkAchievement>(raw.work).filter((w) => typeof w.raw === 'string'),
     applications: objs<Application>(raw.applications).filter((a) => typeof a.company === 'string'),
     health: {

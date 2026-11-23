@@ -37,9 +37,8 @@ export function dayScore(state: AppState, date: string): number | undefined {
 }
 
 /** Consecutive days scoring 50 or better, counting back from yesterday. */
-export function executionStreak(state: AppState): number {
+export function executionStreak(state: AppState, today: string = todayISO()): number {
   let streak = 0;
-  const today = todayISO();
   const startedOn = state.program.startedOn ?? today;
   for (let i = 0; i < 365; i += 1) {
     const date = addDays(today, -i);

@@ -1,15 +1,14 @@
 import { useEffect } from 'react';
 import * as storage from '@/lib/storage';
 import { useAppState } from './useAppState';
-import { buildPlan } from '@/engine/planner';
-import { buildAmazonDay } from '@/engine/amazon-plan';
+import { todayWork } from '@/engine/today-items';
 import { todayISO } from '@/engine/dates';
 
 /**
  * Captures today's plan the first time the app is opened each day, so the
- * day can be scored against what was actually planned. Phase-aware: during
- * the Amazon intensive the plan is the Amazon set; afterwards it is the
- * roadmap's missions. Nothing is written before Day 1 is started, and nothing
+ * day can be scored against what was actually planned. Phase-aware through
+ * todayWork: during surprise prep the plan is the prep set plus the lecture;
+ * afterwards it is the roadmap's missions. Nothing is written before Day 1 is started, and nothing
  * is written before the first server pull so a fresh device cannot overwrite
  * real progress with an empty plan.
  */
@@ -30,8 +29,7 @@ export function useDaySnapshot(): void {
       const latest = storage.getState();
       if (!latest.program.startedOn || today < latest.program.startedOn) return;
       if ((latest.days[today]?.planned.length ?? 0) > 0) return;
-      const ids =
-        latest.program.phase === 'amazon' ? buildAmazonDay(latest, today).plannedIds : buildPlan(latest).plannedIds;
+      const ids = todayWork(latest, today).plannedIds;
       if (ids.length === 0) return;
       storage.update((draft) => {
         const log = (draft.days[today] ??= { planned: [], completed: [] });

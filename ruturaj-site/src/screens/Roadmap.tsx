@@ -24,7 +24,7 @@ const ADVANCED_INTRO =
   'Docker, Kubernetes, Jenkins and CI/CD, Linux, networking and cloud live in the DevOps and Systems tracks, and they build on the pipeline ownership you already have rather than starting from nothing. AI, DSA and Core CS carry the interview weight; Java and React stay capped at P2/P3 so they cannot crowd those out.';
 
 const PHASES_INTRO =
-  'The general roadmap after Amazon, in four parts. P1 is the Foundation Gate (Phase A); P2 to P4 are the advanced tracks (Phase B), ending with applications going out in waves.';
+  'The general roadmap after surprise prep, in four parts. P1 is the Foundation Gate (Phase A); P2 to P4 are the advanced tracks (Phase B), ending with applications going out in waves.';
 
 function TabIntro({ title, body }: { title: string; body: string }) {
   return (

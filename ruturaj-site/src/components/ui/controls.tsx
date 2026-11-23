@@ -133,7 +133,7 @@ export function Toggle({ checked, onChange, label, hint }: { checked: boolean; o
         <motion.span
           animate={{ x: checked ? 22 : 2 }}
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-          className="absolute top-[3px] size-[22px] rounded-full bg-white shadow-card"
+          className="absolute start-0 top-[3px] size-[22px] rounded-full bg-white shadow-card"
         />
       </button>
     </label>

@@ -19,14 +19,14 @@ type Tab = 'overview' | 'amazon' | 'dsa' | 'week';
 
 const TABS = [
   { id: 'overview', label: 'Overview' },
-  { id: 'amazon', label: 'Amazon' },
+  { id: 'amazon', label: 'Prep' },
   { id: 'dsa', label: 'DSA' },
   { id: 'week', label: 'Week' },
 ] as const satisfies ReadonlyArray<{ id: Tab; label: string }>;
 
 /**
  * Progress is evidence, not a score: what got done against what was planned,
- * what the Amazon curriculum records, where DSA is weak, and the week review.
+ * what the prep curriculum records, where DSA is weak, and the week review.
  */
 export function Progress({ navigate }: { navigate: (id: string) => void }) {
   const [tab, setTab] = useState<Tab>('overview');
@@ -76,10 +76,10 @@ function AmazonTab({ navigate }: { navigate: (id: string) => void }) {
           action={
             <button
               type="button"
-              onClick={() => navigate('amazon')}
+              onClick={() => navigate('prep')}
               className="inline-flex min-h-[32px] items-center gap-1 text-[12px] font-medium text-amazon"
             >
-              Open Amazon
+              Open prep
               <ArrowUpRight size={13} />
             </button>
           }

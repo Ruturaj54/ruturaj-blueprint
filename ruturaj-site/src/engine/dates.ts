@@ -17,8 +17,12 @@ const MS_PER_DAY = 86_400_000;
  */
 export const DAY_START_HOUR = 4;
 
-/** The date he wants to be applying systematically from. */
-export const TARGET_DATE = '2027-03-10';
+/**
+ * The date he wants to be ready to switch by: the end of February 2027, about
+ * three months from the 23 Nov 2026 restart. The general roadmap's phases
+ * scale to the days between its Day 1 and this date.
+ */
+export const TARGET_DATE = '2027-02-28';
 
 const pad = (n: number): string => String(n).padStart(2, '0');
 

@@ -3,7 +3,7 @@ import { useAppState } from '@/hooks/useAppState';
 import { Card } from '@/components/ui/primitives';
 import { amazonStatusLine, windowLine } from './status-line';
 
-/** The orange identity band: the one place the Amazon colour leads. */
+/** The orange identity band: the one place the prep colour leads. */
 export function AmazonHeader() {
   const state = useAppState();
   return (
@@ -13,7 +13,8 @@ export function AmazonHeader() {
           <Target size={22} />
         </span>
         <div className="min-w-0">
-          <h1 className="font-display text-[22px] font-extrabold leading-tight tracking-tight text-amazon-ink">Amazon SDE-1</h1>
+          <h1 className="font-display text-[22px] font-extrabold leading-tight tracking-tight text-amazon-ink">Surprise Prep</h1>
+          <p className="mt-0.5 text-[13px] font-medium leading-snug text-amazon-ink">Study for surprises: be ready before the call, not after it.</p>
           <p className="mt-1 text-[13px] leading-snug text-amazon-ink/80">{amazonStatusLine(state)}</p>
           <p className="tnum mt-1.5 text-[13px] font-semibold text-amazon-ink">{windowLine(state)}</p>
         </div>

@@ -56,7 +56,7 @@ export function ProgramSettings() {
                 label="Make today Day 1"
                 confirmLabel="Yes, today is Day 1"
                 tone="accent"
-                explain={`Day 1 becomes ${formatLong(today)} and the Amazon window recounts from it. Every tick and log you already made stays.`}
+                explain={`Day 1 becomes ${formatLong(today)} and the prep window recounts from it. Every tick and log you already made stays.`}
                 onConfirm={() => update((draft) => setDayOne(draft, today))}
               />
             </div>
@@ -70,12 +70,12 @@ export function ProgramSettings() {
           label="Current phase"
           value={
             <Chip tone={info.phase === 'amazon' ? 'amazon' : 'accent'}>
-              {info.phase === 'amazon' ? 'Amazon intensive' : 'General roadmap'}
+              {info.phase === 'amazon' ? 'Surprise prep' : 'General roadmap'}
             </Chip>
           }
         />
         <Readout
-          label="Amazon completed on"
+          label="Prep completed on"
           value={program.amazonCompletedOn ? formatShort(program.amazonCompletedOn) : 'Not yet'}
           tone={program.amazonCompletedOn ? 'default' : 'muted'}
         />
@@ -84,7 +84,7 @@ export function ProgramSettings() {
           value={
             program.generalStartedOn
               ? `${formatShort(program.generalStartedOn)} · Day ${info.general.day} of ${info.general.totalDays}`
-              : 'Set when the Amazon phase is marked complete'
+              : 'Set when surprise prep is marked complete'
           }
           tone={program.generalStartedOn ? 'default' : 'muted'}
         />
@@ -98,7 +98,7 @@ export function ProgramSettings() {
             icon={<Flag size={15} />}
             label="Start Day 1"
             confirmLabel="Yes, today is Day 1"
-            explain={`Day 1 becomes today, ${formatLong(today)}. The Amazon window counts from it and the daily mails have a real day to report. Only a full reset undoes this.`}
+            explain={`Day 1 becomes today, ${formatLong(today)}. The prep window counts from it and the daily mails have a real day to report. Only a full reset undoes this.`}
             onConfirm={() => update((draft) => startProgram(draft, today))}
           />
         )}
@@ -106,10 +106,10 @@ export function ProgramSettings() {
         {info.started && info.phase === 'amazon' && (
           <ConfirmAction
             icon={<CheckCircle2 size={15} />}
-            label="Mark Amazon phase complete"
-            confirmLabel="Yes, complete the Amazon phase"
+            label="Mark surprise prep complete"
+            confirmLabel="Yes, complete surprise prep"
             tone="accent"
-            explain="From today the general roadmap is the daily programme, with its own Day 1. Nothing is deleted: every Amazon log, tick and note stays, and you can reactivate the phase any time."
+            explain="From today the general roadmap is the daily programme, with its own Day 1. Nothing is deleted: every prep log, tick and note stays, and you can reactivate it any time."
             onConfirm={() => update((draft) => completeAmazonPhase(draft))}
           />
         )}
@@ -117,10 +117,10 @@ export function ProgramSettings() {
         {info.started && info.phase === 'general' && (
           <ConfirmAction
             icon={<RotateCcw size={15} />}
-            label="Reactivate Amazon"
-            confirmLabel="Yes, reactivate Amazon"
+            label="Reactivate surprise prep"
+            confirmLabel="Yes, reactivate prep"
             tone="amazon"
-            explain="Amazon goes back to being the daily priority, for example when the interview invitation lands. Nothing is deleted: the roadmap keeps its Day 1 and every tick, and its day count carries on."
+            explain="Prep goes back to being the daily priority, for example when the interview invitation lands. Nothing is deleted: the roadmap keeps its Day 1 and every tick, and its day count carries on."
             onConfirm={() => update((draft) => reactivateAmazonPhase(draft))}
           />
         )}

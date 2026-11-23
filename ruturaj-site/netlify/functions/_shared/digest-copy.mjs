@@ -1,10 +1,10 @@
-// The derived pieces both mails say: item rows with reasons, the exercise
-// card, the timetable, tonight's blocks, the objective and the "by tonight"
-// outcomes. Pure functions over engine output; digest.mjs assembles them.
+// The derived pieces both mails say: item rows with reasons, the run, the
+// day's key rows, tonight's blocks, the next move and the closing line. Pure
+// functions over engine output; digest.mjs assembles them.
 
 import { formatHM, formatShort, lcUrl, amazonItem, taskById, FOUNDATION_SUBJECTS, AMAZON_DAYOF, EVENING_LINES } from './engine.mjs';
 
-const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
+export const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
 
 /** The first sentence of a longer note, for one-line summaries. */
 export const firstSentence = (s) => {
@@ -28,9 +28,11 @@ export function itemViews(work, completed) {
   const missions = new Map(
     (work.general?.missions ?? []).map((m) => [m.kind === 'foundation' ? m.milestone.id : m.scored.task.id, m]),
   );
+  const lectures = new Map((work.lecture ?? []).map((m) => [m.milestone.id, m]));
   return work.items.map((i, idx) => {
     const p = planned.get(i.id);
     const m = missions.get(i.id);
+    const l = lectures.get(i.id);
     return {
       n: idx + 1,
       id: i.id,
@@ -39,10 +41,11 @@ export function itemViews(work, completed) {
       kind: i.kind,
       context: i.context ?? '',
       tier: p ? p.tier : m?.kind === 'task' ? m.scored.task.priority : null,
-      reason: p ? p.reason : generalReason(i, m, work.general),
+      reason: p ? p.reason : l ? `Apna College · ${l.subject.name}, next in course order` : generalReason(i, m, work.general),
       url: p && p.item.type === 'lc' && p.item.slug ? lcUrl(p.item.slug) : null,
       revision: Boolean(p?.revision),
-      itemKind: p ? (p.revision ? 'Revision' : p.item.kind) : i.kind,
+      lecture: Boolean(l),
+      itemKind: p ? (p.revision ? 'Revision' : p.item.kind) : l ? 'Lecture' : i.kind,
       done: completed.has(i.id),
       carried: Boolean(i.carried),
     };
@@ -65,74 +68,96 @@ export function titleForId(id, items) {
   return id;
 }
 
-/* ---------- exercise ---------------------------------------------------------- */
+/* ---------- the run ------------------------------------------------------------- */
 
 export function exerciseCard(today, schedule) {
   const { session, slot, logged } = today;
   const done = Boolean(logged);
-  if (slot === 'rest') return { rest: true, moved: null, title: 'Rest day', name: session.name, lines: [], minutes: 0, done };
-  const parts = session.parts.length > 3 ? session.parts.filter((p) => p.id !== 'cool') : session.parts;
-  const lines = parts.slice(0, 3).map((p) => `${p.label} · ${p.minutes}m — ${p.detail}`);
-  const moved = slot === 'evening' ? (schedule.slots.find((s) => s.id === 'pm-move')?.start ?? null) : null;
+  const at = schedule.slots.find((s) => s.kind === 'move')?.start ?? null;
+  if (slot === 'rest') return { rest: true, at, title: 'Rest morning', name: session.name, minutes: 0, done };
+  return { rest: false, at, title: session.name, name: session.name, minutes: session.minutes, done };
+}
+
+/* ---------- rows ------------------------------------------------------------------- */
+
+const shortTitle = (s, max = 44) => (s.length > max ? `${s.slice(0, max - 1).trimEnd()}…` : s);
+
+const minutesLabel = (i) => (i.partial && i.totalMinutes ? `${formatHM(i.minutes)} of ${formatHM(i.totalMinutes)}` : formatHM(i.minutes));
+
+/** One study item under its block: title, minutes, the planner's reason, the LeetCode link. */
+function slotItem(i, views) {
+  const v = views.find((x) => x.id === i.id);
   return {
-    rest: false,
-    moved,
-    title: moved ? `Run moved to ${moved} this evening` : session.name,
-    name: session.name,
-    lines,
-    minutes: session.minutes,
-    done,
+    id: i.id,
+    title: shortTitle(i.title, 52),
+    minutes: minutesLabel(i),
+    reason: v?.lecture ? null : v?.reason ?? null,
+    url: v?.url ?? null,
+    done: Boolean(v?.done),
   };
 }
 
-/* ---------- timetable and tonight ----------------------------------------------- */
+const KEY_KINDS = new Set(['move', 'walk']);
+const HIDDEN_STUDY = new Set(['office', 'review']);
+const FREELANCE = new Set(['freelance', 'sat-freelance', 'sun-freelance']);
 
-/** Timetable rows stay compact; the full title is in the numbered set. */
-const shortTitle = (s, max = 44) => (s.length > max ? `${s.slice(0, max - 1).trimEnd()}…` : s);
+/** The rows worth a line in the morning: the run, every study block with work, freelance, dinner, the walk. */
+export function dayPlanRows(slots, views, dinnerIds) {
+  return slots
+    .filter(
+      (s) =>
+        KEY_KINDS.has(s.kind) ||
+        dinnerIds.has(s.id) ||
+        FREELANCE.has(s.id) ||
+        (s.kind === 'study' && !HIDDEN_STUDY.has(s.study) && s.capacity > 0),
+    )
+    .map((s) => ({
+      id: s.id,
+      kind: s.kind,
+      study: s.kind === 'study',
+      lecture: s.study === 'lecture',
+      start: s.start,
+      end: s.end,
+      label: s.label,
+      items: s.items.map((i) => slotItem(i, views)),
+    }));
+}
 
-const itemLabel = (i) =>
-  `${shortTitle(i.title)} · ${i.partial && i.totalMinutes ? `${formatHM(i.minutes)} of ${formatHM(i.totalMinutes)}` : formatHM(i.minutes)}`;
+const NOT_TONIGHT = new Set(['settle', 'office']);
 
-const row = (s) => ({
-  id: s.id,
-  kind: s.kind,
-  study: Boolean(s.study) && s.capacity > 0,
-  start: s.start,
-  end: s.end,
-  time: `${s.start}–${s.end}`,
-  label: s.label,
-  items: s.items.map(itemLabel),
-});
-
-/** One row per slot, study items under their slot, never more than 12 rows. */
-export function timetableRows(schedule) {
-  let slots = schedule.slots;
-  if (slots.length > 12) slots = slots.filter((s) => s.kind !== 'sleep');
-  return slots.slice(0, 12).map(row);
+/** Every block still ahead at the evening mail time, with its open items. */
+export function tonightRows(slots, views, eveningTime) {
+  return slots
+    .filter((s) => s.kind !== 'sleep' && !NOT_TONIGHT.has(s.id))
+    .filter((s) => s.end > eveningTime || s.end < s.start)
+    .map((s) => {
+      const items = s.items.map((i) => slotItem(i, views));
+      const open = items.filter((i) => !i.done);
+      const note =
+        s.study === 'review'
+          ? 'log today’s numbers, write tomorrow’s line'
+          : s.kind === 'study' && s.capacity > 0 && !items.length
+            ? 'nothing queued'
+            : s.kind === 'study' && items.length && !open.length
+              ? 'all done'
+              : null;
+      return {
+        id: s.id,
+        kind: s.kind,
+        study: s.kind === 'study' && s.capacity > 0,
+        start: s.start,
+        end: s.end,
+        time: `${s.start}–${s.end}`,
+        label: s.label,
+        items: open,
+        note,
+      };
+    });
 }
 
 export function overflowNote(schedule) {
   if (!schedule.overflow.length) return null;
   return `Continues tomorrow: ${schedule.overflow.map((i) => `${i.title} (${formatHM(i.minutes)} left)`).join(' · ')}`;
-}
-
-const NOT_TONIGHT = new Set(['settle', 'settle-short']);
-
-/** The blocks still ahead at the evening mail time, with their items. */
-export function tonightRows(schedule, eveningTime) {
-  return schedule.slots
-    .filter((s) => s.kind !== 'sleep' && s.kind !== 'work' && !NOT_TONIGHT.has(s.id))
-    .filter((s) => s.end > eveningTime || s.end < s.start)
-    .map((s) => {
-      const r = row(s);
-      const note =
-        s.id === 'block3' && !r.items.length
-          ? 'optional, only if you are fresh'
-          : r.study && !r.items.length
-            ? 'nothing queued'
-            : null;
-      return { ...r, note };
-    });
 }
 
 export function nextMoveFor(open, tonight, eveningTime, dayLog) {
@@ -142,46 +167,34 @@ export function nextMoveFor(open, tonight, eveningTime, dayLog) {
   return { at, item: open[0] ?? null, allDone };
 }
 
-/* ---------- objective, outcomes, evening line ------------------------------------- */
+/* ---------- objective, win condition, evening line ------------------------------------ */
 
 export function objectiveFor(d) {
-  const n = plural(d.items.length, 'item');
-  const hm = formatHM(d.minutes);
+  const n = plural(d.prepItems.length, 'item');
+  const hm = formatHM(d.prepMinutes);
   if (!d.started) return `Day 1 is waiting. Press Start and today becomes Day 1: ${d.focus}, ${n}, ${hm}.`;
-  if (d.phase === 'general') return `${d.leadTitle}: ${n}, ${hm}.`;
-  if (d.mode === 'interview-day') return `Interview day. No new problems; the day-of checklist (${AMAZON_DAYOF.length} items) is on the Amazon tab.`;
-  if (d.mode === 'done') return d.items.length ? `Curriculum complete. ${n} of revision, ${hm}.` : 'Curriculum complete. Nothing is due today.';
+  if (d.phase === 'general') return `${d.leadTitle}: ${plural(d.items.length, 'item')}, ${formatHM(d.minutes)}.`;
+  if (d.mode === 'interview-day') return `Interview day. No new problems; the day-of checklist (${AMAZON_DAYOF.length} items) is in Surprise Prep.`;
+  if (d.mode === 'done') return d.prepItems.length ? `Curriculum complete. ${n} of revision, ${hm}.` : 'Curriculum complete. Nothing is due today.';
   if (d.mode === 'interview') return `${plural(d.interview.daysTo, 'day')} to the interview. ${d.focus}: ${n}, ${hm}.`;
   return `${d.focus}: ${n}, ${hm}.`;
 }
 
-export function paceLine(plan) {
-  if (!plan || plan.mode === 'interview-day') return null;
-  return `Tier floor ${plan.tierFloor} · ${firstSentence(plan.pace.note)}`;
-}
+const joinAnd = (xs) => (xs.length <= 1 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
 
-/** Two measurable outcomes for tonight, derived from what is actually planned. */
-export function outcomesFor(d) {
-  const out = [];
-  if (!d.started) out.push('Day 1 started in the app, so tomorrow’s mail is Day 2');
-  if (d.phase === 'general') {
-    const missions = d.items.filter((i) => i.kind !== 'dsa').length;
-    if (missions) out.push(`${plural(missions, 'mission')} closed`);
-    const dsa = d.generalPlan?.dsa?.target ?? 0;
-    if (dsa) out.push(`${plural(dsa, 'DSA problem')} logged with solve times`);
-  } else {
-    const problems = d.items.filter((i) => i.itemKind === 'Problem').length;
-    const revisions = d.items.filter((i) => i.revision).length;
-    const lp = d.items.filter((i) => i.itemKind === 'LP').length;
-    const mocks = d.items.filter((i) => i.itemKind === 'Mock').length;
-    if (problems === 1) out.push('1 problem logged with an outcome');
-    if (problems > 1) out.push(`${problems} problems logged with an outcome, at least ${Math.ceil(problems / 2)} solved without a hint`);
-    if (revisions) out.push(`${plural(revisions, 're-solve')} passed cold`);
-    if (lp) out.push(`${plural(lp, 'LP story', 'LP stories')} written and said out loud`);
-    if (mocks) out.push(`${plural(mocks, 'mock')} done under time`);
-  }
-  if (out.length < 2) out.push('Every planned item logged, done or not');
-  return out.slice(0, 2);
+/** The one measurable line that makes tonight count, from what is actually planned. */
+export function winConditionFor(d) {
+  if (!d.started) return 'Day 1 started in the app, so tomorrow’s mail is Day 2';
+  const pool = d.phase === 'general' ? d.items : d.prepItems;
+  const problems = pool.filter((i) => i.itemKind === 'Problem').length;
+  const revisions = pool.filter((i) => i.revision).length;
+  const bits = [];
+  if (problems > 1) bits.push(`${problems} problems (${Math.ceil(problems / 2)}+ without a hint)`);
+  if (problems === 1) bits.push('1 problem');
+  if (revisions) bits.push(plural(revisions, 'cold re-solve'));
+  const lecture = d.lecture?.length ? ', plus the lecture' : '';
+  if (!bits.length) return `every planned item logged, done or not${lecture}`;
+  return `${joinAnd(bits)} logged with an outcome${lecture}`;
 }
 
 /** Strong, partial or empty, from the day log; the index varies by day number. */

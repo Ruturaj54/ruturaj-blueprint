@@ -38,7 +38,7 @@ export function AmazonSettings() {
 
   return (
     <Card>
-      <p className="mb-1.5 text-[12px] font-medium text-muted">Intensive window</p>
+      <p className="mb-1.5 text-[12px] font-medium text-muted">Prep window</p>
       <Segmented
         value={String(program.amazonWindowDays) as WindowChoice}
         options={WINDOWS}
@@ -132,8 +132,8 @@ export function AmazonSettings() {
 
       <div className="mt-4">
         <Banner tone="default" icon={<Info size={14} className="text-muted" />}>
-          Amazon publishes no timeline after the assessment; the date here is only what the recruiter
-          actually sent.
+          The company publishes no timeline after the assessment; the date here is only what the recruiter
+          actually sent. Until then, prep runs as study for surprises.
         </Banner>
       </div>
     </Card>

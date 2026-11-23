@@ -8,13 +8,12 @@ import {
   itemViews,
   titleForId,
   exerciseCard,
-  timetableRows,
+  dayPlanRows,
   overflowNote,
   tonightRows,
   nextMoveFor,
   objectiveFor,
-  paceLine,
-  outcomesFor,
+  winConditionFor,
   eveningLineFor,
 } from './digest-copy.mjs';
 
@@ -47,6 +46,19 @@ function workoutLabel(logged) {
   return `${kind} · ${logged.minutes} min${logged.km ? ` · ${logged.km} km` : ''}`;
 }
 
+const startOf = (slots, pred) => slots.find(pred)?.start ?? null;
+
+const toMin = (hhmm) => {
+  const [h, m] = String(hhmm).split(':').map(Number);
+  return (h || 0) * 60 + (m || 0);
+};
+
+/** Minutes of his own time between getting home and the first block (0 on weekends). */
+const ownTimeOf = (slots) => {
+  const s = slots.find((x) => x.id === 'settle');
+  return s ? Math.max(0, toMin(s.end) - toMin(s.start)) : 0;
+};
+
 /**
  * The full digest for `now`. Always returns a usable object: an empty blob
  * means "Day 1 is waiting", never a broken mail.
@@ -59,11 +71,12 @@ export function buildDigest(raw, now = new Date()) {
   E.configureMission(state.program.phase === 'general' ? state.program.generalStartedOn : null);
 
   const today = E.todayISO(now);
+  const yesterday = E.addDays(today, -1);
   const info = E.programInfo(state, today);
   const work = E.todayWork(state, today);
   const dayType = E.dayTypeOf(today);
-  const exerciseSlot = E.exerciseSlotFor(state, today);
-  const schedule = E.buildSchedule(state.settings, work.items, dayType, exerciseSlot);
+  const schedule = E.buildSchedule(state.settings, work.items, dayType, E.exerciseSlotFor(state, today), E.dayModeFor(state, today));
+  const slots = E.withDinner(schedule.slots, today, state.settings.walkTargetKm);
   const session = E.sessionFor(state, today);
   const plan = work.amazon ?? null;
   const settings = state.settings;
@@ -71,6 +84,7 @@ export function buildDigest(raw, now = new Date()) {
   const log = state.days[today] ?? null;
   const completed = new Set(log?.completed ?? []);
   const items = itemViews(work, completed);
+  const prepItems = work.phase === 'general' ? items : items.filter((i) => !i.lecture);
   const open = items.filter((i) => !i.done);
   const dayLog = log
     ? {
@@ -81,7 +95,7 @@ export function buildDigest(raw, now = new Date()) {
       }
     : null;
 
-  // Ticks from the day log first, then Amazon logs the app did not tick (a
+  // Ticks from the day log first, then prep logs the app did not tick (a
   // re-solve keeps its original doneOn, so it only ever appears once).
   const doneToday = [
     ...[...completed].map((id) => titleForId(id, items)),
@@ -90,12 +104,14 @@ export function buildDigest(raw, now = new Date()) {
       .map((i) => i.title),
   ].filter((t, i, all) => all.indexOf(t) === i);
 
-  const timetable = timetableRows(schedule);
-  const tonight = tonightRows(schedule, settings.eveningEmailTime);
+  const tonight = tonightRows(slots, items, settings.eveningEmailTime);
   const interview =
     plan && plan.daysToInterview !== null && state.amazon.interviewDate
       ? { date: state.amazon.interviewDate, daysTo: plan.daysToInterview }
       : null;
+  const yesterdayActivity = E.activityFor(state, yesterday);
+  const todayActivity = E.activityFor(state, today);
+  const walkSlot = slots.find((s) => s.kind === 'walk') ?? null;
 
   const d = {
     today,
@@ -121,32 +137,47 @@ export function buildDigest(raw, now = new Date()) {
     curriculumDay: plan?.planned.find((p) => !p.revision)?.item.day ?? null,
     minutes: work.minutes,
     items,
+    prepItems,
+    prepMinutes: prepItems.reduce((n, i) => n + i.minutes, 0),
+    lecture: (work.lecture ?? []).map((m) => ({ title: m.milestone.title, minutes: m.minutes, subject: m.subject.name })),
     open,
     plan,
     generalPlan: work.general ?? null,
     schedule,
-    timetable,
+    rows: dayPlanRows(slots, items, E.DINNER_SLOT_IDS),
     overflow: overflowNote(schedule),
     tonight,
     nextMove: nextMoveFor(open, tonight, settings.eveningEmailTime, dayLog),
-    freeAt: tonight.find((r) => r.kind === 'free')?.start ?? null,
-    exercise: exerciseCard(session, schedule),
+    runAt: startOf(slots, (s) => s.kind === 'move'),
+    prepAt: startOf(slots, (s) => s.study === 'deep'),
+    dinnerAt: startOf(slots, (s) => E.DINNER_SLOT_IDS.has(s.id)),
+    reviewAt: startOf(slots, (s) => s.id === 'sun-review'),
+    freeAt: startOf(slots, (s) => s.kind === 'free' && s.id !== 'settle'),
+    dinner: E.dinnerFor(today),
+    walk: { at: walkSlot?.start ?? null, end: walkSlot?.end ?? null, targetKm: settings.walkTargetKm },
+    ownTime: ownTimeOf(slots),
+    exercise: exerciseCard(session, { slots }),
     workout: workoutLabel(session.logged),
     dayLog,
     doneToday,
+    streak: info.started ? E.executionStreak(state, today) : 0,
+    yesterday: {
+      activity: E.hasActivity(yesterdayActivity) ? E.activityLine(yesterdayActivity) : null,
+      plan: state.days[yesterday]?.tomorrow ?? null,
+    },
+    todayActivity: E.hasActivity(todayActivity) ? E.activityLine(todayActivity) : null,
     quote: E.quoteForDay(info.started ? info.day : 1),
     summary: work.phase === 'general' ? null : E.amazonSummary(state, today),
     settings: {
+      name: settings.name.trim() || 'Ruturaj',
       morningEmailTime: settings.morningEmailTime,
       eveningEmailTime: settings.eveningEmailTime,
       studyBlock3Enabled: settings.studyBlock3Enabled,
-      exerciseSlot: settings.exerciseSlot,
       emailEnabled: settings.emailEnabled,
     },
   };
   d.objective = objectiveFor(d);
-  d.pace = paceLine(plan);
-  d.outcomes = outcomesFor(d);
+  d.win = winConditionFor(d);
   d.evening = eveningLineFor(dayLog, info.day);
   return d;
 }

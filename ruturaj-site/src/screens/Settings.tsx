@@ -40,7 +40,7 @@ export function Settings() {
       <Section icon={Flag} title="Programme">
         <ProgramSettings />
       </Section>
-      <Section icon={Target} title="Amazon">
+      <Section icon={Target} title="Surprise Prep">
         <AmazonSettings />
       </Section>
       <Section icon={Clock} title="Timetable">

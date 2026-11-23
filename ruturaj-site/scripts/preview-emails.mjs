@@ -12,16 +12,17 @@ import * as F from './fixtures.mjs';
 const here = dirname(fileURLToPath(import.meta.url));
 const now = new Date();
 
-const morningFri = buildDigest(F.weekday(), F.ist(F.FRI, '06:00'));
+const morningFri = buildDigest(F.weekday(), F.ist(F.FRI, F.AM));
 
 const SCENARIOS = [
-  { id: 'before-start', state: F.beforeStart(), morning: F.ist(F.THU, '06:00'), evening: F.ist(F.THU, '17:00') },
-  { id: 'weekday', state: F.weekday(), morning: F.ist(F.FRI, '06:00'), eveningState: F.weekdayEvening(morningFri), evening: F.ist(F.FRI, '17:00') },
-  { id: 'evening-run', state: F.eveningRun(), morning: F.ist(F.THU, '06:00'), evening: F.ist(F.THU, '17:00') },
-  { id: 'saturday', state: F.saturday(), morning: F.ist(F.SAT, '06:00'), evening: F.ist(F.SAT, '17:00') },
-  { id: 'sunday', state: F.sunday(), morning: F.ist(F.SUN, '06:00'), evening: F.ist(F.SUN, '17:00') },
+  { id: 'before-start', state: F.beforeStart(), morning: F.ist(F.THU, F.AM), evening: F.ist(F.THU, F.PM) },
+  { id: 'weekday', state: F.weekday(), morning: F.ist(F.FRI, F.AM), eveningState: F.weekdayEvening(morningFri), evening: F.ist(F.FRI, F.PM) },
+  { id: 'thursday', state: F.weekday(), morning: F.ist(F.THU, F.AM), evening: F.ist(F.THU, F.PM) },
+  { id: 'rest-morning', state: F.restMorning(), morning: F.ist(F.THU, F.AM), evening: F.ist(F.THU, F.PM) },
+  { id: 'saturday', state: F.saturday(), morning: F.ist(F.SAT, F.AM), evening: F.ist(F.SAT, F.PM) },
+  { id: 'sunday', state: F.sunday(), morning: F.ist(F.SUN, F.AM), evening: F.ist(F.SUN, F.PM) },
   { id: 'general', state: F.general(now), morning: now, evening: now },
-  { id: 'interview-4d', state: F.interviewSoon(), morning: F.ist(F.THU, '06:00'), evening: F.ist(F.THU, '17:00') },
+  { id: 'interview-4d', state: F.interviewSoon(), morning: F.ist(F.THU, F.AM), evening: F.ist(F.THU, F.PM) },
 ];
 
 let weekdayText = '';

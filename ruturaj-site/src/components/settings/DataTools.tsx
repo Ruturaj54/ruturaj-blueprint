@@ -53,9 +53,9 @@ export function DataTools() {
         <SectionTitle>Backup</SectionTitle>
         <Card>
           <p className="text-[13px] leading-relaxed text-muted">
-            Exports the complete state as one JSON file: programme, Amazon tracker, foundation and
-            course ticks, day logs, DSA attempts, deep-work sessions, runs, work, applications, health
-            records and settings. Import replaces everything with that file and pushes it to the
+            Exports the complete state as one JSON file: programme, the prep tracker, foundation and
+            course ticks, day logs, DSA attempts, deep-work sessions, runs, daily numbers, work,
+            applications, health records and settings. Import replaces everything with that file and pushes it to the
             server.
           </p>
           <div className="mt-3 flex flex-col gap-2 sm:flex-row">
@@ -88,13 +88,14 @@ export function DataTools() {
         <Card className="border-danger/25">
           <p className="text-[13px] leading-relaxed text-muted">
             Clears progress here and on the server and puts you back to a clean, not-yet-started Day
-            1: the Amazon tracker (every logged problem, tick and note; the stage goes back to
-            awaiting invitation), the programme (Day 1 and phase), foundation and course ticks, day
-            logs, DSA attempts, deep-work sessions, runs and weekly reviews.
+            1: the prep tracker (every logged problem, tick and note; the stage goes back to awaiting
+            invitation), the programme (Day 1 and phase), foundation and course ticks, day logs, DSA
+            attempts, deep-work sessions and weekly reviews.
           </p>
           <p className="mt-2 text-[13px] leading-relaxed text-muted">
             Kept: the timetable and every other setting, the sync passphrase, work achievements,
-            applications, and the weight and lab records. This cannot be undone.
+            applications, and your real-life records: runs, daily numbers, sleep, weight and labs.
+            This cannot be undone.
           </p>
           <div className="mt-3 flex flex-col">
             <ConfirmAction

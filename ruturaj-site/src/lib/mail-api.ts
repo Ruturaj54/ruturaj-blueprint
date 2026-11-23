@@ -78,6 +78,13 @@ type CallResult = { ok: true; body: Body } | MailFailure;
 
 const str = (v: unknown): string => (typeof v === 'string' ? v : '');
 
+/**
+ * Mail subjects may open with an emoji (allowed in mail, CLAUDE.md rule 2);
+ * the app shows them as plain text, because the UI never shows emoji.
+ */
+export const plainSubject = (v: unknown): string =>
+  str(v).replace(/\p{Extended_Pictographic}\uFE0F?/gu, '').replace(/\s+/g, ' ').trim();
+
 /** One request with the key header; every failure mode becomes a MailFailure. */
 async function call(url: string, method: 'GET' | 'POST'): Promise<CallResult> {
   const pass = getPassphrase();
@@ -116,7 +123,7 @@ function normaliseStatus(raw: Body): MailStatus {
       morning: { ...EMPTY_WINDOW, ...schedule.morning },
       evening: { ...EMPTY_WINDOW, ...schedule.evening },
     },
-    log: Array.isArray(raw.log) ? (raw.log as MailLogEntry[]) : [],
+    log: Array.isArray(raw.log) ? (raw.log as MailLogEntry[]).map((e) => ({ ...e, subject: plainSubject(e.subject) })) : [],
     now: str(raw.now) || new Date().toISOString(),
   };
 }
@@ -132,7 +139,7 @@ export async function previewMail(type: MailType): Promise<MailResult<MailPrevie
   flush(); // push what is on screen first, so the preview reads it
   const r = await call(`${SEND_URL}?type=${type}&preview=1`, 'POST');
   if (!r.ok) return r;
-  return { ok: true, type, subject: str(r.body.subject), html: str(r.body.html), text: str(r.body.text) };
+  return { ok: true, type, subject: plainSubject(r.body.subject), html: str(r.body.html), text: str(r.body.text) };
 }
 
 /** A real send, now, logged as a test. The scheduled mails are unaffected. */
@@ -140,5 +147,5 @@ export async function sendTestMail(type: MailType): Promise<MailResult<MailSendR
   flush();
   const r = await call(`${SEND_URL}?type=${type}`, 'POST');
   if (!r.ok) return r;
-  return { ok: true, type, subject: str(r.body.subject) };
+  return { ok: true, type, subject: plainSubject(r.body.subject) };
 }

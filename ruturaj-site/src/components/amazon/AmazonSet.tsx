@@ -85,8 +85,14 @@ export function AmazonSet({
     <div>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="min-w-0">
-          <p className="font-display text-[16px] font-bold leading-tight">Today's Amazon set</p>
-          <p className="mt-0.5 text-[12px] text-muted">{plan.focus}</p>
+          {compact ? (
+            <p className="text-[13px] font-medium text-fg">{plan.focus}</p>
+          ) : (
+            <>
+              <p className="font-display text-[16px] font-bold leading-tight">Today&rsquo;s prep set</p>
+              <p className="mt-0.5 text-[12px] text-muted">{plan.focus}</p>
+            </>
+          )}
         </div>
         {plan.mode === 'interview' && <Chip tone="amazon">Interview mode · Phase 3 first</Chip>}
         {plan.mode === 'done' && <Chip tone="success">Curriculum complete</Chip>}
@@ -146,7 +152,7 @@ export function AmazonSet({
       {compact && navigate && (
         <button
           type="button"
-          onClick={() => navigate('amazon')}
+          onClick={() => navigate('prep')}
           className="mt-1 inline-flex min-h-[44px] items-center gap-1 text-[13px] font-medium text-amazon-ink hover:underline"
         >
           See full plan <ArrowRight size={14} />

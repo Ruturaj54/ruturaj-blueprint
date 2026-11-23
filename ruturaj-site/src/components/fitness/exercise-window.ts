@@ -9,7 +9,6 @@ export interface ExerciseWindow {
 
 export const SLOT_LABEL: Record<ExerciseSlot, string> = {
   morning: 'Morning',
-  evening: 'Evening',
   rest: 'Rest',
 };
 

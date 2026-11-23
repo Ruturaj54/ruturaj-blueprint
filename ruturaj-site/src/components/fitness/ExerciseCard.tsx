@@ -1,29 +1,30 @@
 import { useState } from 'react';
-import { Sunrise, Sunset, BedDouble, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { Sunrise, BedDouble, ChevronRight, CheckCircle2 } from 'lucide-react';
 import { useAppState, useUpdateState } from '@/hooks/useAppState';
 import { Card, Button, Chip } from '@/components/ui/primitives';
 import { cn } from '@/lib/cn';
-import { todayISO, isWeekend } from '@/engine/dates';
+import { todayISO } from '@/engine/dates';
 import { sessionFor, setExerciseOverride, logWorkout } from '@/engine/fitness';
+import { setActivity } from '@/engine/activity';
 import type { ExerciseSlot } from '@/engine/schedule';
 import { exerciseWindow, SLOT_LABEL } from './exercise-window';
 import { SlotToggle } from './SlotToggle';
 import { WorkoutForm, type WorkoutInput } from './WorkoutForm';
 import { SessionChecklist } from './SessionChecklist';
 
-const SLOT_ICON = { morning: Sunrise, evening: Sunset, rest: BedDouble } as const;
+const SLOT_ICON = { morning: Sunrise, rest: BedDouble } as const;
 
 /**
- * Today's session: name, minutes and slot, a three-way slot toggle for today
- * only, and "Mark done" with an inline minutes / km / parts form. `compact`
- * is the one-line My Day version; the Fitness tab shows the full checklist.
+ * Today's run: name, minutes and window, a run / rest toggle for today only,
+ * and "Mark done" with an inline minutes / km / parts form. The km also lands
+ * in today's numbers, so it is never typed twice. `compact` is the one-line
+ * My Day version; the Fitness tab shows the full checklist.
  */
 export function ExerciseCard({ compact, onOpen }: { compact?: boolean; onOpen?: () => void }) {
   const state = useAppState();
   const update = useUpdateState();
   const today = todayISO();
   const { session, slot, logged, done } = sessionFor(state, today);
-  const weekend = isWeekend(today);
   const slotWindow = exerciseWindow(state.settings, today, slot);
   const [changing, setChanging] = useState(false);
   const [logging, setLogging] = useState(false);
@@ -38,7 +39,7 @@ export function ExerciseCard({ compact, onOpen }: { compact?: boolean; onOpen?: 
 
   const save = (input: WorkoutInput) => {
     if (!activeSlot) return;
-    update((draft) =>
+    update((draft) => {
       logWorkout(draft, {
         date: today,
         slot: activeSlot,
@@ -46,8 +47,10 @@ export function ExerciseCard({ compact, onOpen }: { compact?: boolean; onOpen?: 
         minutes: input.minutes,
         km: input.km,
         parts: input.parts,
-      }),
-    );
+      });
+      // A run's km feeds today's numbers; the evening walk is logged there directly.
+      if (session.kind === 'run' && input.km && draft.activity[today]?.runKm === undefined) setActivity(draft, today, 'runKm', input.km);
+    });
     setLogging(false);
   };
 
@@ -59,7 +62,7 @@ export function ExerciseCard({ compact, onOpen }: { compact?: boolean; onOpen?: 
     });
   };
 
-  const toggle = <SlotToggle value={slot} weekend={weekend} defaultSlot={state.settings.exerciseSlot} onChange={chooseSlot} />;
+  const toggle = <SlotToggle value={slot} onChange={chooseSlot} />;
 
   const status = logged ? (
     <div className="flex flex-wrap items-center gap-2">
@@ -83,8 +86,7 @@ export function ExerciseCard({ compact, onOpen }: { compact?: boolean; onOpen?: 
     </Button>
   ) : (
     <p className="text-[12.5px] text-muted">
-      Rest today. {compact ? 'Pick Morning or Evening under Change' : 'Pick Morning or Evening above'} if you still want to
-      log a session.
+      Rest today. {compact ? 'Switch back under Change' : 'Switch back above'} if you still went for the run.
     </p>
   );
 

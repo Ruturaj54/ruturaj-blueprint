@@ -3,15 +3,17 @@ import { Sunrise, Target, Route, FolderGit2, Activity, BarChart3, Settings, type
 export interface NavItem {
   id: string;
   label: string;
+  /** Shorter label for the mobile bottom bar, where five items share 375px. */
+  short?: string;
   icon: LucideIcon;
   /** Shown in the mobile bottom bar rather than the overflow sheet. */
   primary?: boolean;
 }
 
-/** Seven destinations. Amazon sits second while it is the active priority. */
+/** Seven destinations. Surprise Prep sits second while it is the active priority. */
 export const NAV_ITEMS: readonly NavItem[] = [
   { id: 'home', label: 'My Day', icon: Sunrise, primary: true },
-  { id: 'amazon', label: 'Amazon', icon: Target, primary: true },
+  { id: 'prep', label: 'Surprise Prep', short: 'Prep', icon: Target, primary: true },
   { id: 'roadmap', label: 'Roadmap', icon: Route, primary: true },
   { id: 'fitness', label: 'Fitness', icon: Activity, primary: true },
   { id: 'projects', label: 'Projects', icon: FolderGit2 },
@@ -24,6 +26,7 @@ export const OVERFLOW_NAV = NAV_ITEMS.filter((n) => !n.primary);
 
 /** Old hashes from the previous navigation keep working. */
 export const LEGACY_ROUTES: Record<string, string> = {
+  amazon: 'prep',
   today: 'home',
   dsa: 'progress',
   ai: 'roadmap',
